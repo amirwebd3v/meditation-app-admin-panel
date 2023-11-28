@@ -35,7 +35,7 @@ const LightTheme: ThemeDefinition = {
         'danger-dark': '#a23131',
         'success-dark': '#1dc8cc',
         'warning-dark': '#dcaf17',
-        'primary-light': '#4D3F37',
+        'primary-light': '#514442',
         'primary-dark': '#345bcb',
         'info-dark': '#2c73cb',
         'red-dark': '#d61f1f',

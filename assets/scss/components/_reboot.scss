@@ -64,6 +64,8 @@ html{
 
 
 
+
+
 @media (max-width: 767px) {
   .pt-sm-0 {
     padding-top: 0 !important;
@@ -153,10 +155,7 @@ html{
   position: relative !important;
 }
 
-.bg-dark,
-.app-header.v-sheet.bg-dark {
-  background-color: #EBF6FA !important;
-}
+
 
 
 .bg-extra-light {
@@ -218,6 +217,14 @@ html{
   );
   background: -webkit-linear-gradient(left, rgb(var(--v-theme-error)), rgb(var(--v-theme-orange)));
   background: linear-gradient(90deg, rgb(var(--v-theme-error)) 0, rgb(var(--v-theme-orange)));
+}
+
+.v-container {
+  height: 100vh;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (min-width: 1600px){
