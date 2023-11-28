@@ -1,9 +1,19 @@
 <script setup lang="ts">
 
+const { user, loggedIn } = useAuth()
+
+definePageMeta({
+  middleware: 'auth'
+})
+
 </script>
 
 <template>
   <v-container fluid="">
+    {{ user }}
+    <v-btn @click="$sanctumAuth.logout" color="primary">
+      Logout
+    </v-btn>
     <v-row justify="center">
       <v-col class="d-flex" cols="12" md="3">
         <v-card class="mx-auto" max-width="400">
