@@ -17,28 +17,27 @@ async function login() {
 
 </script>
 <template>
-  <v-app>
-    <v-container fluid>
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="8" md="6" lg="4">
-          <v-card class="mx-auto bg-transparent" elevation="0" width="400">
-            <v-img class="mx-auto my-6" max-width="228"
+
+    <v-container fluid="" class="fill-height">
+      <v-row no-gutters align="center" justify="center" class="fill-height">
+        <v-col cols="12" sm="6" md="4" lg="4">
+            <v-img class="mx-auto mb-5  d-flex align-center justify-center" max-width="250" cover=""
                    src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"/>
-            <h4 class="text-center mb-10 ">Welcome to Admin panel</h4>
+            <p class="text-center mb-12 font-weight-bold font-18">Welcome to Admin panel</p>
+          <v-form class="max-w-300">
             <v-text-field v-model="form.email" density="compact" placeholder="Enter Email"
                           variant="outlined"></v-text-field>
             <v-text-field v-model="form.password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                           :type="visible ? 'text' : 'password'"
                           density="compact" placeholder="Enter Password" variant="outlined"
                           @click:append-inner="visible = !visible"/>
-            <v-card class="mb-12" color="surface-variant" variant="tonal"/>
             <v-btn @click="login" block="" rounded="xl" class="mb-8" color="primary" size="large" variant="flat">Login
             </v-btn>
-          </v-card>
+          </v-form>
         </v-col>
       </v-row>
     </v-container>
-  </v-app>
+
 </template>
 
 <style scoped>

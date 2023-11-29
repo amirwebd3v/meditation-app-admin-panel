@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import AllCustomComponents from '@/components/section/AllCustomComponents.vue';
+
+import Header from "~/components/section/header/Header.vue";
 </script>
 
 <template>
-  <AllCustomComponents/>
+  <Header/>
 </template>
 
 <style scoped>
