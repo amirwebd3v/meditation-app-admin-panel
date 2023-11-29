@@ -7,7 +7,7 @@
   <v-container class="fill-height d-flex flex-column align-center" fluid="">
 
     <v-row class="ma-0 pb-5 " align="end">
-      <h2 class="text-center text-white">Select what you are going to configure</h2>
+      <p class="text-center text-white font-20 font-weight-medium">Select what you are going to configure</p>
     </v-row>
 
     <v-row align="start" class="ma-0">
@@ -35,7 +35,7 @@
           </v-img>
 
           <v-card-text class="text-center  font-16 ">
-            Video Lessons
+            Meditations
           </v-card-text>
         </v-card>
 

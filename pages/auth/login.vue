@@ -17,7 +17,6 @@ async function login() {
 
 </script>
 <template>
-
     <v-container fluid="" class="fill-height">
       <v-row no-gutters align="center" justify="center" class="fill-height">
         <v-col cols="12" sm="6" md="4" lg="4">
@@ -37,7 +36,6 @@ async function login() {
         </v-col>
       </v-row>
     </v-container>
-
 </template>
 
 <style scoped>

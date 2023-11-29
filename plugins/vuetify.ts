@@ -18,7 +18,7 @@ const LightTheme: ThemeDefinition = {
         warning: '#fec500',
         primary: '#96AE50',
         accent: '#eeeeee',
-        light: '#f4f8fa',
+        light: '#514442',
         dark: '#08232d',
         error: '#ff4d7e',
         muted: '#8d97ad',
