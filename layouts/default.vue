@@ -24,7 +24,6 @@ useHead({
       <slot/>
 
     </v-main>
-<!--    </Footer>-->
   </v-app>
 </template>
 

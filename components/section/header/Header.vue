@@ -1,12 +1,16 @@
 <script setup lang="ts">
 const router = useRouter();
 const showHeader = ref(true);
+const showNavItem = ref(true);
 const drawer = ref(null);
 
 const isLoginPage = () => router.currentRoute.value.name === 'auth-login';
+const isConfigurationPage = () => router.currentRoute.value.name === 'panel-configuration';
 
 watchEffect(() => {
   showHeader.value = !isLoginPage()
+  showNavItem.value = !isConfigurationPage()
+
 })
 </script>
 
@@ -24,9 +28,9 @@ watchEffect(() => {
         </div>
         <div class="hidden-sm-and-down">
           <v-row class="align-center">
-            <div class="mr-15">
-              <a class="text-white pr-5">Video courses</a>
-              <a class="text-white px-4">Meditations</a>
+            <div class="mr-15" v-if="showNavItem">
+              <a class="text-white pr-5" @click="">Video courses</a>
+              <a class="text-white px-4" @click="">Meditations</a>
             </div>
             <v-avatar image="https://cdn.vuetifyjs.com/images/john.jpg" size="45"></v-avatar>
             <p class="font-16 font-weight-light mx-4">Jalallinux</p>
@@ -42,12 +46,19 @@ watchEffect(() => {
       temporary="">
     <v-list-item prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg" title="John Leider"/>
 
-    <v-divider></v-divider>
+    <v-divider thickness="2"/>
 
-    <v-list density="compact" nav="">
+    <v-list density="compact" nav="" v-if="showNavItem">
       <v-list-item prepend-icon="mdi-video-box" title="Video courses" ></v-list-item>
       <v-list-item prepend-icon="mdi-meditation" title="Meditations" ></v-list-item>
     </v-list>
+    <template v-slot:append>
+      <div class="pa-2">
+        <v-btn block="" color="danger-dark">
+          Log out
+        </v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
