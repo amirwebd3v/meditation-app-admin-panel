@@ -27,15 +27,30 @@ defineProps({
 
 const search = ref('')
 
+const showBtn = ref(true);
+const router = useRouter();
+const isCoursePage = () => {
+  const currentRouteName = router.currentRoute.value.name;
+  if (currentRouteName === 'panel-configurations-video' || currentRouteName === 'panel-configurations-meditation')
+    return true;
+};
+watchEffect(() => {
+  showBtn.value = !isCoursePage()
+})
 
+
+console.log(isCoursePage,router.currentRoute.value.name)
 </script>
 
 <template>
 
   <!--      First section-->
-  <v-col cols="12" md="7" sm="8">
-    <v-row justify="start" align="center" class="mb-10">
-      <h2 class="text-white pr-10">{{ header }}</h2>
+
+  <v-sheet class="d-flex mb-6 bg-transparent align-center">
+    <v-sheet class="bg-transparent">
+      <h2 class="text-white pr-10 me-auto">{{ header }}</h2>
+    </v-sheet>
+    <v-sheet class="bg-transparent mr-5" width="475px">
       <v-text-field
           v-model="search"
           density="comfortable"
@@ -45,8 +60,24 @@ const search = ref('')
           prepend-inner-icon="mdi-magnify"
           single-line
       ></v-text-field>
-    </v-row>
-  </v-col>
+    </v-sheet>
+    <v-sheet class="bg-transparent ml-auto" v-if="isCoursePage" >
+      <v-btn
+          color="primary"
+          text="Add category"
+          :size="$vuetify.display.smAndDown ? 'small' : 'default'"
+          :icon="$vuetify.display.smAndDown"
+          rounded="xl"
+      >
+        <template v-slot:default v-if="$vuetify.display.smAndDown">
+          <v-icon class="mdi mdi-plus"/>
+        </template>
+        <template v-slot:prepend v-if="$vuetify.display.smAndUp">
+          <v-icon class="mdi mdi-plus"/>
+        </template>
+      </v-btn>
+    </v-sheet>
+  </v-sheet>
 
 
   <slot name="outsideTable"/>
@@ -60,9 +91,6 @@ const search = ref('')
     <template v-for="(slot, name) in $slots" v-slot:[name]="item">
       <slot :name="name" v-bind="item"></slot>
     </template>
-
-
-
 
 
   </v-data-table>
