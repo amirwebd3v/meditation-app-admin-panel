@@ -8,9 +8,10 @@ defineProps<{
 <template>
   <!--      Fourth section-->
   <v-row justify="space-between" align="center" class="mt-4 px-3">
-    <span class="text-white font-weight-medium font-18">{{ Item }}</span>
+    <span class="text-white font-weight-medium font-18 ">{{ Item }}</span>
     <v-btn
         color="primary"
+        class="px-6"
         :text="BtnText"
         :size="$vuetify.display.smAndDown ? 'small' : 'default'"
         rounded="xl"

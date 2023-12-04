@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
 
+import {el} from "vuetify/locale";
+
 defineProps({
   header: {
     type: String,
@@ -23,14 +25,22 @@ defineProps({
     type: Boolean,
     default: false,
   },
+
 });
 
 const search = ref('')
 
 const router = useRouter();
+const isBtnText = ref('')
+
 
 const isCoursePage = computed(() => {
   const currentRouteName = router.currentRoute.value.name;
+  if(currentRouteName === 'panel-video-id'){
+    isBtnText.value = "Add course"
+  }else if(currentRouteName === 'panel-meditation-id'){
+    isBtnText.value = "Add Meditation"
+  }
   return currentRouteName === 'panel-video-id' || currentRouteName === 'panel-meditation-id';
 })
 
@@ -39,7 +49,6 @@ const isCoursePage = computed(() => {
 <template>
 
   <!--      First section-->
-
   <v-sheet class="d-flex mb-6 bg-transparent align-center">
     <v-sheet class="bg-transparent">
       <h2 class="text-white pr-10 me-auto">{{ header }}</h2>
@@ -58,7 +67,8 @@ const isCoursePage = computed(() => {
     <v-sheet class="bg-transparent ml-auto" v-if="isCoursePage">
       <v-btn
           color="primary"
-          text="Add category"
+          class="px-6"
+          :text="isBtnText"
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"
           rounded="xl"
@@ -85,8 +95,6 @@ const isCoursePage = computed(() => {
     <template v-for="(slot, name) in $slots" v-slot:[name]="item">
       <slot :name="name" v-bind="item"></slot>
     </template>
-
-
   </v-data-table>
 </template>
 

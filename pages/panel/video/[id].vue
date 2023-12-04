@@ -46,7 +46,7 @@ const tableHeaders = ref([
 
 <template>
   <div class="mt-16">
-    <v-container fluid="">
+    <v-container>
 
 
       <DataTable :header="pageHeader" :items="items" :table-headers="tableHeaders" :search="search" >
