@@ -5,7 +5,7 @@ const showNavItem = ref(true);
 const drawer = ref(null);
 
 const isLoginPage = () => router.currentRoute.value.name === 'auth-login';
-const isConfigurationPage = () => router.currentRoute.value.name === 'panel-configuration';
+const isConfigurationPage = () => router.currentRoute.value.name === 'panel';
 
 watchEffect(() => {
   showHeader.value = !isLoginPage()
@@ -29,8 +29,8 @@ watchEffect(() => {
         <div class="hidden-sm-and-down">
           <v-row class="align-center">
             <div class="mr-15" v-if="showNavItem">
-              <a class="text-white pr-5" @click="">Video courses</a>
-              <a class="text-white px-4" @click="">Meditations</a>
+              <nuxt-link :to="{name:  'panel-video'}" class="text-white pr-5" @click="">Video courses</nuxt-link>
+              <nuxt-link :to="{name:  'panel-meditation'}" class="text-white px-4" @click="">Meditations</nuxt-link>
             </div>
             <v-avatar image="https://cdn.vuetifyjs.com/images/john.jpg" size="45"></v-avatar>
             <p class="font-16 font-weight-light mx-4">Jalallinux</p>

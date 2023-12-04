@@ -27,19 +27,13 @@ defineProps({
 
 const search = ref('')
 
-const showBtn = ref(true);
 const router = useRouter();
-const isCoursePage = () => {
+
+const isCoursePage = computed(() => {
   const currentRouteName = router.currentRoute.value.name;
-  if (currentRouteName === 'panel-configurations-video' || currentRouteName === 'panel-configurations-meditation')
-    return true;
-};
-watchEffect(() => {
-  showBtn.value = !isCoursePage()
+  return currentRouteName === 'panel-video-id' || currentRouteName === 'panel-meditation-id';
 })
 
-
-console.log(isCoursePage,router.currentRoute.value.name)
 </script>
 
 <template>
@@ -61,7 +55,7 @@ console.log(isCoursePage,router.currentRoute.value.name)
           single-line
       ></v-text-field>
     </v-sheet>
-    <v-sheet class="bg-transparent ml-auto" v-if="isCoursePage" >
+    <v-sheet class="bg-transparent ml-auto" v-if="isCoursePage">
       <v-btn
           color="primary"
           text="Add category"
