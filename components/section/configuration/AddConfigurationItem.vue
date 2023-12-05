@@ -11,7 +11,7 @@ defineProps<{
     <span class="text-white font-weight-medium font-18 ">{{ Item }}</span>
     <v-btn
         color="primary"
-        class="px-6"
+        class="px-6-md"
         :text="BtnText"
         :size="$vuetify.display.smAndDown ? 'small' : 'default'"
         rounded="xl"

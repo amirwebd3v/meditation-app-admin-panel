@@ -9,7 +9,7 @@ const route = useRoute();
 const search = ref('')
 const pageId = route.params.id;
 const pageHeader = computed(() => items.value[pageId].titleOfVideo);
-const btnText = ref("Add course")
+
 
 
 

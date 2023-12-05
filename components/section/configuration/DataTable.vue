@@ -1,8 +1,5 @@
 <script setup lang="ts">
 
-
-import {el} from "vuetify/locale";
-
 defineProps({
   header: {
     type: String,

@@ -4,6 +4,7 @@
 import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
 import DataTable from "~/components/section/configuration/DataTable.vue";
+import Add from "~/components/section/modals/add.vue";
 
 
 
@@ -12,7 +13,8 @@ const pageHeader = ref("Meditation section")
 const item = ref("All Meditations")
 const btnText = ref("Add Meditation")
 const menu = ref(false)
-
+const formTitle = ref('Add meditation course')
+const addMeditationBtn = ref(false)
 
 
 const filters = [
@@ -106,62 +108,56 @@ const tableHeaders = ref([
         </template>
 
         <template #item.actions="{item}">
+            <v-row justify="center">
+              <v-menu
+                  :v-model="menu"
+                  :close-on-content-click="false"
+                  location="start"
+              >
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                      class="text-primary"
+                      variant="text"
+                      v-bind="props"
+                      icon="mdi mdi-dots-vertical"
+                      size="small"
 
-          <v-row justify="space-evenly">
-            <v-menu
-                :v-model="menu"
-                :close-on-content-click="false"
-                location="start"
-            >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                    class="text-primary"
-                    variant="text"
-                    v-bind="props"
-                    icon="mdi mdi-dots-vertical"
-                    size="small"
+                  />
+                </template>
 
-                />
-              </template>
+                <v-card class="bg-light-brown-1" rounded>
+                  <add :form-title="formTitle" :dialog="addMeditationBtn"/>
 
-              <v-card class="bg-light-brown-1" rounded>
-                <v-btn
-                    class="text-primary"
-                    variant="text"
-                    icon="mdi mdi-plus"
-                    size="small"
+                  <v-btn
+                      class="text-primary"
+                      variant="text"
+                      icon="mdi mdi-pencil"
+                      size="small"
 
-                />
-                <v-btn
-                    class="text-primary"
-                    variant="text"
-                    icon="mdi mdi-pencil"
-                    size="small"
+                  />
+                  <v-btn
+                      class="text-primary"
+                      variant="text"
+                      icon="mdi mdi-delete-outline"
+                      size="small"
 
-                />
-                <v-btn
-                    class="text-primary"
-                    variant="text"
-                    icon="mdi mdi-delete-outline"
-                    size="small"
-
-                />
-              </v-card>
-            </v-menu>
-            <v-btn
-                class="text-primary"
-                variant="text"
-                size="small"
-                icon="mdi-chevron-right"
-                @click=""
-            />
-          </v-row>
-
+                  />
+                </v-card>
+              </v-menu>
+              <v-btn
+                  class="text-primary"
+                  variant="text"
+                  size="small"
+                  icon="mdi-chevron-right"
+                  @click=""
+              />
+            </v-row>
         </template>
 
 
 
       </DataTable>
+
 
     </v-container>
   </div>
