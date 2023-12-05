@@ -4,7 +4,9 @@
 import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
 import DataTable from "~/components/section/configuration/DataTable.vue";
-import Add from "~/components/section/modals/add.vue";
+
+import AddMeditation from "~/components/section/modals/meditation/Add.vue";
+import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
 
 
@@ -13,8 +15,7 @@ const pageHeader = ref("Meditation section")
 const item = ref("All Meditations")
 const btnText = ref("Add Meditation")
 const menu = ref(false)
-const formTitle = ref('Add meditation course')
-const addMeditationBtn = ref(false)
+
 
 
 const filters = [
@@ -126,21 +127,14 @@ const tableHeaders = ref([
                 </template>
 
                 <v-card class="bg-light-brown-1" rounded>
-                  <add :form-title="formTitle" :dialog="addMeditationBtn"/>
+                  <AddMeditation />
 
-                  <v-btn
-                      class="text-primary"
-                      variant="text"
-                      icon="mdi mdi-pencil"
-                      size="small"
-
-                  />
+                  <EditMeditation />
                   <v-btn
                       class="text-primary"
                       variant="text"
                       icon="mdi mdi-delete-outline"
                       size="small"
-
                   />
                 </v-card>
               </v-menu>

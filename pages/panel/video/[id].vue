@@ -3,6 +3,7 @@
 
 
 import DataTable from "~/components/section/configuration/DataTable.vue";
+import EditVideo from "~/components/section/modals/video/Edit.vue";
 
 
 const route = useRoute();
@@ -75,13 +76,7 @@ const tableHeaders = ref([
         <template #item.actions="{item}">
 
           <v-row justify="end" no-gutters>
-            <v-btn
-                class="text-primary"
-                variant="text"
-                size="small"
-                icon="mdi-pencil-outline"
-                @click=""
-            />
+            <EditVideo/>
             <v-btn
                 class="text-primary"
                 variant="text"

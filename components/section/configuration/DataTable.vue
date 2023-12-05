@@ -64,7 +64,7 @@ const isCoursePage = computed(() => {
     <v-sheet class="bg-transparent ml-auto" v-if="isCoursePage">
       <v-btn
           color="primary"
-          class="px-6"
+          class="px-6-md"
           :text="isBtnText"
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"

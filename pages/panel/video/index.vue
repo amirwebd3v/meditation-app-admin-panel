@@ -4,6 +4,8 @@
 import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
 import DataTable from "~/components/section/configuration/DataTable.vue";
+import AddVideo from "~/components/section/modals/video/Add.vue";
+import EditVideo from "~/components/section/modals/video/Edit.vue";
 
 
 
@@ -117,20 +119,8 @@ const tableHeaders = ref([
               </template>
 
               <v-card class="bg-light-brown-1" rounded>
-                <v-btn
-                    class="text-primary"
-                    variant="text"
-                    icon="mdi mdi-plus"
-                    size="small"
-
-                />
-                <v-btn
-                    class="text-primary"
-                    variant="text"
-                    icon="mdi mdi-pencil"
-                    size="small"
-
-                />
+               <AddVideo/>
+                <EditVideo/>
                 <v-btn
                     class="text-primary"
                     variant="text"

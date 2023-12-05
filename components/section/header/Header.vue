@@ -21,8 +21,8 @@ watchEffect(() => {
         <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = <any>!drawer"/>
         <div class="float-md-right">
           <v-img
-              width="135"
-              height="135"
+              width="128"
+              height="128"
               src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
           </v-img>
         </div>
