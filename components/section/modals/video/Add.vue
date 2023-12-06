@@ -53,7 +53,7 @@ const isVideoCoursePage = computed(() => {
           color="primary"
           class="px-6-md"
           v-bind="props"
-          :text="btnOutTable ? isBtnText = 'Add Video' : ''"
+          :text="btnOutTable ? isBtnText = 'Add course' : ''"
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"
           rounded="xl"

@@ -13,7 +13,6 @@ import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 const search = ref('')
 const pageHeader = ref("Meditation section")
 const item = ref("All Meditations")
-const btnText = ref("Add Meditation")
 const menu = ref(false)
 
 

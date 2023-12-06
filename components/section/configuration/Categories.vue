@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
 
+import AddCategory from "~/components/section/modals/category/Add.vue";
+
 defineProps<{
   Filters: Array<string>
 }>()
@@ -11,20 +13,7 @@ defineProps<{
   <!--      Second section-->
   <v-row justify="space-between" align="center" class="mt-2 px-3">
     <span class="text-white font-weight-medium font-18">Categories</span>
-    <v-btn
-        color="primary"
-        text="Add category"
-        :size="$vuetify.display.smAndDown ? 'small' : 'default'"
-        :icon="$vuetify.display.smAndDown"
-        rounded="xl"
-    >
-      <template v-slot:default v-if="$vuetify.display.smAndDown">
-        <v-icon class="mdi mdi-plus"/>
-      </template>
-      <template v-slot:prepend v-if="$vuetify.display.smAndUp">
-        <v-icon class="mdi mdi-plus"/>
-      </template>
-    </v-btn>
+    <AddCategory />
   </v-row>
 
   <!--      Third section-->

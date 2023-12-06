@@ -13,7 +13,7 @@ import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 const search = ref('')
 const pageHeader = ref("Video")
 const item = ref("All Courses")
-const btnText = ref("Add Course")
+
 const menu = ref(false)
 
 
