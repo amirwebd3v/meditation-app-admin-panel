@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+import AddVideo from "~/components/section/modals/video/Add.vue";
+import AddMeditation from "~/components/section/modals/meditation/Add.vue";
+
 defineProps({
   header: {
     type: String,
@@ -25,28 +28,38 @@ defineProps({
 
 });
 
+/*******************************************/
 const search = ref('')
-
-const router = useRouter();
 const isBtnText = ref('')
 
+/*******************************************/
+
+const router = useRouter();
+const currentRouteName = router.currentRoute.value.name;
 
 const isCoursePage = computed(() => {
-  const currentRouteName = router.currentRoute.value.name;
-  if(currentRouteName === 'panel-video-id'){
+
+  if (currentRouteName === 'panel-video-id') {
     isBtnText.value = "Add course"
-  }else if(currentRouteName === 'panel-meditation-id'){
+  } else if (currentRouteName === 'panel-meditation-id') {
     isBtnText.value = "Add Meditation"
   }
   return currentRouteName === 'panel-video-id' || currentRouteName === 'panel-meditation-id';
 })
 
+const isVideoPage = computed(() => {
+  return currentRouteName === 'panel-video-id' || currentRouteName === 'panel-video';
+})
+const isMeditationPage = computed(() => {
+  return currentRouteName === 'panel-meditation-id' || currentRouteName === 'panel-meditation';
+})
 </script>
 
 <template>
 
   <!--      First section-->
   <v-sheet class="d-flex mb-6 bg-transparent align-center">
+
     <v-sheet class="bg-transparent">
       <h2 class="text-white pr-10 me-auto">{{ header }}</h2>
     </v-sheet>
@@ -62,22 +75,10 @@ const isCoursePage = computed(() => {
       ></v-text-field>
     </v-sheet>
     <v-sheet class="bg-transparent ml-auto" v-if="isCoursePage">
-      <v-btn
-          color="primary"
-          class="px-6-md"
-          :text="isBtnText"
-          :size="$vuetify.display.smAndDown ? 'small' : 'default'"
-          :icon="$vuetify.display.smAndDown"
-          rounded="xl"
-      >
-        <template v-slot:default v-if="$vuetify.display.smAndDown">
-          <v-icon class="mdi mdi-plus"/>
-        </template>
-        <template v-slot:prepend v-if="$vuetify.display.smAndUp">
-          <v-icon class="mdi mdi-plus"/>
-        </template>
-      </v-btn>
+      <AddVideo :is-btn-text="isBtnText" v-if="isVideoPage"/>
+      <AddMeditation :is-btn-text="isBtnText" v-if="isMeditationPage"/>
     </v-sheet>
+
   </v-sheet>
 
 

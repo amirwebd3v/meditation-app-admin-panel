@@ -6,13 +6,14 @@ import AddConfigurationItem from "~/components/section/configuration/AddConfigur
 import DataTable from "~/components/section/configuration/DataTable.vue";
 import AddVideo from "~/components/section/modals/video/Add.vue";
 import EditVideo from "~/components/section/modals/video/Edit.vue";
+import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 
 
 
 const search = ref('')
 const pageHeader = ref("Video")
 const item = ref("All Courses")
-const btnText = ref("Add course")
+const btnText = ref("Add Course")
 const menu = ref(false)
 
 
@@ -76,7 +77,7 @@ const tableHeaders = ref([
 
         <template #outsideTable>
           <Categories :Filters="filters"  />
-          <AddConfigurationItem :Item="item" :BtnText="btnText"/>
+          <AddConfigurationItem :Item="item"/>
         </template>
 
         <template #item.picture="{ item }">
@@ -119,7 +120,7 @@ const tableHeaders = ref([
               </template>
 
               <v-card class="bg-light-brown-1" rounded>
-               <AddVideo/>
+               <AddVideo :btn-out-table="false" :btn-in-table="true"/>
                 <EditVideo/>
                 <v-btn
                     class="text-primary"

@@ -3,6 +3,7 @@
 
 
 import DataTable from "~/components/section/configuration/DataTable.vue";
+import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
 
 const route = useRoute();
@@ -82,14 +83,8 @@ const tableHeaders = ref([
 
         <template #item.actions="{item}">
 
-          <v-row justify="space-evenly" no-gutters>
-            <v-btn
-                class="text-primary"
-                variant="text"
-                size="small"
-                icon="mdi-pencil-outline"
-                @click=""
-            />
+          <v-row justify="end" no-gutters>
+            <EditMeditation/>
             <v-btn
                 class="text-primary"
                 variant="text"

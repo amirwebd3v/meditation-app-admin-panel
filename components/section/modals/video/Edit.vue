@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import Index from "~/components/section/modals/index.vue";
+import Base from "~/components/section/modals/Base.vue";
 
 const formTitle = ref('Edit Video Course')
 const icon = ref('mdi mdi-pencil')
@@ -12,7 +12,18 @@ defineComponent({
 
 <template>
 
-  <index :form-title="formTitle" :icon="icon">
+  <Base :form-title="formTitle" :icon="icon">
+
+    <template v-slot:button="props">
+      <v-btn
+          class="text-primary"
+          variant="text"
+          :icon="icon"
+          v-bind="props"
+          size="small">
+      </v-btn>
+    </template>
+
     <template #columns>
        <v-row justify="space-between">
       <v-col cols="12" class="pb-0">
@@ -86,7 +97,8 @@ defineComponent({
       </v-col>
        </v-row>
     </template>
-  </index>
+
+  </Base>
 
 
 </template>

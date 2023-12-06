@@ -13,22 +13,22 @@ defineProps({
     required: true,
   }
 });
+/*********************************************/
 
 
 </script>
 
 <template>
 
-
   <v-dialog
       :v-model="dialog"
       max-width="500px"
   >
+
     <template v-slot:activator="{ props }">
-
-        <slot name="button"/>
-
+      <slot name="button" v-bind="props"/>
     </template>
+
     <v-card class="bg-light-brown-1" rounded="lg">
       <v-container>
 
@@ -63,7 +63,9 @@ defineProps({
         </v-card-actions>
       </v-container>
     </v-card>
+
   </v-dialog>
+
 </template>
 
 

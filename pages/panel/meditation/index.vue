@@ -85,7 +85,7 @@ const tableHeaders = ref([
 
         <template #outsideTable>
           <Categories :Filters="filters"  />
-          <AddConfigurationItem :Item="item" :BtnText="btnText"/>
+          <AddConfigurationItem :Item="item" />
         </template>
 
         <template #item.picture="{ item }">
@@ -127,8 +127,7 @@ const tableHeaders = ref([
                 </template>
 
                 <v-card class="bg-light-brown-1" rounded>
-                  <AddMeditation />
-
+                  <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
                   <EditMeditation />
                   <v-btn
                       class="text-primary"
