@@ -19,8 +19,10 @@
   "dependencies": {
     "@mdi/font": "^7.2.96",
     "@nuxtjs/vuetify": "^1.12.3",
+    "@pinia/nuxt": "^0.5.1",
     "mitt": "^3.0.1",
     "nuxt-sanctum-auth": "^0.4.7",
+    "pinia": "^2.1.7",
     "sass": "^1.69.5",
     "sass-loader": "^10.0.0",
     "typescript": "^5.1.3",
