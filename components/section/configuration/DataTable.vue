@@ -1,21 +1,13 @@
 <template>
 
-  <!--      First section-->
   <v-sheet class="d-flex mb-6 bg-transparent align-center">
 
     <v-sheet class="bg-transparent">
       <h2 class="text-white pr-10 me-auto">{{ header }}</h2>
     </v-sheet>
     <v-sheet class="bg-transparent mr-5" width="475px">
-      <v-text-field
-          v-model="search"
-          density="comfortable"
-          hide-details
-          variant="outlined"
-          label="Search"
-          prepend-inner-icon="mdi-magnify"
-          single-line
-      />
+      <v-text-field v-model="search" density="comfortable" hide-details variant="outlined"
+                    label="Search" prepend-inner-icon="mdi-magnify" single-line/>
     </v-sheet>
     <v-sheet class="bg-transparent ml-auto" v-if="isCoursePage">
       <AddVideo :is-btn-text="isBtnText" v-if="isVideoPage"/>
@@ -24,14 +16,9 @@
 
   </v-sheet>
 
-
   <slot name="outsideTable"/>
 
-  <!--      Fifth section-->
-  <v-data-table :search="search"
-                :items="items"
-                class="mt-10 rounded-lg bg-light-brown-1"
-                :headers="tableHeaders">
+  <v-data-table :search="search" :items="items" class="mt-10 rounded-lg bg-light-brown-1" :headers="tableHeaders">
 
     <template v-for="(slot, name) in $slots" v-slot:[name]="item">
       <slot :name="name" v-bind="item"></slot>
