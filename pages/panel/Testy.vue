@@ -21,6 +21,10 @@
           </v-card>
         </template>
 
+        <template #item.set="{ item }">
+          {{ item.set.replace('MULTIPLE', 'COURSE') }}
+        </template>
+
       </v-data-table-server>
     </v-card>
   </v-container>
