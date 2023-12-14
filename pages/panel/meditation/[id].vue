@@ -10,6 +10,7 @@ const route = useRoute();
 const search = ref('')
 const pageId = route.params.id;
 const pageHeader = computed(() => items.value[pageId].titleOfMeditation);
+const dispatch = '';
 
 
 
@@ -58,7 +59,11 @@ const tableHeaders = ref([
     <v-container>
 
 
-      <DataTable :header="pageHeader" :items="items" :table-headers="tableHeaders" :search="search" >
+      <DataTable :header="pageHeader"
+                 :items="items"
+                 :table-headers="tableHeaders"
+                 :search="search"
+      >
 
 
         <template #item.picture="{ item }">

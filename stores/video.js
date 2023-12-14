@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import pagination from '~/utils/pagination.js'
+import pagination from '~/utils/pagination1.js'
 
 export const useVideoStore = defineStore('video', {
     state: () => ({
