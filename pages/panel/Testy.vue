@@ -1,17 +1,15 @@
 <template>
   <v-container fluid>
     <v-card>
-      <v-text-field v-model="search" hide-details placeholder="Search name..." class="ma-2" density="compact"></v-text-field>
+      <v-text-field @keyup.enter="load({page: 1, itemsPerPage: 15})" v-model="searchText" hide-details placeholder="Search name..." class="ma-2" density="compact"></v-text-field>
       <v-data-table-server
           v-if="!!items"
-          v-model:items-per-page="meta.per_page"
-          show-current-page
-          :headers="headers"
+          :page="meta.page"
+          :items-per-page="meta.per_page"
           :items-length="meta.total"
+          show-current-page
           :loading="loading"
           :items="items"
-          :search="search"
-          item-value="uuid"
           @update:options="load"
       />
     </v-card>
@@ -20,7 +18,6 @@
 
 
 <script>
-import { onMounted, ref } from "vue";
 import { useMeditationStore } from "~/stores/meditation.js";
 import { mapState } from "pinia";
 
@@ -28,36 +25,28 @@ export default {
   name: "Testy",
   setup() {
 
-
-
     const loading = ref(true);
+    const searchText = ref('');
 
-
-    onMounted(() => {
-      useMeditationStore().fetch(1, 5, "id", "asc");
-    });
-
-    const load = ({page, itemsPerPage, sortedBy}) => {
+    const load = (options) => {
       loading.value = true;
 
-      useMeditationStore().fetch(page, itemsPerPage, sortedBy)
-          .then(() => {
+      const conditions = [
+        {key: 'title', operator: 'like', value: searchText.value}
+      ]
+
+      useMeditationStore().fetch(options.page, options.itemsPerPage, options.sortedBy, 'desc', conditions)
+          .finally(() => {
             loading.value = false;
           });
     };
 
-    return {fetch, load};
+    return {items, meta, loading, searchText, fetch, load};
 
   },
 
   computed: {
     ...mapState(useMeditationStore, ["items", "meta"]),
   },
-
-
-
-
-
-
 };
 </script>
