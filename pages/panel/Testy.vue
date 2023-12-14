@@ -41,7 +41,7 @@ export default {
           });
     };
 
-    return {items, meta, loading, searchText, fetch, load};
+    return {loading, searchText, fetch, load};
 
   },
 
