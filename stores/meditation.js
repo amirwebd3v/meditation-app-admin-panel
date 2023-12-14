@@ -10,7 +10,12 @@ export const useMeditationStore = defineStore("meditation", {
 
 
     actions: {
-        async fetch(page = 1, perPage = 15, orderBy = "created_at", sortType = "desc",conditions = []) {
+        async fetch(page = null, perPage = null, orderBy = null, sortType = null, conditions = null) {
+            page = page || 1
+            perPage = perPage || 15
+            orderBy = orderBy || "created_at"
+            sortType = sortType || "desc"
+            conditions = conditions || []
             const { search, searchFields } = searchQuery(conditions);
             this.items = []
             const { data, meta } = (await useFetch(
