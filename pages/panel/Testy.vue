@@ -34,7 +34,7 @@ export default {
 
 
     onMounted(() => {
-      useMeditationStore().fetch(1, 5, "id", "asc",'title');
+      useMeditationStore().fetch(1, 5, "id", "asc");
     });
 
     const load = ({page, itemsPerPage, sortedBy}) => {
