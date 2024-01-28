@@ -21,7 +21,7 @@ const headers = [
   {key: 'actions', title: '', sortable: false,align: 'center'},
 ]
 
-const {videos} = storeToRefs(useVideoStore())
+const {items, meta} = storeToRefs(useVideoStore())
 
 onMounted(async () => {
   await load()
@@ -51,36 +51,6 @@ const filters = [
   'Tech',
   'Creative Writing',
 ]
-
-const items = ref([
-  {
-    titleOfMeditation: 'Nebula GTX 3080',
-    type: 'Course',
-    category: 'Relationship',
-    description: 'description',
-    meditationQuantity: '4',
-    picture: '1.png',
-    price: 699.99
-  },
-  {
-    titleOfMeditation: 'Nebula ssasd',
-    type: 'Codurse',
-    category: 'Relationship',
-    description: 'description',
-    meditationQuantity: '4',
-    picture: '2.png',
-    price: 699.99
-  },
-  {
-    titleOfMeditation: 'Nebula dsadsd0',
-    type: 'Coursdadsdse',
-    category: 'Relationship',
-    description: 'description',
-    meditationQuantity: '4',
-    picture: '4.png',
-    price: 699.99
-  },
-]);
 
 const menu = ref(false)
 
@@ -121,10 +91,10 @@ console.log(currentRouteName)
 
               <v-data-table-server
                   class="mt-10 rounded-lg bg-light-brown-1"
-                  v-if="!!videos"
-                  :items-length="videos.meta.total"
-                  :page="videos.meta.current_page"
-                  :items="videos.data"
+                  v-if="!!items"
+                  :items-length="meta.total"
+                  :page="meta.current_page"
+                  :items="items"
                   :headers="headers"
                   @update:options="load"
                   :loading="loading"
