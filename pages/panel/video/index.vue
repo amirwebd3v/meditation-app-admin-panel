@@ -3,77 +3,9 @@
 
 import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
-import DataTable from "~/components/section/configuration/DataTable.vue";
-import AddVideo from "~/components/section/modals/video/Add.vue";
-import EditVideo from "~/components/section/modals/video/Edit.vue";
-import AddMeditation from "~/components/section/modals/meditation/Add.vue";
-
-// import {useVideoStore} from "~/stores/video"
-// import type {QueryParams} from "l5-client/src/types";
-//
-// const loading = ref(true)
-// const searchText = ref('')
-//
-//
-// const search = ref('')
-// const pageHeader = ref("Video")
-// const item = ref("All Courses")
-// const btnText = ref("Add Course")
-// const menu = ref(false)
-//
-//
-//
-// const filters = [
-//   'All',
-//   'Sleep',
-//   'Relationship',
-//   'Nutrition',
-//   'Drawers',
-//   'Shopping',
-//   'Art',
-//   'Tech',
-//   'Creative Writing',
-// ]
-//
-// const items = ref([
-//   {
-//     titleOfCourse: 'Nebula GTX 3080',
-//     category: 'sleep',
-//     quantity: '4',
-//     picture: '1.png',
-//     price: 699.99
-//   },
-//   {
-//     titleOfCourse: 'Nebula ssasd',
-//     category: 'sleep',
-//     quantity: '4',
-//     picture: '2.png',
-//     price: 699.99
-//   },
-//   {
-//     titleOfCourse: 'Nebula dsadsd0',
-//     category: 'sleep',
-//     quantity: '4',
-//     picture: '4.png',
-//     price: 699.99
-//   },
-// ]);
-//
-// const tableHeaders = ref([
-//   {title: 'Title of course', align: 'start', key: 'titleOfCourse'},
-//   {title: 'Category ', key: 'category'},
-//   {title: 'Quantity Video', key: 'quantity', align: 'center'},
-//   {title: 'Picture', key: 'picture', align: 'center'},
-//   {title: 'Price', key: 'price'},
-//   {title: '', key: 'actions', sortable: false},
-// ])
-//
-//
-//
 
 import {useVideoStore} from "~/stores/video"
-import type {QueryParams} from "l5-client/src/types";
-import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
+import {prepareQueryParams} from '~/composables/api'
 
 const loading = ref(true)
 const searchText = ref('')
@@ -88,29 +20,20 @@ const headers = [
   {key: 'actions', title: '', sortable: false,align: 'center'},
 ]
 
-await useVideoStore().paginate(1, 10)
 const {videos} = storeToRefs(useVideoStore())
 
-const load = async ({page, itemsPerPage, sortBy}) => {
+onMounted(async () => {
+  await load()
+})
+
+const load = async (options = {}) => {
   loading.value = true
-
-  let sort = {}
-  if (sortBy !== undefined) {
-    sortBy.forEach(({key, order}) => sort[key] = order)
-  }
-
-  let search = []
-  if (searchText.value !== '') {
-    search = [
-      {field: 'title', operator: 'like', value: searchText.value},
-      {field: 'description', operator: 'like', value: searchText.value},
-    ]
-  }
-
-  const params: QueryParams = {
-    pagination: {page: page || 1, perPage: itemsPerPage || 15}, sort, search
-  }
-
+  const search = [
+    {field: 'title', operator: 'like', value: searchText.value},
+    {field: 'description', operator: 'like', value: searchText.value},
+    {field: 'price', operator: 'like', value: searchText.value},
+  ]
+  const params = prepareQueryParams(options, searchText.value === '' ? [] : search)
   await useVideoStore().paginate(params)
   loading.value = false
 }
@@ -168,86 +91,6 @@ console.log(currentRouteName)
 <template>
   <div class="mt-16">
     <v-container>
-
-
-<!--      <DataTable-->
-<!--          v-if="!!videos"-->
-<!--          :header="headers"-->
-<!--          :items="videos.data"-->
-<!--          :table-headers="headers"-->
-<!--          :menu="menu"-->
-<!--          :search="search" >-->
-
-<!--        <template #outsideTable>-->
-<!--          <Categories :Filters="filters"  />-->
-<!--          <AddConfigurationItem :Item="item"/>-->
-<!--        </template>-->
-
-<!--        <template #item.picture="{ item }">-->
-<!--          <v-card class="my-2" elevation="2" rounded>-->
-<!--            <v-img-->
-<!--                :src="`https://cdn.vuetifyjs.com/docs/images/graphics/gpus/${item.picture}`"-->
-<!--                height="64"-->
-<!--                cover=""-->
-<!--            ></v-img>-->
-<!--          </v-card>-->
-<!--        </template>-->
-
-
-<!--        <template #item.titleOfVideo="{item}">-->
-<!--          <div class="text-truncate" style="max-width: 150px">{{ item.titleOfMeditation }}</div>-->
-<!--        </template>-->
-
-
-<!--        <template #item.quantity="{item}">-->
-<!--          <div class="text-center">{{ item.quantity }}</div>-->
-<!--        </template>-->
-
-<!--        <template #item.actions="{item}">-->
-
-<!--          <v-row justify="space-evenly">-->
-<!--            <v-menu-->
-<!--                :v-model="menu"-->
-<!--                :close-on-content-click="false"-->
-<!--                location="start"-->
-<!--            >-->
-<!--              <template v-slot:activator="{ props }">-->
-<!--                <v-btn-->
-<!--                    class="text-primary"-->
-<!--                    variant="text"-->
-<!--                    v-bind="props"-->
-<!--                    icon="mdi mdi-dots-vertical"-->
-<!--                    size="small"-->
-
-<!--                />-->
-<!--              </template>-->
-
-<!--              <v-card class="bg-light-brown-1" rounded>-->
-<!--               <AddVideo :btn-out-table="false" :btn-in-table="true"/>-->
-<!--                <EditVideo/>-->
-<!--                <v-btn-->
-<!--                    class="text-primary"-->
-<!--                    variant="text"-->
-<!--                    icon="mdi mdi-delete-outline"-->
-<!--                    size="small"-->
-
-<!--                />-->
-<!--              </v-card>-->
-<!--            </v-menu>-->
-<!--            <v-btn-->
-<!--                class="text-primary"-->
-<!--                variant="text"-->
-<!--                size="small"-->
-<!--                icon="mdi-chevron-right"-->
-<!--                @click=""-->
-<!--            />-->
-<!--          </v-row>-->
-
-<!--        </template>-->
-
-
-
-<!--      </DataTable>-->
       <!--      First section-->
       <v-sheet class="d-flex mb-6 bg-transparent align-center">
 
@@ -335,22 +178,22 @@ console.log(currentRouteName)
 <!--                          density="compact"-->
 <!--                      />-->
 
-                  <div class="px-10">
-                    <v-row justify="space-between" align="center"
-                        <v-icon
-                            size="small"
-                            class="me-2"
+<!--                  <div class="px-10">-->
+<!--                    <v-row justify="space-between" align="center"-->
+<!--                        <v-icon-->
+<!--                            size="small"-->
+<!--                            class="me-2"-->
 
-                        >
-                          mdi-pencil
-                        </v-icon>
-                        <v-icon
-                            size="small"
+<!--                        >-->
+<!--                          mdi-pencil-->
+<!--                        </v-icon>-->
+<!--                        <v-icon-->
+<!--                            size="small"-->
 
-                        >
-                          mdi-delete
-                        </v-icon>
-                  </div>
+<!--                        >-->
+<!--                          mdi-delete-->
+<!--                        </v-icon>-->
+<!--                  </div>-->
                 </template>
 
               </v-data-table-server>
