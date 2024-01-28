@@ -10,9 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "latest",
+    "@nuxt/devtools": "^0.0.1",
     "@types/node": "^18",
-    "nuxt": "^3.8.2",
+    "nuxt": "^3.9.3",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5"
   },
@@ -20,6 +20,7 @@
     "@mdi/font": "^7.2.96",
     "@nuxtjs/vuetify": "^1.12.3",
     "@pinia/nuxt": "^0.5.1",
+    "l5-client": "^1.1.1",
     "mitt": "^3.0.1",
     "nuxt-sanctum-auth": "^0.4.7",
     "pinia": "^2.1.7",

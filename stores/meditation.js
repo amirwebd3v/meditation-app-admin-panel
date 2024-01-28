@@ -46,8 +46,6 @@ export const useMeditationStore = defineStore('meditation', {
                     `http://localhost:8000/admin/v1/course-meditation?page=${page}&perPage=${perPage}&orderBy=${orderBy}&sortType=${sortType}&searchFields=${searchFields}&search=${search}`
                 )).data.value;
 
-                console.log(useMetaData(meta))
-
                 this.items = data;
                 this.meta = useMetaData(meta);
             } catch (error) {

@@ -76,7 +76,6 @@
 <!--</script>-->
 
 <script setup>
-import {ref} from 'vue';
 import {useMeditationStore} from '~/stores/meditation.js';
 // import {useSearchQuery, useMetaData} from '~/utils/pagination.js';
 import useSearchQuery from "~/composables/useSearchQuery.js";
@@ -84,7 +83,7 @@ import useMetaData from "~/composables/useMetaData.js";
 
 const loading = ref(true);
 const searchText = ref('');
-const headers = [
+const headers = ref([
   {key: 'title', title: 'Title', align: 'start', sortable: true},
   {key: 'set', title: 'Type', sortable: false},
   {key: 'category', title: 'Category', sortable: false},
@@ -93,9 +92,9 @@ const headers = [
   {key: 'thumbnail', title: 'Picture', sortable: false, align: 'center'},
   {key: 'price', title: 'Price', sortable: true},
   {key: 'actions', title: '', sortable: false},
-];
+]);
 
-const {items,meta} = useMeditationStore();
+const {items,meta} = storeToRefs(useMeditationStore());
 const {searchFields} = useSearchQuery();
 const {perPage, currentPage, total} = useMetaData(meta);
 const load = (options) => {

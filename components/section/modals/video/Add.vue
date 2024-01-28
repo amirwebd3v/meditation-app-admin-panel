@@ -69,7 +69,7 @@ const isVideoCoursePage = computed(() => {
     </template>
 
     <template #columns>
-      <v-row justify="space-between">
+      <v-row justify="start">
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable"
@@ -115,7 +115,7 @@ const isVideoCoursePage = computed(() => {
               :items="['Single', 'Course']"
           ></v-select>
         </v-col>
-        <v-col cols="12" class="py-0">
+        <v-col cols="12" class="py-0 mb-5">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Upload a picture</div>
           <v-file-input
               placeholder="Upload your documents"
@@ -123,6 +123,7 @@ const isVideoCoursePage = computed(() => {
               prepend-icon=""
               color="primary"
               hide-details=""
+
           >
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
@@ -145,6 +146,34 @@ const isVideoCoursePage = computed(() => {
           </v-file-input>
         </v-col>
       </v-row>
+
+
+    </template>
+
+    <template #actions>
+      <v-col>
+        <v-btn
+            color="primary"
+            class="px-12"
+            size="large"
+            rounded="xl"
+            variant="outlined"
+            text="Cancel"
+        >
+        </v-btn>
+      </v-col>
+      <v-col>
+        <v-btn
+            class="text-white  px-14 bg-primary"
+            rounded="xl"
+            size="large"
+            variant="outlined"
+            text="Save"
+            @click="close"
+        >
+        </v-btn>
+
+      </v-col>
     </template>
 
   </Base>
