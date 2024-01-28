@@ -6,6 +6,7 @@ import AddConfigurationItem from "~/components/section/configuration/AddConfigur
 
 import {useVideoStore} from "~/stores/video"
 import {prepareQueryParams} from '~/composables/api'
+import type {FilterSearchItem} from "l5-client";
 
 const loading = ref(true)
 const searchText = ref('')
@@ -28,12 +29,12 @@ onMounted(async () => {
 
 const load = async (options = {}) => {
   loading.value = true
-  const search = [
+  const search: FilterSearchItem[] = searchText.value === '' ? [] : [
     {field: 'title', operator: 'like', value: searchText.value},
     {field: 'description', operator: 'like', value: searchText.value},
     {field: 'price', operator: 'like', value: searchText.value},
   ]
-  const params = prepareQueryParams(options, searchText.value === '' ? [] : search)
+  const params = prepareQueryParams(options, search)
   await useVideoStore().paginate(params)
   loading.value = false
 }
@@ -129,7 +130,7 @@ console.log(currentRouteName)
                   :loading="loading"
               >
 
-                <template #item.picture="{ item }">
+                <template #item.thumbnail="{ item }">
                   <v-card v-if="!!item.thumbnail" class="my-2" elevation="2" rounded>
                     <v-img :src="item.thumbnail.urls.small" height="64" cover=""/>
                   </v-card>

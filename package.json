@@ -20,7 +20,7 @@
     "@mdi/font": "^7.2.96",
     "@nuxtjs/vuetify": "^1.12.3",
     "@pinia/nuxt": "^0.5.1",
-    "l5-client": "^1.1.1",
+    "l5-client": "^1.2.0",
     "mitt": "^3.0.1",
     "nuxt-sanctum-auth": "^0.4.7",
     "pinia": "^2.1.7",
