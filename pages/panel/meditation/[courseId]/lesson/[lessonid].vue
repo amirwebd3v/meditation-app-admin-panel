@@ -2,113 +2,127 @@
 
 
 
-import DataTable from "~/components/section/configuration/DataTable.vue";
+import {useVideoStore} from "~/stores/video"
+import {prepareQueryParams} from '~/composables/api'
+import type {FilterSearchItem} from "l5-client";
+
+import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
 
-const route = useRoute();
-const search = ref('')
-const pageId = route.params.id;
-const pageHeader = computed(() => items.value[pageId].titleOfMeditation);
-const dispatch = '';
+const loading = ref(true)
+const searchText = ref('')
+const {items, meta} = storeToRefs(useVideoStore())
+
+onMounted(async () => {
+  await load()
+})
+
+const load = async (options = {}) => {
+  loading.value = true
+  const search: FilterSearchItem[] = searchText.value === '' ? [] : [
+    {field: 'title', operator: 'like', value: searchText.value},
+    {field: 'price', operator: 'like', value: searchText.value},
+  ]
+  const params = prepareQueryParams(options, search)
+  await useVideoStore().paginate(params)
+  loading.value = false
+}
 
 
-
-
-const items = ref([
-  {
-    id: '1',
-    titleOfMeditation: 'Nebula GTX 3080',
-    type: 'Free',
-    category: 'Relationship',
-    description: 'description',
-    picture: '1.png',
-  },
-  {
-    id: '2',
-    titleOfMeditation: 'Nebula ssasd',
-    type: 'Paid',
-    category: 'Relationship',
-    description: 'description',
-    picture: '2.png',
-  },
-  {
-    id: '3',
-    titleOfMeditation: 'Nebula dsadsd0',
-    type: 'Free',
-    category: 'Relationship',
-    description: 'description',
-    picture: '4.png',
-  },
-]);
-
-const tableHeaders = ref([
-  {title: 'Title Of Meditation', align: 'start', key: 'titleOfMeditation'},
-  {title: 'Category ', key: 'category'},
-  {title: 'Free/Paid', key: 'type'},
-  {title: 'Description', key: 'description'},
-  {title: 'Picture', key: 'picture', align: 'center'},
+const headers = ref([
+  {title: 'Title', align: 'start', key: 'titleOfMeditation'},
+  {title: 'CATEGORY', key: 'category'},
+  {title: 'PRICE', key: 'type'},
+  {title: 'DESCRIPTION', key: 'description'},
+  {title: 'PICTURE', key: 'thumbnail', align: 'center'},
   {title: '', key: 'actions', sortable: false},
 ])
 
 
 </script>
 
+
 <template>
+
   <div class="mt-16">
     <v-container>
+      <!--      First section-->
+      <v-sheet class="d-flex mb-6 bg-transparent align-center">
+
+        <v-sheet class="bg-transparent">
+          <h2 class="text-white pr-10 me-auto">Meditation Course Name</h2>
+        </v-sheet>
+        <v-sheet class="bg-transparent mr-5" width="475px">
+          <v-text-field
+              @keyup.enter="load"
+              v-model="searchText"
+              clearable
+              density="comfortable"
+              hide-details
+              variant="outlined"
+              label="Search"
+              prepend-inner-icon="mdi-magnify"
+              single-line
+          ></v-text-field>
+        </v-sheet>
+        <v-sheet class="bg-transparent ml-auto">
+          <AddMeditation :is-btn-text="'isBtnText'"/>
+        </v-sheet>
+      </v-sheet>
 
 
-      <DataTable :header="pageHeader"
-                 :items="items"
-                 :table-headers="tableHeaders"
-                 :search="search"
+
+
+      <v-data-table-server
+          class="mt-10 rounded-lg bg-light-brown-1"
+          v-if="!!items"
+          :items-length="meta.total"
+          :page="meta.current_page"
+          :items="items"
+          :headers="headers"
+          @update:options="load"
+          :loading="loading"
       >
 
-
-        <template #item.picture="{ item }">
-          <v-card class="my-2" elevation="2" rounded>
-            <v-img
-                :src="`https://cdn.vuetifyjs.com/docs/images/graphics/gpus/${item.picture}`"
-                height="64"
-                cover=""
-            ></v-img>
+        <template #item.thumbnail="{ item }">
+          <v-card v-if="!!item.thumbnail" class="my-2" elevation="2" rounded>
+            <v-img :src="item.thumbnail.urls.small" height="64" cover=""/>
           </v-card>
         </template>
 
-
-        <template #item.titleOfMeditation="{item}">
-          <div class="text-truncate" style="max-width: 150px">{{ item.titleOfMeditation }}</div>
+        <template #item.set="{ item }">
+          {{ item.set.toString().replace('FREE', 'PAID') }}
         </template>
 
+        <template #item.actions="{item}" >
 
-        <template #item.type="{item}">
-          <div>{{ item.type }}</div>
-        </template>
+          <EditMeditation class="me-2"/>
+          <v-btn
+              class="text-primary"
+              variant="text"
+              size="small"
+              icon="mdi-delete-outline"
+              @click=""
+          />
 
-        <template #item.actions="{item}">
-
-          <v-row justify="end" no-gutters>
-            <EditMeditation/>
-            <v-btn
-                class="text-primary"
-                variant="text"
-                size="small"
-                icon="mdi-delete-outline"
-                @click=""
-            />
-          </v-row>
 
         </template>
 
+      </v-data-table-server>
 
 
-      </DataTable>
 
     </v-container>
   </div>
+
+
+
 </template>
-
-<style scoped lang="scss">
-
+<style lang="scss" scoped>
+div:deep(.v-table__wrapper) {
+  thead {
+    background-color: #7C6346;
+  }
+}
 </style>

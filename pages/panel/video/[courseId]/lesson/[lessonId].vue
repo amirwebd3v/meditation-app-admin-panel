@@ -2,100 +2,126 @@
 
 
 
-import DataTable from "~/components/section/configuration/DataTable.vue";
+
 import EditVideo from "~/components/section/modals/video/Edit.vue";
 
 
-const route = useRoute();
-const search = ref('')
-const pageId = route.params.id;
-const pageHeader = computed(() => items.value[pageId].titleOfVideo);
+
+import {useVideoStore} from "~/stores/video"
+import {prepareQueryParams} from '~/composables/api'
+import type {FilterSearchItem} from "l5-client";
+
+import AddVideo from "~/components/section/modals/video/Add.vue";
 
 
+const loading = ref(true)
+const searchText = ref('')
+const headers = [
+  {key: 'title', title: 'TITLE', align: 'start', sortable: true},
+  {key: 'price', title: 'PRICE', sortable: false},
+  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
+  {key: 'actions', title: '', sortable: false,align: 'start'},
+]
 
+const {items, meta} = storeToRefs(useVideoStore())
 
-const items = ref([
-  {
-    id: '1',
-    titleOfVideo: 'Nebula GTX 3080',
-    type: 'Free',
-    picture: '1.png',
-  },
-  {
-    id: '2',
-    titleOfVideo: 'Nebula ssasd',
-    type: 'Paid',
-    picture: '2.png',
-  },
-  {
-    id: '3',
-    titleOfVideo: 'Nebula dsadsd0',
-    type: 'Free',
-    picture: '4.png',
-  },
-]);
+onMounted(async () => {
+  await load()
+})
 
-const tableHeaders = ref([
-  {title: 'Title Of Video', align: 'start', key: 'titleOfVideo'},
-  {title: 'Free/Paid', key: 'type', align: 'center'},
-  {title: 'Picture', key: 'picture', align: 'center'},
-  {title: '', key: 'actions', sortable: false, align: 'center'},
-])
-
+const load = async (options = {}) => {
+  loading.value = true
+  const search: FilterSearchItem[] = searchText.value === '' ? [] : [
+    {field: 'title', operator: 'like', value: searchText.value},
+    {field: 'price', operator: 'like', value: searchText.value},
+  ]
+  const params = prepareQueryParams(options, search)
+  await useVideoStore().paginate(params)
+  loading.value = false
+}
 
 </script>
 
 <template>
+
   <div class="mt-16">
     <v-container>
+      <!--      First section-->
+      <v-sheet class="d-flex mb-6 bg-transparent align-center">
+
+        <v-sheet class="bg-transparent">
+          <h2 class="text-white pr-10 me-auto">Course Name</h2>
+        </v-sheet>
+        <v-sheet class="bg-transparent mr-5" width="475px">
+          <v-text-field
+              @keyup.enter="load"
+              v-model="searchText"
+              clearable
+              density="comfortable"
+              hide-details
+              variant="outlined"
+              label="Search"
+              prepend-inner-icon="mdi-magnify"
+              single-line
+          ></v-text-field>
+        </v-sheet>
+        <v-sheet class="bg-transparent ml-auto">
+          <AddVideo :is-btn-text="'isBtnText'"/>
+        </v-sheet>
+      </v-sheet>
 
 
-      <DataTable :header="pageHeader" :items="items" :table-headers="tableHeaders" :search="search" >
 
 
-        <template #item.picture="{ item }" >
-          <v-card class="my-2" elevation="2" rounded>
-            <v-img
-                :src="`https://cdn.vuetifyjs.com/docs/images/graphics/gpus/${item.picture}`"
-                height="64"
-                cover=""
-            ></v-img>
+      <v-data-table-server
+          class="mt-10 rounded-lg bg-light-brown-1"
+          v-if="!!items"
+          :items-length="meta.total"
+          :page="meta.current_page"
+          :items="items"
+          :headers="headers"
+          @update:options="load"
+          :loading="loading"
+      >
+
+        <template #item.thumbnail="{ item }">
+          <v-card v-if="!!item.thumbnail" class="my-2" elevation="2" rounded>
+            <v-img :src="item.thumbnail.urls.small" height="64" cover=""/>
           </v-card>
         </template>
 
-
-        <template #item.titleOfVideo="{item}" class="w-100">
-          <div class="text-truncate">{{ item.titleOfVideo }}</div>
+        <template #item.set="{ item }">
+          {{ item.set.toString().replace('FREE', 'PAID') }}
         </template>
 
+        <template #item.actions="{item}" >
 
-        <template #item.type="{item}">
-          <div>{{ item.type }}</div>
-        </template>
+          <EditVideo class="me-2"/>
+          <v-btn
+              class="text-primary"
+              variant="text"
+              size="small"
+              icon="mdi-delete-outline"
+              @click=""
+          />
 
-        <template #item.actions="{item}">
-
-          <v-row justify="end" no-gutters>
-            <EditVideo/>
-            <v-btn
-                class="text-primary"
-                variant="text"
-                size="small"
-                icon="mdi-delete-outline"
-                @click=""
-            />
-          </v-row>
 
         </template>
 
+      </v-data-table-server>
 
 
-      </DataTable>
 
     </v-container>
   </div>
+
+
+
 </template>
-
-<style scoped lang="scss">
-
+<style lang="scss" scoped>
+div:deep(.v-table__wrapper) {
+  thead {
+    background-color: #7C6346;
+  }
+}
 </style>

@@ -7,18 +7,18 @@ import AddConfigurationItem from "~/components/section/configuration/AddConfigur
 import {useVideoStore} from "~/stores/video"
 import {prepareQueryParams} from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
+import AddVideo from "~/components/section/modals/video/Add.vue";
+import EditVideo from "~/components/section/modals/video/Edit.vue";
 
 const loading = ref(true)
 const searchText = ref('')
 const headers = [
-  {key: 'title', title: 'Title', align: 'start', sortable: true},
-  {key: 'set', title: 'Type', sortable: false},
-  {key: 'category', title: 'Category', sortable: false},
-  {key: 'description', title: 'Description', sortable: true},
-  {key: 'lessons_count', title: 'Quantity', sortable: true, align: 'center'},
-  {key: 'thumbnail', title: 'Picture', sortable: false, align: 'center'},
-  {key: 'price', title: 'Price', sortable: true},
-  {key: 'actions', title: '', sortable: false,align: 'center'},
+  {key: 'title', title: 'TITLE', align: 'start', sortable: true},
+  {key: 'category', title: 'CATEGORY', sortable: false},
+  {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
+  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
+  {key: 'price', title: 'PRICE', sortable: true,align: 'start'},
+  {key: 'actions', title: '', sortable: false,align: 'start'},
 ]
 
 const {items, meta} = storeToRefs(useVideoStore())
@@ -112,59 +112,44 @@ console.log(currentRouteName)
 
                 <template #item.actions="{item}" >
 
-<!--                      <v-menu-->
-<!--                          :v-model="menu"-->
-<!--                          :close-on-content-click="false"-->
-<!--                          location="start"-->
-<!--                      >-->
-<!--                        <template v-slot:activator="{ props }">-->
-<!--                          <v-btn-->
-<!--                              class="text-primary me-2"-->
-<!--                              variant="text"-->
-<!--                              v-bind="props"-->
-<!--                              icon="mdi mdi-dots-vertical"-->
-<!--                              size="small"-->
-<!--                              density="compact"-->
+                      <v-menu
+                          :v-model="menu"
+                          :close-on-content-click="false"
+                          location="start"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <v-btn
+                              class="text-primary me-6"
+                              variant="text"
+                              v-bind="props"
+                              icon="mdi mdi-dots-vertical"
+                              size="small"
+                              density="compact"
 
-<!--                          />-->
-<!--                        </template>-->
+                          />
+                        </template>
 
-<!--                        <v-card class="bg-light-brown-1" rounded>-->
-<!--                          <AddMeditation :btn-out-table="false" :btn-in-table="true"/>-->
-<!--                          <EditMeditation />-->
-<!--                          <v-btn-->
-<!--                              class="text-primary"-->
-<!--                              variant="text"-->
-<!--                              icon="mdi mdi-delete-outline"-->
-<!--                              size="small"-->
-<!--                          />-->
-<!--                        </v-card>-->
-<!--                      </v-menu>-->
-<!--                      <v-btn-->
-<!--                          class="text-primary"-->
-<!--                          variant="text"-->
-<!--                          size="small"-->
-<!--                          icon="mdi-chevron-right"-->
-<!--                          @click=""-->
-<!--                          density="compact"-->
-<!--                      />-->
+                        <v-card class="bg-light-brown-1" rounded>
+                          <AddVideo :btn-out-table="false" :btn-in-table="true"/>
+                          <EditVideo />
+                          <v-btn
+                              class="text-primary"
+                              variant="text"
+                              icon="mdi mdi-delete-outline"
+                              size="small"
+                          />
+                        </v-card>
+                      </v-menu>
+                      <v-btn
+                          class="text-primary"
+                          variant="text"
+                          size="small"
+                          icon="mdi-chevron-right"
+                          @click=""
+                          density="compact"
+                      />
 
-<!--                  <div class="px-10">-->
-<!--                    <v-row justify="space-between" align="center"-->
-<!--                        <v-icon-->
-<!--                            size="small"-->
-<!--                            class="me-2"-->
 
-<!--                        >-->
-<!--                          mdi-pencil-->
-<!--                        </v-icon>-->
-<!--                        <v-icon-->
-<!--                            size="small"-->
-
-<!--                        >-->
-<!--                          mdi-delete-->
-<!--                        </v-icon>-->
-<!--                  </div>-->
                 </template>
 
               </v-data-table-server>
