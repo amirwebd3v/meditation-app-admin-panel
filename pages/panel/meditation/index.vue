@@ -13,6 +13,7 @@ import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 const loading = ref(true)
 const searchText = ref('')
 const headers = [
+  // {key: 'uuid', title: 'id', align: 'start', sortable: true},
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'set', title: 'TYPE', align: 'start', sortable: true},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
@@ -25,9 +26,7 @@ const headers = [
 
 const {items, meta} = storeToRefs(useVideoStore())
 
-onMounted(async () => {
-  await load()
-})
+
 
 const load = async (options = {}) => {
   loading.value = true
@@ -41,6 +40,10 @@ const load = async (options = {}) => {
   loading.value = false
 }
 
+
+onMounted(async () => {
+  await load()
+})
 
 const filters = [
   'All',
@@ -126,9 +129,12 @@ const menu = ref(false)
           </div>
         </template>
 
+        <template #item.price="{item}">
+          {{item.price || 'Free'}}
+        </template>
 
         <template #item.actions="{item}">
-          <div class="mw-100">
+          <div class="mw-100" >
             <v-menu
                 :v-model="menu"
                 :close-on-content-click="false"
@@ -148,7 +154,13 @@ const menu = ref(false)
 
               <v-card class="bg-light-brown-1" rounded>
                 <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
-                <EditMeditation/>
+                <EditMeditation
+                    :id="item.uuid"
+                    :title="item.title"
+                    :description="item.description"
+                    :price="item.price"
+                    :type="item.set"
+                />
                 <v-btn
                     class="text-primary"
                     variant="text"

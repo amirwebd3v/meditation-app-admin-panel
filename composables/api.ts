@@ -1,4 +1,9 @@
-import {FilterSearchItem, FilterSortItem, L5Client, QueryParams} from 'l5-client';
+import {
+    FilterSearchItem,
+    FilterSortItem,
+    L5Client,
+    QueryParams
+} from 'l5-client';
 
 
 const api = new L5Client('https://omni-api.hidevs.ir/admin/v1')
