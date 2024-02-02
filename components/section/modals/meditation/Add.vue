@@ -139,6 +139,19 @@ const isBtnText = ref('')
       </v-row>
     </template>
 
+    <template #actions>
+      <v-btn
+          class="text-white  px-14 bg-primary"
+          rounded="xl"
+          size="large"
+          variant="outlined"
+          text="Save"
+          @click="close"
+      >
+      </v-btn>
+    </template>
+
+
   </Base>
 
 </template>

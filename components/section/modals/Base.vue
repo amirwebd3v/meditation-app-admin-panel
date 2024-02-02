@@ -43,7 +43,17 @@ defineProps({
 
         <v-card-actions class="float-md-right pt-0 mr-2">
           <div class="d-sm-flex">
+            <v-btn
+                color="primary"
+                class="px-12"
+                size="large"
+                rounded="xl"
+                variant="outlined"
+                text="Cancel"
+            />
+
             <slot name="actions"/>
+
           </div>
         </v-card-actions>
       </v-container>

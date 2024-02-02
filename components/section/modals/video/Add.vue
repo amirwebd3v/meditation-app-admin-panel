@@ -151,18 +151,6 @@ const isVideoCoursePage = computed(() => {
     </template>
 
     <template #actions>
-      <v-col>
-        <v-btn
-            color="primary"
-            class="px-12"
-            size="large"
-            rounded="xl"
-            variant="outlined"
-            text="Cancel"
-        >
-        </v-btn>
-      </v-col>
-      <v-col>
         <v-btn
             class="text-white  px-14 bg-primary"
             rounded="xl"
@@ -172,8 +160,6 @@ const isVideoCoursePage = computed(() => {
             @click="close"
         >
         </v-btn>
-
-      </v-col>
     </template>
 
   </Base>

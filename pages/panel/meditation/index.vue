@@ -7,8 +7,6 @@ import AddConfigurationItem from "~/components/section/configuration/AddConfigur
 import {useVideoStore} from "~/stores/video"
 import {prepareQueryParams} from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-import AddVideo from "~/components/section/modals/video/Add.vue";
-import EditVideo from "~/components/section/modals/video/Edit.vue";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
@@ -16,13 +14,13 @@ const loading = ref(true)
 const searchText = ref('')
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'set', title: 'TYPE', align: 'center', sortable: true},
-  {key: 'category', title: 'CATEGORY', sortable: false},
-  {key: 'description',title: 'DESCRIPTION', sortable: false },
+  {key: 'set', title: 'TYPE', align: 'start', sortable: true},
+  {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
+  {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
-  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
-  {key: 'price', title: 'PRICE', sortable: true,align: 'start'},
-  {key: 'actions', title: '', sortable: false,align: 'start'},
+  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
+  {key: 'price', title: 'PRICE', sortable: true, align: 'start'},
+  {key: 'actions', title: '', sortable: false, align: 'start'},
 ]
 
 const {items, meta} = storeToRefs(useVideoStore())
@@ -57,10 +55,6 @@ const filters = [
 ]
 
 const menu = ref(false)
-
-const router = useRouter();
-const currentRouteName = router.currentRoute.value.name;
-console.log(currentRouteName)
 </script>
 
 <template>
@@ -88,9 +82,8 @@ console.log(currentRouteName)
       </v-sheet>
 
 
-      <Categories :Filters="filters"  />
-      <AddConfigurationItem :Item="'All Meditations'" />
-
+      <Categories :Filters="filters"/>
+      <AddConfigurationItem :Item="'All Meditations'"/>
 
 
       <v-data-table-server
@@ -104,62 +97,78 @@ console.log(currentRouteName)
           :loading="loading"
       >
 
-        <template #item.thumbnail="{ item }">
-          <v-card v-if="!!item.thumbnail" class="my-2" elevation="2" rounded>
-            <v-img :src="item.thumbnail.urls.small" height="64" cover=""/>
-          </v-card>
+        <template #item.title="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.title }}</div>
         </template>
 
         <template #item.set="{ item }">
-          {{ item.set.toString().replace('MULTIPLE', 'COURSE') }}
+          <div style="max-width: 125px;">{{ item.set.toString().replace('MULTIPLE', 'COURSE') }}</div>
         </template>
 
-        <template #item.actions="{item}" >
+        <template #item.category="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.category }}</div>
+        </template>
 
-          <v-menu
-              :v-model="menu"
-              :close-on-content-click="false"
-              location="start"
-          >
-            <template v-slot:activator="{ props }">
-              <v-btn
-                  class="text-primary me-6"
-                  variant="text"
-                  v-bind="props"
-                  icon="mdi mdi-dots-vertical"
-                  size="small"
-                  density="compact"
+        <template #item.description="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.description }}</div>
+        </template>
 
-              />
-            </template>
+        <template #item.lessons_count="{item}">
+          <div style="max-width: 75px;">{{ item.lessons_count }}</div>
+        </template>
 
-            <v-card class="bg-light-brown-1" rounded>
-              <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
-              <EditMeditation />
-              <v-btn
-                  class="text-primary"
-                  variant="text"
-                  icon="mdi mdi-delete-outline"
-                  size="small"
-              />
+
+        <template #item.thumbnail="{ item }">
+          <div style="width: 100px;">
+            <v-card v-if="!!item.thumbnail" class="my-2 mx-2" elevation="0" rounded color="light">
+              <v-img :src="item.thumbnail.urls.small" height="64" cover/>
             </v-card>
-          </v-menu>
-          <v-btn
-              class="text-primary"
-              variant="text"
-              size="small"
-              icon="mdi-chevron-right"
-              @click=""
-              density="compact"
-          />
+          </div>
+        </template>
 
 
+        <template #item.actions="{item}">
+          <div class="mw-100">
+            <v-menu
+                :v-model="menu"
+                :close-on-content-click="false"
+                location="start"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                    class="text-primary me-6"
+                    variant="text"
+                    v-bind="props"
+                    icon="mdi mdi-dots-vertical"
+                    size="small"
+                    density="compact"
+
+                />
+              </template>
+
+              <v-card class="bg-light-brown-1" rounded>
+                <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
+                <EditMeditation/>
+                <v-btn
+                    class="text-primary"
+                    variant="text"
+                    icon="mdi mdi-delete-outline"
+                    size="small"
+                />
+              </v-card>
+            </v-menu>
+            <v-btn
+                class="text-primary"
+                variant="text"
+                size="small"
+                icon="mdi-chevron-right"
+                @click=""
+                density="compact"
+            />
+          </div>
         </template>
 
       </v-data-table-server>
-
-
-
     </v-container>
   </div>
 </template>
