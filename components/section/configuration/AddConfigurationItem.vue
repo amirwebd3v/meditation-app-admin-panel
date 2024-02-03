@@ -13,7 +13,7 @@ const router = useRouter();
 const currentRouteName = router.currentRoute.value.name;
 
 const isMeditationCoursePage = computed(() => {
-  return currentRouteName === 'panel-meditation';
+  return currentRouteName === 'panel-meditations';
 })
 const isVideoCoursePage = computed(() => {
   return currentRouteName === 'panel-video';

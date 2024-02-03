@@ -26,7 +26,6 @@ const headers = [
 const {items, meta} = storeToRefs(useMeditationStore())
 
 
-
 const load = async (options = {}) => {
   loading.value = true
   const search: FilterSearchItem[] = searchText.value === '' ? [] : [
@@ -57,6 +56,15 @@ const filters = [
 ]
 
 const menu = ref(false)
+
+
+const router = useRouter();
+const goToLesson = (courseId: String) => {
+  router.push({
+    name: 'panel-meditations-course-id-lessons',
+    params: {id : courseId}
+  })
+}
 </script>
 
 <template>
@@ -129,11 +137,11 @@ const menu = ref(false)
         </template>
 
         <template #item.price="{item}">
-          {{item.price || 'Free'}}
+          {{ item.price || 'Free' }}
         </template>
 
         <template #item.actions="{item}">
-          <div class="mw-100" >
+          <div class="mw-100">
             <v-menu
                 :v-model="menu"
                 :close-on-content-click="false"
@@ -174,7 +182,7 @@ const menu = ref(false)
                 variant="text"
                 size="small"
                 icon="mdi-chevron-right"
-                @click=""
+                @click="goToLesson(item.uuid)"
                 density="compact"
             />
           </div>

@@ -40,6 +40,9 @@ const headers = ref([
 ])
 
 
+const route = useRoute();
+const courseId = route.params.id
+
 </script>
 
 

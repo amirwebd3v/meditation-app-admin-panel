@@ -30,7 +30,7 @@ watchEffect(() => {
           <v-row class="align-center">
             <div class="mr-15" v-if="showNavItem">
               <v-btn :to="{name:  'panel-video'}"  text="Video courses"  color="#9AB157" class="mr-2" variant="plain"/>
-              <v-btn :to="{name:  'panel-meditation'}" class="px-8" text="Meditations" color="#9AB157" variant="plain"/>
+              <v-btn :to="{name:  'panel-meditations'}" class="px-8" text="Meditations" color="#9AB157" variant="plain"/>
             </div>
             <v-avatar image="https://cdn.vuetifyjs.com/images/john.jpg" size="45"></v-avatar>
             <p class="font-16 font-weight-light mx-4">Jalallinux</p>

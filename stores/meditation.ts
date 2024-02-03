@@ -3,7 +3,7 @@ import {api} from '~/composables/api'
 import type {Course} from "~/server/types";
 import type {PaginatorMeta, QueryParams} from "l5-client";
 
-export const useMeditationStore = defineStore('video', {
+export const useMeditationStore = defineStore('meditation', {
     state: () => ({
         items: [] as Course[],
         meta: {} as PaginatorMeta
