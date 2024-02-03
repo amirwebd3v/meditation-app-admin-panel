@@ -6,15 +6,18 @@ export default defineNuxtConfig({
         shim: false
     },
 
-
-
     build: {
         transpile: ['vuetify']
     },
 
     modules: [
-        'nuxt-sanctum-auth'
+        'nuxt-sanctum-auth',
+        '@pinia/nuxt',
     ],
+
+    pinia: {
+        storesDirs: ['./stores/**'],
+    },
 
     routeRules: {
         '/account/**': {ssr: false},

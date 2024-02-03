@@ -3,19 +3,47 @@
 
 import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
-import DataTable from "~/components/section/configuration/DataTable.vue";
 
+import {useVideoStore} from "~/stores/video"
+import {prepareQueryParams} from '~/composables/api'
+import type {FilterSearchItem} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
+const loading = ref(true)
+const searchText = ref('')
+const headers = [
+  // {key: 'uuid', title: 'id', align: 'start', sortable: true},
+  {key: 'title', title: 'TITLE', align: 'start', sortable: true},
+  {key: 'set', title: 'TYPE', align: 'start', sortable: true},
+  {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
+  {key: 'description', title: 'DESCRIPTION', sortable: false},
+  {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
+  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
+  {key: 'price', title: 'PRICE', sortable: true, align: 'start'},
+  {key: 'actions', title: '', sortable: false, align: 'start'},
+]
+
+const {items, meta} = storeToRefs(useVideoStore())
 
 
-const search = ref('')
-const pageHeader = ref("Meditation section")
-const item = ref("All Meditations")
-const menu = ref(false)
+
+const load = async (options = {}) => {
+  loading.value = true
+  const search: FilterSearchItem[] = searchText.value === '' ? [] : [
+    {field: 'title', operator: 'like', value: searchText.value},
+    {field: 'description', operator: 'like', value: searchText.value},
+    {field: 'price', operator: 'like', value: searchText.value},
+  ]
+  const params = prepareQueryParams(options, search)
+  await useVideoStore().paginate(params)
+  loading.value = false
+}
 
 
+onMounted(async () => {
+  await load()
+})
 
 const filters = [
   'All',
@@ -29,132 +57,138 @@ const filters = [
   'Creative Writing',
 ]
 
-const items = ref([
-  {
-    titleOfMeditation: 'Nebula GTX 3080',
-    type: 'Course',
-    category: 'Relationship',
-    description: 'description',
-    meditationQuantity: '4',
-    picture: '1.png',
-    price: 699.99
-  },
-  {
-    titleOfMeditation: 'Nebula ssasd',
-    type: 'Codurse',
-    category: 'Relationship',
-    description: 'description',
-    meditationQuantity: '4',
-    picture: '2.png',
-    price: 699.99
-  },
-  {
-    titleOfMeditation: 'Nebula dsadsd0',
-    type: 'Coursdadsdse',
-    category: 'Relationship',
-    description: 'description',
-    meditationQuantity: '4',
-    picture: '4.png',
-    price: 699.99
-  },
-]);
-
-const tableHeaders = ref([
-  {title: 'Title Of Meditation', align: 'start', key: 'titleOfMeditation'},
-  {title: 'Type', key: 'type'},
-  {title: 'Category ', key: 'category'},
-  {title: 'Description', key: 'description'},
-  {title: 'Meditation Quantity', key: 'meditationQuantity', align: 'center'},
-  {title: 'Picture', key: 'picture', align: 'center'},
-  {title: 'Price', key: 'price'},
-  {title: '', key: 'actions', sortable: false},
-])
-
-
-
-
+const menu = ref(false)
 </script>
 
 <template>
   <div class="mt-16">
     <v-container>
+      <!--      First section-->
+      <v-sheet class="d-flex mb-6 bg-transparent align-center">
+
+        <v-sheet class="bg-transparent">
+          <h2 class="text-white pr-10 me-auto">Meditations</h2>
+        </v-sheet>
+        <v-sheet class="bg-transparent mr-5" width="475px">
+          <v-text-field
+              @keyup.enter="load"
+              v-model="searchText"
+              clearable
+              density="comfortable"
+              hide-details
+              variant="outlined"
+              label="Search"
+              prepend-inner-icon="mdi-magnify"
+              single-line
+          ></v-text-field>
+        </v-sheet>
+      </v-sheet>
 
 
-      <DataTable :header="pageHeader" :items="items" :table-headers="tableHeaders" :menu="menu" :search="search" >
+      <Categories :Filters="filters"/>
+      <AddConfigurationItem :Item="'All Meditations'"/>
 
-        <template #outsideTable>
-          <Categories :Filters="filters"  />
-          <AddConfigurationItem :Item="item" />
+
+      <v-data-table-server
+          class="mt-10 rounded-lg bg-light-brown-1"
+          v-if="!!items"
+          :items-length="meta.total"
+          :page="meta.current_page"
+          :items="items"
+          :headers="headers"
+          @update:options="load"
+          :loading="loading"
+      >
+
+        <template #item.title="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.title }}</div>
         </template>
 
-        <template #item.picture="{ item }">
-          <v-card class="my-2" elevation="2" rounded>
-            <v-img
-                :src="`https://cdn.vuetifyjs.com/docs/images/graphics/gpus/${item.picture}`"
-                height="64"
-                cover=""
-            ></v-img>
-          </v-card>
+        <template #item.set="{ item }">
+          <div style="max-width: 125px;">{{ item.set.toString().replace('MULTIPLE', 'COURSE') }}</div>
+        </template>
+
+        <template #item.category="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.category }}</div>
+        </template>
+
+        <template #item.description="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.description }}</div>
+        </template>
+
+        <template #item.lessons_count="{item}">
+          <div style="max-width: 75px;">{{ item.lessons_count }}</div>
         </template>
 
 
-        <template #item.titleOfMeditation="{item}">
-          <div class="text-truncate" style="max-width: 150px">{{ item.titleOfMeditation }}</div>
+        <template #item.thumbnail="{ item }">
+          <div style="width: 100px;">
+            <v-card v-if="!!item.thumbnail" class="my-2 mx-2" elevation="0" rounded color="light">
+              <v-img :src="item.thumbnail.urls.small" height="64" cover/>
+            </v-card>
+          </div>
         </template>
 
-
-        <template #item.meditationQuantity="{item}">
-          <div class="text-center">{{ item.meditationQuantity }}</div>
+        <template #item.price="{item}">
+          {{item.price || 'Free'}}
         </template>
 
         <template #item.actions="{item}">
-            <v-row justify="center">
-              <v-menu
-                  :v-model="menu"
-                  :close-on-content-click="false"
-                  location="start"
-              >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                      class="text-primary"
-                      variant="text"
-                      v-bind="props"
-                      icon="mdi mdi-dots-vertical"
-                      size="small"
+          <div class="mw-100" >
+            <v-menu
+                :v-model="menu"
+                :close-on-content-click="false"
+                location="start"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                    class="text-primary me-6"
+                    variant="text"
+                    v-bind="props"
+                    icon="mdi mdi-dots-vertical"
+                    size="small"
+                    density="compact"
 
-                  />
-                </template>
+                />
+              </template>
 
-                <v-card class="bg-light-brown-1" rounded>
-                  <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
-                  <EditMeditation />
-                  <v-btn
-                      class="text-primary"
-                      variant="text"
-                      icon="mdi mdi-delete-outline"
-                      size="small"
-                  />
-                </v-card>
-              </v-menu>
-              <v-btn
-                  class="text-primary"
-                  variant="text"
-                  size="small"
-                  icon="mdi-chevron-right"
-                  @click=""
-              />
-            </v-row>
+              <v-card class="bg-light-brown-1" rounded>
+                <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
+                <EditMeditation
+                    :id="item.uuid"
+                    :title="item.title"
+                    :description="item.description"
+                    :price="item.price"
+                    :type="item.set"
+                />
+                <v-btn
+                    class="text-primary"
+                    variant="text"
+                    icon="mdi mdi-delete-outline"
+                    size="small"
+                />
+              </v-card>
+            </v-menu>
+            <v-btn
+                class="text-primary"
+                variant="text"
+                size="small"
+                icon="mdi-chevron-right"
+                @click=""
+                density="compact"
+            />
+          </div>
         </template>
 
-
-
-      </DataTable>
-
-
+      </v-data-table-server>
     </v-container>
   </div>
 </template>
 
-<style scoped lang="scss">
-
+<style lang="scss" scoped>
+div:deep(.v-table__wrapper) {
+  thead {
+    background-color: #7C6346;
+  }
+}
 </style>

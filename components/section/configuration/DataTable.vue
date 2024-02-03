@@ -2,7 +2,7 @@
 
 import AddVideo from "~/components/section/modals/video/Add.vue";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
-import {integer} from "vscode-languageserver-types";
+
 
 defineProps({
   header: {
@@ -59,6 +59,8 @@ defineProps({
   },
 });
 
+
+
 /*******************************************/
 const search = ref('')
 const isBtnText = ref('')
@@ -85,7 +87,6 @@ const isMeditationPage = computed(() => {
   return currentRouteName === 'panel-meditation-id' || currentRouteName === 'panel-meditation';
 })
 /*******************************************/
-
 
 
 
@@ -136,7 +137,6 @@ const isMeditationPage = computed(() => {
                 :loading="loading"
                 @update:items-per-page="perPage = arguments[0]"
                 :items-per-page="perPage"
-                :footer-props="footerProps"
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 loading-text="Data is coming..."
