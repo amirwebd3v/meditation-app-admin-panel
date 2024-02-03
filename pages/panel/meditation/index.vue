@@ -4,7 +4,7 @@
 import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
 
-import {useVideoStore} from "~/stores/video"
+import {useMeditationStore} from "~/stores/meditation"
 import {prepareQueryParams} from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
@@ -13,7 +13,6 @@ import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 const loading = ref(true)
 const searchText = ref('')
 const headers = [
-  // {key: 'uuid', title: 'id', align: 'start', sortable: true},
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'set', title: 'TYPE', align: 'start', sortable: true},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
@@ -24,7 +23,7 @@ const headers = [
   {key: 'actions', title: '', sortable: false, align: 'start'},
 ]
 
-const {items, meta} = storeToRefs(useVideoStore())
+const {items, meta} = storeToRefs(useMeditationStore())
 
 
 
@@ -36,7 +35,7 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = prepareQueryParams(options, search)
-  await useVideoStore().paginate(params)
+  await useMeditationStore().paginate(params)
   loading.value = false
 }
 
@@ -105,7 +104,7 @@ const menu = ref(false)
         </template>
 
         <template #item.set="{ item }">
-          <div style="max-width: 125px;">{{ item.set.toString().replace('MULTIPLE', 'COURSE') }}</div>
+          <div style="max-width: 125px;">{{ item.set.toString().replace('Single', 'Course') }}</div>
         </template>
 
         <template #item.category="{item}">
@@ -160,6 +159,7 @@ const menu = ref(false)
                     :description="item.description"
                     :price="item.price"
                     :type="item.set"
+                    :category
                 />
                 <v-btn
                     class="text-primary"

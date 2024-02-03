@@ -8,6 +8,31 @@ const icon = ref('mdi mdi-pencil')
 defineComponent({
   name: 'EditMeditation',
 })
+
+defineProps({
+  title : {
+    type : String,
+    required: true
+  },
+  description : {
+    type : String,
+    required: true
+  },
+  category : {
+    type : String,
+    required: true
+  },
+  price : {
+    type : String,
+    required: true
+  },
+  type : {
+    type : String,
+    required: true
+  },
+
+
+})
 </script>
 
 <template>
@@ -33,12 +58,11 @@ defineComponent({
        <v-row justify="space-between">
       <v-col cols="12" class="pb-0">
         <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
-        <v-text-field variant="outlined" color="primary" density="comfortable"
-                      placeholder="Enter meditation title"/>
+        <v-text-field variant="outlined" color="primary" density="comfortable">{{ title }}</v-text-field>
       </v-col>
       <v-col cols="12" class="py-0">
         <div class="text-subtitle-1 text-medium-emphasis pb-2">Course description</div>
-        <v-textarea variant="outlined" density="compact" color="primary"></v-textarea>
+        <v-textarea variant="outlined" density="compact" color="primary" :model-value="description"></v-textarea>
       </v-col>
       <v-col cols="12" class="py-0">
         <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
@@ -55,7 +79,7 @@ defineComponent({
         <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
         <v-combobox
             variant="outlined"
-            multiple=""
+            :model-value="price"
             :items="['Free']"
             color="primary"
             density="comfortable"
@@ -66,6 +90,7 @@ defineComponent({
         <v-select
             variant="outlined"
             color="primary"
+            :model-value="type"
             density="comfortable"
             single-line
             :items="['Single', 'Course']"
@@ -92,8 +117,6 @@ defineComponent({
                   </v-img>
                   <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                 </v-col>
-
-
               </v-card>
 
             </template>
@@ -101,6 +124,18 @@ defineComponent({
         </v-file-input>
       </v-col>
        </v-row>
+    </template>
+
+    <template #actions>
+      <v-btn
+          class="text-white  px-14 bg-primary"
+          rounded="xl"
+          size="large"
+          variant="outlined"
+          text="Save"
+          @click="close"
+      >
+      </v-btn>
     </template>
   </Base>
 
