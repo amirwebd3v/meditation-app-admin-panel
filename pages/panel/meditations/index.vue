@@ -104,7 +104,7 @@ const menu = ref(false)
         </template>
 
         <template #item.set="{ item }">
-          <div style="max-width: 125px;">{{ item.set.toString().replace('Single', 'Course') }}</div>
+          <div style="max-width: 125px;">{{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}</div>
         </template>
 
         <template #item.category="{item}">
@@ -158,7 +158,7 @@ const menu = ref(false)
                     :title="item.title"
                     :description="item.description"
                     :price="item.price"
-                    :type="item.set"
+                    :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
                     :category
                 />
                 <v-btn
