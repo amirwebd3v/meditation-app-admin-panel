@@ -8,7 +8,7 @@ import type {FilterSearchItem} from "l5-client";
 
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
-import {useMeditationStore} from "~/stores/meditation";
+
 
 
 const loading = ref(true)
@@ -32,12 +32,12 @@ const load = async (options = {}) => {
 
 
 const headers = ref([
-  {title: 'Title', align: 'start', key: 'titleOfMeditation'},
+  {title: 'Title', align: 'start', key: 'title'},
   {title: 'CATEGORY', key: 'category'},
-  {title: 'PRICE', key: 'type'},
+  {title: 'PRICE', key: 'price'},
   {title: 'DESCRIPTION', key: 'description'},
   {title: 'PICTURE', key: 'thumbnail', align: 'center'},
-  {title: '', key: 'actions', sortable: false},
+  {title: '', key: 'actions', sortable: false,align: 'end'},
 ])
 
 
@@ -48,7 +48,6 @@ const courseId = sessionStorage.getItem('courseId')
 
 
 
-console.log(courseTitle,courseId)
 
 
 
@@ -99,28 +98,42 @@ console.log(courseTitle,courseId)
           :loading="loading"
       >
 
+        <template #item.title="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.title }}</div>
+        </template>
+        <template #item.category="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.category }}</div>
+        </template>
+
+        <template #item.description="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.description }}</div>
+        </template>
         <template #item.thumbnail="{ item }">
-          <v-card v-if="!!item.thumbnail" class="my-2" elevation="2" rounded>
-            <v-img :src="item.thumbnail.urls.small" height="64" cover=""/>
-          </v-card>
+          <div style="width: 100px;">
+            <v-card v-if="!!item.thumbnail" class="my-2 mx-2" elevation="0" rounded color="light">
+              <v-img :src="item.thumbnail.urls.small" height="64" cover/>
+            </v-card>
+          </div>
         </template>
-
-        <template #item.set="{ item }">
-          {{ item.set.toString().replace('FREE', 'PAID') }}
+        <template #item.price="{item}">
+          {{ item.price || 'Free' }}
         </template>
-
-        <template #item.actions="{item}" >
-
-          <EditMeditation class="me-2"/>
-          <v-btn
-              class="text-primary"
-              variant="text"
-              size="small"
-              icon="mdi-delete-outline"
-              @click=""
-          />
-
-
+        <template #item.actions="{item}">
+            <EditMeditation
+                :id="item.uuid"
+                :title="item.title"
+                :description="item.description"
+                :price="item.price"
+                :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
+                :category
+            />
+            <v-btn
+                class="text-primary"
+                variant="text"
+                size="small"
+                icon="mdi-delete-outline"
+                @click=""
+            />
         </template>
 
       </v-data-table-server>

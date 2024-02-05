@@ -59,12 +59,10 @@ const menu = ref(false)
 
 
 const router = useRouter();
-const goToLesson = async (courseTitle: string,courseId: string) => {
+const goToLesson = (courseTitle: string, courseId: string) => {
   if (courseId) {
-    // Save the courseId to localStorage
     sessionStorage.setItem('courseId', courseId)
-
-    await router.push({
+    router.push({
       name: 'panel-meditations-course-title-lessons',
       params: {title: courseTitle},
     })
