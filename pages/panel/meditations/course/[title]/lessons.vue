@@ -43,8 +43,13 @@ const headers = ref([
 
 
 const route = useRoute();
-const courseId = useMeditationStore().uuid
 const courseTitle = route.params.title
+const courseId = sessionStorage.getItem('courseId')
+
+
+
+console.log(courseTitle,courseId)
+
 
 
 

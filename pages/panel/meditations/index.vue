@@ -59,12 +59,19 @@ const menu = ref(false)
 
 
 const router = useRouter();
-const goToLesson = (courseId: String,courseTitle: String) => {
-  useMeditationStore().setCourseId(courseId)
-  router.push({
-    name: 'panel-meditations-course-title-lessons',
-    params: {title: courseTitle},
-  })
+const goToLesson = async (courseTitle: string,courseId: string) => {
+  if (courseId) {
+    // Save the courseId to localStorage
+    sessionStorage.setItem('courseId', courseId)
+
+    await router.push({
+      name: 'panel-meditations-course-title-lessons',
+      params: {title: courseTitle},
+    })
+  } else {
+    console.error(`No course found with title: ${courseTitle}`)
+  }
+
 }
 
 
@@ -185,7 +192,7 @@ const goToLesson = (courseId: String,courseTitle: String) => {
                 variant="text"
                 size="small"
                 icon="mdi-chevron-right"
-                @click="goToLesson(item.uuid,item.title)"
+                @click="goToLesson(item.title,item.uuid)"
                 density="compact"
             />
           </div>
