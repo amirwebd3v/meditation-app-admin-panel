@@ -23,7 +23,7 @@ const headers = [
   {key: 'actions', title: '', sortable: false, align: 'start'},
 ]
 
-const {items, meta} = storeToRefs(useMeditationStore())
+const {items, meta, uuid} = storeToRefs(useMeditationStore())
 
 
 const load = async (options = {}) => {
@@ -59,12 +59,15 @@ const menu = ref(false)
 
 
 const router = useRouter();
-const goToLesson = (courseId: String) => {
+const goToLesson = (courseId: String,courseTitle: String) => {
+  useMeditationStore().setCourseId(courseId)
   router.push({
-    name: 'panel-meditations-course-id-lessons',
-    params: {id : courseId}
+    name: 'panel-meditations-course-title-lessons',
+    params: {title: courseTitle},
   })
 }
+
+
 </script>
 
 <template>
@@ -182,7 +185,7 @@ const goToLesson = (courseId: String) => {
                 variant="text"
                 size="small"
                 icon="mdi-chevron-right"
-                @click="goToLesson(item.uuid)"
+                @click="goToLesson(item.uuid,item.title)"
                 density="compact"
             />
           </div>

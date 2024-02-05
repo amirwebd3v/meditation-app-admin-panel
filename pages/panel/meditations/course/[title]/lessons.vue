@@ -2,17 +2,18 @@
 
 
 
-import {useVideoStore} from "~/stores/video"
+import {useLessonStore} from "~/stores/lesson"
 import {prepareQueryParams} from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
+import {useMeditationStore} from "~/stores/meditation";
 
 
 const loading = ref(true)
 const searchText = ref('')
-const {items, meta} = storeToRefs(useVideoStore())
+const {items, meta} = storeToRefs(useLessonStore())
 
 onMounted(async () => {
   await load()
@@ -25,7 +26,7 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = prepareQueryParams(options, search)
-  await useVideoStore().paginate(params)
+  await useLessonStore().paginate(<string>courseId,params)
   loading.value = false
 }
 
@@ -40,8 +41,13 @@ const headers = ref([
 ])
 
 
+
 const route = useRoute();
-const courseId = route.params.id
+const courseId = useMeditationStore().uuid
+const courseTitle = route.params.title
+
+
+
 
 </script>
 
@@ -54,7 +60,7 @@ const courseId = route.params.id
       <v-sheet class="d-flex mb-6 bg-transparent align-center">
 
         <v-sheet class="bg-transparent">
-          <h2 class="text-white pr-10 me-auto">Meditation Course Name</h2>
+          <h2 class="text-white pr-10 me-auto">{{ courseTitle }}</h2>
         </v-sheet>
         <v-sheet class="bg-transparent mr-5" width="475px">
           <v-text-field
