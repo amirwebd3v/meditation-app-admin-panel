@@ -41,7 +41,7 @@ defineProps({
             <slot name="columns"/>
         </v-card-text>
 
-        <v-card-actions class="float-md-right pt-0 mr-2">
+        <v-card-actions class="float-right pt-0 mr-2">
           <div class="d-sm-flex">
             <v-btn
                 color="primary"

@@ -1,14 +1,12 @@
 <script setup lang="ts">
 
 
-
 import {useLessonStore} from "~/stores/lesson"
 import {prepareQueryParams} from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
-
 
 
 const loading = ref(true)
@@ -26,7 +24,7 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = prepareQueryParams(options, search)
-  await useLessonStore().paginate(<string>courseId,params)
+  await useLessonStore().paginate(<string>courseId, params)
   loading.value = false
 }
 
@@ -37,20 +35,13 @@ const headers = ref([
   {title: 'PRICE', key: 'price'},
   {title: 'DESCRIPTION', key: 'description'},
   {title: 'PICTURE', key: 'thumbnail', align: 'center'},
-  {title: '', key: 'actions', sortable: false,align: 'end'},
+  {title: '', key: 'actions', sortable: false, align: 'end'},
 ])
-
 
 
 const route = useRoute();
 const courseTitle = route.params.title
 const courseId = sessionStorage.getItem('courseId')
-
-
-
-
-
-
 
 
 </script>
@@ -85,8 +76,6 @@ const courseId = sessionStorage.getItem('courseId')
       </v-sheet>
 
 
-
-
       <v-data-table-server
           class="mt-10 rounded-lg bg-light-brown-1"
           v-if="!!items"
@@ -99,15 +88,25 @@ const courseId = sessionStorage.getItem('courseId')
       >
 
         <template #item.title="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item.title }}</div>
+          <v-tooltip :text="item.title" max-width="175">
+            <template v-slot:activator="{ props }">
+              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.title }}</div>
+            </template>
+          </v-tooltip>
         </template>
+
         <template #item.category="{item}">
           <div class="text-truncate" style="max-width: 125px;">{{ item.category }}</div>
         </template>
 
         <template #item.description="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item.description }}</div>
+          <v-tooltip :text="item.description" max-width="210">
+            <template v-slot:activator="{ props }">
+              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.description }}</div>
+            </template>
+          </v-tooltip>
         </template>
+
         <template #item.thumbnail="{ item }">
           <div style="width: 100px;">
             <v-card v-if="!!item.thumbnail" class="my-2 mx-2" elevation="0" rounded color="light">
@@ -119,7 +118,9 @@ const courseId = sessionStorage.getItem('courseId')
           {{ item.price || 'Free' }}
         </template>
         <template #item.actions="{item}">
+          <div style="width: 100px;">
             <EditMeditation
+                :form-title="'Edit Meditation Lesson'"
                 :id="item.uuid"
                 :title="item.title"
                 :description="item.description"
@@ -134,15 +135,14 @@ const courseId = sessionStorage.getItem('courseId')
                 icon="mdi-delete-outline"
                 @click=""
             />
+          </div>
         </template>
 
       </v-data-table-server>
 
 
-
     </v-container>
   </div>
-
 
 
 </template>

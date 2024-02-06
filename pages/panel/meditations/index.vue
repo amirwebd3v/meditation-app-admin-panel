@@ -116,7 +116,11 @@ const goToLesson = (courseTitle: string, courseId: string) => {
       >
 
         <template #item.title="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item.title }}</div>
+          <v-tooltip :text="item.title" max-width="175">
+            <template v-slot:activator="{ props }">
+              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.title }}</div>
+            </template>
+          </v-tooltip>
         </template>
 
         <template #item.set="{ item }">
@@ -128,7 +132,11 @@ const goToLesson = (courseTitle: string, courseId: string) => {
         </template>
 
         <template #item.description="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item.description }}</div>
+          <v-tooltip :text="item.description" max-width="270">
+            <template v-slot:activator="{ props }">
+              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.description }}</div>
+            </template>
+          </v-tooltip>
         </template>
 
         <template #item.lessons_count="{item}">
@@ -149,7 +157,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
         </template>
 
         <template #item.actions="{item}">
-          <div class="mw-100">
+          <div style="width: 75px;">
             <v-menu
                 :v-model="menu"
                 :close-on-content-click="false"
@@ -170,6 +178,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
               <v-card class="bg-light-brown-1" rounded>
                 <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
                 <EditMeditation
+                    :form-title="'Edit Meditation Course'"
                     :id="item.uuid"
                     :title="item.title"
                     :description="item.description"

@@ -2,14 +2,19 @@
 
 import Base from "~/components/section/modals/Base.vue";
 
-const formTitle = ref('Edit Meditation Course')
-const icon = ref('mdi mdi-pencil')
+
+
+const icon = ref('mdi mdi-pencil-outline')
 
 defineComponent({
   name: 'EditMeditation',
 })
 
 defineProps({
+  formTitle : {
+    type : String,
+    required : true
+  },
   title : {
     type : String,
     required: true
@@ -128,7 +133,7 @@ defineProps({
 
     <template #actions>
       <v-btn
-          class="text-white  px-14 bg-primary"
+          class="text-white px-14 bg-primary"
           rounded="xl"
           size="large"
           variant="outlined"
