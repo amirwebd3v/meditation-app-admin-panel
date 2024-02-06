@@ -16,20 +16,19 @@ const icon = ref('mdi mdi-plus')
 
     <template v-slot:button="props">
       <v-btn
-
           color="primary"
-          class="px-6-md"
+          :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
           v-bind="props"
-          text="Add category"
+          text="Add Category"
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"
           rounded="xl"
       >
         <template v-slot:default v-if="$vuetify.display.smAndDown">
-          <v-icon class="mdi mdi-plus"/>
+          <v-icon  icon="mdi-plus"/>
         </template>
         <template v-slot:prepend v-if="$vuetify.display.smAndUp">
-          <v-icon class="mdi mdi-plus"/>
+          <v-icon class="pr-6" icon="mdi-plus"/>
         </template>
       </v-btn>
 

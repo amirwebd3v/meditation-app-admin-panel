@@ -21,7 +21,7 @@ defineProps<{
     <v-col cols="auto">
       <v-sheet class="bg-transparent">
         <v-chip-group
-            multiple=""
+            multiple
             selected-class="text-white bg-primary border-none"
             variant="flat"
             mandatory="force"
