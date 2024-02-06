@@ -116,7 +116,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
       >
 
         <template #item.title="{item}">
-          <v-tooltip :text="item.title" max-width="175">
+          <v-tooltip :text="item.title">
             <template v-slot:activator="{ props }">
               <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.title }}</div>
             </template>

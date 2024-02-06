@@ -40,6 +40,7 @@ const headers = ref([
 
 
 const route = useRoute();
+
 const courseTitle = route.params.title
 const courseId = sessionStorage.getItem('courseId')
 
@@ -49,9 +50,18 @@ const courseId = sessionStorage.getItem('courseId')
 
 <template>
 
-  <div class="mt-16">
+
+  <div class="mt-5">
     <v-container>
-      <!--      First section-->
+      <!--     Start First section-->
+      <v-sheet class="bg-transparent mb-7">
+        <div class="d-flex align-center cursor-pointer w-0" @click="useRouter().back()">
+          <v-icon size="x-large" class="pr-2" icon="mdi-chevron-left"/>
+          <p class="font-weight-thin">Back</p>
+        </div>
+
+      </v-sheet>
+
       <v-sheet class="d-flex mb-6 bg-transparent align-center">
 
         <v-sheet class="bg-transparent">
@@ -74,7 +84,9 @@ const courseId = sessionStorage.getItem('courseId')
           <AddMeditation :is-btn-text="'isBtnText'"/>
         </v-sheet>
       </v-sheet>
+      <!--     End First section-->
 
+      <!--    Start Second section-->
 
       <v-data-table-server
           class="mt-10 rounded-lg bg-light-brown-1"
@@ -88,7 +100,7 @@ const courseId = sessionStorage.getItem('courseId')
       >
 
         <template #item.title="{item}">
-          <v-tooltip :text="item.title" max-width="175">
+          <v-tooltip :text="item.title">
             <template v-slot:activator="{ props }">
               <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.title }}</div>
             </template>
@@ -139,7 +151,7 @@ const courseId = sessionStorage.getItem('courseId')
         </template>
 
       </v-data-table-server>
-
+      <!--    End Second section-->
 
     </v-container>
   </div>
