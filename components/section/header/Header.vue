@@ -19,13 +19,15 @@ watchEffect(() => {
     <v-container>
       <v-row justify="space-between" align="center">
         <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = <any>!drawer"/>
-        <div class="float-md-right">
+        <div class="float-md-right logo">
           <v-img
-              width="128"
-              height="128"
-              src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
+              width="42"
+              height="40"
+              src="Vector.svg">
           </v-img>
+          <h1 class="logo-text font-weight-medium">OmniWell</h1>
         </div>
+
         <div class="hidden-sm-and-down">
           <v-row class="align-center">
             <div class="mr-15" v-if="showNavItem">
@@ -33,8 +35,8 @@ watchEffect(() => {
               <v-btn :to="{name:  'panel-meditations'}" class="px-8" text="Meditations" color="#9AB157"
                      variant="plain"/>
             </div>
-            <v-avatar class="avatar-border" image="https://cdn.vuetifyjs.com/images/john.jpg" size="44"></v-avatar>
-            <p class="font-16 font-weight-light mx-4">Anna</p>
+            <v-avatar class="avatar-border" image="https://cdn.vuetifyjs.com/images/john.jpg" size="32"></v-avatar>
+            <p class="font-16 font-weight-light mx-2">Anna</p>
             <v-btn icon="mdi mdi-logout"/>
           </v-row>
         </div>
