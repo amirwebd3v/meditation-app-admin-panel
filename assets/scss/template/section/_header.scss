@@ -1,0 +1,19 @@
+.avatar-border {
+  position: relative;
+  padding: 2px;
+}
+
+.avatar-border img {
+  border-radius: 100%;
+}
+
+.avatar-border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(45deg, #F8D48F 50%, #A17B3C 100%);
+  z-index: -1;
+}
