@@ -23,7 +23,7 @@ watchEffect(() => {
           <v-img
               width="42"
               height="40"
-              src="Vector.svg">
+              src="/images/Vector.svg">
           </v-img>
           <h1 class="logo-text font-weight-medium">OmniWell</h1>
         </div>
@@ -31,9 +31,9 @@ watchEffect(() => {
         <div class="hidden-sm-and-down">
           <v-row class="align-center">
             <div class="mr-15" v-if="showNavItem">
-              <v-btn :to="{name:  'panel-video'}" text="Video courses" color="#9AB157" class="mr-2" variant="plain"/>
-              <v-btn :to="{name:  'panel-meditations'}" class="px-8" text="Meditations" color="#9AB157"
-                     variant="plain"/>
+              <v-btn :to="{name:  'panel-video'}" text="Video courses"  class="mr-2" variant="text"/>
+              <v-btn :to="{name:  'panel-meditations'}" class="px-8" text="Meditations"
+                     variant="text"/>
             </div>
             <v-avatar class="avatar-border" image="https://cdn.vuetifyjs.com/images/john.jpg" size="32"></v-avatar>
             <p class="font-16 font-weight-light mx-2">Anna</p>
@@ -55,7 +55,7 @@ watchEffect(() => {
 
     <v-divider thickness="2"/>
 
-    <v-list density="compact" nav="" v-if="showNavItem">
+    <v-list density="compact" nav v-if="showNavItem">
       <v-list-item prepend-icon="mdi-video-box" title="Video courses"></v-list-item>
       <v-list-item prepend-icon="mdi-meditation" title="Meditations"></v-list-item>
     </v-list>
@@ -69,6 +69,12 @@ watchEffect(() => {
   </v-navigation-drawer>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+div:deep(.v-btn__overlay, .v-btn__overlay) {
+  display: none;
+}
 
+div:deep(.v-btn--active) {
+  color: #96AE50;
+}
 </style>
