@@ -31,7 +31,7 @@ watchEffect(() => {
         <div class="hidden-sm-and-down">
           <v-row class="align-center">
             <div class="mr-15" v-if="showNavItem">
-              <v-btn :to="{name:  'panel-video'}" text="Video courses"  class="mr-2" variant="text"/>
+              <v-btn :to="{name:  'panel-videos'}" text="Video courses"  class="mr-2" variant="text"/>
               <v-btn :to="{name:  'panel-meditations'}" class="px-8" text="Meditations"
                      variant="text"/>
             </div>

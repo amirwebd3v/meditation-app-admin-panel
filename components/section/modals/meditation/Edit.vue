@@ -63,7 +63,7 @@ defineProps({
        <v-row justify="space-between">
       <v-col cols="12" class="pb-0">
         <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
-        <v-text-field variant="outlined" color="primary" density="comfortable">{{ title }}</v-text-field>
+        <v-text-field variant="outlined" color="primary" density="comfortable" :model-value="title"/>
       </v-col>
       <v-col cols="12" class="py-0">
         <div class="text-subtitle-1 text-medium-emphasis pb-2">Course description</div>
@@ -73,7 +73,7 @@ defineProps({
         <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
         <v-select
             variant="outlined"
-            multiple=""
+            multiple
             color="primary"
             density="comfortable"
             single-line

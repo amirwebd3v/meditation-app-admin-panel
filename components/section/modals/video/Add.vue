@@ -6,7 +6,6 @@ defineComponent({
   name: 'AddVideo',
 })
 
-
 defineProps({
   btnOutTable : {
     type : Boolean,
@@ -17,20 +16,17 @@ defineProps({
     default : false
   }
 })
-
 /*********************************************/
 const formTitle = ref('Add Video Course')
 const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
+
 /********************************************/
 const router = useRouter()
 const currentRouteName = router.currentRoute.value.name;
 const isVideoCoursePage = computed(() => {
-  return currentRouteName === 'panel-video-id';
+  return currentRouteName === 'panel-videos-course-title-lessons';
 })
-
-
-
 
 </script>
 
@@ -51,29 +47,30 @@ const isVideoCoursePage = computed(() => {
       <v-btn
           v-if="btnOutTable"
           color="primary"
-          class="px-6-md"
+          :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
           v-bind="props"
-          :text="btnOutTable ? isBtnText = 'Add course' : ''"
+          :text="btnOutTable ? isBtnText = 'Add Video' : ''"
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"
           rounded="xl"
+
       >
         <template v-slot:default v-if="$vuetify.display.smAndDown">
-          <v-icon class="mdi mdi-plus"/>
+          <v-icon  icon="mdi-plus"/>
         </template>
         <template v-slot:prepend v-if="$vuetify.display.smAndUp">
-          <v-icon class="mdi mdi-plus"/>
+          <v-icon class="pr-3" icon="mdi-plus"/>
         </template>
       </v-btn>
-
     </template>
+
 
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable"
-                        placeholder="Enter video title"/>
+                        placeholder="Enter title"/>
         </v-col>
         <v-col cols="12" class="py-0" v-if="isVideoCoursePage">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Video Link</div>

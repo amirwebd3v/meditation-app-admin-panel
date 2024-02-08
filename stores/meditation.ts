@@ -5,7 +5,6 @@ import type {PaginatorMeta, QueryParams} from "l5-client";
 
 export const useMeditationStore = defineStore('meditation', {
     state: () => ({
-        uuid : null as string | null,
         items: [] as Course[],
         meta: {} as PaginatorMeta
     }),
@@ -15,6 +14,5 @@ export const useMeditationStore = defineStore('meditation', {
             this.items = data
             this.meta = meta
         },
-
     },
 })

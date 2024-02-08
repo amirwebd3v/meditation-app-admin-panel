@@ -16,7 +16,7 @@ const isMeditationCoursePage = computed(() => {
   return currentRouteName === 'panel-meditations';
 })
 const isVideoCoursePage = computed(() => {
-  return currentRouteName === 'panel-video';
+  return currentRouteName === 'panel-videos';
 })
 </script>
 
