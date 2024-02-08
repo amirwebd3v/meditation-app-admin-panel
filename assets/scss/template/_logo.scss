@@ -4,13 +4,23 @@
   color: white;
 }
 
-
 .logo-text {
-  font-size: 9px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  text-shadow: -1px 0 #3F3432, 0 1px #3F3432, 1px 0 #3F3432, 0 -1px #3F3432;
+  text-shadow: -1px 0 #3F3432, 0 1px #3F3432, -1px 0 #3F3432, 0 -1px #3F3432;
 }
+
+.logo-text-size {
+  font-size: 36px;
+  letter-spacing: .2rem;
+}
+
+.logo-text-size-header {
+  font-size: 9px;
+}
+
+
+

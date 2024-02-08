@@ -25,7 +25,7 @@ watchEffect(() => {
               height="40"
               src="/images/Vector.svg">
           </v-img>
-          <h1 class="logo-text font-weight-medium">OmniWell</h1>
+          <h1 class="logo-text logo-text-size-header font-weight-medium">OmniWell</h1>
         </div>
 
         <div class="hidden-sm-and-down">
@@ -37,7 +37,7 @@ watchEffect(() => {
             </div>
             <v-avatar class="avatar-border" image="https://cdn.vuetifyjs.com/images/john.jpg" size="32"></v-avatar>
             <p class="font-16 font-weight-light mx-2">Anna</p>
-            <v-btn icon="mdi mdi-logout"/>
+            <v-btn class="mr-3" icon="mdi mdi-logout"/>
           </v-row>
         </div>
       </v-row>
@@ -61,7 +61,7 @@ watchEffect(() => {
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block="" color="danger-dark">
+        <v-btn block color="danger-dark">
           Log out
         </v-btn>
       </div>
