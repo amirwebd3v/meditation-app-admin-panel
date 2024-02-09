@@ -15,6 +15,19 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
     ],
 
+    runtimeConfig: {
+        public: {},
+    },
+
+    appConfig: {
+        api: {
+            baseUrl: process.env.API_BASE_URL,
+            headers: {
+                Accept: "application/json"
+            }
+        },
+    },
+
     pinia: {
         storesDirs: ['./stores/**'],
     },

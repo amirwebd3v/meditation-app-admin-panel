@@ -5,10 +5,11 @@ import {
     QueryParams
 } from 'l5-client';
 
+const appConfig = useAppConfig()
 
-const api = new L5Client('https://omni-api.hidevs.ir/admin/v1')
+const client = new L5Client(`${appConfig.api.baseUrl}/admin/v1`, {headers: appConfig.api.headers})
 
-const prepareQueryParams = ({page = 1, itemsPerPage = 15, sortBy = []}, search: FilterSearchItem[] = []): QueryParams => {
+const prepareQueryParams = ({page = 1, itemsPerPage = 10, sortBy = []}, search: FilterSearchItem[] = []): QueryParams => {
     let sort: FilterSortItem = {}
 
     if (sortBy.length > 0) {
@@ -16,8 +17,13 @@ const prepareQueryParams = ({page = 1, itemsPerPage = 15, sortBy = []}, search: 
     }
 
     return {
-        pagination: {page: page || 1, perPage: itemsPerPage || 15}, sort, search
+        pagination: {page: page || 1, perPage: itemsPerPage || 10}, sort, search
     }
 }
 
-export {api, prepareQueryParams}
+// export {api, prepareQueryParams}
+
+export default function useApi() {
+    return {client, prepareQueryParams}
+}
+

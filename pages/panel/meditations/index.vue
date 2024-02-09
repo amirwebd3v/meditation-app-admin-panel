@@ -5,7 +5,7 @@ import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
 
 import {useMeditationStore} from "~/stores/meditation"
-import {prepareQueryParams} from '~/composables/api'
+import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
@@ -14,7 +14,7 @@ const loading = ref(true)
 const searchText = ref('')
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'set', title: 'TYPE', align: 'start', sortable: true},
+  {key: 'set', title: 'TYPE', align: 'start', sortable: false},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
@@ -33,15 +33,10 @@ const load = async (options = {}) => {
     {field: 'description', operator: 'like', value: searchText.value},
     {field: 'price', operator: 'like', value: searchText.value},
   ]
-  const params = prepareQueryParams(options, search)
+  const params = useApi().prepareQueryParams(options, search)
   await useMeditationStore().paginate(params)
   loading.value = false
 }
-
-
-onMounted(async () => {
-  await load()
-})
 
 const filters = [
   'All',

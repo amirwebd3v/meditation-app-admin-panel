@@ -5,7 +5,7 @@ import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
 
 import {useVideoStore} from "~/stores/video"
-import {prepareQueryParams} from '~/composables/api'
+import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import AddVideo from "~/components/section/modals/video/Add.vue";
 import EditVideo from "~/components/section/modals/video/Edit.vue";
@@ -32,14 +32,10 @@ const load = async (options = {}) => {
     {field: 'description', operator: 'like', value: searchText.value},
     {field: 'price', operator: 'like', value: searchText.value},
   ]
-  const params = prepareQueryParams(options, search)
+  const params = useApi().prepareQueryParams(options, search)
   await useVideoStore().paginate(params)
   loading.value = false
 }
-
-onMounted(async () => {
-  await load()
-})
 
 const filters = [
   'All',
@@ -109,6 +105,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                   :headers="headers"
                   @update:options="load"
                   :loading="loading"
+                  :items-per-page="10"
               >
 
                 <template #item.title="{item}">
