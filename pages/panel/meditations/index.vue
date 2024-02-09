@@ -61,10 +61,9 @@ const menu = ref(false)
 const router = useRouter();
 const goToLesson = (courseTitle: string, courseId: string) => {
   if (courseId) {
-    sessionStorage.setItem('courseId', courseId)
     router.push({
-      name: 'panel-meditations-course-title-lessons',
-      params: {title: courseTitle},
+      name: 'panel-meditations-course-id-title-lessons',
+      params: {id: courseId,title: courseTitle},
     })
   } else {
     console.error(`No course found with title: ${courseTitle}`)

@@ -1,32 +1,17 @@
 <script setup lang="ts">
 
 
-
-
-import EditVideo from "~/components/section/modals/video/Edit.vue";
-
-
-
-import {useVideoStore} from "~/stores/video"
+import {useLessonStore} from "~/stores/lesson"
 import {prepareQueryParams} from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 
-import AddVideo from "~/components/section/modals/video/Add.vue";
-import {useLessonStore} from "~/stores/lesson";
+import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
 
 const loading = ref(true)
 const searchText = ref('')
-const headers = [
-  {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'price', title: 'PRICE', sortable: true, align: 'start'},
-  {key: 'description', title: 'DESCRIPTION', sortable: false},
-  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
-  {key: 'actions', title: '', sortable: false,align: 'start'},
-]
-
-const {items, meta} = storeToRefs(useVideoStore())
+const {items, meta} = storeToRefs(useLessonStore())
 
 onMounted(async () => {
   await load()
@@ -39,18 +24,32 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = prepareQueryParams(options, search)
-  await useLessonStore().paginate(<string>courseId,params)
+  await useLessonStore().paginate(<string>courseId, params)
   loading.value = false
 }
+
+
+const headers = ref([
+  {title: 'Title', align: 'start', key: 'title'},
+  {title: 'CATEGORY', key: 'category'},
+  {title: 'PRICE', key: 'price'},
+  {title: 'DESCRIPTION', key: 'description'},
+  {title: 'PICTURE', key: 'thumbnail', align: 'center'},
+  {title: '', key: 'actions', sortable: false, align: 'end'},
+])
+
 
 const route = useRoute();
 
 const courseTitle = route.params.title
-const courseId = sessionStorage.getItem('courseId')
+const courseId = route.params.id
+
 
 </script>
 
+
 <template>
+
 
   <div class="mt-5">
     <v-container>
@@ -81,13 +80,13 @@ const courseId = sessionStorage.getItem('courseId')
           ></v-text-field>
         </v-sheet>
         <v-sheet class="bg-transparent ml-auto">
-          <AddVideo/>
+          <AddMeditation/>
         </v-sheet>
       </v-sheet>
-
       <!--     End First section-->
 
       <!--    Start Second section-->
+
       <v-data-table-server
           class="mt-10 rounded-lg bg-light-brown-1"
           v-if="!!items"
@@ -107,12 +106,12 @@ const courseId = sessionStorage.getItem('courseId')
           </v-tooltip>
         </template>
 
-        <template #item.price="{item}">
-          {{ item.price || 'Free' }}
+        <template #item.category="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.category }}</div>
         </template>
 
         <template #item.description="{item}">
-          <v-tooltip :text="item.description" max-width="270">
+          <v-tooltip :text="item.description" max-width="210">
             <template v-slot:activator="{ props }">
               <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.description }}</div>
             </template>
@@ -126,18 +125,15 @@ const courseId = sessionStorage.getItem('courseId')
             </v-card>
           </div>
         </template>
-
-        <template #item.set="{ item }">
-          {{ item.set.toString().replace('FREE', 'PAID') }}
+        <template #item.price="{item}">
+          {{ item.price || 'Free' }}
         </template>
-
         <template #item.actions="{item}">
           <div style="width: 100px;">
-            <EditVideo
-                :form-title="'Edit Video Lesson'"
+            <EditMeditation
+                :form-title="'Edit Meditation Lesson'"
                 :id="item.uuid"
                 :title="item.title"
-                :link="item.uuid"
                 :description="item.description"
                 :price="item.price"
                 :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
@@ -156,11 +152,8 @@ const courseId = sessionStorage.getItem('courseId')
       </v-data-table-server>
       <!--    End Second section-->
 
-
-
     </v-container>
   </div>
-
 
 
 </template>
