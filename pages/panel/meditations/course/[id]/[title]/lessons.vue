@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+definePageMeta({
+  middleware: 'sanctum:auth',
+})
 
 import {useLessonStore} from "~/stores/lesson"
 import {prepareQueryParams} from '~/composables/api'

@@ -1,4 +1,12 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: 'sanctum:guest',
+})
+
+definePageMeta({
+  layout: 'auth'
+})
+
 const visible = ref(false);
 
 const form = ref({
@@ -13,9 +21,6 @@ async function login() {
   )
 }
 
-definePageMeta({
-  middleware: 'sanctum:guest',
-})
 </script>
 <template>
     <v-container fluid class="fill-height">

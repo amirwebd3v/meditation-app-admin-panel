@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+definePageMeta({
+  middleware: 'sanctum:auth',
+})
 
 import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
