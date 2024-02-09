@@ -1,20 +1,21 @@
 <script setup lang="ts">
 
 import Base from "~/components/section/modals/Base.vue";
+import type {Course} from "~/server/types";
 
 defineComponent({
   name: 'AddMeditation',
 })
 
 defineProps({
-  btnOutTable : {
-    type : Boolean,
-    default : true
+  btnOutTable: {
+    type: Boolean,
+    default: true
   },
   btnInTable: {
-    type : Boolean,
-    default : false
-  }
+    type: Boolean,
+    default: false
+  },
 })
 /*********************************************/
 const formTitle = ref('Add Meditation Course')
@@ -22,7 +23,25 @@ const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
 
 /********************************************/
+const title = ref('')
+const description = ref('')
+const category = ref([])
+const price = ref('')
+const type = ref('')
+const fileNames = ref([])
 
+const saveCourse = async () => {
+  const newCourse = {
+    title: title.value,
+    description: description.value,
+    category: category.value,
+    price: price.value,
+    type: type.value,
+    // add other fields as necessary
+  }
+  await useMeditationStore().store(<Course>newCourse)
+  console.log('new course is added.')
+}
 
 </script>
 
@@ -52,7 +71,7 @@ const isBtnText = ref('')
 
       >
         <template v-slot:default v-if="$vuetify.display.smAndDown">
-          <v-icon  icon="mdi-plus"/>
+          <v-icon icon="mdi-plus"/>
         </template>
         <template v-slot:prepend v-if="$vuetify.display.smAndUp">
           <v-icon class="pr-3" icon="mdi-plus"/>
@@ -61,26 +80,23 @@ const isBtnText = ref('')
     </template>
 
 
-
-
-
-
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
-          <v-text-field variant="outlined" color="primary" density="comfortable"
+          <v-text-field variant="outlined" color="primary" density="comfortable" :modal-value="title"
                         placeholder="Enter meditation title"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Description</div>
-          <v-textarea variant="outlined" density="compact" color="primary"></v-textarea>
+          <v-textarea variant="outlined" density="compact" color="primary" :model-value="description"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
           <v-select
               variant="outlined"
-              multiple=""
+              multiple
+              :model-value="category"
               color="primary"
               density="comfortable"
               single-line
@@ -91,7 +107,8 @@ const isBtnText = ref('')
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
           <v-combobox
               variant="outlined"
-              multiple=""
+              multiple
+              :model-value="price"
               :items="['Free']"
               color="primary"
               density="comfortable"
@@ -104,6 +121,7 @@ const isBtnText = ref('')
               color="primary"
               density="comfortable"
               single-line
+              :model-value="type"
               :items="['Single', 'Course']"
           ></v-select>
         </v-col>
@@ -112,7 +130,7 @@ const isBtnText = ref('')
           <v-file-input
               placeholder="Upload your documents"
               variant="outlined"
-              prepend-icon=""
+              prepend-icon
               color="primary"
               hide-details=""
           >
@@ -146,12 +164,10 @@ const isBtnText = ref('')
           size="large"
           variant="outlined"
           text="Save"
-          @click="close"
+          @click="saveCourse"
       >
       </v-btn>
     </template>
-
-
   </Base>
 
 </template>

@@ -10,8 +10,8 @@ definePageMeta({
 const visible = ref(false);
 
 const form = ref({
-  email: 'smjjalalzadeh93@gmail.com',
-  password: '123456789',
+  email: null,
+  password: null,
 })
 
 async function login() {

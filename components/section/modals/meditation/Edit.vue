@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import Base from "~/components/section/modals/Base.vue";
+import {Course} from "~/server/types";
 
 
 
@@ -35,9 +36,38 @@ defineProps({
     type : String,
     required: true
   },
-
+  id: {
+    type: String,
+    required:true
+  }
 
 })
+//**************************************
+const route = useRoute();
+const courseId = route.params.id
+
+const title = ref('')
+const description = ref('')
+const category = ref([])
+const price = ref('')
+const type = ref('')
+const fileNames = ref([])
+
+const UpdateCourse = async () => {
+  const newCourse = {
+    title: title.value,
+    description: description.value,
+    category: category.value,
+    price: price.value,
+    type: type.value,
+    // add other fields as necessary
+  }
+  await useMeditationStore().update(<string>courseId,<Course>newCourse)
+  console.log(`${courseId} is updated.`)
+}
+
+
+
 </script>
 
 <template>
@@ -138,7 +168,7 @@ defineProps({
           size="large"
           variant="outlined"
           text="Save"
-          @click="close"
+          @click="UpdateCourse"
       >
       </v-btn>
     </template>

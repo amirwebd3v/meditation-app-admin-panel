@@ -9,7 +9,7 @@ export const useLessonStore = defineStore('lesson', {
         meta: {} as PaginatorMeta
     }),
     actions: {
-        async paginate(courseId: String,queryParam: QueryParams) {
+        async paginate(courseId: string,queryParam: QueryParams) {
             const {data, meta} = await useApi().client.paginate<Lesson>(`v1/course/${courseId}/lesson`, queryParam)
             this.items = data
             this.meta = meta

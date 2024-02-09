@@ -14,5 +14,16 @@ export const useMeditationStore = defineStore('meditation', {
             this.items = data
             this.meta = meta
         },
+        async store(course: Course) {
+            const {data} = await useApi().client.post<Course>('v1/course', course)
+            this.items.push(data)
+        },
+        async update(courseId: string,updatedCourse: Course) {
+            const {data} = await useApi().client.put<Course>(`v1/course/${courseId}`,updatedCourse)
+            const index = this.items.findIndex(item => item.uuid === courseId)
+            if (index !== -1) {
+                this.items[index] = data
+            }
+        },
     },
 })
