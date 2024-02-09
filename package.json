@@ -22,7 +22,6 @@
     "@pinia/nuxt": "^0.5.1",
     "l5-client": "^1.4.1",
     "mitt": "^3.0.1",
-    "nuxt-sanctum-auth": "^0.4.7",
     "pinia": "^2.1.7",
     "sass": "^1.69.5",
     "sass-loader": "^10.0.0",
