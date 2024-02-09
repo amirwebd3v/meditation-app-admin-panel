@@ -4,7 +4,7 @@
 
 
 <template>
-  <v-container class="fill-height d-flex flex-column align-center" fluid="">
+  <v-container class="fill-height d-flex flex-column align-center" fluid>
 
     <v-row class="ma-0 pb-5 " align="end">
       <p class="text-center text-white font-20 font-weight-medium">Select what you are going to configure</p>
@@ -12,10 +12,10 @@
 
     <v-row align="start" class="ma-0">
       <v-col cols="12" sm="6" md="6">
-        <v-card :to="{name:  'hidevss'}" class="bg-primary-light" max-height="225" @click="" rounded="lg">
+        <v-card :to="{name:  'panel-videos'}" class="bg-primary-light" max-height="225" @click="" rounded="lg">
           <v-img
               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-              cover=""
+              cover
               max-height="175"
           >
           </v-img>
