@@ -27,8 +27,10 @@ export default defineNuxtConfig({
 
 
     sanctum: {
-        token: false, // set true to use jwt-token auth instead of cookie. default is false
-        baseUrl: 'http://localhost:3000',
+        redirectIfAuthenticated: false,
+        userStateKey: 'sanctum.user.identity',
+        origin: 'http://localhost:3000',
+        baseUrl: 'https://omni-api.hidevs.ir',
         endpoints: {
             csrf: '/sanctum/csrf-cookie',
             login: '/auth/login',
@@ -36,14 +38,15 @@ export default defineNuxtConfig({
             user: '/auth/me',
         },
         csrf: {
-            headerKey: 'X-XSRF-TOKEN',
-            cookieKey: 'XSRF-TOKEN',
-            tokenCookieKey: 'nuxt-sanctum-auth-token'
+            header: 'X-XSRF-TOKEN',
+            cookie: 'XSRF-TOKEN',
         },
-        redirects: {
-            home: '/panel',
-            login: '/auth/login',
-            logout: '/auth/login'
+        redirect: {
+            keepRequestedRoute: false,
+            onGuestOnly: '/panel',
+            onAuthOnly: '/auth/login',
+            onLogin: '/auth/login',
+            onLogout: '/auth/login'
         }
     },
 
