@@ -56,8 +56,8 @@ watchEffect(() => {
     <v-divider thickness="2"/>
 
     <v-list density="compact" nav v-if="showNavItem">
-      <v-list-item prepend-icon="mdi-video-box" title="Video courses"></v-list-item>
-      <v-list-item prepend-icon="mdi-meditation" title="Meditations"></v-list-item>
+      <v-list-item :to="{name : 'panel-videos'}" prepend-icon="mdi-video-box" title="Video courses"></v-list-item>
+      <v-list-item :to="{name : 'panel-meditations'}" prepend-icon="mdi-meditation" title="Meditations"></v-list-item>
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
