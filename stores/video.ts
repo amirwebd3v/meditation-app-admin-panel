@@ -10,7 +10,7 @@ export const useVideoStore = defineStore('video', {
     }),
     actions: {
         async paginate(queryParam: QueryParams) {
-            const {data, meta} = await useApi().client.paginate<Course>('course-video', queryParam)
+            const {data, meta} = await useApi().client.paginate<Course>('v1/course-video', queryParam)
             this.items = data
             this.meta = meta
         },

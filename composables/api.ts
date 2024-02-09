@@ -7,7 +7,7 @@ import {
 
 const appConfig = useAppConfig()
 
-const client = new L5Client(`${appConfig.api.baseUrl}/admin/v1`, {headers: appConfig.api.headers})
+const client = new L5Client(`${appConfig.api.baseUrl}/admin/`, {headers: appConfig.api.headers})
 
 const prepareQueryParams = ({page = 1, itemsPerPage = 10, sortBy = []}, search: FilterSearchItem[] = []): QueryParams => {
     let sort: FilterSortItem = {}

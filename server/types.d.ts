@@ -2,6 +2,7 @@ interface User {
     uuid: string
     name: string
     email: string
+    password: string
     avatar: Media | null
     roles: [
         DEVELOPER: string,

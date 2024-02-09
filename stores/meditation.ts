@@ -10,7 +10,7 @@ export const useMeditationStore = defineStore('meditation', {
     }),
     actions: {
         async paginate(queryParam: QueryParams) {
-            const {data, meta} = await useApi().client.paginate<Course>('course-meditation', queryParam)
+            const {data, meta} = await useApi().client.paginate<Course>('v1/course-meditation', queryParam)
             this.items = data
             this.meta = meta
         },

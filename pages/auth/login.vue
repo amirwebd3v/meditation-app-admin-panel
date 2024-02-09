@@ -10,6 +10,7 @@ const form = ref({
 })
 
 
+
 async function login() {
   await $sanctumAuth.login(form.value)
 }
