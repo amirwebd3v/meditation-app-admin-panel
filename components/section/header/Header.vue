@@ -12,6 +12,9 @@ watchEffect(() => {
   showNavItem.value = !isConfigurationPage()
 
 })
+
+const currentUser = useSanctumUser().value.data
+
 </script>
 
 <template>
@@ -35,9 +38,9 @@ watchEffect(() => {
               <v-btn :to="{name:  'panel-meditations'}" class="px-8" text="Meditations"
                      variant="text"/>
             </div>
-            <v-avatar class="avatar-border" image="https://cdn.vuetifyjs.com/images/john.jpg" size="32"></v-avatar>
-            <p class="font-16 font-weight-light mx-2">Anna</p>
-            <v-btn class="mr-3" icon="mdi mdi-logout"/>
+            <v-avatar class="avatar-border" :image="currentUser.avatar" size="32"></v-avatar>
+            <p class="font-16 font-weight-light mx-2" v-text="currentUser.name" />
+            <v-btn class="mr-3" icon="mdi mdi-logout" @click="useSanctumAuth().logout" />
           </v-row>
         </div>
       </v-row>

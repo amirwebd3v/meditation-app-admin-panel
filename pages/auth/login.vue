@@ -1,21 +1,21 @@
 <script setup lang="ts">
-const {$sanctumAuth} = useNuxtApp()
-const router = useRouter()
-const errors = ref([])
 const visible = ref(false);
 
 const form = ref({
-  email: null,
-  password: null,
+  email: 'smjjalalzadeh93@gmail.com',
+  password: '123456789',
 })
 
-
-
 async function login() {
-  await $sanctumAuth.login(form.value)
+  await useSanctumAuth().login(form.value)
+  console.log(
+      useSanctumAuth().user
+  )
 }
 
-
+definePageMeta({
+  middleware: 'sanctum:guest',
+})
 </script>
 <template>
     <v-container fluid class="fill-height">

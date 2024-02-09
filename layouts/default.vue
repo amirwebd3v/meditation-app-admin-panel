@@ -1,18 +1,14 @@
 <script setup lang="ts">
-
-
 import Header from "~/components/section/header/Header.vue";
 
-const title = ref("Omni-Well");
 useHead({
-  meta: [{content: title}],
+  meta: [
+      {content: 'OmniWell'},
+  ],
   titleTemplate: (titleChunk) => {
-    return titleChunk
-        ? `${titleChunk} Meditation `
-        : "Omni-Well";
+    return titleChunk ? `${titleChunk} Meditation ` : "OmniWell";
   },
 });
-
 
 </script>
 
