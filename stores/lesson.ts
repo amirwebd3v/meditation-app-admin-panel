@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import {api} from '~/composables/api'
+import useApi from '~/composables/api'
 import type {Lesson} from "~/server/types";
 import type {PaginatorMeta, QueryParams} from "l5-client";
 
@@ -10,7 +10,7 @@ export const useLessonStore = defineStore('lesson', {
     }),
     actions: {
         async paginate(courseId: String,queryParam: QueryParams) {
-            const {data, meta} = await api.paginate<Lesson>(`course/${courseId}/lesson`, queryParam)
+            const {data, meta} = await useApi().client.paginate<Lesson>(`course/${courseId}/lesson`, queryParam)
             this.items = data
             this.meta = meta
         },
