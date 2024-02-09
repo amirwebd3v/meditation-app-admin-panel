@@ -1,3 +1,19 @@
+interface User {
+    uuid: string
+    name: string
+    email: string
+    avatar: Media | null
+    roles: [
+        DEVELOPER: string,
+        ADMIN: string,
+        SUPPORT: string,
+        USER: string
+    ],
+    email_verified_at: number
+    created_at: number
+    updated_at: number
+}
+
 
 interface Course {
     created_at: number
@@ -54,6 +70,7 @@ interface Lesson {
 }
 
 export {
+    User,
     Lesson,
     Course,
     Media,

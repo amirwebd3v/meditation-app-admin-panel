@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     },
 
     modules: [
-        'nuxt-sanctum-auth',
+        'nuxt-auth-sanctum',
         '@pinia/nuxt',
     ],
 
@@ -24,7 +24,9 @@ export default defineNuxtConfig({
         '/auth/**': {ssr: false}
     },
 
-    nuxtSanctumAuth: {
+
+
+    sanctum: {
         token: false, // set true to use jwt-token auth instead of cookie. default is false
         baseUrl: 'http://localhost:3000',
         endpoints: {
