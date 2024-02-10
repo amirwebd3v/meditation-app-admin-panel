@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 import {useLessonStore} from "~/stores/lesson"
-import {prepareQueryParams} from '~/composables/api'
+import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
@@ -25,7 +25,7 @@ const load = async (options = {}) => {
     {field: 'title', operator: 'like', value: searchText.value},
     {field: 'price', operator: 'like', value: searchText.value},
   ]
-  const params = prepareQueryParams(options, search)
+  const params = useApi().prepareQueryParams(options, search)
   await useLessonStore().paginate(<string>courseId, params)
   loading.value = false
 }
