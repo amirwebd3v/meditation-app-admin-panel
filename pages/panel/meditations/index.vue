@@ -59,8 +59,8 @@ const router = useRouter();
 const goToLesson = (courseTitle: string, courseId: string) => {
   if (courseId) {
     router.push({
-      name: 'panel-meditations-course-id-title-lessons',
-      params: {id: courseId,title: courseTitle},
+      name: 'panel-meditations-id-lessons',
+      params: {id: courseId},
     })
   } else {
     console.error(`No course found with title: ${courseTitle}`)

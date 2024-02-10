@@ -15,9 +15,7 @@ const loading = ref(true)
 const searchText = ref('')
 const {items, meta} = storeToRefs(useLessonStore())
 
-onMounted(async () => {
-  await load()
-})
+const course = (await useMeditationStore().get(useRoute().params.id))
 
 const load = async (options = {}) => {
   loading.value = true
@@ -26,7 +24,8 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
-  await useLessonStore().paginate(<string>courseId, params)
+  await useLessonStore().paginate(useRoute().params.id, params)
+
   loading.value = false
 }
 
@@ -39,13 +38,6 @@ const headers = ref([
   {title: 'PICTURE', key: 'thumbnail', align: 'center'},
   {title: '', key: 'actions', sortable: false, align: 'end'},
 ])
-
-
-const route = useRoute();
-
-const courseTitle = route.params.title
-const courseId = route.params.id
-
 
 </script>
 
@@ -66,7 +58,7 @@ const courseId = route.params.id
       <v-sheet class="d-flex mb-6 bg-transparent align-center">
 
         <v-sheet class="bg-transparent">
-          <h2 class="text-white pr-10 me-auto">{{ courseTitle }}</h2>
+          <h2 class="text-white pr-10 me-auto">{{ course.title }}</h2>
         </v-sheet>
         <v-sheet class="bg-transparent mr-5" width="475px">
           <v-text-field

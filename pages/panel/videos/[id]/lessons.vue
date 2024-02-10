@@ -15,7 +15,6 @@ import type {FilterSearchItem} from "l5-client";
 
 import AddVideo from "~/components/section/modals/video/Add.vue";
 import {useLessonStore} from "~/stores/lesson";
-import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
 
 const loading = ref(true)
@@ -29,6 +28,7 @@ const headers = [
 ]
 
 const {items, meta} = storeToRefs(useVideoStore())
+const course = (await useVideoStore().get(useRoute().params.id))
 
 onMounted(async () => {
   await load()
@@ -41,14 +41,9 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
-  await useLessonStore().paginate(<string>courseId,params)
+  await useLessonStore().paginate(useRoute().params.id,params)
   loading.value = false
 }
-
-const route = useRoute();
-
-const courseTitle = route.params.title
-const courseId = route.params.id
 
 </script>
 
@@ -67,7 +62,7 @@ const courseId = route.params.id
       <v-sheet class="d-flex mb-6 bg-transparent align-center">
 
         <v-sheet class="bg-transparent">
-          <h2 class="text-white pr-10 me-auto">{{ courseTitle }}</h2>
+          <h2 class="text-white pr-10 me-auto">{{ course.title }}</h2>
         </v-sheet>
         <v-sheet class="bg-transparent mr-5" width="475px">
           <v-text-field
