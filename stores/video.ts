@@ -15,7 +15,7 @@ export const useVideoStore = defineStore('video', {
             this.meta = meta
         },
         async get(id: string): Promise<Course> {
-            return (await useApi().client.get<Course>(`v1/course/${id}`)).data.data
+            return (await useApi().client.get<{ data: Course }>(`v1/course/${id}`)).data.data
         },
     },
 })

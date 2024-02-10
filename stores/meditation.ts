@@ -19,7 +19,7 @@ export const useMeditationStore = defineStore('meditation', {
             this.items.push(data)
         },
         async get(id: string): Promise<Course> {
-           return (await useApi().client.get<Course>(`v1/course/${id}`)).data.data
+           return (await useApi().client.get<{ data: Course }>(`v1/course/${id}`)).data.data
         },
         async update(courseId: string,updatedCourse: Course) {
             const {data} = await useApi().client.put<Course>(`v1/course/${courseId}`,updatedCourse)
