@@ -40,8 +40,10 @@ const saveCourse = async () => {
     // add other fields as necessary
   }
   await useMeditationStore().store(<Course>newCourse)
-  console.log('new course is added.')
+  console.log(`${newCourse} is added.`)
 }
+
+
 
 </script>
 
@@ -84,19 +86,19 @@ const saveCourse = async () => {
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
-          <v-text-field variant="outlined" color="primary" density="comfortable" :modal-value="title"
+          <v-text-field variant="outlined" color="primary" density="comfortable" v-model="title"
                         placeholder="Enter meditation title"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" :model-value="description"/>
+          <v-textarea variant="outlined" density="compact" color="primary" v-model="description"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
           <v-select
               variant="outlined"
               multiple
-              :model-value="category"
+              v-model="category"
               color="primary"
               density="comfortable"
               single-line
@@ -108,7 +110,7 @@ const saveCourse = async () => {
           <v-combobox
               variant="outlined"
               multiple
-              :model-value="price"
+              v-model="price"
               :items="['Free']"
               color="primary"
               density="comfortable"
@@ -121,7 +123,7 @@ const saveCourse = async () => {
               color="primary"
               density="comfortable"
               single-line
-              :model-value="type"
+              v-model="type"
               :items="['Single', 'Course']"
           ></v-select>
         </v-col>

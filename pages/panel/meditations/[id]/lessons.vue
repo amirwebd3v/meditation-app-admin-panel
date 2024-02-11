@@ -15,7 +15,8 @@ const loading = ref(true)
 const searchText = ref('')
 const {items, meta} = storeToRefs(useLessonStore())
 
-const course = (await useMeditationStore().get(useRoute().params.id))
+const course = (await useMeditationStore().get(<string>useRoute().params.id))
+console.log(course)
 
 const load = async (options = {}) => {
   loading.value = true
@@ -24,7 +25,7 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
-  await useLessonStore().paginate(useRoute().params.id, params)
+  await useLessonStore().paginate(<string>useRoute().params.id, params)
 
   loading.value = false
 }
@@ -113,11 +114,9 @@ const headers = ref([
         </template>
 
         <template #item.thumbnail="{ item }">
-          <div style="width: 100px;">
-            <v-card v-if="!!item.thumbnail" class="my-2 mx-2" elevation="0" rounded color="light">
+            <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
               <v-img :src="item.thumbnail.urls.small" height="64" cover/>
             </v-card>
-          </div>
         </template>
         <template #item.price="{item}">
           {{ item.price || 'Free' }}

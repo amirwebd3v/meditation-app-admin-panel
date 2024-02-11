@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import Base from "~/components/section/modals/Base.vue";
-import {Course} from "~/server/types";
+
 
 
 
@@ -11,7 +11,7 @@ defineComponent({
   name: 'EditMeditation',
 })
 
-defineProps({
+const props = defineProps( {
   formTitle : {
     type : String,
     required : true
@@ -46,12 +46,11 @@ defineProps({
 const route = useRoute();
 const courseId = route.params.id
 
-const title = ref('')
-const description = ref('')
-const category = ref([])
-const price = ref('')
-const type = ref('')
-const fileNames = ref([])
+const title = ref(props.title)
+const description = ref(props.description)
+const category = ref(props.category)
+const price = ref(props.price)
+const type = ref(props.type)
 
 const UpdateCourse = async () => {
   const newCourse = {
@@ -62,7 +61,7 @@ const UpdateCourse = async () => {
     type: type.value,
     // add other fields as necessary
   }
-  await useMeditationStore().update(<string>courseId,<Course>newCourse)
+  await useMeditationStore().update(<string>courseId,<any>newCourse)
   console.log(`${courseId} is updated.`)
 }
 

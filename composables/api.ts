@@ -7,7 +7,8 @@ import {
 
 const appConfig = useAppConfig()
 
-const client = new L5Client(`${appConfig.api.baseUrl}/admin/`, {headers: appConfig.api.headers})
+const client = new L5Client('http://127.0.0.1:8000/admin/')
+// const api = new L5Client('https://omni-api.hidevs.ir/admin/v1')
 
 const prepareQueryParams = ({page = 1, itemsPerPage = 10, sortBy = []}, search: FilterSearchItem[] = []): QueryParams => {
     let sort: FilterSortItem = {}

@@ -28,7 +28,7 @@ const headers = [
 ]
 
 const {items, meta} = storeToRefs(useVideoStore())
-const course = (await useVideoStore().get(useRoute().params.id))
+const course = (await useVideoStore().get(<string>useRoute().params.id))
 
 onMounted(async () => {
   await load()
@@ -41,7 +41,7 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
-  await useLessonStore().paginate(useRoute().params.id,params)
+  await useLessonStore().paginate(<string>useRoute().params.id,params)
   loading.value = false
 }
 
@@ -117,11 +117,9 @@ const load = async (options = {}) => {
         </template>
 
         <template #item.thumbnail="{ item }">
-          <div style="width: 100px;">
-            <v-card v-if="!!item.thumbnail" class="my-2 mx-2" elevation="0" rounded color="light">
+            <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
               <v-img :src="item.thumbnail.urls.small" height="64" cover/>
             </v-card>
-          </div>
         </template>
 
         <template #item.set="{ item }">
