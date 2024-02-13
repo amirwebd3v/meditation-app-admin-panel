@@ -26,7 +26,7 @@ const isBtnText = ref('')
 const title = ref('')
 const description = ref('')
 const category = ref([])
-const price = ref('')
+const price = ref(null)
 const type = ref('')
 const fileNames = ref([])
 

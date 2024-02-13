@@ -8,17 +8,33 @@ definePageMeta({
 })
 
 const visible = ref(false);
+const loading = ref(false);
+
 
 const form = ref({
   email: null,
   password: null,
 })
 
+
+watch(loading, (val) => {
+  if (!val) return;
+
+  setTimeout(() => {
+    loading.value = false;
+  }, 2000);
+});
+
 async function login() {
-  await useSanctumAuth().login(form.value)
-  console.log(
-      useSanctumAuth().user
-  )
+  loading.value = true;
+  try {
+    await useSanctumAuth().login(form.value);
+    console.log(useSanctumAuth().user);
+  } catch (error) {
+    console.error('Login failed:', error);
+  } finally {
+    loading.value = false;
+  }
 }
 
 </script>
@@ -42,7 +58,17 @@ async function login() {
                           :type="visible ? 'text' : 'password'"
                           density="compact" placeholder="Enter Password" variant="outlined"
                           @click:append-inner="visible = !visible"/>
-            <v-btn @click="login" block rounded="xl" class="mb-8" color="primary" size="large" variant="flat">Login
+            <v-btn
+                :disabled="loading"
+                :loading="loading"
+                @click="login"
+                block rounded="xl"
+                class="mb-8"
+                color="primary"
+                size="large"
+                variant="flat"
+                text="Login"
+            >
             </v-btn>
           </v-form>
         </v-col>

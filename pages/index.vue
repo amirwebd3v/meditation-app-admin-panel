@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   middleware: 'sanctum:auth',
+  path: '/panel'
 })
 </script>
 
@@ -14,7 +15,7 @@ definePageMeta({
 
     <v-row align="start" class="ma-0">
       <v-col cols="12" sm="6" md="6">
-        <v-card :to="{name:  'panel-videos'}" class="bg-primary-light" max-height="225" @click="" rounded="lg">
+        <v-card :to="{name:  'panel-videos'}" class="bg-primary-light" max-height="225" rounded="lg">
           <v-img
               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
               cover
@@ -28,11 +29,11 @@ definePageMeta({
         </v-card>
       </v-col>
       <v-col cols="12" sm="6" md="6">
-        <v-card :to="{name:  'panel-meditations'}" class="bg-primary-light" max-height="225" @click="" rounded="lg">
+        <v-card :to="{name:  'panel-meditations'}" class="bg-primary-light" max-height="225" rounded="lg">
           <v-img
               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
               max-height="175"
-              cover=""
+              cover
           >
           </v-img>
 

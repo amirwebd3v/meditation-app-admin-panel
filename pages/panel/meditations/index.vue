@@ -8,7 +8,7 @@ import AddConfigurationItem from "~/components/section/configuration/AddConfigur
 
 import {useMeditationStore} from "~/stores/meditation"
 import useApi from '~/composables/api'
-import type {FilterSearchItem} from "l5-client";
+import type {FilterSearchItem, QueryParams} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
@@ -67,7 +67,6 @@ const goToLesson = (courseTitle: string, courseId: string) => {
   }
 
 }
-
 
 
 </script>

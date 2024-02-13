@@ -117,17 +117,18 @@ const load = async (options = {}) => {
         </template>
 
         <template #item.thumbnail="{ item }">
-            <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
-              <v-img :src="item.thumbnail.urls.small" height="64" cover/>
-            </v-card>
+          <v-card v-if="!!item.thumbnail" class="my-2 mx-md-4" elevation="0" rounded color="light">
+            <v-img :src="item.thumbnail.urls.small" class="px-2" height="64" cover/>
+          </v-card>
         </template>
+
 
         <template #item.set="{ item }">
           {{ item.set.toString().replace('FREE', 'PAID') }}
         </template>
 
         <template #item.actions="{item}">
-          <div style="width: 100px;">
+          <div class="float-right" style="width: 100px;">
             <EditVideo
                 :form-title="'Edit Video Lesson'"
                 :id="item.uuid"

@@ -19,8 +19,8 @@ const headers = [
   {key: 'category', title: 'CATEGORY', sortable: false , align: 'start'},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
-  {key: 'price', title: 'PRICE', sortable: true,align: 'start'},
-  {key: 'actions', title: '', sortable: false,align: 'start'},
+  {key: 'price', title: 'PRICE', sortable: true,align: 'end'},
+  {key: 'actions', title: '', sortable: false,align: 'end'},
 ]
 
 const {items, meta} = storeToRefs(useVideoStore())
@@ -124,12 +124,12 @@ const goToLesson = (courseTitle: string, courseId: string) => {
 
 
                 <template #item.lessons_count="{item}">
-                  <div style="max-width: 75px;">{{ item.lessons_count }}</div>
+                  <div class="pr-5">{{ item.lessons_count }}</div>
                 </template>
 
                 <template #item.thumbnail="{ item }">
-                    <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
-                      <v-img :src="item.thumbnail.urls.small" height="64" cover/>
+                    <v-card v-if="!!item.thumbnail" class="my-2 mx-md-4" elevation="0" rounded color="light">
+                      <v-img :src="item.thumbnail.urls.small" class="px-4" height="64" cover/>
                     </v-card>
                 </template>
 
@@ -138,7 +138,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                 </template>
 
                 <template #item.actions="{item}">
-                  <div style="width: 75px;">
+                  <div class="float-right" style="width: 75px;">
                     <v-menu
                         :v-model="menu"
                         :close-on-content-click="false"
