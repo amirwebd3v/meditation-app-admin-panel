@@ -10,12 +10,12 @@ export const useVideoStore = defineStore('video', {
     }),
     actions: {
         async paginate(queryParam: QueryParams) {
-            const {data, meta} = await useApi().client.paginate<Course>('v1/course-video', queryParam)
+            const {data, meta} = await useApi().paginate<Course>('/admin/v1/course-video', queryParam)
             this.items = data
             this.meta = meta
         },
         async get(id: string): Promise<Course> {
-            return (await useApi().client.get<{ data: Course }>(`v1/course/${id}`)).data.data
+            return (await useApi().get<{ data: Course }>(`/admin/v1/course/${id}`)).data.data
         },
     },
 })
