@@ -22,6 +22,7 @@
     "@nuxtjs/vuetify": "^1.12.3",
     "@pinia/nuxt": "^0.5.1",
     "l5-client": "^1.4.2",
+    "maska": "^2.1.11",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
     "sass": "^1.69.5",

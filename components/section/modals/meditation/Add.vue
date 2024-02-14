@@ -23,15 +23,15 @@ const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
 
 /********************************************/
-const title = ref('')
-const description = ref('')
-const category = ref([])
-const price = ref(null)
-const type = ref('')
+const title = ref<Course['title']>('');
+const description = ref<Course['description']>('');
+const category = ref<Course['category']>('');
+const price = ref<Course['price']>('Free');
+const type = ref<Course['type']>('');
 const fileNames = ref([])
 
 const saveCourse = async () => {
-  const newCourse = {
+  const newCourse: { price: number; description: string; title: string; category: any; type: string } = {
     title: title.value,
     description: description.value,
     category: category.value,
@@ -43,7 +43,17 @@ const saveCourse = async () => {
   console.log(`${newCourse} is added.`)
 }
 
+const userSelectedItem = computed(() => {
+  return price.value.toString() === 'Free'
 
+});
+
+
+
+const handlePriceChange = (selectedPrices: number[]) => {
+  if (selectedPrices.includes(0))
+    price.value = 0;
+}
 
 </script>
 
@@ -111,8 +121,11 @@ const saveCourse = async () => {
               variant="outlined"
               multiple
               v-model="price"
+              :readonly="userSelectedItem"
+              :clearable="userSelectedItem"
               :items="['Free']"
               color="primary"
+
               density="comfortable"
           ></v-combobox>
         </v-col>
@@ -132,7 +145,7 @@ const saveCourse = async () => {
           <v-file-input
               placeholder="Upload your documents"
               variant="outlined"
-              prepend-icon
+              prepend-icon=""
               color="primary"
               hide-details=""
           >
