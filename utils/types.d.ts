@@ -52,17 +52,14 @@ interface Lesson {
     updated_at: number
 }
 
-interface Category {
-    _entity: string
-    name: string
-    slug: string
-    description: string
-    created_at: number
+enum CourseType {
+    Meditation = 'MEDITATION',
+    Video = 'VIDEO',
 }
 
 export {
     Lesson,
     Course,
+    CourseType,
     Media,
-    Category,
 }

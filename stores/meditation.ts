@@ -1,7 +1,8 @@
 import {defineStore} from 'pinia'
 import useApi from '~/composables/api'
-import type {Course} from "~/server/types";
+import type {Course} from "~/utils/types";
 import type {PaginatorMeta, QueryParams} from "l5-client";
+import type {CourseStoreRequest, CourseUpdateRequest} from "~/utils/requests";
 
 
 export const useMeditationStore = defineStore('meditation', {
@@ -15,16 +16,20 @@ export const useMeditationStore = defineStore('meditation', {
             this.items = data
             this.meta = meta
         },
-        async store(course: Course) {
-            const data: Course = await useApi().post('/admin/v1/course', {body: {course,type: course.type}})
+
+        async store(request: CourseStoreRequest) {
+            const data: Course = await useApi().post('/admin/v1/course', {body: request})
             this.items.push(data)
         },
+
         async get(id: string): Promise<Course> {
             return (await useApi().get(`/admin/v1/course/${id}`)).data
         },
-        // async update(courseId: string,updatedCourse: Course) {
-        //     const {data} = await useApi().put<Course>(`/admin/v1/course/${courseId}`,updatedCourse)
-        //     const index = this.items.findIndex(item => item.uuid === courseId)
+
+        // async update(request: CourseUpdateRequest) {
+        //     const {id, ...body} = request
+        //     const {data} = await useApi().put(`/admin/v1/course/${id}`, {body})
+        //     const index = this.items.findIndex(item => item.uuid === id)
         //     if (index !== -1) {
         //         this.items[index] = data
         //     }

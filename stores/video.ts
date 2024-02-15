@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import useApi from '~/composables/api'
-import type {Course} from "~/server/types";
+import type {Course} from "~/utils/types";
 import type {PaginatorMeta, QueryParams} from "l5-client";
 
 export const useVideoStore = defineStore('video', {
