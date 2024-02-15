@@ -1,6 +1,6 @@
 import {L5Client, type Paginator} from 'l5-client';
 import type {FilterSearchItem, FilterSortItem, QueryParams} from 'l5-client'
-import {FetchOptions, FetchResponse} from "ofetch";
+import {FetchOptions, FetchResponse, ResponseType} from "ofetch";
 import {useValidationStore} from "~/stores/validation";
 
 const appConfig = useAppConfig()
