@@ -37,11 +37,13 @@ const destroy = <T = any, R extends ResponseType = "json">(route: string, option
 }
 
 const paginate = <T>(route: string, queryParams: QueryParams): Promise<Paginator<T>> => {
-    return client.paginate<T>(route, queryParams)
+    return useSanctumClient()(route, {params: queryParams, method: 'GET', onResponseError, parseResponse: JSON.parse})
+    // return client.paginate<T>(route, queryParams)
 }
 
 const all = <T>(route: string, queryParams: Omit<QueryParams, "pagination">): Promise<T[]> => {
-    return client.all<T>(route, queryParams)
+    return useSanctumClient()(route, {params: queryParams, method: 'GET', onResponseError, parseResponse: JSON.parse})
+    // return client.all<T>(route, queryParams)
 }
 
 const prepareQueryParams = ({page = 1, itemsPerPage = 10, sortBy = []}, search: FilterSearchItem[] = []): QueryParams => {
