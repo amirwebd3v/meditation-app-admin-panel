@@ -52,8 +52,17 @@ interface Lesson {
     updated_at: number
 }
 
+interface Category {
+    _entity: string
+    name: string
+    slug: string
+    description: string
+    created_at: number
+}
+
 export {
     Lesson,
     Course,
     Media,
+    Category,
 }

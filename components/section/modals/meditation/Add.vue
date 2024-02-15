@@ -3,6 +3,7 @@
 import Base from "~/components/section/modals/Base.vue";
 import type {Course} from "~/server/types";
 
+
 defineComponent({
   name: 'AddMeditation',
 })
@@ -23,37 +24,46 @@ const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
 
 /********************************************/
-const title = ref<Course['title']>('');
-const description = ref<Course['description']>('');
-const category = ref<Course['category']>('');
-const price = ref<Course['price']>('Free');
-const type = ref<Course['type']>('');
-const fileNames = ref([])
+const title = ref(null);
+const description = ref(null);
+const category = ref(null);
+const price = ref(null);
+const type = ref(null);
+
 
 const saveCourse = async () => {
-  const newCourse: { price: number; description: string; title: string; category: any; type: string } = {
+  const newCourse = {
     title: title.value,
     description: description.value,
     category: category.value,
     price: price.value,
     type: type.value,
-    // add other fields as necessary
   }
   await useMeditationStore().store(<Course>newCourse)
   console.log(`${newCourse} is added.`)
 }
 
-const userSelectedItem = computed(() => {
-  return price.value.toString() === 'Free'
-
+const selectedValue = computed(() => {
+  if (isPopular.value) {
+    return 'Popular';
+  } else if (isNotPopular.value) {
+    return 'Not Popular';
+  } else {
+    return 'Unknown';
+  }
 });
 
+const isPopular= ref(true)
+const isNotPopular = ref(false)
 
+const maskPrice = ref({
+  mask: '0.99',
+  tokens: {
+    0: {pattern: /\d/, multiple: true}, // Multiple digits for integer part
+    9: {pattern: /\d/, optional: true}, // Optional decimal point and digit
+  }
+});
 
-const handlePriceChange = (selectedPrices: number[]) => {
-  if (selectedPrices.includes(0))
-    price.value = 0;
-}
 
 </script>
 
@@ -97,7 +107,8 @@ const handlePriceChange = (selectedPrices: number[]) => {
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="title"
-                        placeholder="Enter meditation title"/>
+                        placeholder="Enter meditation title"
+          />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Description</div>
@@ -117,28 +128,30 @@ const handlePriceChange = (selectedPrices: number[]) => {
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
-          <v-combobox
+          <v-text-field
               variant="outlined"
-              multiple
               v-model="price"
-              :readonly="userSelectedItem"
-              :clearable="userSelectedItem"
-              :items="['Free']"
               color="primary"
-
               density="comfortable"
-          ></v-combobox>
+              v-maska:[maskPrice]
+          ></v-text-field>
         </v-col>
         <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2">Type</div>
-          <v-select
-              variant="outlined"
-              color="primary"
-              density="comfortable"
-              single-line
-              v-model="type"
-              :items="['Single', 'Course']"
-          ></v-select>
+          <div class="text-subtitle-1 text-medium-emphasis pb-2">Popular</div>
+          <div class="d-flex row">
+            <v-checkbox
+                v-model="isNotPopular"
+                label="No"
+                color="primary"
+                :disabled="isPopular"
+            ></v-checkbox>
+            <v-checkbox
+                v-model="isPopular"
+                label="Yes"
+                color="primary"
+                :disabled="isNotPopular"
+            ></v-checkbox>
+          </div>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Upload a picture</div>
