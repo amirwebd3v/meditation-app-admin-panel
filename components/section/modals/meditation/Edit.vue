@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import Base from "~/components/section/modals/Base.vue";
-import type {Course} from "~/server/types";
+import type {Course} from "~/utils/types";
 
 
 

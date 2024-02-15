@@ -52,8 +52,14 @@ interface Lesson {
     updated_at: number
 }
 
+enum CourseType {
+    Meditation = 'MEDITATION',
+    Video = 'VIDEO',
+}
+
 export {
     Lesson,
     Course,
+    CourseType,
     Media,
 }

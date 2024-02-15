@@ -1,7 +1,8 @@
 <script setup lang="ts">
 
 import Base from "~/components/section/modals/Base.vue";
-import type {Course} from "~/server/types";
+import type {Course} from "~/utils/types";
+import type {CourseStoreRequest} from "~/utils/requests";
 
 defineComponent({
   name: 'AddMeditation',
@@ -31,15 +32,10 @@ const type = ref<Course['type']>('');
 const fileNames = ref([])
 
 const saveCourse = async () => {
-  const newCourse: { price: number; description: string; title: string; category: any; type: string } = {
-    title: title.value,
-    description: description.value,
-    category: category.value,
-    price: price.value,
-    type: type.value,
-    // add other fields as necessary
+  const newCourse: CourseStoreRequest = {
+    title: title.value, description: description.value, price: price.value, type: 'MEDITATION', is_popular: false
   }
-  await useMeditationStore().store(<Course>newCourse)
+  await useMeditationStore().store(newCourse)
   console.log(`${newCourse} is added.`)
 }
 

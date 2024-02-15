@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import useApi from '~/composables/api'
-import type {Lesson} from "~/server/types";
+import type {Lesson} from "~/utils/types";
 import type {PaginatorMeta, QueryParams} from "l5-client";
 
 export const useLessonStore = defineStore('lesson', {

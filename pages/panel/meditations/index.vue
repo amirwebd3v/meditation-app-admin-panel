@@ -36,6 +36,7 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
+  params.relations = ['categories']
   await useMeditationStore().paginate(params)
   loading.value = false
 }
