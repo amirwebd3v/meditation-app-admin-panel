@@ -44,7 +44,7 @@ const load = async (options = {}) => {
   await useMeditationStore().paginate(params)
   loading.value = false
 }
-//
+
 // const filters2 = async (options = {}) => {
 //
 //   await useCategoryStore().index()

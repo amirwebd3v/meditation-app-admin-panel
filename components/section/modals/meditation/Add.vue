@@ -1,11 +1,12 @@
 <script setup lang="ts">
-
 import Base from "~/components/section/modals/Base.vue";
-
 import type {CourseStoreRequest} from "~/utils/requests";
 import  {CourseType} from "~/utils/enums";
+import useApi from "~/composables/api";
+import type {FilterSearchItem} from "l5-client";
+import {useMeditationStore} from "~/stores/meditation";
 
-
+/*********************************************/
 defineComponent({
   name: 'AddMeditation',
 })
@@ -20,15 +21,17 @@ defineProps({
     default: false
   },
 })
+
 /*********************************************/
 const formTitle = ref('Add Meditation Course')
 const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
+const loading = ref()
 
 /********************************************/
 const title = ref<CourseStoreRequest['title']>('');
 const description = ref<CourseStoreRequest['description']>('');
-const category = ref('');
+const category = ref();
 const price = ref<CourseStoreRequest['price']>(0);
 const type = ref<CourseStoreRequest['type']>(CourseType.Meditation)
 const isPopular = ref<Boolean>(true)
@@ -42,17 +45,33 @@ const maskPrice = {
   }
 }
 
+/********************************************/
+onMounted( async (options = {}) => {
+  // const search: FilterSearchItem[] = [
+  //   {field: 'courses.type', value: 'MEDITATION'},
+  // ]
+  const params = useApi().prepareQueryParams(options)
+  await useCategoryStore().index(params)
+})
+
+
+const {categories, categoriesMeta} = storeToRefs(useCategoryStore())
+
+const categoryNames = categories.value.flat().map(value => value.name)
 
 /********************************************/
 const saveCourse = async () => {
+  loading.value = true
   const newCourse: CourseStoreRequest = {
     title: title.value,
     description: description.value,
+    // category: category.value,
     price: price.value,
     type: type.value,
     is_popular: isPopular.value
   }
   await useMeditationStore().store(newCourse)
+  loading.value = false
   console.log(`${newCourse} is added.`)
 }
 
@@ -108,15 +127,19 @@ const saveCourse = async () => {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
-          <v-select
+          <v-autocomplete
               variant="outlined"
+              :disabled="loading"
+              chips
+              closable-chips
               multiple
               v-model="category"
               color="primary"
               density="comfortable"
               single-line
-              :items="['All Category', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-          ></v-select>
+              :items="categoryNames"
+
+          ></v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
