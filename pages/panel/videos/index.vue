@@ -156,7 +156,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                         />
                       </template>
 
-                      <v-card class="bg-light-brown-1" rounded>
+                      <v-card class="bg-light-brown-1 px-2 py-1" rounded>
                         <AddVideo :btn-out-table="false" :btn-in-table="true"/>
                         <EditVideo
                             :form-title="'Edit Meditation Course'"
