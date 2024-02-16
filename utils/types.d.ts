@@ -59,15 +59,19 @@ interface User {
     "updated_at": number
 }
 
-enum CourseType {
-    Meditation = 'MEDITATION',
-    Video = 'VIDEO',
+
+interface Category {
+    _entity: string
+    name: string
+    slug: string
+    description: string
+    created_at: number
 }
 
 export {
     User,
     Lesson,
     Course,
-    CourseType,
     Media,
+    Category
 }
