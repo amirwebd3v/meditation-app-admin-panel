@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type {User} from '~/utils/types'
 const router = useRouter();
 const showHeader = ref(true);
 const showNavItem = ref(true);
@@ -13,7 +14,7 @@ watchEffect(() => {
 
 })
 
-const currentUser = useSanctumUser().value.data
+const currentUser: User = useSanctumUser().value.data
 
 </script>
 
@@ -38,7 +39,7 @@ const currentUser = useSanctumUser().value.data
               <v-btn :to="{name:  'panel-meditations'}" class="px-8" text="Meditations"
                      variant="text"/>
             </div>
-            <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.small" size="32"></v-avatar>
+            <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="32"></v-avatar>
             <p class="font-16 font-weight-light mx-2" v-text="currentUser.name" />
             <v-btn class="mr-3" icon="mdi mdi-logout" @click="useSanctumAuth().logout" />
           </v-row>
