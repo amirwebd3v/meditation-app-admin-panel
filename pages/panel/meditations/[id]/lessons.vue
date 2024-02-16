@@ -66,7 +66,7 @@ const headers = ref([
               @keyup.enter="load"
               v-model="searchText"
               clearable
-              density="comfortable"
+              density="compact"
               hide-details
               variant="outlined"
               label="Search"

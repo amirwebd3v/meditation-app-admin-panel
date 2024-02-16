@@ -23,14 +23,9 @@ const currentUser: User = useSanctumUser().value.data
     <v-container>
       <v-row justify="space-between" align="center">
         <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = <any>!drawer"/>
-        <div class="float-md-right logo">
-          <v-img
-              width="42"
-              height="40"
-              src="/images/Vector.svg">
-          </v-img>
-          <h1 class="logo-text logo-text-size-header font-weight-medium">OmniWell</h1>
-        </div>
+        <nuxt-link to="/panel" class="float-md-right logo">
+          <v-img width="42" height="40" src="/img/logo.svg" />
+        </nuxt-link>
 
         <div class="hidden-sm-and-down">
           <v-row class="align-center">
@@ -47,10 +42,7 @@ const currentUser: User = useSanctumUser().value.data
       </v-row>
     </v-container>
   </v-app-bar>
-  <v-navigation-drawer
-      class="bg-light"
-      v-model="drawer"
-      temporary>
+  <v-navigation-drawer class="bg-light" v-model="drawer" temporary>
     <v-list-item title="John Leider">
       <template v-slot:prepend>
         <v-avatar class="avatar-border" image="https://cdn.vuetifyjs.com/images/john.jpg" size="46"></v-avatar>

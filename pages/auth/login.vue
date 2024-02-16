@@ -43,14 +43,9 @@ async function login() {
       <v-row no-gutters align="center" justify="center" class="fill-height">
         <v-col cols="12" sm="6" md="4" lg="4">
           <div class="logo">
-            <v-img
-                class="mx-auto mb-5  d-flex align-center justify-center"
-                width="186" cover
-                src="/images/Vector.svg">
-            </v-img>
-            <h1 class="logo-text logo-text-size font-weight-bold">OmniWell</h1>
+            <v-img class="mx-auto mb-5  d-flex align-center justify-center" width="186" cover src="/img/logo.svg" />
           </div>
-            <p class="text-center mb-12 font-weight-bold text-white" style="font-size: 23px;">Welcome to Admin panel</p>
+            <p class="text-center mb-12 font-weight-bold text-white" style="font-size: 23px;">Welcome to admin panel</p>
           <v-form>
             <v-text-field v-model="form.email" density="compact" placeholder="Enter Email"
                           variant="outlined"></v-text-field>

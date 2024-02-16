@@ -73,7 +73,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
 </script>
 
 <template>
-  <div class="mt-16">
+  <div class="mt-10">
     <v-container>
       <!--      First section-->
       <v-sheet class="d-flex mb-6 bg-transparent align-center">
@@ -86,13 +86,13 @@ const goToLesson = (courseTitle: string, courseId: string) => {
               @keyup.enter="load"
               v-model="searchText"
               clearable
-              density="comfortable"
+              density="compact"
               hide-details
               variant="outlined"
               label="Search"
               prepend-inner-icon="mdi-magnify"
               single-line
-          ></v-text-field>
+          />
         </v-sheet>
       </v-sheet>
 
