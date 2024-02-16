@@ -49,23 +49,27 @@ interface Lesson {
 }
 
 interface User {
-    "uuid": string
-    "name": string
-    "email": string
-    "avatar": Media
-    "roles": string[]
-    "email_verified_at": number|null
-    "created_at": number
-    "updated_at": number
+    uuid: string
+    name: string
+    email: string
+    avatar: Media
+    roles: string[]
+    email_verified_at: number|null
+    created_at: number
+    updated_at: number
 }
 
 
 interface Category {
     _entity: string
+    id: number
     name: string
     slug: string
     description: string
+    parent_id: number
     created_at: number
+    updated_at: number
+    deleted_at: number
 }
 
 export {
