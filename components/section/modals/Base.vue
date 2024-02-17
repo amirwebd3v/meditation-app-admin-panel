@@ -1,9 +1,5 @@
 <script setup lang="ts">
-defineProps({
-  dialog: {
-    type: Boolean,
-    default: false,
-  },
+const props = defineProps({
   formTitle: {
     type: String,
     required: true,
@@ -11,9 +7,29 @@ defineProps({
   icon: {
     type: String,
     required: true,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  saveBtn: {
+    required: true ,
+  },
+  dialogStatus: {
+    type: Boolean,
+    required: true
   }
 });
 /*********************************************/
+const state = reactive({
+  dialog: false
+})
+
+watchEffect(() => {
+  console.log(props.dialogStatus)
+  console.log(state.dialog = props.dialogStatus)
+})
+
 
 
 </script>
@@ -21,7 +37,7 @@ defineProps({
 <template>
 
   <v-dialog
-      :v-model="dialog"
+      v-model="state.dialog"
       max-width="500px"
   >
 
@@ -38,7 +54,7 @@ defineProps({
 
 
         <v-card-text>
-            <slot name="columns"/>
+          <slot name="columns"/>
         </v-card-text>
 
         <v-card-actions class="float-right pt-0 mr-2">
@@ -50,10 +66,19 @@ defineProps({
                 rounded="xl"
                 variant="outlined"
                 text="Cancel"
+                @click="state.dialog = false"
             />
-
-            <slot name="actions"/>
-
+            <v-btn
+                :disabled="loading"
+                :loading="loading"
+                class="text-white  px-14 bg-primary"
+                rounded="xl"
+                size="large"
+                variant="outlined"
+                text="Save"
+                @click="saveBtn"
+            >
+            </v-btn>
           </div>
         </v-card-actions>
       </v-container>

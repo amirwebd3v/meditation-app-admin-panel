@@ -29,8 +29,8 @@ const formTitle = ref('Add Meditation Course')
 const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
 const loading = ref()
+const dialog = ref(false)
 const categoryItems = ref()
-
 /********************************************/
 const title = ref<CourseStoreRequest['title']>('');
 const description = ref<CourseStoreRequest['description']>('');
@@ -38,6 +38,14 @@ const categories = ref<CourseStoreRequest['categories']>([]);
 const price = ref<CourseStoreRequest['price']>(0);
 const type = ref<CourseStoreRequest['type']>(CourseType.Meditation)
 const isPopular = ref<Boolean>(true)
+const createCourse = (): CourseStoreRequest => ({
+  title: title.value,
+  description: description.value,
+  categories: categories.value,
+  price: price.value,
+  type: type.value,
+  is_popular: isPopular.value,
+});
 /********************************************/
 
 const maskPrice = {
@@ -47,6 +55,14 @@ const maskPrice = {
     9: {pattern: /\d/, optional: true}, // Optional decimal point and digit
   }
 }
+
+watch(loading, (val) => {
+  if (!val) return;
+
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
+});
 
 /********************************************/
 onMounted(async (options = {page: 1, itemsPerPage: -1}) => {
@@ -64,26 +80,26 @@ const {categoriesData, categoriesMeta} = storeToRefs(useCategoryStore())
 
 /********************************************/
 const saveCourse = async () => {
-  loading.value = true
-  const newCourse: CourseStoreRequest = {
-    title: title.value,
-    description: description.value,
-    categories: categories.value,
-    price: price.value,
-    type: type.value,
-    is_popular: isPopular.value
+  loading.value = true;
+  try {
+    const newCourse = createCourse();
+    console.log('Storing new course...');
+    await useMeditationStore().store(newCourse);
+    console.log('New course stored. Emitting dialog...');
+    dialog.value = true;
+    console.log('Dialog Closed. New course is added.');
+  } catch (err: any) {
+    console.error('Error saving course:', err);
+  } finally {
+    loading.value = false;
   }
-  await useMeditationStore().store(newCourse)
-  loading.value = false
-  console.log(`${newCourse} is added.`)
-}
-
+};
 
 </script>
 
 <template>
 
-  <Base :form-title="formTitle" :icon="icon">
+  <Base :form-title="formTitle" :icon="icon" :loading="loading" :save-btn="saveCourse" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn
@@ -205,17 +221,6 @@ const saveCourse = async () => {
       </v-row>
     </template>
 
-    <template #actions>
-      <v-btn
-          class="text-white  px-14 bg-primary"
-          rounded="xl"
-          size="large"
-          variant="outlined"
-          text="Save"
-          @click="saveCourse"
-      >
-      </v-btn>
-    </template>
   </Base>
 
 </template>
