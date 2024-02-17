@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Base from "~/components/section/modals/Base.vue";
 import type {CourseStoreRequest} from "~/utils/requests";
-import  {CourseType} from "~/utils/enums";
+import {CourseType} from "~/utils/enums";
 import useApi from "~/composables/api";
 import type {FilterSearchItem} from "l5-client";
 import {useMeditationStore} from "~/stores/meditation";
@@ -49,7 +49,7 @@ const maskPrice = {
 }
 
 /********************************************/
-onMounted( async (options = {}) => {
+onMounted(async (options = {page: 1, itemsPerPage: -1}) => {
   // const search: FilterSearchItem[] = [
   //   {field: 'courses.type', value: 'MEDITATION'},
   // ]
@@ -57,7 +57,6 @@ onMounted( async (options = {}) => {
   await useCategoryStore().index(params)
   categoryItems.value = categoriesData.value.flat().map(value => value)
 })
-
 
 
 const {categoriesData, categoriesMeta} = storeToRefs(useCategoryStore())
@@ -143,7 +142,7 @@ const saveCourse = async () => {
               single-line
               :items="categoryItems"
               item-title="name"
-              :item-value="item => item"
+              item-value="id"
           ></v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
@@ -158,7 +157,7 @@ const saveCourse = async () => {
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Popular</div>
-          <v-radio-group  v-model="isPopular">
+          <v-radio-group v-model="isPopular">
             <v-row class="pl-2 pt-4">
               <v-radio
                   :value="false"
