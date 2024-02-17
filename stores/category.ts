@@ -12,12 +12,16 @@ export const useCategoryStore = defineStore('category', {
     actions: {
         async fetch() {
             let response = await useApi().paginate<Category>('/admin/v1/category', {
-                pagination: {page: 1, perPage: -1}, search: [{field: 'courses.type', value: CourseType.Meditation}]
+                sort: {created_at: 'desc'},
+                pagination: {page: 1, perPage: -1},
+                search: [{field: 'courses.type', value: CourseType.Meditation}]
             })
             this.meditationCategories = response.data
 
             response = await useApi().paginate<Category>('/admin/v1/category', {
-                pagination: {page: 1, perPage: -1}, search: [{field: 'courses.type', value: CourseType.Video}]
+                sort: {created_at: 'desc'},
+                pagination: {page: 1, perPage: -1},
+                search: [{field: 'courses.type', value: CourseType.Video}]
             })
             this.videoCategories = response.data
         },
@@ -26,7 +30,16 @@ export const useCategoryStore = defineStore('category', {
     getters: {
         allCategories(state): Category[] {
             return state.videoCategories.concat(state.meditationCategories)
-                .reduce((prev: Category[], cur: Category) => [...prev.filter((obj: Category) => obj.id !== cur.id), cur], []);
+                .reduce((prev: Category[], cur: Category) => [...prev.filter((obj: Category) => obj.id !== cur.id), cur], [])
+                .sort(function (a, b) {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                });
         }
     }
 })
