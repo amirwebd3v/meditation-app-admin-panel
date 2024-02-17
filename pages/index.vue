@@ -1,3 +1,5 @@
 <script setup lang="ts">
-navigateTo('/panel')
+definePageMeta({
+  middleware: () => navigateTo('/panel')
+})
 </script>
