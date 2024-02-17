@@ -3,10 +3,8 @@ import Base from "~/components/section/modals/Base.vue";
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseType} from "~/utils/enums";
 import useApi from "~/composables/api";
-import type {FilterSearchItem} from "l5-client";
 import {useMeditationStore} from "~/stores/meditation";
-import type {Category} from "~/utils/types";
-import {ca} from "vuetify/locale";
+import {useCategoryStore} from "~/stores/category";
 
 /*********************************************/
 defineComponent({

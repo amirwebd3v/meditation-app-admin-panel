@@ -12,7 +12,7 @@ export const useCategoryStore = defineStore('category', {
     }),
     actions: {
         async index(queryParam: QueryParams) {
-            const {data,meta} = await useApi().paginate('/admin/v1/category', queryParam)
+            const {data,meta} = await useApi().paginate<Category>('/admin/v1/category', queryParam)
             this.categoriesData = data
             this.categoriesMeta = meta
         },
