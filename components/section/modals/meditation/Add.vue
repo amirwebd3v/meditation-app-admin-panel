@@ -1,9 +1,12 @@
 <script setup lang="ts">
-
 import Base from "~/components/section/modals/Base.vue";
-import type {Course} from "~/utils/types";
 import type {CourseStoreRequest} from "~/utils/requests";
+import  {CourseType} from "~/utils/enums";
+import useApi from "~/composables/api";
+import type {FilterSearchItem} from "l5-client";
+import {useMeditationStore} from "~/stores/meditation";
 
+/*********************************************/
 defineComponent({
   name: 'AddMeditation',
 })
@@ -18,38 +21,60 @@ defineProps({
     default: false
   },
 })
+
 /*********************************************/
 const formTitle = ref('Add Meditation Course')
 const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
+const loading = ref()
 
 /********************************************/
-const title = ref<Course['title']>('');
-const description = ref<Course['description']>('');
-const category = ref<Course['category']>('');
-const price = ref<Course['price']>('Free');
-const type = ref<Course['type']>('');
-const fileNames = ref([])
+const title = ref<CourseStoreRequest['title']>('');
+const description = ref<CourseStoreRequest['description']>('');
+const category = ref();
+const price = ref<CourseStoreRequest['price']>(0);
+const type = ref<CourseStoreRequest['type']>(CourseType.Meditation)
+const isPopular = ref<Boolean>(true)
+/********************************************/
 
+const maskPrice = {
+  mask: '0.99',
+  tokens: {
+    0: {pattern: /\d/, multiple: true}, // Multiple digits for integer part
+    9: {pattern: /\d/, optional: true}, // Optional decimal point and digit
+  }
+}
+
+/********************************************/
+onMounted( async (options = {}) => {
+  // const search: FilterSearchItem[] = [
+  //   {field: 'courses.type', value: 'MEDITATION'},
+  // ]
+  const params = useApi().prepareQueryParams(options)
+  await useCategoryStore().index(params)
+})
+
+
+const {categories, categoriesMeta} = storeToRefs(useCategoryStore())
+
+const categoryNames = categories.value.flat().map(value => value.name)
+
+/********************************************/
 const saveCourse = async () => {
+  loading.value = true
   const newCourse: CourseStoreRequest = {
-    title: title.value, description: description.value, price: price.value, type: 'MEDITATION', is_popular: false
+    title: title.value,
+    description: description.value,
+    // category: category.value,
+    price: price.value,
+    type: type.value,
+    is_popular: isPopular.value
   }
   await useMeditationStore().store(newCourse)
+  loading.value = false
   console.log(`${newCourse} is added.`)
 }
 
-const userSelectedItem = computed(() => {
-  return price.value.toString() === 'Free'
-
-});
-
-
-
-const handlePriceChange = (selectedPrices: number[]) => {
-  if (selectedPrices.includes(0))
-    price.value = 0;
-}
 
 </script>
 
@@ -93,7 +118,8 @@ const handlePriceChange = (selectedPrices: number[]) => {
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="title"
-                        placeholder="Enter meditation title"/>
+                        placeholder="Enter meditation title"
+          />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Description</div>
@@ -101,40 +127,47 @@ const handlePriceChange = (selectedPrices: number[]) => {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
-          <v-select
+          <v-autocomplete
               variant="outlined"
+              :disabled="loading"
+              chips
+              closable-chips
               multiple
               v-model="category"
               color="primary"
               density="comfortable"
               single-line
-              :items="['All Category', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-          ></v-select>
+              :items="categoryNames"
+
+          ></v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
-          <v-combobox
+          <v-text-field
               variant="outlined"
-              multiple
               v-model="price"
-              :readonly="userSelectedItem"
-              :clearable="userSelectedItem"
-              :items="['Free']"
               color="primary"
-
               density="comfortable"
-          ></v-combobox>
+              v-maska:[maskPrice]
+          ></v-text-field>
         </v-col>
         <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2">Type</div>
-          <v-select
-              variant="outlined"
-              color="primary"
-              density="comfortable"
-              single-line
-              v-model="type"
-              :items="['Single', 'Course']"
-          ></v-select>
+          <div class="text-subtitle-1 text-medium-emphasis pb-2">Popular</div>
+          <v-radio-group  v-model="isPopular">
+            <v-row class="pl-2 pt-4">
+              <v-radio
+                  :value="false"
+                  label="No"
+                  color="primary"
+              ></v-radio>
+              <v-radio
+                  :value="true"
+                  label="Yes"
+                  color="primary"
+              ></v-radio>
+            </v-row>
+
+          </v-radio-group>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Upload a picture</div>

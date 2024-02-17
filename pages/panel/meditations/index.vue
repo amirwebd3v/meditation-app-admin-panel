@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {useCategoryStore} from "~/stores/category";
+
 definePageMeta({
   middleware: 'sanctum:auth',
 })
@@ -11,6 +13,7 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem, QueryParams} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
+
 
 const loading = ref(true)
 const searchText = ref('')
@@ -26,6 +29,7 @@ const headers = [
 ]
 
 const {items, meta} = storeToRefs(useMeditationStore())
+// const {categories, categoryMeta} = storeToRefs(useCategoryStore())
 
 
 const load = async (options = {}) => {
@@ -40,6 +44,12 @@ const load = async (options = {}) => {
   await useMeditationStore().paginate(params)
   loading.value = false
 }
+
+// const filters2 = async (options = {}) => {
+//
+//   await useCategoryStore().index()
+// }
+
 
 const filters = [
   'All',
@@ -125,7 +135,33 @@ const goToLesson = (courseTitle: string, courseId: string) => {
         </template>
 
         <template #item.category="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item.category }}</div>
+<!--          <v-menu-->
+<!--              open-on-hover-->
+<!--              :location="'left center'"-->
+<!--          >-->
+<!--            <template v-slot:activator="{ props }">-->
+<!--              <div class="d-flex align-center cursor-pointer w-0" v-bind="props">-->
+<!--                <v-icon size="small" class="pr-2" icon="mdi-chevron-down"/>-->
+<!--                <p class="font-weight-thin">Show</p>-->
+<!--              </div>-->
+<!--            </template>-->
+<!--            <v-list  style="max-width: 150px;" bg-color="light">-->
+<!--              <v-list-item-->
+<!--                  v-for="category in item.categories"-->
+<!--                  :key="category.id"-->
+<!--              >-->
+<!--                <v-list-item-title class="text-white font-14">{{ category.name }}</v-list-item-title>-->
+<!--              </v-list-item>-->
+<!--            </v-list>-->
+<!--          </v-menu>-->
+<!--          ********************************************-->
+<!--          <div class="text-truncate d-inline-block" v-for="category in item.categories" >-->
+<!--            {{ category.name }}-->
+<!--          </div>-->
+          <!--          ********************************************-->
+          <div class="text-truncate d-inline-block" style="max-width: 125px;" >
+            {{ item.categories[0]['name'] }}
+          </div>
         </template>
 
         <template #item.description="{item}">
@@ -170,7 +206,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                 />
               </template>
 
-              <v-card class="bg-light-brown-1" rounded>
+              <v-card class="bg-light-brown-1 px-2 py-1" rounded>
                 <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
                 <EditMeditation
                     :form-title="'Edit Meditation Course'"

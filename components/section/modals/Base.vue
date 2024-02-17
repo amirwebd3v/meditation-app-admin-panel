@@ -29,7 +29,7 @@ defineProps({
       <slot name="button" v-bind="props"/>
     </template>
 
-    <v-card class="bg-light-brown-1" rounded="lg">
+    <v-card class="bg-light-brown-1 px-2 py-1" rounded="lg">
       <v-container>
 
         <v-card-title>
