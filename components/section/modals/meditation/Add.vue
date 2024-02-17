@@ -5,6 +5,7 @@ import  {CourseType} from "~/utils/enums";
 import useApi from "~/composables/api";
 import type {FilterSearchItem} from "l5-client";
 import {useMeditationStore} from "~/stores/meditation";
+import type {Category} from "~/utils/types";
 
 /*********************************************/
 defineComponent({
@@ -27,6 +28,7 @@ const formTitle = ref('Add Meditation Course')
 const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
 const loading = ref()
+const categoryNames = ref()
 
 /********************************************/
 const title = ref<CourseStoreRequest['title']>('');
@@ -52,12 +54,13 @@ onMounted( async (options = {}) => {
   // ]
   const params = useApi().prepareQueryParams(options)
   await useCategoryStore().index(params)
+  categoryNames.value = categories.value.flat().map(value => value.name)
 })
 
 
 const {categories, categoriesMeta} = storeToRefs(useCategoryStore())
 
-const categoryNames = categories.value.flat().map(value => value.name)
+// const categoryNames = categories.value.flat().map(value => value.name)
 
 /********************************************/
 const saveCourse = async () => {
