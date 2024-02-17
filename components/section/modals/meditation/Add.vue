@@ -2,9 +2,9 @@
 import Base from "~/components/section/modals/Base.vue";
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseType} from "~/utils/enums";
-import useApi from "~/composables/api";
 import {useMeditationStore} from "~/stores/meditation";
 import {useCategoryStore} from "~/stores/category";
+import {storeToRefs} from "pinia";
 
 /*********************************************/
 defineComponent({
@@ -27,7 +27,7 @@ const formTitle = ref('Add Meditation Course')
 const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
 const loading = ref()
-const categoryItems = ref()
+const {allCategories} = storeToRefs(useCategoryStore())
 
 /********************************************/
 const title = ref<CourseStoreRequest['title']>('');
@@ -45,20 +45,6 @@ const maskPrice = {
     9: {pattern: /\d/, optional: true}, // Optional decimal point and digit
   }
 }
-
-/********************************************/
-onMounted(async (options = {page: 1, itemsPerPage: -1}) => {
-  // const search: FilterSearchItem[] = [
-  //   {field: 'courses.type', value: 'MEDITATION'},
-  // ]
-  const params = useApi().prepareQueryParams(options)
-  await useCategoryStore().index(params)
-  categoryItems.value = categoriesData.value.flat().map(value => value)
-})
-
-
-const {categoriesData, categoriesMeta} = storeToRefs(useCategoryStore())
-
 
 /********************************************/
 const saveCourse = async () => {
@@ -138,7 +124,7 @@ const saveCourse = async () => {
               color="primary"
               density="comfortable"
               single-line
-              :items="categoryItems"
+              :items="allCategories"
               item-title="name"
               item-value="id"
           ></v-autocomplete>

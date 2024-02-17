@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {useCategoryStore} from "~/stores/category";
 
 definePageMeta({
   middleware: 'sanctum:auth',
@@ -13,7 +12,6 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem, QueryParams} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
-
 
 const loading = ref(true)
 const searchText = ref('')
@@ -29,8 +27,6 @@ const headers = [
 ]
 
 const {items, meta} = storeToRefs(useMeditationStore())
-// const {categories, categoryMeta} = storeToRefs(useCategoryStore())
-
 
 const load = async (options = {}) => {
   loading.value = true
@@ -44,11 +40,6 @@ const load = async (options = {}) => {
   await useMeditationStore().paginate(params)
   loading.value = false
 }
-
-// const filters2 = async (options = {}) => {
-//
-//   await useCategoryStore().index()
-// }
 
 
 const filters = [
