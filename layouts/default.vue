@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Header from "~/components/section/header/Header.vue";
+import {useCategoryStore} from "~/stores/category";
 
 useHead({
   meta: [
@@ -9,6 +10,10 @@ useHead({
     return titleChunk ? `${titleChunk} Meditation ` : "OmniWell";
   },
 });
+
+onMounted(async () => {
+  await useCategoryStore().fetch()
+})
 
 </script>
 
