@@ -160,7 +160,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
 <!--          </div>-->
           <!--          ********************************************-->
           <div class="text-truncate d-inline-block" style="max-width: 125px;" >
-            {{ item.categories[0]['name'] }}
+            {{ item.categories?.[0]?.['name'] || []}}
           </div>
         </template>
 

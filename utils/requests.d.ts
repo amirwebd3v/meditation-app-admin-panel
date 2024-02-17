@@ -1,9 +1,12 @@
 import type {QueryParams} from "l5-client";
-import {CourseType} from "~/utils/types";
+import type {Category} from "~/utils/types";
+import type {CourseType} from "~/utils/enums";
+
 
 
 interface CourseStoreRequest {
     type: CourseType
+    categories: Category[]
     title: string
     description: string|null
     price: number

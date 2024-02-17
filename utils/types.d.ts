@@ -1,6 +1,7 @@
 interface Course {
     created_at: number
     description: string
+    categories: Category
     lessons_count: number
     price: number
     price_type: string

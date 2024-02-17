@@ -6,6 +6,7 @@ import useApi from "~/composables/api";
 import type {FilterSearchItem} from "l5-client";
 import {useMeditationStore} from "~/stores/meditation";
 import type {Category} from "~/utils/types";
+import {ca} from "vuetify/locale";
 
 /*********************************************/
 defineComponent({
@@ -28,12 +29,12 @@ const formTitle = ref('Add Meditation Course')
 const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
 const loading = ref()
-const categoryNames = ref()
+const categoryItems = ref()
 
 /********************************************/
 const title = ref<CourseStoreRequest['title']>('');
 const description = ref<CourseStoreRequest['description']>('');
-const category = ref();
+const categories = ref<CourseStoreRequest['categories']>([]);
 const price = ref<CourseStoreRequest['price']>(0);
 const type = ref<CourseStoreRequest['type']>(CourseType.Meditation)
 const isPopular = ref<Boolean>(true)
@@ -54,13 +55,13 @@ onMounted( async (options = {}) => {
   // ]
   const params = useApi().prepareQueryParams(options)
   await useCategoryStore().index(params)
-  categoryNames.value = categories.value.flat().map(value => value.name)
+  categoryItems.value = categoriesData.value.flat().map(value => value)
 })
 
 
-const {categories, categoriesMeta} = storeToRefs(useCategoryStore())
 
-// const categoryNames = categories.value.flat().map(value => value.name)
+const {categoriesData, categoriesMeta} = storeToRefs(useCategoryStore())
+
 
 /********************************************/
 const saveCourse = async () => {
@@ -68,7 +69,7 @@ const saveCourse = async () => {
   const newCourse: CourseStoreRequest = {
     title: title.value,
     description: description.value,
-    // category: category.value,
+    categories: categories.value,
     price: price.value,
     type: type.value,
     is_popular: isPopular.value
@@ -136,12 +137,13 @@ const saveCourse = async () => {
               chips
               closable-chips
               multiple
-              v-model="category"
+              v-model="categories"
               color="primary"
               density="comfortable"
               single-line
-              :items="categoryNames"
-
+              :items="categoryItems"
+              item-title="name"
+              :item-value="item => item"
           ></v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
