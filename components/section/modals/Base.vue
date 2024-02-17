@@ -26,8 +26,7 @@ const state = reactive({
 })
 
 watchEffect(() => {
-  console.log(props.dialogStatus)
-  console.log(state.dialog = props.dialogStatus)
+  state.dialog = props.dialogStatus
 })
 
 

@@ -27,6 +27,7 @@ const formTitle = ref('Add Meditation Course')
 const icon = ref('mdi mdi-plus')
 const isBtnText = ref('')
 const loading = ref()
+const dialog = ref()
 const {allCategories} = storeToRefs(useCategoryStore())
 
 /********************************************/
@@ -36,6 +37,14 @@ const categories = ref<CourseStoreRequest['categories']>([]);
 const price = ref<CourseStoreRequest['price']>(0);
 const type = ref<CourseStoreRequest['type']>(CourseType.Meditation)
 const isPopular = ref<Boolean>(true)
+const createCourse = (): CourseStoreRequest => ({
+  title: title.value,
+  description: description.value,
+  categories: categories.value,
+  price: price.value,
+  type: type.value,
+  is_popular: isPopular.value,
+});
 /********************************************/
 
 const maskPrice = {
@@ -58,6 +67,7 @@ const saveCourse = async () => {
     is_popular: isPopular.value
   }
   await useMeditationStore().store(newCourse)
+  dialog.value = false
   loading.value = false
   console.log(`${newCourse} is added.`)
 }
@@ -67,7 +77,7 @@ const saveCourse = async () => {
 
 <template>
 
-  <Base :form-title="formTitle" :icon="icon">
+  <Base :form-title="formTitle" :icon="icon" :loading="loading" :save-btn="saveCourse" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn
@@ -105,12 +115,11 @@ const saveCourse = async () => {
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="title"
-                        placeholder="Enter meditation title"
-          />
+                        placeholder="Enter meditation title" required/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" v-model="description"/>
+          <v-textarea variant="outlined" density="compact" color="primary" v-model="description" required/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
@@ -127,11 +136,13 @@ const saveCourse = async () => {
               :items="allCategories"
               item-title="name"
               item-value="id"
+              required
           ></v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
           <v-text-field
+              required
               variant="outlined"
               v-model="price"
               color="primary"
