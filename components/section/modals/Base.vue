@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useDisplay } from 'vuetify'
+
+
+
 const props = defineProps({
   formTitle: {
     type: String,
@@ -25,6 +29,9 @@ const state = reactive({
   dialog: false
 })
 
+
+
+
 watchEffect(() => {
   state.dialog = props.dialogStatus
 })
@@ -44,7 +51,7 @@ watchEffect(() => {
       <slot name="button" v-bind="props"/>
     </template>
 
-    <v-card class="bg-light-brown-1 px-2 py-1" rounded="lg">
+    <v-card class="bg-light-brown-1 py-1" rounded="lg">
       <v-container>
 
         <v-card-title>
@@ -56,11 +63,11 @@ watchEffect(() => {
           <slot name="columns"/>
         </v-card-text>
 
-        <v-card-actions class="float-right pt-0 mr-2">
+        <v-card-actions class="float-right pt-0">
           <div class="d-sm-flex">
             <v-btn
                 color="primary"
-                class="px-12"
+                :class="{'px-8': $vuetify.display.smAndDown,'px-12':$vuetify.display.md}"
                 size="large"
                 rounded="xl"
                 variant="outlined"
@@ -70,7 +77,7 @@ watchEffect(() => {
             <v-btn
                 :disabled="loading"
                 :loading="loading"
-                class="text-white  px-14 bg-primary"
+                :class="{'px-10' : $vuetify.display.smAndDown,'px-14':$vuetify.display.md}"
                 rounded="xl"
                 size="large"
                 variant="outlined"
