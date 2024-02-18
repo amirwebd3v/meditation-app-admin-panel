@@ -15,6 +15,10 @@ const loading = ref(true)
 const searchText = ref('')
 const {items, meta} = storeToRefs(useLessonStore())
 
+onMounted(async () => {
+  await load()
+})
+
 const course = (await useMeditationStore().get(<string>useRoute().params.id))
     
 
