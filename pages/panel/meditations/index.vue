@@ -104,10 +104,10 @@ const goToLesson = (courseTitle: string, courseId: string) => {
 
       <v-data-table-server
           class="mt-10 rounded-lg bg-light-brown-1"
-          v-if="!!items"
+          v-if="!!items.size"
           :items-length="+meta.total"
           :page="meta.current_page"
-          :items="items"
+          :items="Array.from(items.values())"
           :headers="headers"
           @update:options="load"
           :loading="loading"

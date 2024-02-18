@@ -7,19 +7,19 @@ import type {CourseStoreRequest, CourseUpdateRequest} from "~/utils/requests";
 
 export const useMeditationStore = defineStore('meditation', {
     state: () => ({
-        items: [] as Course[],
+        items: new Map<string, Course>(),
         meta: {} as PaginatorMeta
     }),
     actions: {
         async paginate(queryParam: QueryParams) {
             const {data, meta} = await useApi().paginate<Course>('/admin/v1/course-meditation', queryParam)
-            this.items = data
+            data.forEach(entity => this.items.set(entity.uuid, entity))
             this.meta = meta
         },
 
         async store(request: CourseStoreRequest) {
             const data: Course = await useApi().post('/admin/v1/course', {body: request})
-            this.items.push(data)
+            this.items.set(data.uuid, data)
         },
 
         async get(id: string): Promise<Course> {
@@ -29,10 +29,7 @@ export const useMeditationStore = defineStore('meditation', {
         // async update(request: CourseUpdateRequest) {
         //     const {id, ...body} = request
         //     const {data} = await useApi().put(`/admin/v1/course/${id}`, {body})
-        //     const index = this.items.findIndex(item => item.uuid === id)
-        //     if (index !== -1) {
-        //         this.items[index] = data
-        //     }
+        //     this.items.set(data.uuid, data)
         // },
     },
 })
