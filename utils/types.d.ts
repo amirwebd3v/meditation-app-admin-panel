@@ -15,6 +15,15 @@ interface Course {
 }
 
 
+interface Preview {
+    file_id: string
+    preview: string
+    mime_type: string
+    size: string
+    created_at: number
+}
+
+
 interface Media {
     collection_name: string;
     created_at: number
@@ -75,6 +84,7 @@ interface Category {
 
 export {
     User,
+    Preview,
     Lesson,
     Course,
     Media,
