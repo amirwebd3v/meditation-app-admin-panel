@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 import useApi from '~/composables/api'
 import type {Preview} from "~/utils/types";
 
-export const useLessonStore = defineStore('lesson', {
+export const useMediaStore = defineStore('media', {
     state: () => ({
         files: [] as Preview[],
     }),
