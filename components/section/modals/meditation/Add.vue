@@ -31,20 +31,14 @@ const dialog = ref()
 const {allCategories} = storeToRefs(useCategoryStore())
 
 /********************************************/
-const title = ref<CourseStoreRequest['title']>('');
-const description = ref<CourseStoreRequest['description']>('');
-const categories = ref<CourseStoreRequest['categories']>([]);
-const price = ref<CourseStoreRequest['price']>(0);
-const type = ref<CourseStoreRequest['type']>(CourseType.Meditation)
-const isPopular = ref<Boolean>(true)
-const createCourse = (): CourseStoreRequest => ({
-  title: title.value,
-  description: description.value,
-  categories: categories.value,
-  price: price.value,
-  type: type.value,
-  is_popular: isPopular.value,
-});
+const request = reactive<CourseStoreRequest>({
+  title: '',
+  description: null,
+  categories: [],
+  price: 0,
+  type: CourseType.Meditation,
+  is_popular: false
+})
 /********************************************/
 
 const maskPrice = {
@@ -55,21 +49,18 @@ const maskPrice = {
   }
 }
 
+const emits = defineEmits<{
+  (eventName: 'meditationSaved', saved: boolean): void
+}>()
+
 /********************************************/
 const saveCourse = async () => {
   loading.value = true
-  const newCourse: CourseStoreRequest = {
-    title: title.value,
-    description: description.value,
-    categories: categories.value,
-    price: price.value,
-    type: type.value,
-    is_popular: isPopular.value
-  }
-  await useMeditationStore().store(newCourse)
+  await useMeditationStore().store(request)
   dialog.value = false
   loading.value = false
-  console.log(`${newCourse} is added.`)
+  defineEmits()
+  console.log(`${request} is added.`)
 }
 
 
@@ -114,12 +105,12 @@ const saveCourse = async () => {
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
-          <v-text-field variant="outlined" color="primary" density="comfortable" v-model="title"
+          <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
                         placeholder="Enter meditation title" required/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" v-model="description" required/>
+          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description" required/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
@@ -129,7 +120,7 @@ const saveCourse = async () => {
               chips
               closable-chips
               multiple
-              v-model="categories"
+              v-model="request.categories"
               color="primary"
               density="comfortable"
               single-line
@@ -144,7 +135,7 @@ const saveCourse = async () => {
           <v-text-field
               required
               variant="outlined"
-              v-model="price"
+              v-model="request.price"
               color="primary"
               density="comfortable"
               v-maska:[maskPrice]
@@ -152,7 +143,7 @@ const saveCourse = async () => {
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Popular</div>
-          <v-radio-group v-model="isPopular">
+          <v-radio-group v-model="request.is_popular">
             <v-row class="pl-2 pt-4">
               <v-radio
                   :value="false"
