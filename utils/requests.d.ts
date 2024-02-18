@@ -6,7 +6,7 @@ import type {CourseType} from "~/utils/enums";
 
 interface CourseStoreRequest {
     type: CourseType
-    categories: Category[]
+    categories: number[]
     title: string
     description: string|null
     price: number

@@ -16,7 +16,7 @@ const searchText = ref('')
 const {items, meta} = storeToRefs(useLessonStore())
 
 const course = (await useMeditationStore().get(<string>useRoute().params.id))
-console.log(course)
+    
 
 const load = async (options = {}) => {
   loading.value = true
@@ -25,6 +25,7 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
+  
   await useLessonStore().paginate(<string>useRoute().params.id, params)
 
   loading.value = false
@@ -84,13 +85,14 @@ const headers = ref([
 
       <v-data-table-server
           class="mt-10 rounded-lg bg-light-brown-1"
-          v-if="!!items"
+          v-if="!!items.size"
           :items-length="meta.total"
           :page="meta.current_page"
-          :items="items"
+          :items="Array.from(items.values())"
           :headers="headers"
           @update:options="load"
           :loading="loading"
+          :sort-by="[{key: 'created_at', order: 'desc'}]"
       >
 
         <template #item.title="{item}">

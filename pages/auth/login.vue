@@ -29,7 +29,6 @@ async function login() {
   loading.value = true;
   try {
     await useSanctumAuth().login(form.value);
-    console.log(useSanctumAuth().user);
   } catch (error) {
     console.error('Login failed:', error);
   } finally {
@@ -50,7 +49,7 @@ async function login() {
             <v-text-field v-model="form.email" density="compact" placeholder="Enter Email"
                           variant="outlined"></v-text-field>
             <v-text-field v-model="form.password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-                          :type="visible ? 'text' : 'password'"
+                          :type="visible ? 'text' : 'password'" autocomplete="off"
                           density="compact" placeholder="Enter Password" variant="outlined"
                           @click:append-inner="visible = !visible"/>
             <v-btn

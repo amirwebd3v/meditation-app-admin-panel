@@ -9,7 +9,7 @@ import AddConfigurationItem from "~/components/section/configuration/AddConfigur
 
 import {useMeditationStore} from "~/stores/meditation"
 import useApi from '~/composables/api'
-import type {FilterSearchItem, QueryParams} from "l5-client";
+import type {FilterSearchItem} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
@@ -104,14 +104,15 @@ const goToLesson = (courseTitle: string, courseId: string) => {
 
       <v-data-table-server
           class="mt-10 rounded-lg bg-light-brown-1"
-          v-if="!!items"
+          v-if="!!items.size"
           :items-length="+meta.total"
           :page="meta.current_page"
-          :items="items"
+          :items="Array.from(items.values())"
           :headers="headers"
           @update:options="load"
           :loading="loading"
           :sort-by="[{key: 'created_at', order: 'desc'}]"
+
       >
 
         <template #item.title="{item}">
@@ -236,7 +237,11 @@ const goToLesson = (courseTitle: string, courseId: string) => {
 <style lang="scss" scoped>
 div:deep(.v-table__wrapper) {
   thead {
-    background-color: #7C6346;
+    background-color: #7B6345;
+  }
+  table > tbody > tr:not(:last-child) > td {
+    border-bottom:  1px solid #7B6345;
   }
 }
+
 </style>
