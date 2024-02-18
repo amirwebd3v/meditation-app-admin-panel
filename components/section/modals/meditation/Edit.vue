@@ -62,7 +62,6 @@ const UpdateCourse = async () => {
     // add other fields as necessary
   }
   await useMeditationStore().update(<string>courseId,<any>newCourse)
-  console.log(`${courseId} is updated.`)
 }
 
 

@@ -60,7 +60,6 @@ const saveCourse = async () => {
   dialog.value = false
   loading.value = false
   defineEmits()
-  console.log(`${request} is added.`)
 }
 
 

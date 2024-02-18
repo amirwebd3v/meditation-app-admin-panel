@@ -25,7 +25,6 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
-  console.log(params);
   
   await useLessonStore().paginate(<string>useRoute().params.id, params)
 

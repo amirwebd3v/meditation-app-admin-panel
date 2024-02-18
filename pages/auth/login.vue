@@ -29,7 +29,6 @@ async function login() {
   loading.value = true;
   try {
     await useSanctumAuth().login(form.value);
-    console.log(useSanctumAuth().user);
   } catch (error) {
     console.error('Login failed:', error);
   } finally {
