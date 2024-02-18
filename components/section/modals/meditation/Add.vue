@@ -49,9 +49,6 @@ const maskPrice = {
   }
 }
 
-const emits = defineEmits<{
-  (eventName: 'meditationSaved', saved: boolean): void
-}>()
 
 /********************************************/
 const saveCourse = async () => {
@@ -59,7 +56,6 @@ const saveCourse = async () => {
   await useMeditationStore().store(request)
   dialog.value = false
   loading.value = false
-  defineEmits()
 }
 
 
@@ -103,16 +99,16 @@ const saveCourse = async () => {
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
-          <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
+          <div class="text-subtitle-1 text-white text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
                         placeholder="Enter meditation title" required/>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2">Description</div>
+          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Description</div>
           <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description" required/>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
+          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Select category</div>
           <v-autocomplete
               variant="outlined"
               :disabled="loading"
@@ -130,7 +126,7 @@ const saveCourse = async () => {
           ></v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
+          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Price ($)</div>
           <v-text-field
               required
               variant="outlined"
@@ -141,25 +137,25 @@ const saveCourse = async () => {
           ></v-text-field>
         </v-col>
         <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2">Popular</div>
-          <v-radio-group v-model="request.is_popular">
-            <v-row class="pl-2 pt-4">
+          <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5">Popular</div>
+          <v-radio-group class="mt-5" inline v-model="request.is_popular" >
               <v-radio
+                  density="compact"
                   :value="false"
                   label="No"
                   color="primary"
-              ></v-radio>
+                  class="pr-md-8"
+              />
               <v-radio
+                  density="compact"
                   :value="true"
                   label="Yes"
                   color="primary"
-              ></v-radio>
-            </v-row>
-
+              />
           </v-radio-group>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2">Upload a picture</div>
+          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Upload a picture</div>
           <v-file-input
               placeholder="Upload your documents"
               variant="outlined"
@@ -168,7 +164,7 @@ const saveCourse = async () => {
               hide-details=""
           >
             <template v-slot:selection="{ fileNames }">
-              <template v-for="fileName in fileNames" :key="fileName">
+              <div v-for="fileName in fileNames" :key="fileName">
                 <v-card width="125" height="125" class="justify-center align-center">
                   <v-col align-self="auto">
                     <v-img
@@ -183,24 +179,13 @@ const saveCourse = async () => {
 
                 </v-card>
 
-              </template>
+              </div>
             </template>
           </v-file-input>
         </v-col>
       </v-row>
     </template>
 
-    <template #actions>
-      <v-btn
-          class="text-white  px-14 bg-primary"
-          rounded="xl"
-          size="large"
-          variant="outlined"
-          text="Save"
-          @click="saveCourse"
-      >
-      </v-btn>
-    </template>
   </Base>
 
 </template>
