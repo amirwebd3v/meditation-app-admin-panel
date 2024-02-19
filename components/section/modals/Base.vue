@@ -15,11 +15,12 @@ const props = defineProps({
     default: false,
   },
   saveBtn: {
-    required: true,
+    type: Function,
+    default: () => null
   },
   dialogStatus: {
     type: Boolean,
-    required: true
+    default: false
   }
 });
 /*********************************************/

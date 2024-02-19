@@ -3,16 +3,10 @@ definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-
-
 import EditVideo from "~/components/section/modals/video/Edit.vue";
-
-
-
 import {useVideoStore} from "~/stores/video"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-
 import AddVideo from "~/components/section/modals/video/Add.vue";
 import {useLessonStore} from "~/stores/lesson";
 
@@ -21,17 +15,18 @@ const loading = ref(true)
 const searchText = ref('')
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
+  {key: 'category', title: 'CATEGORY', align: 'start', sortable: false},
   {key: 'price', title: 'PRICE', sortable: true, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
   {key: 'actions', title: '', sortable: false,align: 'start'},
 ]
 
-const {items, meta} = storeToRefs(useVideoStore())
-const course = (await useVideoStore().get(<string>useRoute().params.id))
+const {items, meta} = storeToRefs(useLessonStore())
+const course = (await useVideoStore().get(useRoute().params.id.toString()))
 
 onMounted(async () => {
-  await load()
+  await load({sortBy: [{key: 'created_at', order: 'desc'}]})
 })
 
 const load = async (options = {}) => {
@@ -41,14 +36,13 @@ const load = async (options = {}) => {
     {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
+  params.relations = ['categories']
   await useLessonStore().paginate(<string>useRoute().params.id,params)
   loading.value = false
 }
-
 </script>
 
 <template>
-
   <div class="mt-5">
     <v-container>
       <!--     Start First section-->
@@ -87,10 +81,10 @@ const load = async (options = {}) => {
       <!--    Start Second section-->
       <v-data-table-server
           class="mt-10 rounded-lg bg-light-brown-1"
-          v-if="!!items"
-          :items-length="meta.total"
+          v-if="!!items.size"
+          :items-length="+meta.total"
           :page="meta.current_page"
-          :items="items"
+          :items="[...items.values()]"
           :headers="headers"
           @update:options="load"
           :loading="loading"
@@ -102,6 +96,10 @@ const load = async (options = {}) => {
               <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.title }}</div>
             </template>
           </v-tooltip>
+        </template>
+
+        <template #item.category="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.categories[0].name }}</div>
         </template>
 
         <template #item.price="{item}">
@@ -137,29 +135,24 @@ const load = async (options = {}) => {
                 :description="item.description"
                 :price="item.price"
                 :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
-                :category
+                :category="item.categories[0].id"
             />
             <v-btn
                 class="text-primary"
                 variant="text"
                 size="small"
                 icon="mdi-delete-outline"
-                @click=""
             />
           </div>
         </template>
 
       </v-data-table-server>
       <!--    End Second section-->
-
-
-
     </v-container>
   </div>
-
-
-
 </template>
+
+
 <style lang="scss" scoped>
 div:deep(.v-table__wrapper) {
   thead {

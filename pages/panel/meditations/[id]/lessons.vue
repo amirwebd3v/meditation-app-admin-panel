@@ -6,36 +6,12 @@ definePageMeta({
 import {useLessonStore} from "~/stores/lesson"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
 
 const loading = ref(true)
 const searchText = ref('')
-const {items, meta} = storeToRefs(useLessonStore())
-
-onMounted(async () => {
-  await load()
-})
-
-const course = (await useMeditationStore().get(<string>useRoute().params.id))
-    
-
-const load = async (options = {}) => {
-  loading.value = true
-  const search: FilterSearchItem[] = searchText.value === '' ? [] : [
-    {field: 'title', operator: 'like', value: searchText.value},
-    {field: 'price', operator: 'like', value: searchText.value},
-  ]
-  const params = useApi().prepareQueryParams(options, search)
-  
-  await useLessonStore().paginate(<string>useRoute().params.id, params)
-
-  loading.value = false
-}
-
-
 const headers = ref([
   {title: 'Title', align: 'start', key: 'title'},
   {title: 'CATEGORY', key: 'category'},
@@ -45,12 +21,28 @@ const headers = ref([
   {title: '', key: 'actions', sortable: false, align: 'end'},
 ])
 
+const {items, meta} = storeToRefs(useLessonStore())
+const course = (await useMeditationStore().get(useRoute().params.id.toString()))
+
+onMounted(async () => {
+  await load({sortBy: [{key: 'created_at', order: 'desc'}]})
+})
+
+const load = async (options = {}) => {
+  loading.value = true
+  const search: FilterSearchItem[] = searchText.value === '' ? [] : [
+    {field: 'title', operator: 'like', value: searchText.value},
+    {field: 'price', operator: 'like', value: searchText.value},
+  ]
+  const params = useApi().prepareQueryParams(options, search)
+  params.relations = ['categories']
+  await useLessonStore().paginate(<string>useRoute().params.id, params)
+  loading.value = false
+}
 </script>
 
 
 <template>
-
-
   <div class="mt-5">
     <v-container>
       <!--     Start First section-->
@@ -90,13 +82,12 @@ const headers = ref([
       <v-data-table-server
           class="mt-10 rounded-lg bg-light-brown-1"
           v-if="!!items.size"
-          :items-length="meta.total"
+          :items-length="+meta.total"
           :page="meta.current_page"
-          :items="Array.from(items.values())"
+          :items="[...items.values()]"
           :headers="headers"
           @update:options="load"
           :loading="loading"
-          :sort-by="[{key: 'created_at', order: 'desc'}]"
       >
 
         <template #item.title="{item}">
@@ -108,7 +99,7 @@ const headers = ref([
         </template>
 
         <template #item.category="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item.category }}</div>
+          <div class="text-truncate" style="max-width: 125px;">{{ item.categories[0].name }}</div>
         </template>
 
         <template #item.description="{item}">
@@ -140,26 +131,24 @@ const headers = ref([
                 :description="item.description"
                 :price="item.price"
                 :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
-                :category
+                :category="item.categories[0].id"
             />
             <v-btn
                 class="text-primary"
                 variant="text"
                 size="small"
                 icon="mdi-delete-outline"
-                @click=""
             />
           </div>
         </template>
 
       </v-data-table-server>
       <!--    End Second section-->
-
     </v-container>
   </div>
-
-
 </template>
+
+
 <style lang="scss" scoped>
 div:deep(.v-table__wrapper) {
   thead {

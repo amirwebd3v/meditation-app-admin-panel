@@ -34,7 +34,6 @@ onMounted(async () => {
 
 const load = async (options = {}) => {
   loading.value = true
-  console.log('---', options)
   const search: FilterSearchItem[] = searchText.value === '' ? [] : [
     {field: 'title', operator: 'like', value: searchText.value},
     {field: 'description', operator: 'like', value: searchText.value},
@@ -112,11 +111,10 @@ const goToLesson = (courseTitle: string, courseId: string) => {
           v-if="!!items.size"
           :items-length="+meta.total"
           :page="meta.current_page"
-          :items="Array.from(items.values())"
+          :items="[...items.values()]"
           :headers="headers"
           @update:options="load"
           :loading="loading"
-          :sort-by="[{key: 'created_at', order: 'desc'}]"
 
       >
 
@@ -128,38 +126,12 @@ const goToLesson = (courseTitle: string, courseId: string) => {
           </v-tooltip>
         </template>
 
-        <template #item.set="{ item }">
-          <div style="max-width: 125px;">{{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}</div>
+        <template #item.category="{item}">
+          <div class="text-truncate" style="max-width: 125px;">{{ item.categories[0].name }}</div>
         </template>
 
-        <template #item.category="{item}">
-<!--          <v-menu-->
-<!--              open-on-hover-->
-<!--              :location="'left center'"-->
-<!--          >-->
-<!--            <template v-slot:activator="{ props }">-->
-<!--              <div class="d-flex align-center cursor-pointer w-0" v-bind="props">-->
-<!--                <v-icon size="small" class="pr-2" icon="mdi-chevron-down"/>-->
-<!--                <p class="font-weight-thin">Show</p>-->
-<!--              </div>-->
-<!--            </template>-->
-<!--            <v-list  style="max-width: 150px;" bg-color="light">-->
-<!--              <v-list-item-->
-<!--                  v-for="category in item.categories"-->
-<!--                  :key="category.id"-->
-<!--              >-->
-<!--                <v-list-item-title class="text-white font-14">{{ category.name }}</v-list-item-title>-->
-<!--              </v-list-item>-->
-<!--            </v-list>-->
-<!--          </v-menu>-->
-<!--          ********************************************-->
-<!--          <div class="text-truncate d-inline-block" v-for="category in item.categories" >-->
-<!--            {{ category.name }}-->
-<!--          </div>-->
-          <!--          ********************************************-->
-          <div class="text-truncate d-inline-block" style="max-width: 125px;" >
-            {{ item.categories?.[0]?.['name'] || []}}
-          </div>
+        <template #item.set="{ item }">
+          <div style="max-width: 125px;">{{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}</div>
         </template>
 
         <template #item.description="{item}">
@@ -213,7 +185,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                     :description="item.description"
                     :price="item.price"
                     :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
-                    :category
+                    :category="item.categories[0].id"
                 />
                 <v-btn
                     class="text-primary"

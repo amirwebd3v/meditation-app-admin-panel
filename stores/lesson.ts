@@ -10,7 +10,7 @@ export const useLessonStore = defineStore('lesson', {
     }),
     actions: {
         async paginate(courseId: string,queryParam: QueryParams) {
-            const map = new Map<string, Course>()
+            const map = new Map<string, Lesson>()
             const {data, meta} = await useApi().paginate<Lesson>(`/admin/v1/course/${courseId}/lesson`, queryParam)
             data.forEach(entity => map.set(entity.uuid, entity))
             this.items = map
