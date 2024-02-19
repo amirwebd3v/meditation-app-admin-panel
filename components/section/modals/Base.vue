@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useDisplay } from 'vuetify'
-
 
 
 const props = defineProps({
@@ -17,7 +15,7 @@ const props = defineProps({
     default: false,
   },
   saveBtn: {
-    required: true ,
+    required: true,
   },
   dialogStatus: {
     type: Boolean,
@@ -30,12 +28,9 @@ const state = reactive({
 })
 
 
-
-
 watchEffect(() => {
   state.dialog = props.dialogStatus
 })
-
 
 
 </script>
@@ -63,11 +58,14 @@ watchEffect(() => {
           <slot name="columns"/>
         </v-card-text>
 
-        <v-card-actions class="float-right pt-0">
+        <v-card-actions class="float-right pt-0 mr-1 ">
           <div class="d-sm-flex">
             <v-btn
+                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                 color="primary"
-                :class="{'px-8': $vuetify.display.smAndDown,'px-12':$vuetify.display.md}"
+                :class="{
+              'px-7': $vuetify.display.smAndDown,
+              'px-12':$vuetify.display.mdAndUp}"
                 size="large"
                 rounded="xl"
                 variant="outlined"
@@ -77,7 +75,11 @@ watchEffect(() => {
             <v-btn
                 :disabled="loading"
                 :loading="loading"
-                :class="{'px-10' : $vuetify.display.smAndDown,'px-14':$vuetify.display.md}"
+                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+                :class="{
+                  'px-10' : $vuetify.display.smAndDown,
+                  'px-14':$vuetify.display.mdAndUp,
+                  'text-white bg-primary': true}"
                 rounded="xl"
                 size="large"
                 variant="outlined"
