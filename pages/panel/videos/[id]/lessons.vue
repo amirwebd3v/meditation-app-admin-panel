@@ -26,7 +26,7 @@ const {items, meta} = storeToRefs(useLessonStore())
 const course = (await useVideoStore().get(useRoute().params.id.toString()))
 
 onMounted(async () => {
-  await load({sortBy: [{key: 'created_at', order: 'desc'}]})
+  await load()
 })
 
 const load = async (options = {}) => {

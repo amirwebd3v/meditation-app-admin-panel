@@ -26,7 +26,7 @@ const headers = [
 const {items, meta} = storeToRefs(useVideoStore())
 
 onMounted(async () => {
-  await load({sortBy: [{key: 'created_at', order: 'desc'}]})
+  await load()
 })
 
 const load = async (options = {}) => {

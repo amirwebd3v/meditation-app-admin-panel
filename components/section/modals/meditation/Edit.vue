@@ -20,6 +20,10 @@ defineComponent({
 })
 
 const props = defineProps( {
+  formTitle : {
+    type : String,
+    required: true
+  },
   title : {
     type : String,
     required: true
@@ -29,14 +33,14 @@ const props = defineProps( {
     required: true
   },
   categories : {
-    type : [],
+    type : Array,
     required: true
   },
   price : {
     type : String,
     required: true
   },
-  is_popular : {
+  isPopular : {
     type : Boolean,
     required: true
   },
@@ -84,7 +88,7 @@ const updateCourse = async () => {
 
 
 
-  <Base :form-title="'formTitle'" :icon="icon" :loading="loading" :save-btn="updateCourse" :dialog-status="dialog">
+  <Base :form-title="formTitle" :icon="icon" :loading="loading" :save-btn="updateCourse" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn

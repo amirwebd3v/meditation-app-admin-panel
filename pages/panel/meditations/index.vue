@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import type {Category} from "~/utils/types";
+
 definePageMeta({
   middleware: 'sanctum:auth',
 })
@@ -147,10 +149,10 @@ const goToLesson = (courseId: string) => {
         </template>
 
 
-        <template #item.thumbnail="{ item }" >
-            <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
-              <v-img :src="item.thumbnail.urls.small" height="64" cover/>
-            </v-card>
+        <template #item.thumbnail="{ item }">
+          <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
+            <v-img :src="item.thumbnail.urls.small" height="64" cover/>
+          </v-card>
         </template>
 
         <template #item.price="{item}">
@@ -179,13 +181,13 @@ const goToLesson = (courseId: string) => {
               <v-card class="bg-light-brown-1 px-2 py-1" rounded>
                 <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
                 <EditMeditation
-                    :form-title="'Edit Meditation Course'"
                     :id="item.uuid"
+                    :form-title="'Edit Meditation Course'"
                     :title="item.title"
                     :description="item.description"
                     :price="item.price"
-                    :is_popular="item.is_popular"
-                    :categories="item.categories[0].id"
+                    :is-popular="item.is_popular"
+                    :categories="item.categories.map((c : Category) => c.id)"
                 />
                 <v-btn
                     class="text-primary"
@@ -216,8 +218,9 @@ div:deep(.v-table__wrapper) {
   thead {
     background-color: #7B6345;
   }
+
   table > tbody > tr:not(:last-child) > td {
-    border-bottom:  1px solid #7B6345;
+    border-bottom: 1px solid #7B6345;
   }
 }
 
