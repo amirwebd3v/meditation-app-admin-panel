@@ -28,6 +28,7 @@ const headers = [
 
 const {items, meta} = storeToRefs(useMeditationStore())
 
+
 onMounted(async () => {
   await load()
 })
@@ -62,16 +63,15 @@ const menu = ref(false)
 
 
 const router = useRouter();
-const goToLesson = (courseTitle: string, courseId: string) => {
+const goToLesson = (courseId: string) => {
   if (courseId) {
     router.push({
       name: 'panel-meditations-id-lessons',
       params: {id: courseId},
     })
   } else {
-    console.error(`No course found with title: ${courseTitle}`)
+    console.error('No course found with title')
   }
-
 }
 
 
@@ -127,7 +127,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
         </template>
 
         <template #item.category="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item.categories[0].name }}</div>
+          <div class="text-truncate" style="max-width: 125px;">{{ item?.categories[0]?.name }}</div>
         </template>
 
         <template #item.set="{ item }">
@@ -184,8 +184,8 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                     :title="item.title"
                     :description="item.description"
                     :price="item.price"
-                    :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
-                    :category="item.categories[0].id"
+                    :is_popular="item.is_popular"
+                    :categories="item.categories[0].id"
                 />
                 <v-btn
                     class="text-primary"
@@ -200,7 +200,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                 variant="text"
                 size="small"
                 icon="mdi-chevron-right"
-                @click="goToLesson(item.title,item.uuid)"
+                @click="goToLesson(item.uuid)"
                 density="compact"
             />
           </div>

@@ -59,6 +59,8 @@ const saveCourse = async () => {
 }
 
 
+
+
 </script>
 
 <template>
@@ -123,7 +125,26 @@ const saveCourse = async () => {
               item-title="name"
               item-value="id"
               required
-          ></v-autocomplete>
+          >
+<!--            <template v-slot:prepend-item>-->
+<!--              <v-list-item-->
+<!--                  title="All Categories"-->
+<!--                  @click="toggle"-->
+
+<!--              >-->
+<!--                <template v-slot:prepend>-->
+<!--                  <v-checkbox-btn-->
+<!--                      color="primary"-->
+<!--                      :indeterminate="likesSomeFruit && !likesAllFruit"-->
+<!--                      :model-value="allCategories"-->
+<!--                  ></v-checkbox-btn>-->
+<!--                </template>-->
+<!--              </v-list-item>-->
+
+<!--              <v-divider class="mt-2"></v-divider>-->
+<!--            </template>-->
+
+          </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Price ($)</div>

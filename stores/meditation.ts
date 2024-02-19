@@ -25,10 +25,10 @@ export const useMeditationStore = defineStore('meditation', {
         async get(id: string): Promise<Course> {
             return (await useApi().get(`/admin/v1/course/${id}`)).data
         },
-        // async update(request: CourseUpdateRequest) {
-        //     const {id, ...body} = request
-        //     const {data} = await useApi().put(`/admin/v1/course/${id}`, {body})
-        //     this.items.set(data.uuid, data)
-        // },
+        async update(request: CourseUpdateRequest) {
+            const {id, ...body} = request
+            const data = await useApi().put(`/admin/v1/course/${id}`, {body})
+            this.items.set(data.uuid, data)
+        },
     },
 })
