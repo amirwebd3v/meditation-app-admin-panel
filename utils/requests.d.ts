@@ -8,6 +8,7 @@ interface CourseStoreRequest {
     type: CourseType
     categories: number[]
     title: string
+    thumbnail: string
     description: string|null
     price: number
     is_popular: boolean
@@ -16,6 +17,7 @@ interface CourseStoreRequest {
 interface CourseUpdateRequest {
     id: string
     categories: number[]|null
+    thumbnail: string|null
     title: string|null
     description: string|null
     price: number|null
