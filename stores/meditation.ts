@@ -10,23 +10,22 @@ export const useMeditationStore = defineStore('meditation', {
         items: new Map<string, Course>(),
         meta: {} as PaginatorMeta
     }),
+
     actions: {
         async paginate(queryParam: QueryParams) {
-            this.items.clear()
+            const map = new Map<string, Course>()
             const {data, meta} = await useApi().paginate<Course>('/admin/v1/course-meditation', queryParam)
-            data.forEach(entity => this.items.set(entity.uuid, entity))
+            data.forEach(entity => map.set(entity.uuid, entity))
+            this.items = map
             this.meta = meta
         },
-
         async store(request: CourseStoreRequest) {
             const data: Course = await useApi().post('/admin/v1/course', {body: request})
             this.items.set(data.uuid, data)
         },
-
         async get(id: string): Promise<Course> {
             return (await useApi().get(`/admin/v1/course/${id}`)).data
         },
-
         // async update(request: CourseUpdateRequest) {
         //     const {id, ...body} = request
         //     const {data} = await useApi().put(`/admin/v1/course/${id}`, {body})

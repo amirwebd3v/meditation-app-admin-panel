@@ -26,7 +26,7 @@ const headers = [
 const {items, meta} = storeToRefs(useVideoStore())
 
 onMounted(async () => {
-  await load()
+  await load({sortBy: [{key: 'created_at', order: 'desc'}]})
 })
 
 const load = async (options = {}) => {
@@ -36,7 +36,8 @@ const load = async (options = {}) => {
     {field: 'description', operator: 'like', value: searchText.value},
     {field: 'price', operator: 'like', value: searchText.value},
   ]
-  const params = useApi().prepareQueryParams(options, search)
+  const params = useApi().prepareQueryParams(options, search)  
+  params.relations = ['categories']
   await useVideoStore().paginate(params)
   loading.value = false
 }
@@ -105,11 +106,9 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                   v-if="!!items.size"
                   :items-length="+meta.total"
                   :page="meta.current_page"
-                  :items="[...items]"
+                  :items="[...items.values()]"
                   :headers="headers"
-                  @update:itemsPerPage="load"
-                  @update:page="load"
-                  @update:sortBy="load"
+                  @update:options="load"
                   :loading="loading"
                   :items-per-page="10"
                   :sort-by="[{key: 'created_at', order: 'desc'}]"
@@ -124,7 +123,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                 </template>
 
                 <template #item.category="{item}">
-                  <div class="text-truncate" style="max-width: 125px;">{{ item.category }}</div>
+                  <div class="text-truncate" style="max-width: 125px;">{{ item.categories[0].name }}</div>
                 </template>
 
 
@@ -167,11 +166,10 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                             :form-title="'Edit Meditation Course'"
                             :id="item.uuid"
                             :title="item.title"
-                            link
                             :description="item.description"
                             :price="item.price"
                             :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
-                            :category
+                            :category="item.categories.length ? item.categories[0].name : ''"
                         />
                         <v-btn
                             class="text-primary"

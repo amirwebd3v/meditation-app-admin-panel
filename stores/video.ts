@@ -8,15 +8,17 @@ export const useVideoStore = defineStore('video', {
         items: new Map<string, Course>(),
         meta: {} as PaginatorMeta
     }),
+
     actions: {
         async paginate(queryParam: QueryParams) {
-            this.items.clear()
+            const map = new Map<string, Course>()
             const {data, meta} = await useApi().paginate<Course>('/admin/v1/course-video', queryParam)
-            data.forEach(entity => this.items.set(entity.uuid, entity))
+            data.forEach(entity => map.set(entity.uuid, entity))
+            this.items = map
             this.meta = meta
         },
         async get(id: string): Promise<Course> {
-            return (await useApi().get<{ data: Course }>(`/admin/v1/course/${id}`)).data.data
+            return (await useApi().get(`/admin/v1/course/${id}`)).data
         },
     },
 })
