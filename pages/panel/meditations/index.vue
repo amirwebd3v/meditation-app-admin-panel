@@ -34,7 +34,6 @@ onMounted(async () => {
 
 const load = async (options = {}) => {
   loading.value = true
-  console.log('---', options)
   const search: FilterSearchItem[] = searchText.value === '' ? [] : [
     {field: 'title', operator: 'like', value: searchText.value},
     {field: 'description', operator: 'like', value: searchText.value},
