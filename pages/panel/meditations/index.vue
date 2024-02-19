@@ -28,6 +28,10 @@ const headers = [
 
 const {items, meta} = storeToRefs(useMeditationStore())
 
+onMounted(async () => {
+  await load()
+})
+
 const load = async (options = {}) => {
   loading.value = true
   const search: FilterSearchItem[] = searchText.value === '' ? [] : [

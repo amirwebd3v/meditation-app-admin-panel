@@ -10,6 +10,7 @@ export const useLessonStore = defineStore('lesson', {
     }),
     actions: {
         async paginate(courseId: string,queryParam: QueryParams) {
+            this.items.clear()
             const {data, meta} = await useApi().paginate<Lesson>(`/admin/v1/course/${courseId}/lesson`, queryParam)
             data.forEach(entity => this.items.set(entity.uuid, entity))
             this.meta = meta

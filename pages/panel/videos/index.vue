@@ -25,7 +25,9 @@ const headers = [
 
 const {items, meta} = storeToRefs(useVideoStore())
 
-
+onMounted(async () => {
+  await load()
+})
 
 const load = async (options = {}) => {
   loading.value = true
