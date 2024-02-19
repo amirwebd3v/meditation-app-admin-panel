@@ -67,7 +67,7 @@ const request = reactive<CourseStoreRequest>({
   description: props.description,
   categories: props.categories,
   price: props.price,
-  is_popular: props.is_popular
+  is_popular: props.isPopular
 })
 
 
@@ -144,7 +144,7 @@ const updateCourse = async () => {
       </v-col>
          <v-col cols="6" class="py-0">
            <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5">Popular</div>
-           <v-radio-group class="mt-5" inline :model-value="is_popular" >
+           <v-radio-group class="mt-5" inline :model-value="isPopular" >
              <v-radio
                  density="compact"
                  :value="false"
