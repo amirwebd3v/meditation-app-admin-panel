@@ -5,13 +5,14 @@ import type {PaginatorMeta, QueryParams} from "l5-client";
 
 export const useVideoStore = defineStore('video', {
     state: () => ({
-        items: [] as Course[],
+        items: new Map<string, Course>(),
         meta: {} as PaginatorMeta
     }),
     actions: {
         async paginate(queryParam: QueryParams) {
+            this.items.clear()
             const {data, meta} = await useApi().paginate<Course>('/admin/v1/course-video', queryParam)
-            this.items = data
+            data.forEach(entity => this.items.set(entity.uuid, entity))
             this.meta = meta
         },
         async get(id: string): Promise<Course> {

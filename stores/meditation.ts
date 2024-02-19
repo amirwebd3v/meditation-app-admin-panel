@@ -12,10 +12,9 @@ export const useMeditationStore = defineStore('meditation', {
     }),
     actions: {
         async paginate(queryParam: QueryParams) {
-            const map = new Map<string, Course>()
+            this.items.clear()
             const {data, meta} = await useApi().paginate<Course>('/admin/v1/course-meditation', queryParam)
-            data.forEach(entity => map.set(entity.uuid, entity))
-            this.items = map
+            data.forEach(entity => this.items.set(entity.uuid, entity))
             this.meta = meta
         },
 

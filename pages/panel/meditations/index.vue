@@ -114,7 +114,9 @@ const goToLesson = (courseTitle: string, courseId: string) => {
           :page="meta.current_page"
           :items="Array.from(items.values())"
           :headers="headers"
-          @update:options="load"
+          @update:itemsPerPage="load"
+          @update:page="load"
+          @update:sortBy="load"
           :loading="loading"
           :sort-by="[{key: 'created_at', order: 'desc'}]"
 
