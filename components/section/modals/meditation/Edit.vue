@@ -4,12 +4,11 @@ import Base from "~/components/section/modals/Base.vue";
 import {useMeditationStore} from "~/stores/meditation";
 import {storeToRefs} from "pinia";
 import {useCategoryStore} from "~/stores/category";
-import type {CourseStoreRequest} from "~/utils/requests";
+import type {CourseUpdateRequest} from "~/utils/requests";
 
 
 /********************************************/
 const icon = ref('mdi mdi-pencil-outline')
-// const formTitle = ref('Edit Meditation Course')
 const loading = ref()
 const dialog = ref()
 const route = useRoute();
@@ -33,11 +32,11 @@ const props = defineProps( {
     required: true
   },
   categories : {
-    type : Array,
+    type : Array<number>,
     required: true
   },
   price : {
-    type : String,
+    type : Number,
     required: true
   },
   isPopular : {
@@ -61,7 +60,7 @@ const maskPrice = {
 }
 
 /********************************************/
-const request = reactive<CourseStoreRequest>({
+const request = reactive<CourseUpdateRequest>({
   id: props.id,
   title: props.title,
   description: props.description,
@@ -107,11 +106,11 @@ const updateCourse = async () => {
        <v-row justify="space-between">
       <v-col cols="12" class="pb-0">
         <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
-        <v-text-field variant="outlined" color="primary" density="comfortable" :model-value="title"/>
+        <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"/>
       </v-col>
       <v-col cols="12" class="py-0">
         <div class="text-subtitle-1 text-medium-emphasis pb-2">Course description</div>
-        <v-textarea variant="outlined" density="compact" color="primary" :model-value="description"></v-textarea>
+        <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
       </v-col>
       <v-col cols="12" class="py-0">
         <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
@@ -121,7 +120,7 @@ const updateCourse = async () => {
             chips
             closable-chips
             multiple
-            :model-value="categories"
+            v-model="request.categories"
             color="primary"
             density="comfortable"
             single-line
@@ -136,7 +135,7 @@ const updateCourse = async () => {
         <v-text-field
             required
             variant="outlined"
-            :model-value="price"
+            v-model="request.price"
             color="primary"
             density="comfortable"
             v-maska:[maskPrice]
@@ -144,7 +143,7 @@ const updateCourse = async () => {
       </v-col>
          <v-col cols="6" class="py-0">
            <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5">Popular</div>
-           <v-radio-group class="mt-5" inline :model-value="isPopular" >
+           <v-radio-group class="mt-5" inline v-model="request.is_popular" >
              <v-radio
                  density="compact"
                  :value="false"

@@ -16,7 +16,6 @@ interface CourseStoreRequest {
 interface CourseUpdateRequest {
     id: string
     categories: number[]|null
-    type: string|null
     title: string|null
     description: string|null
     price: number|null
