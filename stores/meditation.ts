@@ -19,9 +19,8 @@ export const useMeditationStore = defineStore('meditation', {
             this.items = map
             this.meta = meta
         },
-        async store(request: CourseStoreRequest) {
-            const data: Course = await useApi().post('/admin/v1/course', {body: request})
-            this.items.set(data.uuid, data)
+        async store(request: CourseStoreRequest): Promise<Course> {
+            return await useApi().post('/admin/v1/course', {body: request})
         },
         async get(id: string): Promise<Course> {
             return (await useApi().get(`/admin/v1/course/${id}`)).data

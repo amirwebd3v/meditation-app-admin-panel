@@ -111,7 +111,6 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                   @update:options="load"
                   :loading="loading"
                   :items-per-page="10"
-                  :sort-by="[{key: 'created_at', order: 'desc'}]"
               >
 
                 <template #item.title="{item}">

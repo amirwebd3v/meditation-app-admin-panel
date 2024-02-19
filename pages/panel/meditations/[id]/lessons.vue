@@ -88,7 +88,6 @@ const load = async (options = {}) => {
           :headers="headers"
           @update:options="load"
           :loading="loading"
-          :sort-by="[{key: 'created_at', order: 'desc'}]"
       >
 
         <template #item.title="{item}">

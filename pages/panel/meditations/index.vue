@@ -29,7 +29,7 @@ const headers = [
 const {items, meta} = storeToRefs(useMeditationStore())
 
 onMounted(async () => {
-  await load({sortBy: [{key: 'created_at', order: 'desc'}]})
+  await load()
 })
 
 const load = async (options = {}) => {
@@ -115,7 +115,6 @@ const goToLesson = (courseTitle: string, courseId: string) => {
           :headers="headers"
           @update:options="load"
           :loading="loading"
-          :sort-by="[{key: 'created_at', order: 'desc'}]"
 
       >
 
