@@ -4,15 +4,14 @@ import type {Preview} from "~/utils/types";
 
 export const useMediaStore = defineStore('media', {
     state: () => ({
-        files: [] as Preview[],
+        files: new Map<string, Preview>(),
     }),
     actions: {
-        // async upload(...files: []) {
-        //     let body = new FormData()
-        //     files.forEach((file) => body.append('file', file))
-        //
-        //     const {data} = useApi().post('/admin/v1/media', {body})
-        //     this.files.push(...data)
-        // }
+        async upload(files: File[]) {
+            let body = new FormData()
+            files.forEach((file) => body.append('files[]', file))
+            const {data} = await useApi().post('/admin/v1/media', {body: body})
+            data.forEach((preview: Preview) => this.files.set(preview.file_id, preview))
+        }
     },
 })

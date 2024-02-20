@@ -41,6 +41,7 @@ watchEffect(() => {
   <v-dialog
       v-model="state.dialog"
       max-width="500px"
+      persistent
   >
 
     <template v-slot:activator="{ props }">

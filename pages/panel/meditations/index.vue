@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import type {Category} from "~/utils/types";
+
 definePageMeta({
   middleware: 'sanctum:auth',
 })
@@ -13,6 +15,7 @@ import type {FilterSearchItem} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
+const menu = ref(false)
 const loading = ref(true)
 const searchText = ref('')
 const headers = [
@@ -27,6 +30,7 @@ const headers = [
 ]
 
 const {items, meta} = storeToRefs(useMeditationStore())
+
 
 onMounted(async () => {
   await load()
@@ -58,20 +62,18 @@ const filters = [
   'Creative Writing',
 ]
 
-const menu = ref(false)
 
 
 const router = useRouter();
-const goToLesson = (courseTitle: string, courseId: string) => {
+const goToLesson = (courseId: string) => {
   if (courseId) {
     router.push({
       name: 'panel-meditations-id-lessons',
       params: {id: courseId},
     })
   } else {
-    console.error(`No course found with title: ${courseTitle}`)
+    console.error('No course found with title')
   }
-
 }
 
 
@@ -127,7 +129,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
         </template>
 
         <template #item.category="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item.categories[0].name }}</div>
+          <div class="text-truncate" style="max-width: 125px;">{{ item?.categories[0]?.name }}</div>
         </template>
 
         <template #item.set="{ item }">
@@ -147,10 +149,10 @@ const goToLesson = (courseTitle: string, courseId: string) => {
         </template>
 
 
-        <template #item.thumbnail="{ item }" >
-            <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
-              <v-img :src="item.thumbnail.urls.small" height="64" cover/>
-            </v-card>
+        <template #item.thumbnail="{ item }">
+          <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
+            <v-img :src="item.thumbnail.urls.small" height="64" cover/>
+          </v-card>
         </template>
 
         <template #item.price="{item}">
@@ -179,13 +181,13 @@ const goToLesson = (courseTitle: string, courseId: string) => {
               <v-card class="bg-light-brown-1 px-2 py-1" rounded>
                 <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
                 <EditMeditation
-                    :form-title="'Edit Meditation Course'"
                     :id="item.uuid"
+                    :form-title="'Edit Meditation Course'"
                     :title="item.title"
                     :description="item.description"
                     :price="item.price"
-                    :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
-                    :category="item.categories[0].id"
+                    :is-popular="item.is_popular"
+                    :categories="item.categories.map((c : Category) => c.id)"
                 />
                 <v-btn
                     class="text-primary"
@@ -200,7 +202,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                 variant="text"
                 size="small"
                 icon="mdi-chevron-right"
-                @click="goToLesson(item.title,item.uuid)"
+                @click="goToLesson(item.uuid)"
                 density="compact"
             />
           </div>
@@ -216,8 +218,9 @@ div:deep(.v-table__wrapper) {
   thead {
     background-color: #7B6345;
   }
+
   table > tbody > tr:not(:last-child) > td {
-    border-bottom:  1px solid #7B6345;
+    border-bottom: 1px solid #7B6345;
   }
 }
 

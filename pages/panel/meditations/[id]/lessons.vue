@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type {Category, Course} from "~/utils/types";
+
 definePageMeta({
   middleware: 'sanctum:auth',
 })
@@ -8,6 +10,7 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
+import {mapActions, mapWritableState} from "pinia";
 
 
 const loading = ref(true)
@@ -22,10 +25,10 @@ const headers = ref([
 ])
 
 const {items, meta} = storeToRefs(useLessonStore())
-const course = (await useMeditationStore().get(useRoute().params.id.toString()))
+const course : Course = (await useMeditationStore().get(useRoute().params.id.toString()))
 
 onMounted(async () => {
-  await load({sortBy: [{key: 'created_at', order: 'desc'}]})
+  await load()
 })
 
 const load = async (options = {}) => {
@@ -36,7 +39,7 @@ const load = async (options = {}) => {
   ]
   const params = useApi().prepareQueryParams(options, search)
   params.relations = ['categories']
-  await useLessonStore().paginate(<string>useRoute().params.id, params)
+  await useLessonStore().paginate(course.uuid, params)
   loading.value = false
 }
 </script>
@@ -99,7 +102,7 @@ const load = async (options = {}) => {
         </template>
 
         <template #item.category="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item.categories[0].name }}</div>
+          <div class="text-truncate" style="max-width: 125px;">{{ item?.categories[0]?.name }}</div>
         </template>
 
         <template #item.description="{item}">
@@ -124,15 +127,15 @@ const load = async (options = {}) => {
 
         <template #item.actions="{item}">
           <div class="float-right" style="width: 100px;">
-            <EditMeditation
-                :form-title="'Edit Meditation Lesson'"
-                :id="item.uuid"
-                :title="item.title"
-                :description="item.description"
-                :price="item.price"
-                :type="item.set === 'MULTIPLE' ? 'Course' : 'Single'"
-                :category="item.categories[0].id"
-            />
+<!--            <EditMeditation-->
+<!--                :id="item.uuid"-->
+<!--                :form-title="'Edit Meditation Lesson'"-->
+<!--                :title="item.title"-->
+<!--                :description="item.description"-->
+<!--                :price="item.price"-->
+<!--                :is-popular="item.is_popular"-->
+<!--                :categories="item.categories.map((c : Category) => c.id)"-->
+<!--            />-->
             <v-btn
                 class="text-primary"
                 variant="text"
