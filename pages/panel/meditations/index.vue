@@ -15,6 +15,7 @@ import type {FilterSearchItem} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
 
+const menu = ref(false)
 const loading = ref(true)
 const searchText = ref('')
 const headers = [
@@ -61,7 +62,6 @@ const filters = [
   'Creative Writing',
 ]
 
-const menu = ref(false)
 
 
 const router = useRouter();
