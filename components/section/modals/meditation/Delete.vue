@@ -2,34 +2,28 @@
 import Base from "~/components/section/modals/Base.vue";
 
 defineComponent({
-  name: 'AddCategory',
+  name: 'DeleteMeditation',
+
 })
+
+
 
 
 </script>
 
 <template>
 
-  <Base form-title="Add Category">
+  <Base form-title="Delete Meditation" >
 
     <template v-slot:button="props">
       <v-btn
-          color="primary"
-          :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
+          class="text-primary"
+          variant="text"
+          icon="mdi mdi-delete-outline"
           v-bind="props"
-          text="Add Category"
-          :size="$vuetify.display.smAndDown ? 'small' : 'default'"
-          :icon="$vuetify.display.smAndDown"
-          rounded="xl"
-      >
-        <template v-slot:default v-if="$vuetify.display.smAndDown">
-          <v-icon  icon="mdi-plus"/>
-        </template>
-        <template v-slot:prepend v-if="$vuetify.display.smAndUp">
-          <v-icon class="pr-6" icon="mdi-plus"/>
-        </template>
+          @click="$emit('deleteAction',true)"
+          size="small">
       </v-btn>
-
     </template>
 
     <template #columns>
