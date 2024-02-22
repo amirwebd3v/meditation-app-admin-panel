@@ -24,8 +24,7 @@ defineProps({
 
 /*********************************************/
 const formTitle = ref('Add Meditation Course')
-const icon = ref('mdi mdi-plus')
-const isBtnText = ref('')
+const isBtnText = ref()
 const loading = ref()
 const dialog = ref()
 const {allCategories} = storeToRefs(useCategoryStore())
@@ -66,14 +65,14 @@ const saveCourse = async () => {
 
 <template>
 
-  <Base :form-title="formTitle" :icon="icon" :loading="loading" :save-btn="saveCourse" :dialog-status="dialog">
+  <Base :form-title="formTitle" :loading="loading" :save-btn="saveCourse" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn
           v-if="btnInTable"
           class="text-primary"
           variant="text"
-          :icon="icon"
+          icon="mdi mdi-plus"
           v-bind="props"
           size="small">
       </v-btn>
@@ -144,7 +143,6 @@ const saveCourse = async () => {
 
 <!--              <v-divider class="mt-2"></v-divider>-->
 <!--            </template>-->
-
           </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
@@ -177,31 +175,20 @@ const saveCourse = async () => {
           </v-radio-group>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Upload a picture</div>
-          <v-file-input
-              placeholder="Upload your documents"
-              variant="outlined"
-              prepend-icon=""
-              color="primary"
-              hide-details=""
-          >
+          <div class="text-subtitle-1 text-medium-emphasis text-white pb-2">Upload a picture</div>
+          <v-file-input placeholder="Upload your documents" variant="outlined" prepend-icon="" color="primary"
+                        hide-details="">
             <template v-slot:selection="{ fileNames }">
-              <div v-for="fileName in fileNames" :key="fileName">
-                <v-card width="125" height="125" class="justify-center align-center">
+              <template v-for="fileName in fileNames" :key="fileName">
+                <v-card width="45" height="45" class="justify-center align-center">
                   <v-col align-self="auto">
-                    <v-img
-                        width="auto"
-                        height="50"
-                        src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"
-                    >
+                    <v-img width="auto" height="25" cover
+                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
                     </v-img>
                     <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                   </v-col>
-
-
                 </v-card>
-
-              </div>
+              </template>
             </template>
           </v-file-input>
         </v-col>

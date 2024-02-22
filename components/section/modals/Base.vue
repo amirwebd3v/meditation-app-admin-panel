@@ -6,15 +6,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  icon: {
-    type: String,
-    required: true,
-  },
   loading: {
     type: Boolean,
     default: false,
   },
-  saveBtn: {
+  actionBtn: {
     type: Function,
     default: () => null
   },
@@ -29,8 +25,10 @@ const state = reactive({
 })
 
 
-watchEffect(() => {
+
+watchEffect((x) => {
   state.dialog = props.dialogStatus
+
 })
 
 
@@ -41,7 +39,6 @@ watchEffect(() => {
   <v-dialog
       v-model="state.dialog"
       max-width="500px"
-      persistent
   >
 
     <template v-slot:activator="{ props }">
@@ -60,7 +57,7 @@ watchEffect(() => {
           <slot name="columns"/>
         </v-card-text>
 
-        <v-card-actions class="float-right pt-0 mr-1 ">
+        <v-card-actions class="float-right pt-0 mr-1 mt-auto">
           <div class="d-sm-flex">
             <v-btn
                 :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
@@ -75,6 +72,7 @@ watchEffect(() => {
                 @click="state.dialog = false"
             />
             <v-btn
+
                 :disabled="loading"
                 :loading="loading"
                 :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
@@ -86,11 +84,28 @@ watchEffect(() => {
                 size="large"
                 variant="outlined"
                 text="Save"
-                @click="saveBtn"
+                @click="actionBtn"
             >
             </v-btn>
+<!--            <v-btn-->
+<!--                @delete-action="(d)=> d!== true"-->
+<!--                :disabled="loading"-->
+<!--                :loading="loading"-->
+<!--                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"-->
+<!--                :class="{-->
+<!--                  'px-10' : $vuetify.display.smAndDown,-->
+<!--                  'px-14':$vuetify.display.mdAndUp,-->
+<!--                  'text-white delete bg-red-dark': true}"-->
+<!--                rounded="xl"-->
+<!--                size="large"-->
+<!--                variant="outlined"-->
+<!--                text="Delete"-->
+<!--                @click="actionBtn"-->
+<!--            >-->
+<!--            </v-btn>-->
           </div>
         </v-card-actions>
+
       </v-container>
     </v-card>
 

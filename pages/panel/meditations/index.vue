@@ -14,6 +14,7 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
+import DeleteMeditation from "~/components/section/modals/meditation/Delete.vue";
 
 const menu = ref(false)
 const loading = ref(true)
@@ -189,12 +190,7 @@ const goToLesson = (courseId: string) => {
                     :is-popular="item.is_popular"
                     :categories="item.categories.map((c : Category) => c.id)"
                 />
-                <v-btn
-                    class="text-primary"
-                    variant="text"
-                    icon="mdi mdi-delete-outline"
-                    size="small"
-                />
+                <DeleteMeditation :id="item.uuid" :title="item.title"/>
               </v-card>
             </v-menu>
             <v-btn
