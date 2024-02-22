@@ -2,7 +2,6 @@
 import Base from "~/components/section/modals/Base.vue";
 
 
-
 defineComponent({
   name: 'DeleteMeditation',
 })
@@ -33,7 +32,7 @@ const deleteCourse = async () => {
 
 <template>
 
-  <Base form-title="Add Meditation Course" :loading="loading" :action-btn="deleteCourse" :dialog-status="dialog">
+  <Base form-title="Delete Meditation" :loading="loading" :action-btn="deleteCourse" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn
@@ -48,12 +47,17 @@ const deleteCourse = async () => {
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="my-3">
-
-          <span class="text-white font-16 pb-5">
-            Are you sure about removing
-            <strong class="font-18 text-orange">"{{ title }}"</strong>
-            from Meditations?
+          <div class="py-5">
+            <v-icon color="red" size="xx-large" class="text-orange pb-2">mdi-alert-outline</v-icon>
+            <span class="font-weight-regular font-16"><strong class="font-18 text-orange">WARNING: </strong>This action cannot be undone.</span>
+          </div>
+          <div class="pb-5">
+             <span class="text-white font-14 text-justify">
+            <strong class="font-16 text-orange">"{{ title }}"</strong>
+            and its all of data will be permanently deleted.
           </span>
+          </div>
+
         </v-col>
       </v-row>
     </template>
