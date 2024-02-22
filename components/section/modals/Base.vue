@@ -24,9 +24,15 @@ const state = reactive({
   dialog: false
 })
 
+const showDelButton = ref(false)
 
+const getEvent = (val) => {
+  console.log('Received deleteBtn event with value:', val)
 
-watchEffect((x) => {
+  showDelButton.value = val
+}
+
+watchEffect(() => {
   state.dialog = props.dialogStatus
 
 })
@@ -42,7 +48,7 @@ watchEffect((x) => {
   >
 
     <template v-slot:activator="{ props }">
-      <slot name="button" v-bind="props"/>
+      <slot name="button" v-bind="props" />
     </template>
 
     <v-card class="bg-light-brown-1 py-1" rounded="lg">
@@ -72,7 +78,7 @@ watchEffect((x) => {
                 @click="state.dialog = false"
             />
             <v-btn
-
+                v-if="showDelButton"
                 :disabled="loading"
                 :loading="loading"
                 :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
@@ -87,22 +93,22 @@ watchEffect((x) => {
                 @click="actionBtn"
             >
             </v-btn>
-<!--            <v-btn-->
-<!--                @delete-action="(d)=> d!== true"-->
-<!--                :disabled="loading"-->
-<!--                :loading="loading"-->
-<!--                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"-->
-<!--                :class="{-->
-<!--                  'px-10' : $vuetify.display.smAndDown,-->
-<!--                  'px-14':$vuetify.display.mdAndUp,-->
-<!--                  'text-white delete bg-red-dark': true}"-->
-<!--                rounded="xl"-->
-<!--                size="large"-->
-<!--                variant="outlined"-->
-<!--                text="Delete"-->
-<!--                @click="actionBtn"-->
-<!--            >-->
-<!--            </v-btn>-->
+            <v-btn
+                v-if="!showDelButton"
+                :disabled="loading"
+                :loading="loading"
+                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+                :class="{
+                  'px-10' : $vuetify.display.smAndDown,
+                  'px-14':$vuetify.display.mdAndUp,
+                  'text-white delete-btn-border bg-orange': true}"
+                rounded="xl"
+                size="large"
+                variant="outlined"
+                text="Delete"
+                @click="actionBtn"
+            >
+            </v-btn>
           </div>
         </v-card-actions>
 

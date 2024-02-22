@@ -163,7 +163,7 @@ const goToLesson = (courseId: string) => {
         <template #item.actions="{item}">
           <div style="width: 75px;">
             <v-menu
-                :v-model="menu"
+                :model-value="menu"
                 :close-on-content-click="false"
                 location="start"
             >
