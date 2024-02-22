@@ -28,11 +28,19 @@ const deleteCourse = async () => {
 }
 
 
+const actions = [
+  {
+    text: 'Delete',
+    class: 'delete-btn-border bg-orange',
+    func: deleteCourse
+  },
+]
+
 </script>
 
 <template>
 
-  <Base form-title="Delete Meditation" :loading="loading" :action-btn="deleteCourse" :dialog-status="dialog">
+  <Base form-title="Delete Meditation" :loading="loading" :actions="actions" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn

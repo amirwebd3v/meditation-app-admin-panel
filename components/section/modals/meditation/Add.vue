@@ -57,6 +57,13 @@ const saveCourse = async () => {
   loading.value = false
 }
 
+const actions = [
+  {
+    text: 'Save',
+    class: 'bg-primary',
+    func: saveCourse
+  },
+]
 
 
 
@@ -64,7 +71,7 @@ const saveCourse = async () => {
 
 <template>
 
-  <Base form-title="Add Meditation Course" :loading="loading" :action-btn="saveCourse" :dialog-status="dialog">
+  <Base form-title="Add Meditation Course" :loading="loading" :actions="actions" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn

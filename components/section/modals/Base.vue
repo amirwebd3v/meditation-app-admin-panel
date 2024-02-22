@@ -1,5 +1,10 @@
 <script setup lang="ts">
 
+interface ActionButton {
+  text: string
+  func: Function
+  class: string
+}
 
 const props = defineProps({
   formTitle: {
@@ -10,13 +15,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  actionBtn: {
-    type: Function,
-    default: () => null
-  },
   dialogStatus: {
     type: Boolean,
     default: false
+  },
+  actions: {
+    type: Array<ActionButton>,
+    default: []
   }
 });
 /*********************************************/
@@ -70,36 +75,21 @@ watchEffect(() => {
                 text="Cancel"
                 @click="state.dialog = false"
             />
-            <v-btn
-                v-if="['save', 'update'].some(prefix => props.actionBtn?.name?.startsWith(prefix))"
+            <v-btn v-for="action in actions" :key="action.text"
                 :disabled="loading"
                 :loading="loading"
                 :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                 :class="{
-                  'px-10' : $vuetify.display.smAndDown,
-                  'px-14':$vuetify.display.mdAndUp,
-                  'text-white bg-primary': true}"
+                  'px-10': $vuetify.display.smAndDown,
+                  'px-14': $vuetify.display.mdAndUp,
+                  'text-white': true,
+                  [action.class]: true
+                }"
                 rounded="xl"
                 size="large"
                 variant="outlined"
-                text="Save"
-                @click="actionBtn"
-            >
-            </v-btn>
-            <v-btn
-                v-if="props.actionBtn?.name?.startsWith('delete')"
-                :disabled="loading"
-                :loading="loading"
-                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
-                :class="{
-                  'px-10' : $vuetify.display.smAndDown,
-                  'px-14':$vuetify.display.mdAndUp,
-                  'text-white delete-btn-border bg-orange': true}"
-                rounded="xl"
-                size="large"
-                variant="outlined"
-                text="Delete"
-                @click="actionBtn"
+                :text="action.text"
+                @click="action.func"
             >
             </v-btn>
           </div>
