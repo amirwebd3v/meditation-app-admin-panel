@@ -95,7 +95,7 @@ const actions = [
 </script>
 
 <template>
-  <Base :form-title="formTitle" :loading="loading" :action-btn="updateCourse" :dialog-status="dialog"
+  <Base :form-title="formTitle" :loading="loading" :dialog-status="dialog"
         :actions="actions">
 
     <template v-slot:button="props">

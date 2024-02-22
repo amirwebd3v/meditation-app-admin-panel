@@ -40,7 +40,7 @@ const actions = [
 
 <template>
 
-  <Base form-title="Delete Meditation" :loading="loading" :action-btn="deleteCourse" :actions="actions" :dialog-status="dialog">
+  <Base form-title="Delete Meditation" :loading="loading" :actions="actions" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn

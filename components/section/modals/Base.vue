@@ -15,10 +15,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  actionBtn: {
-    type: Function,
-    default: () => null
-  },
   dialogStatus: {
     type: Boolean,
     default: false
@@ -96,22 +92,6 @@ watchEffect(() => {
                 @click="action.func"
             >
             </v-btn>
-<!--            <v-btn-->
-<!--                v-if="props.actionBtn?.name?.startsWith('delete')"-->
-<!--                :disabled="loading"-->
-<!--                :loading="loading"-->
-<!--                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"-->
-<!--                :class="{-->
-<!--                  'px-10' : $vuetify.display.smAndDown,-->
-<!--                  'px-14':$vuetify.display.mdAndUp,-->
-<!--                  'text-white delete-btn-border bg-orange': true}"-->
-<!--                rounded="xl"-->
-<!--                size="large"-->
-<!--                variant="outlined"-->
-<!--                text="Delete"-->
-<!--                @click="actionBtn"-->
-<!--            >-->
-<!--            </v-btn>-->
           </div>
         </v-card-actions>
 

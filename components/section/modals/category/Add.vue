@@ -20,7 +20,7 @@ const saveCategory = async () => {
 
 <template>
 
-  <Base form-title="Add Category" :loading="loading" :action-btn="saveCategory" :dialog-status="dialog">
+  <Base form-title="Add Category" :loading="loading" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn
