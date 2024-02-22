@@ -161,21 +161,19 @@ const goToLesson = (courseId: string) => {
         </template>
 
         <template #item.actions="{item}">
-          <div style="width: 75px;">
+          <div style="width: 75px;" class="float-right">
             <v-menu
-                :v-model="menu"
+                :model-value="menu"
                 :close-on-content-click="false"
                 location="start"
             >
               <template v-slot:activator="{ props }">
-                <v-btn
+                <v-icon
                     class="text-primary me-6"
                     variant="text"
                     v-bind="props"
                     icon="mdi mdi-dots-vertical"
-                    size="small"
                     density="compact"
-
                 />
               </template>
 
@@ -193,10 +191,9 @@ const goToLesson = (courseId: string) => {
                 <DeleteMeditation :id="item.uuid" :title="item.title"/>
               </v-card>
             </v-menu>
-            <v-btn
+            <v-icon
                 class="text-primary"
                 variant="text"
-                size="small"
                 icon="mdi-chevron-right"
                 @click="goToLesson(item.uuid)"
                 density="compact"

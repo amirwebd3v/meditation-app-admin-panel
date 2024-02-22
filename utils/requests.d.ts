@@ -6,22 +6,22 @@ import type {CourseType} from "~/utils/enums";
 
 interface CourseStoreRequest {
     type: CourseType
-    categories: number[]
+    categories?: number[]
     title: string
-    thumbnail: string
-    description: string|null
+    thumbnail?: string
+    description?: string
     price: number
     is_popular: boolean
 }
 
 interface CourseUpdateRequest {
     id: string
-    categories: number[]|null
-    thumbnail: string|null
-    title: string|null
-    description: string|null
-    price: number|null
-    is_popular: boolean|null
+    categories?: number[]
+    thumbnail?: string
+    title?: string
+    description?: string
+    price?: number
+    is_popular?: boolean
 }
 
 interface CourseIndexRequest extends QueryParams {

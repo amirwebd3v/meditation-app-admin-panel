@@ -16,8 +16,8 @@ interface Course {
 
 
 interface Preview {
-    file_id: string
-    preview: string
+    id: string
+    url: string
     mime_type: string
     size: string
     created_at: number

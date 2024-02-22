@@ -25,8 +25,7 @@ const state = reactive({
 })
 
 
-
-watchEffect((x) => {
+watchEffect(() => {
   state.dialog = props.dialogStatus
 
 })
@@ -42,7 +41,7 @@ watchEffect((x) => {
   >
 
     <template v-slot:activator="{ props }">
-      <slot name="button" v-bind="props"/>
+      <slot name="button" v-bind="props" />
     </template>
 
     <v-card class="bg-light-brown-1 py-1" rounded="lg">
@@ -72,7 +71,7 @@ watchEffect((x) => {
                 @click="state.dialog = false"
             />
             <v-btn
-
+                v-if="['save', 'update'].some(prefix => props.actionBtn?.name?.startsWith(prefix))"
                 :disabled="loading"
                 :loading="loading"
                 :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
@@ -87,22 +86,22 @@ watchEffect((x) => {
                 @click="actionBtn"
             >
             </v-btn>
-<!--            <v-btn-->
-<!--                @delete-action="(d)=> d!== true"-->
-<!--                :disabled="loading"-->
-<!--                :loading="loading"-->
-<!--                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"-->
-<!--                :class="{-->
-<!--                  'px-10' : $vuetify.display.smAndDown,-->
-<!--                  'px-14':$vuetify.display.mdAndUp,-->
-<!--                  'text-white delete bg-red-dark': true}"-->
-<!--                rounded="xl"-->
-<!--                size="large"-->
-<!--                variant="outlined"-->
-<!--                text="Delete"-->
-<!--                @click="actionBtn"-->
-<!--            >-->
-<!--            </v-btn>-->
+            <v-btn
+                v-if="props.actionBtn?.name?.startsWith('delete')"
+                :disabled="loading"
+                :loading="loading"
+                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+                :class="{
+                  'px-10' : $vuetify.display.smAndDown,
+                  'px-14':$vuetify.display.mdAndUp,
+                  'text-white delete-btn-border bg-orange': true}"
+                rounded="xl"
+                size="large"
+                variant="outlined"
+                text="Delete"
+                @click="actionBtn"
+            >
+            </v-btn>
           </div>
         </v-card-actions>
 

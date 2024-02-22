@@ -5,12 +5,22 @@ defineComponent({
   name: 'AddCategory',
 })
 
+const loading = ref()
+const dialog = ref()
+
+
+const saveCategory = async () => {
+  loading.value = true
+  // await useMeditationStore().delete(request)
+  // dialog.value = false
+  // loading.value = false
+}
 
 </script>
 
 <template>
 
-  <Base form-title="Add Category">
+  <Base form-title="Add Category" :loading="loading" :action-btn="saveCategory" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn
