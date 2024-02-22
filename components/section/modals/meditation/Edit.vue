@@ -44,7 +44,7 @@ const props = defineProps({
     required: true
   },
   id: {
-    type: Number,
+    type: String,
     required: true,
   }
 
@@ -89,7 +89,7 @@ const updateCourse = async () => {
 </script>
 
 <template>
-  <Base :form-title="formTitle" :loading="loading" :save-btn="updateCourse" :dialog-status="dialog">
+  <Base :form-title="formTitle" :loading="loading" :action-btn="updateCourse" :dialog-status="dialog">
 
   <template v-slot:button="props">
     <v-btn class="text-primary" variant="text" icon="mdi mdi-pencil-outline" v-bind="props" size="small"/>

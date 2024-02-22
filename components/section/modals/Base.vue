@@ -24,13 +24,6 @@ const state = reactive({
   dialog: false
 })
 
-const showDelButton = ref(false)
-
-const getEvent = (val) => {
-  console.log('Received deleteBtn event with value:', val)
-
-  showDelButton.value = val
-}
 
 watchEffect(() => {
   state.dialog = props.dialogStatus
@@ -78,7 +71,7 @@ watchEffect(() => {
                 @click="state.dialog = false"
             />
             <v-btn
-                v-if="showDelButton"
+                v-if="['save', 'update'].some(prefix => props.actionBtn?.name?.startsWith(prefix))"
                 :disabled="loading"
                 :loading="loading"
                 :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
@@ -94,7 +87,7 @@ watchEffect(() => {
             >
             </v-btn>
             <v-btn
-                v-if="!showDelButton"
+                v-if="props.actionBtn?.name?.startsWith('delete')"
                 :disabled="loading"
                 :loading="loading"
                 :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"

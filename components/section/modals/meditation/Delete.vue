@@ -1,7 +1,8 @@
 <script setup>
 import Base from "~/components/section/modals/Base.vue";
 
-const emit = defineEmits([])
+
+
 defineComponent({
   name: 'DeleteMeditation',
 })
@@ -12,27 +13,27 @@ defineProps({
     required: true
   },
   id: {
-    type: Number,
+    type: String,
     required: true,
   }
 })
 
-onMounted(() => {
-  return emit("deleteBtn", true) ? true : console.log(emit("deleteBtn", true))
-})
+const loading = ref()
+const dialog = ref()
 
-function showDeleteBtn(val) {
-  if (showDeleteBtnEmit("deleteBtn", val)) {
-    console.log('deleteBtn event emitted with value:', val)
-  } else {
-    console.log('kir shodi')
-  }
+const deleteCourse = async () => {
+  loading.value = true
+  // await useMeditationStore().delete(request)
+  // dialog.value = false
+  // loading.value = false
 }
+
+
 </script>
 
 <template>
 
-  <Base form-title="Delete Meditation">
+  <Base form-title="Add Meditation Course" :loading="loading" :action-btn="deleteCourse" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn
@@ -46,9 +47,13 @@ function showDeleteBtn(val) {
 
     <template #columns>
       <v-row justify="space-between">
-        <v-col cols="12" class="ma-3">
-          <div class="text-white font-16 pb-5">"{{ title }}"</div>
-          <span class="font-18 text-orange">Are you sure about removing this course from Meditations?</span>
+        <v-col cols="12" class="my-3">
+
+          <span class="text-white font-16 pb-5">
+            Are you sure about removing
+            <strong class="font-18 text-orange">"{{ title }}"</strong>
+            from Meditations?
+          </span>
         </v-col>
       </v-row>
     </template>

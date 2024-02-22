@@ -23,7 +23,6 @@ defineProps({
 })
 
 /*********************************************/
-const formTitle = ref('Add Meditation Course')
 const isBtnText = ref()
 const loading = ref()
 const dialog = ref()
@@ -65,7 +64,7 @@ const saveCourse = async () => {
 
 <template>
 
-  <Base :form-title="formTitle" :loading="loading" :save-btn="saveCourse" :dialog-status="dialog">
+  <Base form-title="Add Meditation Course" :loading="loading" :action-btn="saveCourse" :dialog-status="dialog">
 
     <template v-slot:button="props">
       <v-btn
