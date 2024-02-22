@@ -27,6 +27,7 @@ const isVideoCoursePage = computed(() => {
 
     <AddMeditation v-if="isMeditationCoursePage"/>
     <AddVideo v-if="isVideoCoursePage"/>
+
   </v-row>
 </template>
 

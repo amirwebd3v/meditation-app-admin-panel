@@ -1,19 +1,38 @@
 <script setup>
 import Base from "~/components/section/modals/Base.vue";
 
+const emit = defineEmits([])
 defineComponent({
   name: 'DeleteMeditation',
-
 })
 
+defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  id: {
+    type: Number,
+    required: true,
+  }
+})
 
+onMounted(() => {
+  return emit("deleteBtn", true) ? true : console.log(emit("deleteBtn", true))
+})
 
-
+function showDeleteBtn(val) {
+  if (showDeleteBtnEmit("deleteBtn", val)) {
+    console.log('deleteBtn event emitted with value:', val)
+  } else {
+    console.log('kir shodi')
+  }
+}
 </script>
 
 <template>
 
-  <Base form-title="Delete Meditation" >
+  <Base form-title="Delete Meditation">
 
     <template v-slot:button="props">
       <v-btn
@@ -21,17 +40,15 @@ defineComponent({
           variant="text"
           icon="mdi mdi-delete-outline"
           v-bind="props"
-          @click="$emit('deleteAction',true)"
           size="small">
       </v-btn>
     </template>
 
     <template #columns>
       <v-row justify="space-between">
-        <v-col cols="12" class="pb-0">
-          <div class="text-subtitle-1 text-medium-emphasis py-2">Category</div>
-          <v-text-field variant="outlined" color="primary" density="comfortable"
-                        placeholder="Enter category name"/>
+        <v-col cols="12" class="ma-3">
+          <div class="text-white font-16 pb-5">"{{ title }}"</div>
+          <span class="font-18 text-orange">Are you sure about removing this course from Meditations?</span>
         </v-col>
       </v-row>
     </template>
