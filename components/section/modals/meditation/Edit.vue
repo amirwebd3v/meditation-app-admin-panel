@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 import { useCategoryStore } from "~/stores/category";
 import type { CourseUpdateRequest } from "~/utils/requests";
 import {useMediaStore} from "~/stores/media";
+import type {Preview} from "~/utils/types";
 
 
 /********************************************/
@@ -59,24 +60,22 @@ const maskPrice = {
   }
 }
 
-// const {files} = storeToRefs(useMediaStore())
-
 /********************************************/
 const request = reactive<CourseUpdateRequest>({
   id: props.id,
   title: props.title,
-  // thumbnail: [...files.value.values()][0]['file_id'],
   description: props.description,
   categories: props.categories,
   price: props.price,
   is_popular: props.isPopular
 })
 
-// const images = ref<File[]>([])
+const preview = ref<Preview|null>(null)
 
-// watch(images, (newFile: File[], oldFile: File[]) => {
-//   useMediaStore().upload(newFile)
-// })
+const upload = async (files: File[]) => {
+  preview.value = await useMediaStore().upload(files[0])
+  request.thumbnail = preview.value.id
+}
 
 const updateCourse = async () => {
   loading.value = true
@@ -126,15 +125,13 @@ const updateCourse = async () => {
       </v-col>
       <v-col cols="12" class="py-0">
         <div class="text-subtitle-1 text-medium-emphasis text-white pb-2">Upload a picture</div>
-          <v-file-input placeholder="Upload your documents" variant="outlined" prepend-icon="" color="primary"
-                        hide-details="">
+          <v-file-input @update:model-value="upload" placeholder="Upload your documents"
+                        variant="outlined" prepend-icon="" color="primary" hide-details="">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="45" height="45" class="justify-center align-center">
+                <v-card width="125" height="125" class="justify-center align-center">
                   <v-col align-self="auto">
-                    <v-img width="auto" height="25" cover
-                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                    </v-img>
+                    <v-img width="auto" height="25" cover :src="preview?.url" />
                     <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                   </v-col>
                 </v-card>
