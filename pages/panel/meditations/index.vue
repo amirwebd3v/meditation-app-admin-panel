@@ -105,7 +105,7 @@ const goToLesson = (courseId: string) => {
       </v-sheet>
 
 
-      <Categories :Filters="filters"/>
+      <Categories :categories="useCategoryStore().meditationCategories"/>
       <AddConfigurationItem :Item="'All Meditations'"/>
 
 

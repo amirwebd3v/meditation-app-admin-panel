@@ -6,8 +6,8 @@ import {CourseType} from "~/utils/enums";
 
 export const useCategoryStore = defineStore('category', {
     state: () => ({
-        meditationCategories: [] as Category[],
-        videoCategories: [] as Category[],
+        meditationCategories: new Map<number, Category>(),
+        videoCategories: new Map<number, Category>(),
     }),
     actions: {
         async fetch() {
@@ -16,30 +16,22 @@ export const useCategoryStore = defineStore('category', {
                 pagination: {page: 1, perPage: -1},
                 search: [{field: 'courses.type', value: CourseType.Meditation}]
             })
-            this.meditationCategories = response.data
+            response.data.forEach(c => this.meditationCategories.set(c.id, c))
 
             response = await useApi().paginate<Category>('/admin/v1/category', {
                 sort: {created_at: 'desc'},
                 pagination: {page: 1, perPage: -1},
                 search: [{field: 'courses.type', value: CourseType.Video}]
             })
-            this.videoCategories = response.data
+            response.data.forEach(c => this.videoCategories.set(c.id, c))
         },
     },
 
     getters: {
-        allCategories(state): Category[] {
-            return state.videoCategories.concat(state.meditationCategories)
-                .reduce((prev: Category[], cur: Category) => [...prev.filter((obj: Category) => obj.id !== cur.id), cur], [])
-                .sort(function (a, b) {
-                    if (a.name < b.name) {
-                        return -1;
-                    }
-                    if (a.name > b.name) {
-                        return 1;
-                    }
-                    return 0;
-                });
+        allCategories(state): Map<number, Category> {
+            const all = state.videoCategories
+            state.meditationCategories.forEach((value, key) => all.set(key, value))
+            return all
         }
     }
 })

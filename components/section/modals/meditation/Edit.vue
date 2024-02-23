@@ -117,9 +117,8 @@ const actions = [
           <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Select category</div>
           <v-autocomplete variant="outlined" :disabled="loading" chips closable-chips multiple
                           v-model="request.categories"
-                          color="primary" density="comfortable" single-line :items="allCategories" item-title="name"
-                          item-value="id"
-                          required/>
+                          color="primary" density="comfortable" single-line item-title="name"
+                          :items="[...allCategories.values()]" item-value="id" required/>
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2 text-white">Price ($)</div>
