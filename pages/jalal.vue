@@ -98,13 +98,13 @@ const searchableFields: Array<Omit<FilterSearchItem, 'value'>> = [
 
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'set', title: 'TYPE', align: 'start', sortable: false},
+  {key: 'set', title: 'TYPE', align: 'center', sortable: false},
   {key: 'category', title: 'CATEGORY', align: 'start', sortable: false},
   {key: 'description', title: 'DESCRIPTION', align: 'start', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', align: 'center', sortable: true},
   {key: 'thumbnail', title: 'PICTURE', align: 'center', sortable: false},
   {key: 'is_popular', title: 'POPULAR', align: 'center', sortable: true},
-  {key: 'price', title: 'PRICE', align: 'start', sortable: true},
+  {key: 'price', title: 'PRICE', align: 'center', sortable: true},
   {key: 'actions', title: '', align: 'start', sortable: false},
 ]
 
