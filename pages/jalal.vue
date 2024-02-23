@@ -83,6 +83,11 @@
         </v-card>
       </template>
 
+      <template v-slot:item.is_popular="{ item }">
+        <v-icon color="primary" v-if="item.is_popular">mdi-check</v-icon>
+        <v-icon color="error" v-else>mdi-close</v-icon>
+      </template>
+
     </table-server>
   </v-container>
 </template>
@@ -97,6 +102,8 @@ const {items, meta} = storeToRefs(useMeditationStore())
 const searchableFields: Array<Omit<FilterSearchItem, 'value'>> = [
   {field: 'title', operator: 'like'},
   {field: 'description', operator: 'like'},
+  {field: 'price', operator: 'like'},
+  {field: 'is_popular', operator: 'like'},
   {field: 'categories.slug', operator: 'in'},
   {field: 'categories.name', operator: 'like'},
 ]
@@ -108,6 +115,7 @@ const headers = [
   {key: 'description', title: 'DESCRIPTION', align: 'start', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', align: 'center', sortable: true},
   {key: 'thumbnail', title: 'PICTURE', align: 'center', sortable: false},
+  {key: 'is_popular', title: 'Popular', align: 'center', sortable: true},
   {key: 'price', title: 'PRICE', align: 'start', sortable: true},
   {key: 'actions', title: '', align: 'start', sortable: false},
 ]

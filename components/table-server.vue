@@ -143,13 +143,14 @@ const queryParams = reactive<QueryParams>({
   search: []
 })
 
-const load = async () => {
+const load = () => {
   loading.value = true
   if (props.clearItemsBeforeFetching) {
     props.items.clear()
   }
-  await props.onFetch(queryParams)
-  loading.value = false
+  props.onFetch(queryParams).finally(() => {
+    loading.value = false
+  })
 }
 
 const transform = {
