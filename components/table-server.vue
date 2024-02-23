@@ -1,34 +1,40 @@
 <template>
   <v-card>
-    <v-card-title>Course List</v-card-title>
-    <v-card-item>
+    <slot name="card-header" :props="props">
+      <v-card-title v-if="props.cardTitle" v-text="props.cardTitle"/>
+    </slot>
+
+    <v-card-item v-if="searchableFields.length">
       <v-text-field
           clearable
           @click:clear="transform.search"
           :readonly="loading"
           density="compact"
           variant="solo"
-          label="Search courses"
+          :label="props.searchLabel"
           append-inner-icon="mdi-magnify"
           single-line
           hide-details
           @keyup.enter="transform.search"
       />
     </v-card-item>
-    <v-data-table-server
-        :loading="loading"
-        show-current-page
-        loading-text="Loading items . . ."
-        :items="[...props.items.values()]"
-        :items-length="props.total"
-        :items-per-page-options="props.itemPerPageOptions"
-        :page="params.pagination.page"
-        :items-per-page="params.pagination.perPage"
-        :sort-by="[{key: Object.keys(params.sort)[0], order: Object.values(params.sort)[0]}]"
-        @update:page="transform.page"
-        @update:itemsPerPage="transform.itemsPerPage"
-        @update:sort-by="transform.sort"
-    />
+
+    <v-card-text>
+      <v-data-table-server
+          :loading="loading"
+          show-current-page
+          :loading-text="props.loadingText"
+          :items="[...props.items.values()]"
+          :items-length="props.total"
+          :items-per-page-options="props.itemPerPageOptions"
+          :page="params.pagination.page"
+          :items-per-page="params.pagination.perPage"
+          :sort-by="[{key: Object.keys(params.sort)[0], order: Object.values(params.sort)[0]}]"
+          @update:page="transform.page"
+          @update:itemsPerPage="transform.itemsPerPage"
+          @update:sort-by="transform.sort"
+      />
+    </v-card-text>
   </v-card>
 </template>
 
@@ -56,10 +62,6 @@ const props = defineProps({
     type: Number,
     default: 0
   },
-  page: {
-    type: Number,
-    default: 1
-  },
   perPage: {
     type: Number,
     default: 5
@@ -72,9 +74,21 @@ const props = defineProps({
     type: String,
     default: 'desc'
   },
-  fetch: {
+  onFetch: {
     type: Function,
     required: true
+  },
+  cardTitle: {
+    type: String,
+    default: null
+  },
+  loadingText: {
+    type: String,
+    default: 'Loading items . . .'
+  },
+  searchLabel: {
+    type: String,
+    default: 'Search items'
   },
   searchJoin: {
     type: String,
@@ -84,8 +98,12 @@ const props = defineProps({
     type: Array<Omit<FilterSearchItem, 'value'>>,
     default: []
   },
+  clearItemsBeforeFetching: {
+    type: Boolean,
+    default: false
+  },
   itemPerPageOptions: {
-    type: Array<{title: String, value: Number}>,
+    type: Array<{ title: String, value: Number }>,
     default: [
       {title: '5', value: 5},
       {title: '10', value: 10},
@@ -98,7 +116,7 @@ const props = defineProps({
 
 const params = reactive<Params>({
   pagination: {
-    page: props.page,
+    page: 1,
     perPage: props.perPage,
   },
   // @ts-ignore
@@ -112,16 +130,22 @@ const params = reactive<Params>({
 
 const load = async () => {
   loading.value = true
-  props.items.clear()
-  await props.fetch(params)
+  if (props.clearItemsBeforeFetching) {
+    props.items.clear()
+  }
+  await props.onFetch(params)
   loading.value = false
 }
 
 const transform = {
   page: (page: number) => params.pagination.page = page,
   itemsPerPage: (perPage: number) => params.pagination.perPage = perPage,
-  sort: (sorts: Array<{key: string, order: string}>) => params.sort = Object.assign({}, ...(sorts.length ? sorts : [{key: 'created_at', order: 'desc'}]).map(s => {return {[s.key]: s.order} as FilterSortItem})),
-  search: (e: KeyboardEvent) => params.search = (e.target?.value ? props.searchableFields.map(sf => {return {...sf, value: e.target?.value || ''}}) : [])
+  sort: (sorts: Array<{ key: string, order: string }>) => params.sort = Object.assign({}, ...(sorts.length ? sorts : [{key: props.defaultSortKey, order: props.defaultSortOrder}]).map(s => {
+    return {[s.key]: s.order} as FilterSortItem
+  })),
+  search: (e: KeyboardEvent) => params.search = (e.target?.value ? props.searchableFields.map(sf => {
+    return {...sf, value: e.target?.value || ''}
+  }) : [])
 }
 
 onMounted(async () => {
