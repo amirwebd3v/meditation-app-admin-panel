@@ -11,8 +11,9 @@
         card-title="All Meditations"
         loadingText="Loading items . . ."
         searchLabel="Search items"
-        clear-items-before-fetching
+        table-class="mt-10 rounded-lg bg-light-brown-1"
         :searchable-fields="searchableFields"
+        :headers="headers"
         :itemPerPageOptions="[
           {title: '5', value: 5},
           {title: '10', value: 10},
@@ -23,13 +24,12 @@
     >
 
       <template v-slot:search="{props}">
-        <v-sheet class="d-flex mb-6 mx-6 bg-transparent align-center" v-if="searchableFields.length">
+        <v-sheet class="d-flex mb-6 bg-transparent align-center" v-if="searchableFields.length">
           <v-sheet class="bg-transparent">
             <h2 class="text-white pr-10 me-auto">Meditations</h2>
           </v-sheet>
           <v-sheet class="bg-transparent mr-5" width="475px">
             <v-text-field
-                class=""
                 @keyup.enter="props.search"
                 @click:clear="props.search"
                 :label="props.searchLabel"
@@ -46,7 +46,7 @@
       </template>
 
       <template v-slot:title="{props}">
-        <div class="d-flex justify-space-between px-2">
+        <div class="d-flex justify-space-between">
           <v-card-title v-text="props.cardTitle"/>
           <v-card-actions>
             <v-btn
@@ -69,6 +69,20 @@
         </div>
       </template>
 
+      <template v-slot:item.title="{item}">
+        <v-tooltip :text="item.title">
+          <template v-slot:activator="{ props }">
+            <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.title }}</div>
+          </template>
+        </v-tooltip>
+      </template>
+
+      <template v-slot:item.thumbnail="{ item }">
+        <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
+          <v-img :src="item.thumbnail.urls.small" height="64" cover/>
+        </v-card>
+      </template>
+
     </table-server>
   </v-container>
 </template>
@@ -87,9 +101,28 @@ const searchableFields: Array<Omit<FilterSearchItem, 'value'>> = [
   {field: 'categories.name', operator: 'like'},
 ]
 
+const headers = [
+  {key: 'title', title: 'TITLE', align: 'start', sortable: true},
+  {key: 'set', title: 'TYPE', align: 'start', sortable: false},
+  {key: 'category', title: 'CATEGORY', align: 'start', sortable: false},
+  {key: 'description', title: 'DESCRIPTION', align: 'start', sortable: false},
+  {key: 'lessons_count', title: 'QUANTITY', align: 'center', sortable: true},
+  {key: 'thumbnail', title: 'PICTURE', align: 'center', sortable: false},
+  {key: 'price', title: 'PRICE', align: 'start', sortable: true},
+  {key: 'actions', title: '', align: 'start', sortable: false},
+]
+
 </script>
 
 
 <style scoped lang="scss">
+div:deep(.v-table__wrapper) {
+  thead {
+    background-color: #7B6345;
+  }
 
+  table > tbody > tr:not(:last-child) > td {
+    border-bottom: 1px solid #7B6345;
+  }
+}
 </style>
