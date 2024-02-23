@@ -103,7 +103,7 @@ const headers = [
   {key: 'description', title: 'DESCRIPTION', align: 'start', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', align: 'center', sortable: true},
   {key: 'thumbnail', title: 'PICTURE', align: 'center', sortable: false},
-  {key: 'is_popular', title: 'Popular', align: 'center', sortable: true},
+  {key: 'is_popular', title: 'POPULAR', align: 'center', sortable: true},
   {key: 'price', title: 'PRICE', align: 'start', sortable: true},
   {key: 'actions', title: '', align: 'start', sortable: false},
 ]
