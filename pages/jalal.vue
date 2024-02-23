@@ -3,24 +3,12 @@
     <table-server
         :perPage="10"
         :items="items"
-        :total="meta?.total || 0"
-        :on-fetch="useMeditationStore().paginate"
-        defaultSortKey="created_at"
-        defaultSortOrder="desc"
-        searchJoin="or"
-        card-title="All Meditations"
-        loadingText="Loading items . . ."
-        searchLabel="Search items"
-        table-class="mt-10 rounded-lg bg-light-brown-1"
-        :searchable-fields="searchableFields"
         :headers="headers"
-        :itemPerPageOptions="[
-          {title: '5', value: 5},
-          {title: '10', value: 10},
-          {title: '20', value: 20},
-          {title: '50', value: 50},
-          {title: 'All', value: -1},
-        ]"
+        :total="meta?.total || 0"
+        :searchable-fields="searchableFields"
+        :on-fetch="useMeditationStore().paginate"
+        table-class="mt-10 rounded-lg bg-light-brown-1"
+        card-title="All Meditations"
     >
 
       <template v-slot:search="{props}">
