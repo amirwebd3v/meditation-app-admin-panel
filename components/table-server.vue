@@ -1,23 +1,24 @@
 <template>
-  <v-card>
-    <slot name="card-header" :props="props">
-      <v-card-title v-if="props.cardTitle" v-text="props.cardTitle"/>
-    </slot>
+  <v-card color="transparent" variant="flat">
 
     <v-card-item v-if="searchableFields.length">
       <v-text-field
-          clearable
+          @keyup.enter="transform.search"
           @click:clear="transform.search"
+          :label="props.searchLabel"
           :readonly="loading"
           density="compact"
-          variant="solo"
-          :label="props.searchLabel"
-          append-inner-icon="mdi-magnify"
+          variant="outlined"
+          prepend-inner-icon="mdi-magnify"
+          clearable
           single-line
           hide-details
-          @keyup.enter="transform.search"
       />
     </v-card-item>
+
+    <slot name="title" :props="props">
+      <v-card-title v-if="props.cardTitle" v-text="props.cardTitle"/>
+    </slot>
 
     <v-card-text>
       <v-data-table-server
