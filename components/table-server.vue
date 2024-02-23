@@ -19,11 +19,11 @@
         :loading="loading"
         show-current-page
         loading-text="Loading items . . ."
-        :items="[...items.values()]"
-        :items-length="total"
+        :items="[...props.items.values()]"
+        :items-length="props.total"
         :items-per-page-options="props.itemPerPageOptions"
-        :page="props.page"
-        :items-per-page="props.perPage"
+        :page="params.pagination.page"
+        :items-per-page="params.pagination.perPage"
         :sort-by="[{key: Object.keys(params.sort)[0], order: Object.values(params.sort)[0]}]"
         @update:page="transform.page"
         @update:itemsPerPage="transform.itemsPerPage"
@@ -76,6 +76,10 @@ const props = defineProps({
     type: Function,
     required: true
   },
+  searchJoin: {
+    type: String,
+    default: 'or'
+  },
   searchableFields: {
     type: Array<Omit<FilterSearchItem, 'value'>>,
     default: []
@@ -101,7 +105,8 @@ const params = reactive<Params>({
   sort: {
     [props.defaultSortKey]: props.defaultSortOrder
   },
-  searchJoin: 'or',
+  // @ts-ignore
+  searchJoin: props.searchJoin,
   search: []
 })
 
