@@ -127,7 +127,7 @@ const actions = [
               color="primary"
               density="comfortable"
               single-line
-              :items="allCategories"
+              :items="[...allCategories.values()]"
               item-title="name"
               item-value="id"
               required

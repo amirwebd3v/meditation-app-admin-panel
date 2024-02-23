@@ -96,7 +96,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
         </v-sheet>
 
 
-      <Categories :Filters="filters"  />
+      <Categories :categories="useCategoryStore().videoCategories"/>
       <AddConfigurationItem :Item="'All Courses'" />
 
 
@@ -122,7 +122,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                 </template>
 
                 <template #item.category="{item}">
-                  <div class="text-truncate" style="max-width: 125px;">{{ item.categories[0].name }}</div>
+                  <div class="text-truncate" style="max-width: 125px;">{{ item.categories[0]?.name }}</div>
                 </template>
 
 

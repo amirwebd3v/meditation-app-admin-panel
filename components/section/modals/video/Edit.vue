@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
 import Base from "~/components/section/modals/Base.vue";
+import {storeToRefs} from "pinia";
+import {useCategoryStore} from "~/stores/category";
 
 
 const icon = ref('mdi mdi-pencil-outline')
@@ -49,6 +51,9 @@ const currentRouteName = router.currentRoute.value.name;
 const isVideoCoursePage = computed(() => {
   return currentRouteName === 'panel-videos-course-title-lessons';
 })
+
+const {allCategories} = storeToRefs(useCategoryStore())
+
 </script>
 
 <template>
@@ -88,8 +93,10 @@ const isVideoCoursePage = computed(() => {
               color="primary"
               density="comfortable"
               single-line
-              :items="['All Category', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-          ></v-select>
+              :items="[...allCategories.values()]"
+              item-title="name"
+              item-value="id"
+          />
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
@@ -99,7 +106,7 @@ const isVideoCoursePage = computed(() => {
               :items="['Free']"
               color="primary"
               density="comfortable"
-          ></v-combobox>
+          />
         </v-col>
         <v-col cols="6" class="py-0" v-if="!isVideoCoursePage">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Type</div>

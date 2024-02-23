@@ -90,7 +90,7 @@ const isVideoCoursePage = computed(() => {
               density="comfortable"
               single-line
               :items="['All Category', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-          ></v-select>
+          />
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
@@ -100,7 +100,7 @@ const isVideoCoursePage = computed(() => {
               :items="['Free']"
               color="primary"
               density="comfortable"
-          ></v-combobox>
+          />
         </v-col>
         <v-col cols="6" class="py-0" v-if="isVideoCoursePage">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Type</div>
@@ -110,7 +110,7 @@ const isVideoCoursePage = computed(() => {
               density="comfortable"
               single-line
               :items="['Single', 'Course']"
-          ></v-select>
+          />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Upload a picture</div>
