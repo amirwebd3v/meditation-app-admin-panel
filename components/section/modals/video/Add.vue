@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
-import Base from "~/components/section/modals/Base.vue";
+const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
+
 
 defineComponent({
   name: 'AddVideo',

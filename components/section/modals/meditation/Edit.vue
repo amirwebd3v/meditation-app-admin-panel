@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
-import Base from "~/components/section/modals/Base.vue";
+const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
+
 import {useMeditationStore} from "~/stores/meditation";
 import {storeToRefs} from "pinia";
 import {useCategoryStore} from "~/stores/category";
@@ -11,7 +12,6 @@ import type {Preview} from "~/utils/types";
 
 /********************************************/
 const loading = ref()
-const dialog = ref()
 const route = useRoute();
 const {allCategories} = storeToRefs(useCategoryStore())
 /********************************************/
@@ -20,10 +20,6 @@ defineComponent({
 })
 
 const props = defineProps({
-  formTitle: {
-    type: String,
-    required: true
-  },
   title: {
     type: String,
     required: true
@@ -80,7 +76,7 @@ const upload = async (files: File[]) => {
 const updateCourse = async () => {
   loading.value = true
   await useMeditationStore().update(request)
-  dialog.value = false
+
   loading.value = false
 }
 
@@ -95,8 +91,7 @@ const actions = [
 </script>
 
 <template>
-  <Base :form-title="formTitle" :loading="loading" :dialog-status="dialog"
-        :actions="actions">
+  <Base form-title="Edit Meditation Course" :loading="loading" :actions="actions">
 
     <template v-slot:button="props">
       <v-btn class="text-primary" variant="text" icon="mdi mdi-pencil-outline" v-bind="props" size="small"/>
@@ -140,7 +135,7 @@ const actions = [
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="125" height="125" class="justify-center align-center">
                   <v-col align-self="auto">
-                    <v-img width="auto" height="25" cover :src="preview?.url"/>
+                    <v-img width="auto" height="25" cover :src="preview?.url as string"/>
                     <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                   </v-col>
                 </v-card>

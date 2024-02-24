@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Base from "~/components/section/modals/Base.vue";
+const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseType} from "~/utils/enums";
-import {useMeditationStore} from "~/stores/meditation";
 import {useCategoryStore} from "~/stores/category";
 import {storeToRefs} from "pinia";
+
 
 /*********************************************/
 defineComponent({
@@ -25,7 +25,6 @@ defineProps({
 /*********************************************/
 const isBtnText = ref()
 const loading = ref()
-const dialog = ref()
 const {allCategories} = storeToRefs(useCategoryStore())
 
 /********************************************/
@@ -49,12 +48,18 @@ const maskPrice = {
 
 
 
+
 /********************************************/
 const saveCourse = async () => {
   loading.value = true
-  await useMeditationStore().store(request)
-  dialog.value = false
-  loading.value = false
+  try {
+    await useMeditationStore().store(request)
+    useEvent('closeDialog',false)
+  } catch (err) {
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
 }
 
 const actions = [
@@ -67,11 +72,12 @@ const actions = [
 
 
 
+
 </script>
 
 <template>
 
-  <Base form-title="Add Meditation Course" :loading="loading" :actions="actions" :dialog-status="dialog">
+  <Base form-title="Add Meditation Course" :loading="loading" :actions="actions">
 
     <template v-slot:button="props">
       <v-btn
@@ -92,7 +98,6 @@ const actions = [
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"
           rounded="xl"
-
       >
         <template v-slot:default v-if="$vuetify.display.smAndDown">
           <v-icon icon="mdi-plus"/>
@@ -104,16 +109,16 @@ const actions = [
     </template>
 
 
-    <template #columns>
+    <template #columns >
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        placeholder="Enter meditation title" required/>
+                        placeholder="Enter meditation title" required :disabled="loading"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description" required/>
+          <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary" v-model="request.description" required/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Select category</div>
@@ -132,28 +137,29 @@ const actions = [
               item-value="id"
               required
           >
-<!--            <template v-slot:prepend-item>-->
-<!--              <v-list-item-->
-<!--                  title="All Categories"-->
-<!--                  @click="toggle"-->
+            <!--            <template v-slot:prepend-item>-->
+            <!--              <v-list-item-->
+            <!--                  title="All Categories"-->
+            <!--                  @click="toggle"-->
 
-<!--              >-->
-<!--                <template v-slot:prepend>-->
-<!--                  <v-checkbox-btn-->
-<!--                      color="primary"-->
-<!--                      :indeterminate="likesSomeFruit && !likesAllFruit"-->
-<!--                      :model-value="allCategories"-->
-<!--                  ></v-checkbox-btn>-->
-<!--                </template>-->
-<!--              </v-list-item>-->
+            <!--              >-->
+            <!--                <template v-slot:prepend>-->
+            <!--                  <v-checkbox-btn-->
+            <!--                      color="primary"-->
+            <!--                      :indeterminate="likesSomeFruit && !likesAllFruit"-->
+            <!--                      :model-value="allCategories"-->
+            <!--                  ></v-checkbox-btn>-->
+            <!--                </template>-->
+            <!--              </v-list-item>-->
 
-<!--              <v-divider class="mt-2"></v-divider>-->
-<!--            </template>-->
+            <!--              <v-divider class="mt-2"></v-divider>-->
+            <!--            </template>-->
           </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Price ($)</div>
           <v-text-field
+              :disabled="loading"
               required
               variant="outlined"
               v-model="request.price"
@@ -164,26 +170,26 @@ const actions = [
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5">Popular</div>
-          <v-radio-group class="mt-5" inline v-model="request.is_popular" >
-              <v-radio
-                  density="compact"
-                  :value="false"
-                  label="No"
-                  color="primary"
-                  class="pr-md-8"
-              />
-              <v-radio
-                  density="compact"
-                  :value="true"
-                  label="Yes"
-                  color="primary"
-              />
+          <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading">
+            <v-radio
+                density="compact"
+                :value="false"
+                label="No"
+                color="primary"
+                class="pr-md-8"
+            />
+            <v-radio
+                density="compact"
+                :value="true"
+                label="Yes"
+                color="primary"
+            />
           </v-radio-group>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis text-white pb-2">Upload a picture</div>
           <v-file-input placeholder="Upload your documents" variant="outlined" prepend-icon="" color="primary"
-                        hide-details="">
+                        hide-details="" :disabled="loading">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="45" height="45" class="justify-center align-center">

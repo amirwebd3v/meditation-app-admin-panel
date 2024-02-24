@@ -2,9 +2,10 @@
 
 interface ActionButton {
   text: string
-  func: Function
+  func: Function;
   class: string
 }
+
 
 const props = defineProps({
   formTitle: {
@@ -15,25 +16,19 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  dialogStatus: {
-    type: Boolean,
-    default: false
-  },
   actions: {
     type: Array<ActionButton>,
     default: []
   }
 });
 /*********************************************/
-const state = reactive({
-  dialog: false
-})
+const dialog = ref(false);
 
-
-watchEffect(() => {
-  state.dialog = props.dialogStatus
-
-})
+useListen('closeDialog', (value: Boolean) => {
+  if (dialog.value) {
+    dialog.value = value;
+  }
+});
 
 
 </script>
@@ -41,12 +36,12 @@ watchEffect(() => {
 <template>
 
   <v-dialog
-      v-model="state.dialog"
+      v-model="dialog"
       max-width="500px"
   >
 
     <template v-slot:activator="{ props }">
-      <slot name="button" v-bind="props" />
+      <slot name="button" v-bind="props"/>
     </template>
 
     <v-card class="bg-light-brown-1 py-1" rounded="lg">
@@ -67,29 +62,29 @@ watchEffect(() => {
                 :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                 color="primary"
                 :class="{
-              'px-7': $vuetify.display.smAndDown,
-              'px-12':$vuetify.display.mdAndUp}"
+                'px-7': $vuetify.display.smAndDown,
+                'px-12':$vuetify.display.mdAndUp}"
                 size="large"
                 rounded="xl"
                 variant="outlined"
                 text="Cancel"
-                @click="state.dialog = false"
+                @click="dialog = false"
             />
             <v-btn v-for="action in actions" :key="action.text"
-                :disabled="loading"
-                :loading="loading"
-                :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
-                :class="{
+                   :disabled="loading"
+                   :loading="loading"
+                   :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+                   :class="{
                   'px-10': $vuetify.display.smAndDown,
                   'px-14': $vuetify.display.mdAndUp,
                   'text-white': true,
                   [action.class]: true
                 }"
-                rounded="xl"
-                size="large"
-                variant="outlined"
-                :text="action.text"
-                @click="action.func"
+                   rounded="xl"
+                   size="large"
+                   variant="outlined"
+                   :text="action.text"
+                   @click="action.func"
             >
             </v-btn>
           </div>
