@@ -1,5 +1,5 @@
 <script setup>
-import Base from "~/components/section/modals/Base.vue";
+const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
 
 
 defineComponent({
@@ -60,7 +60,7 @@ const actions = [
             <span class="font-weight-regular font-16"><strong class="font-18 text-orange">WARNING: </strong>This action cannot be undone.</span>
           </div>
           <div class="pb-5">
-             <span class="text-white font-14 text-justify">
+             <span class="text-white font-14  text-justify">
             <strong class="font-16 text-orange">"{{ title }}"</strong>
             and its all of data will be permanently deleted.
           </span>

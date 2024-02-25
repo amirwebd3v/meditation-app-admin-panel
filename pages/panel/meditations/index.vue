@@ -6,15 +6,18 @@ definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-import Categories from "~/components/section/configuration/Categories.vue";
+const Categories = defineAsyncComponent(() => import("~/components/section/configuration/Categories.vue"));
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
 
 import {useMeditationStore} from "~/stores/meditation"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-import AddMeditation from "~/components/section/modals/meditation/Add.vue";
-import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
-import DeleteMeditation from "~/components/section/modals/meditation/Delete.vue";
+
+const AddMeditation = defineAsyncComponent(() => import("~/components/section/modals/meditation/Add.vue"));
+const EditMeditation = defineAsyncComponent(() => import("~/components/section/modals/meditation/Edit.vue"));
+const DeleteMeditation = defineAsyncComponent(() => import("~/components/section/modals/meditation/Delete.vue"));
+// import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
+// import DeleteMeditation from "~/components/section/modals/meditation/Delete.vue";
 
 const menu = ref(false)
 const loading = ref(true)
@@ -64,7 +67,6 @@ const filters = [
 ]
 
 
-
 const router = useRouter();
 const goToLesson = (courseId: string) => {
   if (courseId) {
@@ -77,7 +79,11 @@ const goToLesson = (courseId: string) => {
   }
 }
 
+const dialog = ref()
 
+function sendDialogStatus(val){
+  dialog.value = val
+}
 </script>
 
 <template>
@@ -181,7 +187,6 @@ const goToLesson = (courseId: string) => {
                 <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
                 <EditMeditation
                     :id="item.uuid"
-                    :form-title="'Edit Meditation Course'"
                     :title="item.title"
                     :description="item.description"
                     :price="item.price"

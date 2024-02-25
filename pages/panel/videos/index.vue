@@ -9,8 +9,9 @@ import AddConfigurationItem from "~/components/section/configuration/AddConfigur
 import {useVideoStore} from "~/stores/video"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-import AddVideo from "~/components/section/modals/video/Add.vue";
-import EditVideo from "~/components/section/modals/video/Edit.vue";
+const AddVideo = defineAsyncComponent(()=> import("~/components/section/modals/video/Add.vue"));
+const EditVideo = defineAsyncComponent(()=> import("~/components/section/modals/video/Edit.vue"));
+// const DeleteVideo = defineAsyncComponent(()=> import("~/components/section/modals/video/Delete.vue"));
 
 const loading = ref(true)
 const searchText = ref('')
@@ -162,7 +163,7 @@ const goToLesson = (courseTitle: string, courseId: string) => {
                       <v-card class="bg-light-brown-1 px-2 py-1" rounded>
                         <AddVideo :btn-out-table="false" :btn-in-table="true"/>
                         <EditVideo
-                            :form-title="'Edit Meditation Course'"
+                            :form-title="'Edit Video Course'"
                             :id="item.uuid"
                             :title="item.title"
                             :description="item.description"

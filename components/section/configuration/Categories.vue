@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 
-import AddCategory from "~/components/section/modals/category/Add.vue";
+const AddCategory = defineAsyncComponent(() => import("~/components/section/modals/category/Add.vue"));
 import type {Category} from "~/utils/types";
 
 defineProps({
@@ -17,7 +17,7 @@ defineProps({
   <!--      Second section-->
   <v-row justify="space-between" align="center" class="mt-2 px-3">
     <span class="text-white font-weight-medium font-18">Categories</span>
-    <AddCategory />
+    <AddCategory/>
   </v-row>
 
   <!--      Third section-->
@@ -31,7 +31,8 @@ defineProps({
             variant="flat"
             mandatory="force"
         >
-          <v-chip size="large" class="px-4 font-weight-light text-white bg-primary" text="All" style="border-color: #96AE50 !important;" variant="outlined">
+          <v-chip size="large" class="px-4 font-weight-light text-white bg-primary" text="All"
+                  style="border-color: #96AE50 !important;" variant="outlined">
             <template v-slot:append>
               <v-icon class="mdi mdi-close pl-4 cursor-pointer" size="x-small" @click=""></v-icon>
             </template>

@@ -1,26 +1,32 @@
 <script setup>
-import Base from "~/components/section/modals/Base.vue";
+const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
 
 defineComponent({
   name: 'AddCategory',
 })
 
 const loading = ref()
-const dialog = ref()
 
 
 const saveCategory = async () => {
   loading.value = true
   // await useMeditationStore().delete(request)
-  // dialog.value = false
+  dialog.value = false
   // loading.value = false
 }
 
+const actions = [
+  {
+    text: 'Save',
+    class: 'bg-primary',
+    func: saveCategory
+  },
+]
 </script>
 
 <template>
 
-  <Base form-title="Add Category" :loading="loading" :dialog-status="dialog">
+  <Base form-title="Add Category" :loading="loading" :actions="actions">
 
     <template v-slot:button="props">
       <v-btn
@@ -33,7 +39,7 @@ const saveCategory = async () => {
           rounded="xl"
       >
         <template v-slot:default v-if="$vuetify.display.smAndDown">
-          <v-icon  icon="mdi-plus"/>
+          <v-icon icon="mdi-plus"/>
         </template>
         <template v-slot:prepend v-if="$vuetify.display.smAndUp">
           <v-icon class="pr-6" icon="mdi-plus"/>
