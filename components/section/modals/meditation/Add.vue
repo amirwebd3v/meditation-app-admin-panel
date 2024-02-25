@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
+import Base from "~/components/section/modals/Base.vue";
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseType} from "~/utils/enums";
 import {useCategoryStore} from "~/stores/category";

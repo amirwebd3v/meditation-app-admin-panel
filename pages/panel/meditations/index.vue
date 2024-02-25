@@ -6,18 +6,16 @@ definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-const Categories = defineAsyncComponent(() => import("~/components/section/configuration/Categories.vue"));
+import Categories from "~/components/section/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
 
 import {useMeditationStore} from "~/stores/meditation"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 
-const AddMeditation = defineAsyncComponent(() => import("~/components/section/modals/meditation/Add.vue"));
-const EditMeditation = defineAsyncComponent(() => import("~/components/section/modals/meditation/Edit.vue"));
-const DeleteMeditation = defineAsyncComponent(() => import("~/components/section/modals/meditation/Delete.vue"));
-// import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
-// import DeleteMeditation from "~/components/section/modals/meditation/Delete.vue";
+import AddMeditation from "~/components/section/modals/meditation/Add.vue";
+import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
+import DeleteMeditation from "~/components/section/modals/meditation/Delete.vue";
 
 const menu = ref(false)
 const loading = ref(true)

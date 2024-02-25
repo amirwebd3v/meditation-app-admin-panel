@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const AddMeditation = defineAsyncComponent(() => import ("~/components/section/modals/meditation/Add.vue"));
-const AddVideo = defineAsyncComponent(() => import( "~/components/section/modals/video/Add.vue"));
+import AddMeditation from "~/components/section/modals/meditation/Add.vue";
+import AddVideo from "~/components/section/modals/video/Add.vue";
 
 defineProps({
   Item: {

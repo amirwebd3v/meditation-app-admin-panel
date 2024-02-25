@@ -9,9 +9,9 @@ import AddConfigurationItem from "~/components/section/configuration/AddConfigur
 import {useVideoStore} from "~/stores/video"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-const AddVideo = defineAsyncComponent(()=> import("~/components/section/modals/video/Add.vue"));
-const EditVideo = defineAsyncComponent(()=> import("~/components/section/modals/video/Edit.vue"));
-// const DeleteVideo = defineAsyncComponent(()=> import("~/components/section/modals/video/Delete.vue"));
+import AddVideo from "~/components/section/modals/video/Add.vue";
+import EditVideo from "~/components/section/modals/video/Edit.vue";
+// import DeleteVideo from "~/components/section/modals/video/Delete.vue";
 
 const loading = ref(true)
 const searchText = ref('')
@@ -37,7 +37,7 @@ const load = async (options = {}) => {
     {field: 'description', operator: 'like', value: searchText.value},
     {field: 'price', operator: 'like', value: searchText.value},
   ]
-  const params = useApi().prepareQueryParams(options, search)  
+  const params = useApi().prepareQueryParams(options, search)
   params.relations = ['categories']
   await useVideoStore().paginate(params)
   loading.value = false
