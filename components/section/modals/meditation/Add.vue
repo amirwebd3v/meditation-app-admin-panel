@@ -26,7 +26,13 @@ defineProps({
 const isBtnText = ref()
 const loading = ref()
 const {allCategories} = storeToRefs(useCategoryStore())
-
+const actionsBtn = [
+  {
+    text: 'Save',
+    class: 'bg-primary',
+    func: saveCourse
+  },
+]
 /********************************************/
 const request = reactive<CourseStoreRequest>({
   title: '',
@@ -36,19 +42,6 @@ const request = reactive<CourseStoreRequest>({
   type: CourseType.Meditation,
   is_popular: false
 })
-/********************************************/
-
-const maskPrice = {
-  mask: '0.99',
-  tokens: {
-    0: {pattern: /\d/, multiple: true}, // Multiple digits for integer part
-    9: {pattern: /\d/, optional: true}, // Optional decimal point and digit
-  }
-}
-
-
-
-
 /********************************************/
 const saveCourse = async () => {
   loading.value = true
@@ -62,13 +55,7 @@ const saveCourse = async () => {
   }
 }
 
-const actions = [
-  {
-    text: 'Save',
-    class: 'bg-primary',
-    func: saveCourse
-  },
-]
+
 
 
 
@@ -77,7 +64,7 @@ const actions = [
 
 <template>
 
-  <Base form-title="Add Meditation Course" :loading="loading" :actions="actions">
+  <Base form-title="Add Meditation Course" :loading="loading" :actions="actionsBtn">
 
     <template v-slot:button="props">
       <v-btn
@@ -114,7 +101,7 @@ const actions = [
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        placeholder="Enter meditation title" required :disabled="loading"/>
+                        placeholder="Enter meditation title" required :disabled="loading" />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Description</div>
@@ -165,7 +152,6 @@ const actions = [
               v-model="request.price"
               color="primary"
               density="comfortable"
-              v-maska:[maskPrice]
           ></v-text-field>
         </v-col>
         <v-col cols="6" class="py-0">
