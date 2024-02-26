@@ -76,6 +76,18 @@
         <v-icon color="error" v-else>mdi-close</v-icon>
       </template>
 
+      <template v-slot:item.actions="{ item }">
+        <modal :active-button="activeButton" :title="item.title">
+          <template v-slot:content>
+            <v-card-text v-text="item.description" />
+          </template>
+          <template v-slot:action="{ isActive }">
+            <v-spacer />
+            <v-btn rounded="xl" class="bg-primary" variant="outlined">Save</v-btn>
+          </template>
+        </modal>
+      </template>
+
     </table-server>
   </v-container>
 </template>
@@ -86,6 +98,12 @@
 import type {FilterSearchItem} from "l5-client/src/types";
 
 const {items, meta} = storeToRefs(useMeditationStore())
+
+const activeButton = {
+  color: 'surface-variant',
+  text: 'Open Dialog',
+  variant: 'flat'
+}
 
 const searchableFields: Array<Omit<FilterSearchItem, 'value'>> = [
   {field: 'title', operator: 'like'},
