@@ -77,11 +77,7 @@ const goToLesson = (courseId: string) => {
   }
 }
 
-const dialog = ref()
 
-function sendDialogStatus(val){
-  dialog.value = val
-}
 </script>
 
 <template>
@@ -181,7 +177,7 @@ function sendDialogStatus(val){
                 />
               </template>
 
-              <v-card class="bg-light-brown-1 px-2 py-1" rounded>
+              <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded>
                 <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
                 <EditMeditation
                     :id="item.uuid"

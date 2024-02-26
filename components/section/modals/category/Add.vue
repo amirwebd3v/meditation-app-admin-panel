@@ -1,34 +1,34 @@
 <script setup>
-import Base from "~/components/section/modals/Base.vue";
+import Modal from "~/components/section/modals/Modal.vue";
 
 defineComponent({
   name: 'AddCategory',
 })
 
 const loading = ref()
+const form = ref()
 
 
 const saveCategory = async () => {
   loading.value = true
   // await useMeditationStore().delete(request)
-  dialog.value = false
-  // loading.value = false
+  loading.value = false
 }
 
-const actions = [
-  {
-    text: 'Save',
-    class: 'bg-primary',
-    func: saveCategory
-  },
-]
+
+const close = async () => {
+  await form.value.reset()
+  useEvent('closeDialog', false)
+}
+
 </script>
 
 <template>
+  <v-form ref="form">
 
-  <Base form-title="Add Category" :loading="loading" :actions="actions">
+    <Modal form-title="Add Category" >
 
-    <template v-slot:button="props">
+    <template #dialogButton="props">
       <v-btn
           color="primary"
           :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
@@ -58,6 +58,39 @@ const actions = [
       </v-row>
     </template>
 
-  </Base>
+    <template #actionButtons>
+      <v-btn
+          :disabled="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          color="primary"
+          :class="{
+                'px-7': $vuetify.display.smAndDown,
+                'px-12':$vuetify.display.mdAndUp,
+                }"
+          size="large"
+          rounded="xl"
+          variant="outlined"
+          text="Cancel"
+          @click="close"
+      />
+      <v-btn
+          :disabled="loading"
+          :loading="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          :class="{
+                  'px-10': $vuetify.display.smAndDown,
+                  'px-14': $vuetify.display.mdAndUp,
+                  'text-white bg-primary': true,
+                }"
+          rounded="xl"
+          size="large"
+          variant="outlined"
+          text="Save"
+          @click="saveCategory"
+      >
+      </v-btn>
+    </template>
 
+  </Modal>
+  </v-form>
 </template>

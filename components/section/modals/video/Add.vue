@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import Base from "~/components/section/modals/Base.vue";
+import Base from "~/components/section/modals/Modal.vue";
 
 
 defineComponent({

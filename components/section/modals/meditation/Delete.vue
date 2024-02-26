@@ -1,5 +1,5 @@
 <script setup>
-import Base from "~/components/section/modals/Base.vue";
+import Modal from "~/components/section/modals/Modal.vue";
 
 
 defineComponent({
@@ -18,7 +18,7 @@ defineProps({
 })
 
 const loading = ref()
-const dialog = ref()
+
 
 const deleteCourse = async () => {
   loading.value = true
@@ -27,22 +27,19 @@ const deleteCourse = async () => {
   // loading.value = false
 }
 
-
-const actions = [
-  {
-    text: 'Delete',
-    class: 'delete-btn-border bg-orange',
-    func: deleteCourse
-  },
-]
+function close(){
+  useEvent('closeDialog', false)
+}
 
 </script>
 
 <template>
+  <v-form ref="form">
 
-  <Base form-title="Delete Meditation" :loading="loading" :actions="actions" :dialog-status="dialog">
+  </v-form>
+  <Modal form-title="Delete Meditation" >
 
-    <template v-slot:button="props">
+    <template #dialogButton="props">
       <v-btn
           class="text-primary"
           variant="text"
@@ -67,9 +64,43 @@ const actions = [
           </div>
 
         </v-col>
+
       </v-row>
     </template>
 
-  </Base>
+    <template #actionButtons>
+      <v-btn
+          :disabled="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          color="primary"
+          :class="{
+                'px-7': $vuetify.display.smAndDown,
+                'px-12':$vuetify.display.mdAndUp,
+                }"
+          size="large"
+          rounded="xl"
+          variant="outlined"
+          text="Cancel"
+          @click="close"
+      />
+      <v-btn
+          :disabled="loading"
+          :loading="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          :class="{
+                  'px-10': $vuetify.display.smAndDown,
+                  'px-14': $vuetify.display.mdAndUp,
+                  'delete-btn-border bg-orange':true,
+                }"
+          rounded="xl"
+          size="large"
+          variant="outlined"
+          text="Save"
+          @click="deleteCourse"
+      >
+      </v-btn>
+    </template>
+
+  </Modal>
 
 </template>
