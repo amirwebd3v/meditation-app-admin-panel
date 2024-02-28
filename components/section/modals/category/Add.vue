@@ -1,34 +1,37 @@
 <script setup>
-const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
+import Modal from "~/components/section/modals/Modal.vue";
+import {useValidationStore} from "~/stores/validation";
+
 
 defineComponent({
   name: 'AddCategory',
 })
 
-const loading = ref()
 
+
+
+const loading = ref(false)
 
 const saveCategory = async () => {
   loading.value = true
-  // await useMeditationStore().delete(request)
-  dialog.value = false
-  // loading.value = false
+  // await useCategoryStore().store(request)
+  loading.value = false
 }
 
-const actions = [
-  {
-    text: 'Save',
-    class: 'bg-primary',
-    func: saveCategory
-  },
-]
+
+function close() {
+  // Object.assign(request, initialState);
+  useValidationStore().clearErrors()
+  useEvent('closeModal', false)
+}
 </script>
 
 <template>
 
-  <Base form-title="Add Category" :loading="loading" :actions="actions">
 
-    <template v-slot:button="props">
+  <Modal>
+
+    <template #dialogButton="props">
       <v-btn
           color="primary"
           :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
@@ -47,7 +50,10 @@ const actions = [
       </v-btn>
 
     </template>
-
+    <template #header>
+      <span class="pl-3">Add Category</span>
+      <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
+    </template>
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
@@ -58,6 +64,38 @@ const actions = [
       </v-row>
     </template>
 
-  </Base>
+    <template #actionButtons>
+      <v-btn
+          :disabled="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          color="primary"
+          :class="{
+                'px-7': $vuetify.display.smAndDown,
+                'px-12':$vuetify.display.mdAndUp,
+                }"
+          size="large"
+          rounded="xl"
+          variant="outlined"
+          text="Cancel"
+          @click="close"
+      />
+      <v-btn
+          :disabled="loading"
+          :loading="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          :class="{
+                  'px-10': $vuetify.display.smAndDown,
+                  'px-14': $vuetify.display.mdAndUp,
+                  'text-white bg-primary': true,
+                }"
+          rounded="xl"
+          size="large"
+          variant="outlined"
+          text="Save"
+          @click="saveCategory"
+      >
+      </v-btn>
+    </template>
 
+  </Modal>
 </template>

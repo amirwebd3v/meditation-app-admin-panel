@@ -1,5 +1,5 @@
 <script setup>
-const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
+import Modal from "~/components/section/modals/Modal.vue";
 
 
 defineComponent({
@@ -18,7 +18,7 @@ defineProps({
 })
 
 const loading = ref()
-const dialog = ref()
+
 
 const deleteCourse = async () => {
   loading.value = true
@@ -27,22 +27,18 @@ const deleteCourse = async () => {
   // loading.value = false
 }
 
-
-const actions = [
-  {
-    text: 'Delete',
-    class: 'delete-btn-border bg-orange',
-    func: deleteCourse
-  },
-]
+function close() {
+  useEvent('closeModal', false)
+}
 
 </script>
 
 <template>
 
-  <Base form-title="Delete Meditation" :loading="loading" :actions="actions" :dialog-status="dialog">
 
-    <template v-slot:button="props">
+  <Modal>
+
+    <template #dialogButton="props">
       <v-btn
           class="text-primary"
           variant="text"
@@ -52,12 +48,22 @@ const actions = [
       </v-btn>
     </template>
 
+    <template #header>
+      <span class="pl-3">Delete Meditation Course</span>
+      <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
+    </template>
+
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="my-3">
           <div class="py-5">
             <v-icon color="red" size="xx-large" class="text-orange pb-2">mdi-alert-outline</v-icon>
-            <span class="font-weight-regular font-16"><strong class="font-18 text-orange">WARNING: </strong>This action cannot be undone.</span>
+            <span class="font-weight-regular font-16">
+              <strong class="font-18 text-orange">
+                WARNING:
+              </strong>
+              This action cannot be undone.
+            </span>
           </div>
           <div class="pb-5">
              <span class="text-white font-14  text-justify">
@@ -67,9 +73,43 @@ const actions = [
           </div>
 
         </v-col>
+
       </v-row>
     </template>
 
-  </Base>
+    <template #actionButtons>
+      <v-btn
+          :disabled="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          color="primary"
+          :class="{
+                'px-7': $vuetify.display.smAndDown,
+                'px-12':$vuetify.display.mdAndUp,
+                }"
+          size="large"
+          rounded="xl"
+          variant="outlined"
+          text="Cancel"
+          @click="close"
+      />
+      <v-btn
+          :disabled="loading"
+          :loading="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          :class="{
+                  'px-10': $vuetify.display.smAndDown,
+                  'px-14': $vuetify.display.mdAndUp,
+                  'delete-btn-border bg-orange':true,
+                }"
+          rounded="xl"
+          size="large"
+          variant="outlined"
+          text="Save"
+          @click="deleteCourse"
+      >
+      </v-btn>
+    </template>
+
+  </Modal>
 
 </template>

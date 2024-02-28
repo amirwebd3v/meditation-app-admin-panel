@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
-
-const AddCategory = defineAsyncComponent(() => import("~/components/section/modals/category/Add.vue"));
+import AddCategory from "~/components/section/modals/category/Add.vue"
 import type {Category} from "~/utils/types";
 
 defineProps({

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
+import Base from "~/components/section/modals/Modal.vue";
 
 
 defineComponent({

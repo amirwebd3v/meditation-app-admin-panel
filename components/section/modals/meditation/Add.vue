@@ -1,9 +1,12 @@
 <script setup lang="ts">
-const Base = defineAsyncComponent(() => import ("~/components/section/modals/Base.vue"));
+import Modal from "~/components/section/modals/Modal.vue";
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseType} from "~/utils/enums";
 import {useCategoryStore} from "~/stores/category";
+import {useValidationStore} from "~/stores/validation";
+import {useMeditationStore} from "~/stores/meditation";
 import {storeToRefs} from "pinia";
+
 
 
 /*********************************************/
@@ -25,69 +28,55 @@ defineProps({
 /*********************************************/
 const isBtnText = ref()
 const loading = ref()
-const {allCategories} = storeToRefs(useCategoryStore())
-
+const {allCategories} = storeToRefs(useCategoryStore());
+const {errors} = storeToRefs(useValidationStore());
 /********************************************/
-const request = reactive<CourseStoreRequest>({
+const initialState = {
   title: '',
   description: null,
   categories: [],
   price: 0,
   type: CourseType.Meditation,
   is_popular: false
-})
-/********************************************/
-
-const maskPrice = {
-  mask: '0.99',
-  tokens: {
-    0: {pattern: /\d/, multiple: true}, // Multiple digits for integer part
-    9: {pattern: /\d/, optional: true}, // Optional decimal point and digit
-  }
 }
 
-
-
+const request = reactive<CourseStoreRequest>({...initialState})
 
 /********************************************/
 const saveCourse = async () => {
   loading.value = true
   try {
     await useMeditationStore().store(request)
-    useEvent('closeDialog',false)
+    useEvent('closeModal', false)
   } catch (err) {
     console.error(err)
   } finally {
     loading.value = false
+    Object.assign(request, initialState);
   }
 }
 
-const actions = [
-  {
-    text: 'Save',
-    class: 'bg-primary',
-    func: saveCourse
-  },
-]
 
-
+function close() {
+  useEvent('closeModal', false)
+  Object.assign(request, initialState);
+  useValidationStore().clearErrors()
+}
 
 
 </script>
 
 <template>
-
-  <Base form-title="Add Meditation Course" :loading="loading" :actions="actions">
-
-    <template v-slot:button="props">
-      <v-btn
-          v-if="btnInTable"
-          class="text-primary"
-          variant="text"
-          icon="mdi mdi-plus"
-          v-bind="props"
-          size="small">
-      </v-btn>
+  <Modal>
+    <template #dialogButton="props">
+      <!--              <v-btn-->
+      <!--                  v-if="btnInTable"-->
+      <!--                  class="text-primary"-->
+      <!--                  variant="text"-->
+      <!--                  icon="mdi mdi-plus"-->
+      <!--                  v-bind="props"-->
+      <!--                  size="small">-->
+      <!--              </v-btn>-->
 
       <v-btn
           v-if="btnOutTable"
@@ -107,18 +96,21 @@ const actions = [
         </template>
       </v-btn>
     </template>
-
-
-    <template #columns >
+    <template #header>
+      <span class="pl-3">Add Meditation Course</span>
+      <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
+    </template>
+    <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        placeholder="Enter meditation title" required :disabled="loading"/>
+                        placeholder="Enter meditation title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Description</div>
-          <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary" v-model="request.description" required/>
+          <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
+                      v-model="request.description"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Select category</div>
@@ -135,7 +127,6 @@ const actions = [
               :items="[...allCategories.values()]"
               item-title="name"
               item-value="id"
-              required
           >
             <!--            <template v-slot:prepend-item>-->
             <!--              <v-list-item-->
@@ -160,17 +151,17 @@ const actions = [
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Price ($)</div>
           <v-text-field
               :disabled="loading"
-              required
               variant="outlined"
               v-model="request.price"
               color="primary"
               density="comfortable"
-              v-maska:[maskPrice]
+              :error-messages="errors['price']"
           ></v-text-field>
         </v-col>
-        <v-col cols="6" class="py-0">
+        <v-col cols="6" class="py-0 px-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5">Popular</div>
-          <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading">
+          <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
+                         :error-messages="errors['is_popular']">
             <v-radio
                 density="compact"
                 :value="false"
@@ -206,11 +197,37 @@ const actions = [
         </v-col>
       </v-row>
     </template>
-
-  </Base>
-
+    <template #actionButtons>
+      <v-btn
+          :disabled="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          color="primary"
+          :class="{
+                'px-7': $vuetify.display.smAndDown,
+                'px-12':$vuetify.display.mdAndUp}"
+          size="large"
+          rounded="xl"
+          variant="outlined"
+          text="Cancel"
+          @click="close"
+      />
+      <v-btn
+          :disabled="loading"
+          :loading="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          :class="{
+                  'px-10': $vuetify.display.smAndDown,
+                  'px-14': $vuetify.display.mdAndUp,
+                  'text-white bg-primary': true,
+                }"
+          rounded="xl"
+          size="large"
+          variant="outlined"
+          text="Save"
+          @click="saveCourse"
+      >
+      </v-btn>
+    </template>
+  </Modal>
 </template>
 
-<style scoped lang="scss">
-
-</style>

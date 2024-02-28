@@ -20,7 +20,7 @@ const LightTheme: ThemeDefinition = {
         accent: '#7C6346',
         light: '#514442',
         dark: '#08232d',
-        error: '#ff4d7e',
+        error: '#ff6a5b',
         muted: '#8d97ad',
         green: '#439691',
         'light-blue': '#5b6987',
