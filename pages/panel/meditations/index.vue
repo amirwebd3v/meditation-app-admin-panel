@@ -26,9 +26,9 @@ const headers = [
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
-  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
+  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'price', title: 'PRICE', sortable: true, align: 'start'},
-  {key: 'actions', title: '', sortable: false, align: 'start'},
+  {key: 'actions', title: '', sortable: false, align: 'end'},
 ]
 
 const {items, meta} = storeToRefs(useMeditationStore())
@@ -85,7 +85,6 @@ const goToLesson = (courseId: string) => {
     <v-container>
       <!--      First section-->
       <v-sheet class="d-flex mb-6 bg-transparent align-center">
-
         <v-sheet class="bg-transparent">
           <h2 class="text-white pr-10 me-auto">Meditations</h2>
         </v-sheet>
@@ -151,8 +150,8 @@ const goToLesson = (courseId: string) => {
 
 
         <template #item.thumbnail="{ item }">
-          <v-card v-if="!!item.thumbnail" class="my-2" elevation="0" rounded color="light">
-            <v-img :src="item.thumbnail.urls.small" height="64" cover/>
+          <v-card v-if="!!item.thumbnail" class="my-1 pl-2" elevation="0" rounded color="light">
+            <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
           </v-card>
         </template>
 
@@ -161,7 +160,7 @@ const goToLesson = (courseId: string) => {
         </template>
 
         <template #item.actions="{item}">
-          <div style="width: 75px;" class="float-right">
+          <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
             <v-menu
                 :model-value="menu"
                 :close-on-content-click="false"
@@ -169,11 +168,10 @@ const goToLesson = (courseId: string) => {
             >
               <template v-slot:activator="{ props }">
                 <v-icon
-                    class="text-primary me-6"
-                    variant="text"
+                    class="text-primary mr-5"
                     v-bind="props"
+                    size="large"
                     icon="mdi mdi-dots-vertical"
-                    density="compact"
                 />
               </template>
 
@@ -183,23 +181,22 @@ const goToLesson = (courseId: string) => {
                     :id="item.uuid"
                     :title="item.title"
                     :description="item.description"
+                    :categories="item.categories.map((c : Category) => c.id)"
                     :price="item.price"
                     :is-popular="item.is_popular"
-                    :categories="item.categories.map((c : Category) => c.id)"
                 />
                 <DeleteMeditation :id="item.uuid" :title="item.title"/>
               </v-card>
             </v-menu>
             <v-icon
                 class="text-primary"
-                variant="text"
                 icon="mdi-chevron-right"
+                size="x-large"
                 @click="goToLesson(item.uuid)"
-                density="compact"
+
             />
           </div>
         </template>
-
       </v-data-table-server>
     </v-container>
   </div>

@@ -15,7 +15,7 @@ useListen('closeModal', (value: Boolean) => {
 
   <v-dialog
       v-model="dialog"
-      max-width="600px"
+      max-width="600"
   >
 
     <template v-slot:activator="{ props }">
@@ -25,7 +25,7 @@ useListen('closeModal', (value: Boolean) => {
     <v-card class="bg-light-brown-1 py-1" rounded="lg">
       <v-container>
 
-        <v-card-title class="v-row justify-space-between">
+        <v-card-title class="v-row justify-space-between align-center">
           <slot name="header"/>
         </v-card-title>
 
