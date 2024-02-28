@@ -104,7 +104,7 @@ function close() {
           rounded="xl"
           size="large"
           variant="outlined"
-          text="Save"
+          text="Delete"
           @click="deleteCourse"
       >
       </v-btn>

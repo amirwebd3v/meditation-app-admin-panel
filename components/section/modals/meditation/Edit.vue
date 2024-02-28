@@ -5,10 +5,11 @@ import Modal from "~/components/section/modals/Modal.vue";
 import {useMeditationStore} from "~/stores/meditation";
 import {useValidationStore} from "~/stores/validation";
 import {useCategoryStore} from "~/stores/category";
+import {useMediaStore} from "~/stores/media";
 import {storeToRefs} from "pinia";
 import type {CourseUpdateRequest} from "~/utils/requests";
-import {useMediaStore} from "~/stores/media";
 import type {Preview} from "~/utils/types";
+import type {Media} from "~/utils/types";
 
 
 /********************************************/
@@ -17,13 +18,17 @@ const route = useRoute()
 const form = ref()
 const {allCategories} = storeToRefs(useCategoryStore())
 const {errors} = storeToRefs(useValidationStore());
-
+const preview = ref<Preview | null>(null)
 /********************************************/
 defineComponent({
   name: 'EditMeditation',
 })
 
 const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true
@@ -44,11 +49,6 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
-  id: {
-    type: String,
-    required: true,
-  }
-
 })
 
 /********************************************/
@@ -58,21 +58,29 @@ const initialState = {
   description: props.description,
   categories: props.categories,
   price: props.price,
-  is_popular: props.isPopular
+  is_popular: props.isPopular,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
-
-const preview = ref<Preview | null>(null)
+/********************************************/
 
 const upload = async (files: File[]) => {
   preview.value = await useMediaStore().upload(files[0])
-  request.thumbnail = preview.value.id
+  request.thumbnail = preview.value?.id
 }
+
+
 
 const updateCourse = async () => {
   loading.value = true
-  await useMeditationStore().update(request)
-  loading.value = false
+  try {
+    await useMeditationStore().update(request)
+    useEvent('closeModal', false)
+  } catch (err) {
+    console.error(err)
+  } finally {
+    Object.assign(request, initialState);
+    loading.value = false
+  }
 }
 
 
@@ -85,101 +93,101 @@ function close() {
 
 <template>
 
-    <Modal>
+  <Modal>
 
-      <template #dialogButton="props">
-        <v-btn class="text-primary" variant="text" icon="mdi mdi-pencil-outline" v-bind="props" size="small"/>
-      </template>
+    <template #dialogButton="props">
+      <v-btn class="text-primary" variant="text" icon="mdi mdi-pencil-outline" v-bind="props" size="small"/>
+    </template>
 
-      <template #header>
-        <span class="pl-3">Edit Meditation Course</span>
-        <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
-      </template>
+    <template #header>
+      <span class="pl-3">Edit Meditation Course</span>
+      <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
+    </template>
 
-      <template #columns>
-        <v-row justify="space-between">
-          <v-col cols="12" class="pb-0">
-            <div class="text-subtitle-1 text-medium-emphasis py-2 text-white">Title</div>
-            <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
-            :error-messages="errors['title']"
-            />
-          </v-col>
-          <v-col cols="12" class="py-0">
-            <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Course description</div>
-            <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
-          </v-col>
-          <v-col cols="12" class="py-0">
-            <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Select category</div>
-            <v-autocomplete variant="outlined" :disabled="loading" chips closable-chips multiple
-                            v-model="request.categories"
-                            color="primary" density="comfortable" single-line item-title="name"
-                            :items="[...allCategories.values()]" item-value="id"/>
-          </v-col>
-          <v-col cols="6" class="py-0">
-            <div class="text-subtitle-1 text-white text-medium-emphasis pb-2 text-white">Price ($)</div>
-            <v-text-field variant="outlined" v-model="request.price" color="primary" density="comfortable"
-                          :error-messages="errors['price']"/>
-          </v-col>
-          <v-col cols="6" class="py-0">
-            <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5 text-white">Popular</div>
-            <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
-              <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
-              <v-radio density="compact" :value="true" label="Yes" color="primary"/>
-            </v-radio-group>
-          </v-col>
-          <v-col cols="12" class="py-0">
-            <div class="text-subtitle-1 text-medium-emphasis text-white pb-2">Upload a picture</div>
-            <v-file-input @update:model-value="upload" placeholder="Upload your documents"
-                          variant="outlined" prepend-icon="" color="primary" hide-details="">
-              <template v-slot:selection="{ fileNames }">
-                <template v-for="fileName in fileNames" :key="fileName">
-                  <v-card width="125" height="125" class="justify-center align-center">
-                    <v-col align-self="auto">
-                      <v-img width="auto" height="25" cover :src="preview?.url as string"/>
-                      <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
-                    </v-col>
-                  </v-card>
-                </template>
+    <template #columns>
+      <v-row justify="space-between">
+        <v-col cols="12" class="pb-0">
+          <div class="text-subtitle-1 text-medium-emphasis py-2 text-white">Title</div>
+          <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
+                        :error-messages="errors['title']"
+          />
+        </v-col>
+        <v-col cols="12" class="py-0">
+          <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Course description</div>
+          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
+        </v-col>
+        <v-col cols="12" class="py-0">
+          <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Select category</div>
+          <v-autocomplete variant="outlined" :disabled="loading" chips closable-chips multiple
+                          v-model="request.categories"
+                          color="primary" density="comfortable" single-line item-title="name"
+                          :items="[...allCategories.values()]" item-value="id"/>
+        </v-col>
+        <v-col cols="6" class="py-0">
+          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2 text-white">Price ($)</div>
+          <v-text-field variant="outlined" v-model="request.price" color="primary" density="comfortable"
+                        :error-messages="errors['price']"/>
+        </v-col>
+        <v-col cols="6" class="py-0">
+          <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5 text-white">Popular</div>
+          <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
+            <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
+            <v-radio density="compact" :value="true" label="Yes" color="primary"/>
+          </v-radio-group>
+        </v-col>
+        <v-col cols="12" class="py-0">
+          <div class="text-subtitle-1 text-medium-emphasis text-white pb-2">Upload a picture</div>
+          <v-file-input @update:model-value="upload" placeholder="Upload your documents"
+                        variant="outlined" prepend-icon="" color="primary" hide-details="">
+            <template v-slot:selection="{ fileNames }">
+              <template v-for="fileName in fileNames" :key="fileName">
+                <v-card width="100" height="100" class="justify-center align-center">
+                  <v-col align-self="auto">
+                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
+                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
+                  </v-col>
+                </v-card>
               </template>
-            </v-file-input>
-          </v-col>
-        </v-row>
-      </template>
+            </template>
+          </v-file-input>
+        </v-col>
+      </v-row>
+    </template>
 
-      <template #actionButtons>
-        <v-btn
-            :disabled="loading"
-            :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
-            color="primary"
-            :class="{
+    <template #actionButtons>
+      <v-btn
+          :disabled="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          color="primary"
+          :class="{
                 'px-7': $vuetify.display.smAndDown,
                 'px-12':$vuetify.display.mdAndUp,
                 }"
-            size="large"
-            rounded="xl"
-            variant="outlined"
-            text="Cancel"
-            @click="close"
-        />
-        <v-btn
-            :disabled="loading"
-            :loading="loading"
-            :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
-            :class="{
+          size="large"
+          rounded="xl"
+          variant="outlined"
+          text="Cancel"
+          @click="close"
+      />
+      <v-btn
+          :disabled="loading"
+          :loading="loading"
+          :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+          :class="{
                   'px-10': $vuetify.display.smAndDown,
                   'px-14': $vuetify.display.mdAndUp,
                   'text-white bg-primary': true,
                 }"
-            rounded="xl"
-            size="large"
-            variant="outlined"
-            text="Save"
-            @click="updateCourse"
-        >
-        </v-btn>
-      </template>
+          rounded="xl"
+          size="large"
+          variant="outlined"
+          text="Save"
+          @click="updateCourse"
+      >
+      </v-btn>
+    </template>
 
-    </Modal>
+  </Modal>
 
 
 </template>

@@ -6,7 +6,7 @@ export const useMediaStore = defineStore('media', {
     actions: {
         async upload(file: File): Promise<Preview> {
             const formData = new FormData();
-            formData.append('files[]', file);
+            formData.append('file[]', file);
 
             try {
                 const { data: preview } = await useApi().post('/admin/v1/media', {
