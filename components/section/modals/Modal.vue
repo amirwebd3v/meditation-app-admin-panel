@@ -1,17 +1,8 @@
 <script setup lang="ts">
-
-
-const props = defineProps({
-  formTitle: {
-    type: String,
-    required: true,
-  },
-})
-/*********************************************/
 const dialog = ref(false);
 
 
-useListen('closeDialog', (value: Boolean) => {
+useListen('closeModal', (value: Boolean) => {
   if (dialog.value) {
     dialog.value = value
   }
@@ -24,7 +15,7 @@ useListen('closeDialog', (value: Boolean) => {
 
   <v-dialog
       v-model="dialog"
-      max-width="500px"
+      max-width="600px"
   >
 
     <template v-slot:activator="{ props }">
@@ -34,8 +25,8 @@ useListen('closeDialog', (value: Boolean) => {
     <v-card class="bg-light-brown-1 py-1" rounded="lg">
       <v-container>
 
-        <v-card-title>
-          {{ formTitle }}
+        <v-card-title class="v-row justify-space-between">
+          <slot name="header"/>
         </v-card-title>
 
 

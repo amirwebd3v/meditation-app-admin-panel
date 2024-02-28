@@ -1,32 +1,35 @@
 <script setup>
 import Modal from "~/components/section/modals/Modal.vue";
+import {useValidationStore} from "~/stores/validation";
+
 
 defineComponent({
   name: 'AddCategory',
 })
 
-const loading = ref()
-const form = ref()
 
+
+
+const loading = ref(false)
 
 const saveCategory = async () => {
   loading.value = true
-  // await useMeditationStore().delete(request)
+  // await useCategoryStore().store(request)
   loading.value = false
 }
 
 
-const close = async () => {
-  await form.value.reset()
-  useEvent('closeDialog', false)
+function close() {
+  // Object.assign(request, initialState);
+  useValidationStore().clearErrors()
+  useEvent('closeModal', false)
 }
-
 </script>
 
 <template>
-  <v-form ref="form">
 
-    <Modal form-title="Add Category" >
+
+  <Modal>
 
     <template #dialogButton="props">
       <v-btn
@@ -47,7 +50,10 @@ const close = async () => {
       </v-btn>
 
     </template>
-
+    <template #header>
+      <span class="pl-3">Add Category</span>
+      <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
+    </template>
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
@@ -92,5 +98,4 @@ const close = async () => {
     </template>
 
   </Modal>
-  </v-form>
 </template>

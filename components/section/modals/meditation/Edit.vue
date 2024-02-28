@@ -3,8 +3,9 @@
 import Modal from "~/components/section/modals/Modal.vue";
 
 import {useMeditationStore} from "~/stores/meditation";
-import {storeToRefs} from "pinia";
+import {useValidationStore} from "~/stores/validation";
 import {useCategoryStore} from "~/stores/category";
+import {storeToRefs} from "pinia";
 import type {CourseUpdateRequest} from "~/utils/requests";
 import {useMediaStore} from "~/stores/media";
 import type {Preview} from "~/utils/types";
@@ -15,6 +16,8 @@ const loading = ref()
 const route = useRoute()
 const form = ref()
 const {allCategories} = storeToRefs(useCategoryStore())
+const {errors} = storeToRefs(useValidationStore());
+
 /********************************************/
 defineComponent({
   name: 'EditMeditation',
@@ -49,14 +52,15 @@ const props = defineProps({
 })
 
 /********************************************/
-const request = reactive<CourseUpdateRequest>({
+const initialState = {
   id: props.id,
   title: props.title,
   description: props.description,
   categories: props.categories,
   price: props.price,
   is_popular: props.isPopular
-})
+}
+const request = reactive<CourseUpdateRequest>({...initialState})
 
 const preview = ref<Preview | null>(null)
 
@@ -68,30 +72,37 @@ const upload = async (files: File[]) => {
 const updateCourse = async () => {
   loading.value = true
   await useMeditationStore().update(request)
-
   loading.value = false
 }
 
-const close = async () => {
-  await form.value.resetValidation()
-  useEvent('closeDialog', false)
+
+function close() {
+  useEvent('closeModal', false)
+  Object.assign(request, initialState);
+  useValidationStore().clearErrors()
 }
 </script>
 
 <template>
-  <v-form ref="form">
-    <Modal form-title="Edit Meditation Course" >
+
+    <Modal>
 
       <template #dialogButton="props">
         <v-btn class="text-primary" variant="text" icon="mdi mdi-pencil-outline" v-bind="props" size="small"/>
       </template>
 
+      <template #header>
+        <span class="pl-3">Edit Meditation Course</span>
+        <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
+      </template>
 
       <template #columns>
         <v-row justify="space-between">
           <v-col cols="12" class="pb-0">
             <div class="text-subtitle-1 text-medium-emphasis py-2 text-white">Title</div>
-            <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"/>
+            <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
+            :error-messages="errors['title']"
+            />
           </v-col>
           <v-col cols="12" class="py-0">
             <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Course description</div>
@@ -106,11 +117,12 @@ const close = async () => {
           </v-col>
           <v-col cols="6" class="py-0">
             <div class="text-subtitle-1 text-white text-medium-emphasis pb-2 text-white">Price ($)</div>
-            <v-text-field variant="outlined" v-model="request.price" color="primary" density="comfortable"/>
+            <v-text-field variant="outlined" v-model="request.price" color="primary" density="comfortable"
+                          :error-messages="errors['price']"/>
           </v-col>
           <v-col cols="6" class="py-0">
             <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5 text-white">Popular</div>
-            <v-radio-group class="mt-5" inline v-model="request.is_popular">
+            <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
               <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
               <v-radio density="compact" :value="true" label="Yes" color="primary"/>
             </v-radio-group>
@@ -169,7 +181,7 @@ const close = async () => {
 
     </Modal>
 
-  </v-form>
+
 </template>
 
 <style scoped lang="scss"></style>

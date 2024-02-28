@@ -106,7 +106,7 @@ const goToLesson = (courseId: string) => {
 
 
       <Categories :categories="useCategoryStore().meditationCategories"/>
-      <AddConfigurationItem :Item="'All Meditations'"/>
+      <AddConfigurationItem Item="All Meditations"/>
 
 
       <v-data-table-server

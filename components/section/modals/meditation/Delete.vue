@@ -27,17 +27,16 @@ const deleteCourse = async () => {
   // loading.value = false
 }
 
-function close(){
-  useEvent('closeDialog', false)
+function close() {
+  useEvent('closeModal', false)
 }
 
 </script>
 
 <template>
-  <v-form ref="form">
 
-  </v-form>
-  <Modal form-title="Delete Meditation" >
+
+  <Modal>
 
     <template #dialogButton="props">
       <v-btn
@@ -49,12 +48,22 @@ function close(){
       </v-btn>
     </template>
 
+    <template #header>
+      <span class="pl-3">Delete Meditation Course</span>
+      <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
+    </template>
+
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="my-3">
           <div class="py-5">
             <v-icon color="red" size="xx-large" class="text-orange pb-2">mdi-alert-outline</v-icon>
-            <span class="font-weight-regular font-16"><strong class="font-18 text-orange">WARNING: </strong>This action cannot be undone.</span>
+            <span class="font-weight-regular font-16">
+              <strong class="font-18 text-orange">
+                WARNING:
+              </strong>
+              This action cannot be undone.
+            </span>
           </div>
           <div class="pb-5">
              <span class="text-white font-14  text-justify">
