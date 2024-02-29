@@ -40,6 +40,12 @@ const initialState = {
 }
 
 const request = reactive<CourseStoreRequest>({...initialState})
+const numberOrFloatRule = (value: string) => {
+  const pattern = /^-?\d+\.?\d*$/
+  return pattern.test(value)
+}
+
+
 
 /********************************************/
 const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
@@ -174,6 +180,8 @@ function close() {
               v-model="request.price"
               color="primary"
               density="comfortable"
+              :rules="[numberOrFloatRule]"
+              validate-on="blur"
               :error-messages="errors['price']"
           ></v-text-field>
         </v-col>
