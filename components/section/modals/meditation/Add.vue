@@ -8,7 +8,6 @@ import {useMeditationStore} from "~/stores/meditation";
 import {storeToRefs} from "pinia";
 
 
-
 /*********************************************/
 defineComponent({
   name: 'AddMeditation',
@@ -43,11 +42,32 @@ const initialState = {
 const request = reactive<CourseStoreRequest>({...initialState})
 
 /********************************************/
+const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
+
+const selectAllCategories = computed(() => {
+  return request.categories.length === allCategoriesArray.value.length
+})
+
+const selectSomeCategories = computed(() => {
+  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
+})
+
+
+const toggle = () => {
+  if (selectAllCategories.value) {
+    request.categories = []
+  } else {
+    request.categories = allCategoriesArray.value.slice()
+  }
+}
+
+
+/**********************************************/
 const saveCourse = async () => {
   loading.value = true
   try {
     await useMeditationStore().store(request)
-    useEvent('successMessage','Meditation Course is successfully Added.')
+    useEvent('successMessage', 'Meditation Course is successfully Added.')
     useEvent('closeModal', false)
   } catch (err) {
     useEvent('errorMessage', useValidationStore().errors)
@@ -63,7 +83,6 @@ function close() {
   Object.assign(request, initialState);
   useValidationStore().clearErrors()
 }
-
 
 </script>
 
@@ -118,6 +137,7 @@ function close() {
           <v-autocomplete
               variant="outlined"
               :disabled="loading"
+              clearable
               chips
               closable-chips
               multiple
@@ -125,27 +145,25 @@ function close() {
               color="primary"
               density="comfortable"
               single-line
-              :items="[...allCategories.values()]"
+              :items="allCategoriesArray"
               item-title="name"
               item-value="id"
           >
-            <!--            <template v-slot:prepend-item>-->
-            <!--              <v-list-item-->
-            <!--                  title="All Categories"-->
-            <!--                  @click="toggle"-->
-
-            <!--              >-->
-            <!--                <template v-slot:prepend>-->
-            <!--                  <v-checkbox-btn-->
-            <!--                      color="primary"-->
-            <!--                      :indeterminate="likesSomeFruit && !likesAllFruit"-->
-            <!--                      :model-value="allCategories"-->
-            <!--                  ></v-checkbox-btn>-->
-            <!--                </template>-->
-            <!--              </v-list-item>-->
-
-            <!--              <v-divider class="mt-2"></v-divider>-->
-            <!--            </template>-->
+            <template v-slot:prepend-item>
+              <v-list-item
+                  title="All Categories"
+                  @click="toggle"
+              >
+                <template v-slot:prepend>
+                  <v-checkbox-btn
+                      color="primary"
+                      :indeterminate="selectSomeCategories && !selectAllCategories"
+                      :model-value="selectAllCategories"
+                  ></v-checkbox-btn>
+                </template>
+              </v-list-item>
+              <v-divider class="mt-2"></v-divider>
+            </template>
           </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
