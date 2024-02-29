@@ -159,7 +159,7 @@ function close() {
               :error-messages="errors['price']"
           ></v-text-field>
         </v-col>
-        <v-col cols="6" class="py-0 px-0">
+        <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
                          :error-messages="errors['is_popular']">

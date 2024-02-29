@@ -114,12 +114,12 @@ const goToLesson = (courseId: string) => {
           :items-length="+meta.total"
           :page="meta.current_page"
           :items="[...items.values()]"
-          :headers="headers"
           @update:options="load"
           :loading="loading"
-
+          :headers="headers"
+          sort-desc-icon="mdi-swap-vertical"
+          sort-asc-icon="mdi-swap-vertical"
       >
-
         <template #item.title="{item}">
           <v-tooltip :text="item.title">
             <template v-slot:activator="{ props }">
@@ -211,6 +211,9 @@ div:deep(.v-table__wrapper) {
   table > tbody > tr:not(:last-child) > td {
     border-bottom: 1px solid #7B6345;
   }
-}
 
+  table > thead > tr > th:not(.v-data-table__th--sorted) .v-data-table-header__sort-icon {
+    opacity: 1;
+  }
+}
 </style>

@@ -67,6 +67,7 @@ useListen('infoMessage', (value: String) => {
         v-model="snackbar.status"
         :color="snackbar.color"
         vertical
+        max-width="500"
     >
 
       <v-row justify="start"  dense class="py-3" align="center">
