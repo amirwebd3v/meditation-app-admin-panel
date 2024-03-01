@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Add from "~/components/section/modals/meditation/Add.vue";
-import AddVideo from "~/components/section/modals/video/Add.vue";
+import Add from "~/components/modals/meditation/course/Add.vue";
+import AddVideo from "~/components/modals/video/course/Add.vue";
 
 defineProps({
   Item: {

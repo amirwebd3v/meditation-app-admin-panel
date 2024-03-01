@@ -3,11 +3,11 @@ definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-import EditVideo from "~/components/section/modals/video/Edit.vue";
+import EditVideo from "~/components/modals/video/course/Edit.vue";
 import {useVideoStore} from "~/stores/video"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-import AddVideo from "~/components/section/modals/video/Add.vue";
+import AddVideo from "~/components/modals/video/course/Add.vue";
 import {useLessonStore} from "~/stores/lesson";
 
 

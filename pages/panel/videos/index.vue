@@ -3,15 +3,15 @@ definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-import Categories from "~/components/section/configuration/Categories.vue";
-import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
+import Categories from "~/components/configuration/Categories.vue";
+import AddConfigurationItem from "~/components/configuration/AddConfigurationItem.vue";
 
 import {useVideoStore} from "~/stores/video"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-import AddVideo from "~/components/section/modals/video/Add.vue";
-import EditVideo from "~/components/section/modals/video/Edit.vue";
-// import DeleteVideo from "~/components/section/modals/video/Delete.vue";
+import AddVideo from "~/components/modals/video/course/Add.vue";
+import EditVideo from "~/components/modals/video/course/Edit.vue";
+// import DeleteVideo from "~/components/modals/video/Delete.vue";
 
 const loading = ref(true)
 const searchText = ref('')

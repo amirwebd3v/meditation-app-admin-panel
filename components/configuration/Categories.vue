@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import AddCategory from "~/components/section/modals/category/Add.vue"
+import AddCategory from "~/components/modals/category/Add.vue"
 import type {Category} from "~/utils/types";
 
 defineProps({

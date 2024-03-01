@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
-import Categories from "~/components/section/configuration/Categories.vue";
-import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
-import Add from "~/components/section/modals/meditation/Add.vue";
-import Edit from "~/components/section/modals/meditation/Edit.vue";
-import DeleteMeditation from "~/components/section/modals/meditation/Delete.vue";
+import Categories from "~/components/configuration/Categories.vue";
+import AddConfigurationItem from "~/components/configuration/AddConfigurationItem.vue";
+import Add from "~/components/modals/meditation/course/Add.vue";
+import Edit from "~/components/modals/meditation/course/Edit.vue";
+import DeleteMeditation from "~/components/modals/meditation/course/Delete.vue";
 import {useMeditationStore} from "~/stores/meditation"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
