@@ -9,10 +9,6 @@ import {storeToRefs} from "pinia";
 
 
 /*********************************************/
-defineComponent({
-  name: 'AddMeditation',
-})
-
 defineProps({
   btnOutTable: {
     type: Boolean,

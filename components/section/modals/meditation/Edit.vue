@@ -9,21 +9,16 @@ import {useMediaStore} from "~/stores/media";
 import {storeToRefs} from "pinia";
 import type {CourseUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
-import type {Media} from "~/utils/types";
+
 
 
 /********************************************/
 const loading = ref()
 const route = useRoute()
-const form = ref()
 const {allCategories} = storeToRefs(useCategoryStore())
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
 /********************************************/
-defineComponent({
-  name: 'EditMeditation',
-})
-
 const props = defineProps({
   id: {
     type: String,
@@ -61,7 +56,32 @@ const initialState = {
   is_popular: props.isPopular,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
+
+const numberOrFloatRule = (value: string) => {
+  const pattern = /^-?\d+\.?\d*$/
+  return pattern.test(value)
+}
+
 /********************************************/
+const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
+
+const selectAllCategories = computed(() => {
+  return request.categories.length === allCategoriesArray.value.length
+})
+
+const selectSomeCategories = computed(() => {
+  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
+})
+
+const toggle = () => {
+  if (selectAllCategories.value) {
+    request.categories = []
+  } else {
+    request.categories = allCategoriesArray.value.slice()
+  }
+}
+
+/**********************************************/
 
 const upload = async (files: File[]) => {
   preview.value = await useMediaStore().upload(files[0])
@@ -118,17 +138,66 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Select category</div>
-          <v-autocomplete variant="outlined" :disabled="loading" chips closable-chips multiple
-                          v-model="request.categories"
-                          color="primary" density="comfortable" single-line item-title="name"
-                          :items="[...allCategories.values()]" item-value="id"/>
+          <v-autocomplete
+              variant="outlined"
+              :disabled="loading"
+              clearable
+              chips
+              closable-chips
+              multiple
+              v-model="request.categories"
+              color="primary"
+              density="comfortable"
+              single-line
+              :items="allCategoriesArray"
+              auto-select-first
+              item-title="name"
+              item-value="id"
+          >
+
+            <template v-slot:chip="{ props,item, index }">
+              <v-chip v-if="index < 2" v-bind="props">
+                <span>{{ item.title }}</span>
+              </v-chip>
+              <span
+                  v-if="index === 2 && request.categories"
+                  class="text-grey text-caption align-self-center"
+              >
+              (+{{ request?.categories.length - 2 }} others)
+              </span>
+            </template>
+            <template v-slot:prepend-item>
+              <v-list-item
+                  title="All Categories"
+                  @click="toggle"
+              >
+                <template v-slot:prepend>
+                  <v-checkbox-btn
+                      color="primary"
+                      :indeterminate="selectSomeCategories && !selectAllCategories"
+                      :model-value="selectAllCategories"
+                  ></v-checkbox-btn>
+                </template>
+              </v-list-item>
+              <v-divider></v-divider>
+            </template>
+
+          </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2 text-white">Price ($)</div>
-          <v-text-field variant="outlined" v-model="request.price" color="primary" density="comfortable"
-                        :error-messages="errors['price']"/>
+          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Price ($)</div>
+          <v-text-field
+              :disabled="loading"
+              variant="outlined"
+              v-model="request.price"
+              color="primary"
+              density="comfortable"
+              :rules="[numberOrFloatRule]"
+              validate-on="blur"
+              :error-messages="errors['price']"
+          />
         </v-col>
-        <v-col cols="6" class="py-0">
+          <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5 text-white">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
             <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>

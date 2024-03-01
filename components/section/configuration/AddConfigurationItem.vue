@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AddMeditation from "~/components/section/modals/meditation/Add.vue";
+import Add from "~/components/section/modals/meditation/Add.vue";
 import AddVideo from "~/components/section/modals/video/Add.vue";
 
 defineProps({
@@ -25,7 +25,7 @@ const isVideoCoursePage = computed(() => {
   <v-row justify="space-between" align="center" class="mt-4 px-3">
     <span class="text-white font-weight-medium font-18 ">{{ Item }}</span>
 
-    <AddMeditation v-if="isMeditationCoursePage"/>
+    <Add v-if="isMeditationCoursePage"/>
     <AddVideo v-if="isVideoCoursePage"/>
 
   </v-row>
