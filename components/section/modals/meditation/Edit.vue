@@ -82,7 +82,6 @@ const toggle = () => {
 }
 
 /**********************************************/
-
 const upload = async (files: File[]) => {
   preview.value = (await useMediaStore().uploads([files[0]]))[0]
   request.thumbnail = preview.value?.id
@@ -153,8 +152,8 @@ function close() {
               auto-select-first
               item-title="name"
               item-value="id"
+              menu-icon="mdi-chevron-down"
           >
-
             <template v-slot:chip="{ props,item, index }">
               <v-chip v-if="index < 2" v-bind="props">
                 <span>{{ item.title }}</span>
