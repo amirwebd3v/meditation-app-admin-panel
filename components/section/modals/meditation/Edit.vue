@@ -84,7 +84,7 @@ const toggle = () => {
 /**********************************************/
 
 const upload = async (files: File[]) => {
-  preview.value = await useMediaStore().upload(files[0])
+  preview.value = (await useMediaStore().uploads([files[0]]))[0]
   request.thumbnail = preview.value?.id
 }
 
