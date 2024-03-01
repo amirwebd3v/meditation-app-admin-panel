@@ -40,12 +40,11 @@ const initialState = {
 }
 
 const request = reactive<CourseStoreRequest>({...initialState})
+
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
   return pattern.test(value)
 }
-
-
 
 /********************************************/
 const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
@@ -58,7 +57,6 @@ const selectSomeCategories = computed(() => {
   return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
 })
 
-
 const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
@@ -66,7 +64,6 @@ const toggle = () => {
     request.categories = allCategoriesArray.value.slice()
   }
 }
-
 
 /**********************************************/
 const saveCourse = async () => {
@@ -152,9 +149,22 @@ function close() {
               density="comfortable"
               single-line
               :items="allCategoriesArray"
+              auto-select-first
               item-title="name"
               item-value="id"
           >
+
+            <template v-slot:chip="{ props,item, index }">
+              <v-chip v-if="index < 2" v-bind="props">
+                <span>{{ item.title }}</span>
+              </v-chip>
+              <span
+                  v-if="index === 2 && request.categories"
+                  class="text-grey text-caption align-self-center"
+              >
+              (+{{ request?.categories.length - 2 }} others)
+              </span>
+            </template>
             <template v-slot:prepend-item>
               <v-list-item
                   title="All Categories"
@@ -168,8 +178,9 @@ function close() {
                   ></v-checkbox-btn>
                 </template>
               </v-list-item>
-              <v-divider class="mt-2"></v-divider>
+              <v-divider></v-divider>
             </template>
+
           </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">

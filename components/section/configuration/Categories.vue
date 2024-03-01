@@ -46,7 +46,7 @@ defineProps({
               :text="category.name"
           >
             <template v-slot:append>
-              <v-icon class="mdi mdi-close pl-4 cursor-pointer" size="x-small" @click=""></v-icon>
+              <v-icon class="mdi mdi-close pl-4 cursor-pointer" size="x-small"/>
             </template>
           </v-chip>
         </v-chip-group>

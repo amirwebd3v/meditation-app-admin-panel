@@ -52,19 +52,6 @@ const load = async (options = {}) => {
 }
 
 
-const filters = [
-  'All',
-  'Sleep',
-  'Relationship',
-  'Nutrition',
-  'Drawers',
-  'Shopping',
-  'Art',
-  'Tech',
-  'Creative Writing',
-]
-
-
 const router = useRouter();
 const goToLesson = (courseId: string) => {
   if (courseId) {
