@@ -180,7 +180,6 @@ const goToLesson = (courseId: string) => {
                 icon="mdi-chevron-right"
                 size="x-large"
                 @click="goToLesson(item.uuid)"
-
             />
           </div>
         </template>
@@ -189,18 +188,4 @@ const goToLesson = (courseId: string) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-div:deep(.v-table__wrapper) {
-  thead {
-    background-color: #7B6345;
-  }
 
-  table > tbody > tr:not(:last-child) > td {
-    border-bottom: 1px solid #7B6345;
-  }
-
-  table > thead > tr > th:not(.v-data-table__th--sorted) .v-data-table-header__sort-icon {
-    opacity: 1;
-  }
-}
-</style>

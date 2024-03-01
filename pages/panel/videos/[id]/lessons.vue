@@ -153,10 +153,3 @@ const load = async (options = {}) => {
 </template>
 
 
-<style lang="scss" scoped>
-div:deep(.v-table__wrapper) {
-  thead {
-    background-color: #7C6346;
-  }
-}
-</style>

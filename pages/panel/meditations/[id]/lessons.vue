@@ -10,18 +10,19 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import AddMeditation from "~/components/section/modals/meditation/Add.vue";
 import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
+import DeleteMeditation from "~/components/section/modals/meditation/Delete.vue";
 
 
 
 const loading = ref(true)
 const searchText = ref('')
 const headers = ref([
-  {title: 'Title', align: 'start', key: 'title'},
-  {title: 'CATEGORY', key: 'category'},
-  {title: 'PRICE', key: 'price'},
-  {title: 'DESCRIPTION', key: 'description'},
-  {title: 'PICTURE', key: 'thumbnail', align: 'center'},
-  {title: '', key: 'actions', sortable: false, align: 'end'},
+  {key: 'title', title: 'TITLE', align: 'start', sortable: true},
+  {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
+  {key: 'description', title: 'DESCRIPTION', sortable: false},
+  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
+  {key: 'price', title: 'PRICE', sortable: true, align: 'start'},
+  {key: 'actions', title: '', sortable: false, align: 'end'},
 ])
 
 const {items, meta} = storeToRefs(useLessonStore())
@@ -114,8 +115,8 @@ const load = async (options = {}) => {
         </template>
 
         <template #item.thumbnail="{ item }">
-          <v-card v-if="!!item.thumbnail" class="my-2 mx-md-4" elevation="0" rounded color="light">
-            <v-img :src="item.thumbnail.urls.small" class="px-4" height="64" cover/>
+          <v-card v-if="!!item.thumbnail" class="my-1 pl-2" elevation="0" rounded color="light">
+            <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
           </v-card>
         </template>
 
@@ -126,25 +127,21 @@ const load = async (options = {}) => {
 
 
         <template #item.actions="{item}">
-          <div class="float-right" style="width: 100px;">
-<!--            <EditMeditation-->
-<!--                :id="item.uuid"-->
-<!--                :form-title="'Edit Meditation Lesson'"-->
-<!--                :title="item.title"-->
-<!--                :description="item.description"-->
-<!--                :price="item.price"-->
-<!--                :is-popular="item.is_popular"-->
-<!--                :categories="item.categories.map((c : Category) => c.id)"-->
-<!--            />-->
-            <v-btn
+
+          <div style="width: 60px;" class="float-right mx-0 px-0 v-row align-center">
+            <v-icon
+                class="text-primary mr-3"
+                icon="mdi-pencil-outline"
+                @click=""
+            />
+            <v-icon
                 class="text-primary"
-                variant="text"
-                size="small"
                 icon="mdi-delete-outline"
+                @click=""
             />
           </div>
-        </template>
 
+        </template>
       </v-data-table-server>
       <!--    End Second section-->
     </v-container>
@@ -152,10 +149,3 @@ const load = async (options = {}) => {
 </template>
 
 
-<style lang="scss" scoped>
-div:deep(.v-table__wrapper) {
-  thead {
-    background-color: #7C6346;
-  }
-}
-</style>
