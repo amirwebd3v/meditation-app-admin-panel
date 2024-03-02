@@ -29,7 +29,7 @@ export const useCategoryStore = defineStore('category', {
 
     getters: {
         allCategories(state): Map<number, Category> {
-            const all = state.videoCategories
+            const all = state.meditationCategories
             state.meditationCategories.forEach((value, key) => all.set(key, value))
             return all
         }

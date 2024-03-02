@@ -1,25 +1,32 @@
 <script setup lang="ts">
 
+import Categories from "~/components/configuration/Categories.vue";
+import AddConfigurationItem from "~/components/configuration/AddConfigurationItem.vue";
+import Add from "~/components/modals/meditation/course/Add.vue";
+import Edit from "~/components/modals/meditation/course/Edit.vue";
+import DeleteMeditation from "~/components/modals/meditation/course/Delete.vue";
+import {useMeditationStore} from "~/stores/meditation"
+import useApi from '~/composables/api'
+import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
 
+/***********************************************/
 definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-import Categories from "~/components/section/configuration/Categories.vue";
-import AddConfigurationItem from "~/components/section/configuration/AddConfigurationItem.vue";
 
-import {useMeditationStore} from "~/stores/meditation"
-import useApi from '~/composables/api'
-import type {FilterSearchItem} from "l5-client";
+onMounted(async () => {
+  await load()
+})
 
-import AddMeditation from "~/components/section/modals/meditation/Add.vue";
-import EditMeditation from "~/components/section/modals/meditation/Edit.vue";
-import DeleteMeditation from "~/components/section/modals/meditation/Delete.vue";
-
+/***********************************************/
 const menu = ref(false)
 const loading = ref(true)
 const searchText = ref('')
+const router = useRouter();
+const {items, meta} = storeToRefs(useMeditationStore())
+
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'set', title: 'TYPE', align: 'start', sortable: false},
@@ -31,13 +38,7 @@ const headers = [
   {key: 'actions', title: '', sortable: false, align: 'end'},
 ]
 
-const {items, meta} = storeToRefs(useMeditationStore())
-
-
-onMounted(async () => {
-  await load()
-})
-
+/***********************************************/
 const load = async (options = {}) => {
   loading.value = true
   const search: FilterSearchItem[] = searchText.value === '' ? [] : [
@@ -52,20 +53,6 @@ const load = async (options = {}) => {
 }
 
 
-const filters = [
-  'All',
-  'Sleep',
-  'Relationship',
-  'Nutrition',
-  'Drawers',
-  'Shopping',
-  'Art',
-  'Tech',
-  'Creative Writing',
-]
-
-
-const router = useRouter();
 const goToLesson = (courseId: string) => {
   if (courseId) {
     router.push({
@@ -114,12 +101,12 @@ const goToLesson = (courseId: string) => {
           :items-length="+meta.total"
           :page="meta.current_page"
           :items="[...items.values()]"
-          :headers="headers"
           @update:options="load"
           :loading="loading"
-
+          :headers="headers"
+          sort-desc-icon="mdi-swap-vertical"
+          sort-asc-icon="mdi-swap-vertical"
       >
-
         <template #item.title="{item}">
           <v-tooltip :text="item.title">
             <template v-slot:activator="{ props }">
@@ -176,8 +163,8 @@ const goToLesson = (courseId: string) => {
               </template>
 
               <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded>
-                <AddMeditation :btn-out-table="false" :btn-in-table="true"/>
-                <EditMeditation
+                <Add :btn-out-table="false" :btn-in-table="true"/>
+                <Edit
                     :id="item.uuid"
                     :title="item.title"
                     :description="item.description"
@@ -193,7 +180,6 @@ const goToLesson = (courseId: string) => {
                 icon="mdi-chevron-right"
                 size="x-large"
                 @click="goToLesson(item.uuid)"
-
             />
           </div>
         </template>
@@ -202,15 +188,4 @@ const goToLesson = (courseId: string) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-div:deep(.v-table__wrapper) {
-  thead {
-    background-color: #7B6345;
-  }
 
-  table > tbody > tr:not(:last-child) > td {
-    border-bottom: 1px solid #7B6345;
-  }
-}
-
-</style>

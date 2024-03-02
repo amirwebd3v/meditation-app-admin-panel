@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import AddCategory from "~/components/section/modals/category/Add.vue"
+import AddCategory from "~/components/modals/category/Add.vue"
 import type {Category} from "~/utils/types";
 
 defineProps({
@@ -46,7 +46,7 @@ defineProps({
               :text="category.name"
           >
             <template v-slot:append>
-              <v-icon class="mdi mdi-close pl-4 cursor-pointer" size="x-small" @click=""></v-icon>
+              <v-icon class="mdi mdi-close pl-4 cursor-pointer" size="x-small"/>
             </template>
           </v-chip>
         </v-chip-group>

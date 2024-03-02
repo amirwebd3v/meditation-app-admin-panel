@@ -1,59 +1,33 @@
 <script setup lang="ts">
 
-import Base from "~/components/section/modals/Modal.vue";
+import Base from "~/components/modals/Modal.vue";
 
-import {storeToRefs} from "pinia";
-import {useCategoryStore} from "~/stores/category";
-
-
-const icon = ref('mdi mdi-pencil-outline')
 
 defineComponent({
-  name: 'EditVideo',
+  name: 'AddVideo',
 })
 
 defineProps({
-  formTitle: {
-    type: String,
-    required: true
+  btnOutTable : {
+    type : Boolean,
+    default : true
   },
-  title: {
-    type: String,
-    required: true
-  },
-  link: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  category: {
-    type: String,
-    required: true
-  },
-  price: {
-    type: String,
-    required: true
-  },
-  type: {
-    type: String,
-    required: true
-  },
-
-
+  btnInTable: {
+    type : Boolean,
+    default : false
+  }
 })
+/*********************************************/
+const formTitle = ref('Add Video Course')
+const icon = ref('mdi mdi-plus')
+const isBtnText = ref('')
 
-//**************************************************
-
+/********************************************/
 const router = useRouter()
 const currentRouteName = router.currentRoute.value.name;
 const isVideoCoursePage = computed(() => {
   return currentRouteName === 'panel-videos-course-title-lessons';
 })
-
-const {allCategories} = storeToRefs(useCategoryStore())
 
 </script>
 
@@ -63,53 +37,73 @@ const {allCategories} = storeToRefs(useCategoryStore())
 
     <template v-slot:button="props">
       <v-btn
+          v-if="btnInTable"
           class="text-primary"
           variant="text"
           :icon="icon"
           v-bind="props"
           size="small">
       </v-btn>
+
+      <v-btn
+          v-if="btnOutTable"
+          color="primary"
+          :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
+          v-bind="props"
+          :text="btnOutTable ? isBtnText = 'Add Video' : ''"
+          :size="$vuetify.display.smAndDown ? 'small' : 'default'"
+          :icon="$vuetify.display.smAndDown"
+          rounded="xl"
+
+      >
+        <template v-slot:default v-if="$vuetify.display.smAndDown">
+          <v-icon  icon="mdi-plus"/>
+        </template>
+        <template v-slot:prepend v-if="$vuetify.display.smAndUp">
+          <v-icon class="pr-3" icon="mdi-plus"/>
+        </template>
+      </v-btn>
     </template>
+
 
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-medium-emphasis py-2">Title</div>
-          <v-text-field variant="outlined" color="primary" density="comfortable" :model-value="title"/>
+          <v-text-field variant="outlined" color="primary" density="comfortable"
+                        placeholder="Enter title"/>
         </v-col>
-        <v-col cols="12" class="pb-0" v-if="isVideoCoursePage">
-          <div class="text-subtitle-1 text-medium-emphasis py-2">Video Link</div>
-          <v-text-field variant="outlined" color="primary" density="comfortable" :model-value="link"/>
+        <v-col cols="12" class="py-0" v-if="isVideoCoursePage">
+          <div class="text-subtitle-1 text-medium-emphasis pb-2">Video Link</div>
+          <v-text-field variant="outlined" color="primary" density="comfortable"
+                        placeholder="https://"/>
         </v-col>
-
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" :model-value="description"/>
+          <v-textarea variant="outlined" density="compact" color="primary"></v-textarea>
         </v-col>
-        <v-col cols="12" class="py-0" v-if="!isVideoCoursePage">
+        <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Select category</div>
           <v-select
               variant="outlined"
-              multiple
+              multiple=""
               color="primary"
               density="comfortable"
               single-line
-              :items="[...allCategories.values()]"
-              item-title="name"
-              item-value="id"
+              :items="['All Category', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
           />
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Price ($)</div>
           <v-combobox
               variant="outlined"
-              :model-value="price"
+              multiple=""
               :items="['Free']"
               color="primary"
               density="comfortable"
           />
         </v-col>
-        <v-col cols="6" class="py-0" v-if="!isVideoCoursePage">
+        <v-col cols="6" class="py-0" v-if="isVideoCoursePage">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Type</div>
           <v-select
               variant="outlined"
@@ -117,7 +111,7 @@ const {allCategories} = storeToRefs(useCategoryStore())
               density="comfortable"
               single-line
               :items="['Single', 'Course']"
-          ></v-select>
+          />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2">Upload a picture</div>
@@ -149,18 +143,6 @@ const {allCategories} = storeToRefs(useCategoryStore())
           </v-file-input>
         </v-col>
       </v-row>
-    </template>
-
-    <template #actions>
-      <v-btn
-          class="text-white px-14 bg-primary"
-          rounded="xl"
-          size="large"
-          variant="outlined"
-          text="Save"
-          @click="close"
-      >
-      </v-btn>
     </template>
 
   </Base>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Modal from "~/components/section/modals/Modal.vue";
+import Modal from "~/components/modals/Modal.vue";
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseType} from "~/utils/enums";
 import {useCategoryStore} from "~/stores/category";
@@ -8,12 +8,7 @@ import {useMeditationStore} from "~/stores/meditation";
 import {storeToRefs} from "pinia";
 
 
-
 /*********************************************/
-defineComponent({
-  name: 'AddMeditation',
-})
-
 defineProps({
   btnOutTable: {
     type: Boolean,
@@ -42,12 +37,36 @@ const initialState = {
 
 const request = reactive<CourseStoreRequest>({...initialState})
 
+const numberOrFloatRule = (value: string) => {
+  const pattern = /^-?\d+\.?\d*$/
+  return pattern.test(value)
+}
+
 /********************************************/
+const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
+
+const selectAllCategories = computed(() => {
+  return request.categories.length === allCategoriesArray.value.length
+})
+
+const selectSomeCategories = computed(() => {
+  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
+})
+
+const toggle = () => {
+  if (selectAllCategories.value) {
+    request.categories = []
+  } else {
+    request.categories = allCategoriesArray.value.slice()
+  }
+}
+
+/**********************************************/
 const saveCourse = async () => {
   loading.value = true
   try {
     await useMeditationStore().store(request)
-    useEvent('successMessage','Meditation Course is successfully Added.')
+    useEvent('successMessage', 'Meditation Course is successfully Added.')
     useEvent('closeModal', false)
   } catch (err) {
     useEvent('errorMessage', useValidationStore().errors)
@@ -63,7 +82,6 @@ function close() {
   Object.assign(request, initialState);
   useValidationStore().clearErrors()
 }
-
 
 </script>
 
@@ -118,6 +136,7 @@ function close() {
           <v-autocomplete
               variant="outlined"
               :disabled="loading"
+              clearable
               chips
               closable-chips
               multiple
@@ -125,27 +144,39 @@ function close() {
               color="primary"
               density="comfortable"
               single-line
-              :items="[...allCategories.values()]"
+              :items="allCategoriesArray"
+              auto-select-first
               item-title="name"
               item-value="id"
           >
-            <!--            <template v-slot:prepend-item>-->
-            <!--              <v-list-item-->
-            <!--                  title="All Categories"-->
-            <!--                  @click="toggle"-->
 
-            <!--              >-->
-            <!--                <template v-slot:prepend>-->
-            <!--                  <v-checkbox-btn-->
-            <!--                      color="primary"-->
-            <!--                      :indeterminate="likesSomeFruit && !likesAllFruit"-->
-            <!--                      :model-value="allCategories"-->
-            <!--                  ></v-checkbox-btn>-->
-            <!--                </template>-->
-            <!--              </v-list-item>-->
+            <template v-slot:chip="{ props,item, index }">
+              <v-chip v-if="index < 2" v-bind="props">
+                <span>{{ item.title }}</span>
+              </v-chip>
+              <span
+                  v-if="index === 2 && request.categories"
+                  class="text-grey text-caption align-self-center"
+              >
+              (+{{ request?.categories.length - 2 }} others)
+              </span>
+            </template>
+            <template v-slot:prepend-item>
+              <v-list-item
+                  title="All Categories"
+                  @click="toggle"
+              >
+                <template v-slot:prepend>
+                  <v-checkbox-btn
+                      color="primary"
+                      :indeterminate="selectSomeCategories && !selectAllCategories"
+                      :model-value="selectAllCategories"
+                  ></v-checkbox-btn>
+                </template>
+              </v-list-item>
+              <v-divider></v-divider>
+            </template>
 
-            <!--              <v-divider class="mt-2"></v-divider>-->
-            <!--            </template>-->
           </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
@@ -156,10 +187,12 @@ function close() {
               v-model="request.price"
               color="primary"
               density="comfortable"
+              :rules="[numberOrFloatRule]"
+              validate-on="blur"
               :error-messages="errors['price']"
           ></v-text-field>
         </v-col>
-        <v-col cols="6" class="py-0 px-0">
+        <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
                          :error-messages="errors['is_popular']">
