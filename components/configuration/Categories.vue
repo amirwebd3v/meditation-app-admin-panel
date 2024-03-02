@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-import AddCategory from "~/components/modals/category/Add.vue"
 import type {Category} from "~/utils/types";
 
 defineProps({
@@ -16,19 +14,19 @@ defineProps({
   <!--      Second section-->
   <v-row justify="space-between" align="center" class="mt-2 px-3">
     <span class="text-white font-weight-medium font-18">Categories</span>
-    <AddCategory/>
+    <LazyModalsCategoryAdd/>
   </v-row>
 
   <!--      Third section-->
-  <v-row justify="start" align="center">
+  <v-row justify="start" align="center" class="mt-4 mb-1">
     <v-col cols="auto">
-      <v-sheet class="bg-transparent">
         <v-chip-group
             v-if="!!categories.size"
             multiple
             selected-class="text-white bg-primary border-none"
             variant="flat"
             mandatory="force"
+            show-arrows="false"
         >
           <v-chip size="large" class="px-4 font-weight-light text-white bg-primary" text="All"
                   style="border-color: #96AE50 !important;" variant="outlined">
@@ -50,11 +48,15 @@ defineProps({
             </template>
           </v-chip>
         </v-chip-group>
-      </v-sheet>
     </v-col>
   </v-row>
 </template>
 
 <style scoped lang="scss">
-
+div:deep(.v-slide-group) {
+  .v-slide-group__prev,
+  .v-slide-group__next {
+    display: none !important;
+  }
+}
 </style>

@@ -34,7 +34,7 @@ const headers = [
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
-  {key: 'price', title: 'PRICE', sortable: true, align: 'start'},
+  {key: 'price', title: 'PRICE ($)', sortable: true, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
 ]
 
@@ -68,7 +68,7 @@ const goToLesson = (courseId: string) => {
 </script>
 
 <template>
-  <div class="mt-10">
+  <div class="mt-6">
     <v-container>
       <!--      First section-->
       <v-sheet class="d-flex mb-6 bg-transparent align-center">
@@ -84,19 +84,21 @@ const goToLesson = (courseId: string) => {
               hide-details
               variant="outlined"
               label="Search"
-              prepend-inner-icon="mdi-magnify"
               single-line
-          />
+          >
+            <template #prepend-inner>
+              <v-icon icon="mdi-magnify" style="opacity: 1!important;"/>
+            </template>
+          </v-text-field>
         </v-sheet>
       </v-sheet>
-
 
       <Categories :categories="useCategoryStore().meditationCategories"/>
       <AddConfigurationItem Item="All Meditations"/>
 
 
       <v-data-table-server
-          class="mt-10 rounded-lg bg-light-brown-1"
+          class="mt-8 rounded-lg bg-light-brown-1"
           v-if="!!items.size"
           :items-length="+meta.total"
           :page="meta.current_page"
@@ -115,9 +117,18 @@ const goToLesson = (courseId: string) => {
           </v-tooltip>
         </template>
 
+
+
         <template #item.category="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item?.categories[0]?.name }}</div>
+          <v-tooltip :text="item?.categories.map(category => category.name).join(', ')" max-width="270">
+            <template v-slot:activator="{props}">
+              <div class="text-truncate" style="max-width: 125px;" v-bind="props">
+                {{item?.categories[0]?.name}}
+              </div>
+            </template>
+          </v-tooltip>
         </template>
+
 
         <template #item.set="{ item }">
           <div style="max-width: 125px;">{{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}</div>
@@ -132,7 +143,7 @@ const goToLesson = (courseId: string) => {
         </template>
 
         <template #item.lessons_count="{item}">
-          <div style="max-width: 75px;">{{ item.lessons_count }}</div>
+          <div style="max-width: 90px;">{{ item.lessons_count }}</div>
         </template>
 
 

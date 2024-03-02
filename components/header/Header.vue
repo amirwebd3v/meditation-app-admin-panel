@@ -30,9 +30,18 @@ const currentUser: User = useSanctumUser().value.data
         <div class="hidden-sm-and-down">
           <v-row class="align-center">
             <div class="mr-15" v-if="showNavItem">
-              <v-btn :to="{name:  'panel-videos'}" text="Video courses"  class="mr-2" variant="text"/>
-              <v-btn :to="{name:  'panel-meditations'}" class="px-8" text="Meditations"
-                     variant="text"/>
+              <nuxt-link :to="{name:  'panel-videos'}" class="mr-2" variant="text">
+                <template v-slot:default="{ isActive, isExactActive }">
+                  <span :class="[isActive || isExactActive ? 'text-primary text-decoration-underline' : 'text-white']"
+                  >Video courses</span>
+                </template>
+              </nuxt-link>
+              <nuxt-link :to="{name:  'panel-meditations'}" class="px-8" variant="text">
+                <template v-slot:default="{ isActive, isExactActive }">
+                  <span :class="[isActive || isExactActive ? 'text-primary text-decoration-underline' : 'text-white']"
+                  >Meditations</span>
+                </template>
+              </nuxt-link>
             </div>
             <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="32"></v-avatar>
             <p class="font-16 font-weight-light mx-2" v-text="currentUser.name" />
@@ -43,9 +52,9 @@ const currentUser: User = useSanctumUser().value.data
     </v-container>
   </v-app-bar>
   <v-navigation-drawer class="bg-light" v-model="drawer" temporary>
-    <v-list-item title="John Leider">
+    <v-list-item :title="currentUser.name">
       <template v-slot:prepend>
-        <v-avatar class="avatar-border" image="https://cdn.vuetifyjs.com/images/john.jpg" size="46"></v-avatar>
+        <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="46"></v-avatar>
       </template>
     </v-list-item>
 
@@ -57,7 +66,7 @@ const currentUser: User = useSanctumUser().value.data
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block color="danger-dark">
+        <v-btn block color="error" @click="useSanctumAuth().logout">
           Log out
         </v-btn>
       </div>
