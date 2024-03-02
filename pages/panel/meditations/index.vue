@@ -34,7 +34,7 @@ const headers = [
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
-  {key: 'price', title: 'PRICE', sortable: true, align: 'start'},
+  {key: 'price', title: 'PRICE ($)', sortable: true, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
 ]
 
@@ -143,7 +143,7 @@ const goToLesson = (courseId: string) => {
         </template>
 
         <template #item.lessons_count="{item}">
-          <div style="max-width: 75px;">{{ item.lessons_count }}</div>
+          <div style="max-width: 90px;">{{ item.lessons_count }}</div>
         </template>
 
 

@@ -25,7 +25,7 @@ const course : Course = (await useMeditationStore().get(useRoute().params.id.toS
 const headers = ref([
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
-  {key: 'price', title: 'PRICE', sortable: true, align: 'start'},
+  {key: 'price', title: 'PRICE ($)', sortable: true, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
@@ -105,8 +105,15 @@ const load = async (options = {}) => {
         </template>
 
         <template #item.category="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item?.categories[0]?.name }}</div>
+          <v-tooltip :text="item?.categories.map(category => category.name).join(', ')" max-width="270">
+            <template v-slot:activator="{props}">
+              <div class="text-truncate" style="max-width: 125px;" v-bind="props">
+                {{item?.categories[0]?.name}}
+              </div>
+            </template>
+          </v-tooltip>
         </template>
+
 
         <template #item.description="{item}">
           <v-tooltip :text="item.description" max-width="210">
