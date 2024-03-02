@@ -117,9 +117,18 @@ const goToLesson = (courseId: string) => {
           </v-tooltip>
         </template>
 
+
+
         <template #item.category="{item}">
-          <div class="text-truncate" style="max-width: 125px;">{{ item?.categories[0]?.name }}</div>
+          <v-tooltip :text="item?.categories.map(category => category.name).join(', ')" max-width="270">
+            <template v-slot:activator="{props}">
+              <div class="text-truncate" style="max-width: 125px;" v-bind="props">
+                {{item?.categories[0]?.name}}
+              </div>
+            </template>
+          </v-tooltip>
         </template>
+
 
         <template #item.set="{ item }">
           <div style="max-width: 125px;">{{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}</div>
