@@ -68,7 +68,7 @@ const goToLesson = (courseId: string) => {
 </script>
 
 <template>
-  <div class="mt-10">
+  <div class="mt-6">
     <v-container>
       <!--      First section-->
       <v-sheet class="d-flex mb-6 bg-transparent align-center">
@@ -84,19 +84,21 @@ const goToLesson = (courseId: string) => {
               hide-details
               variant="outlined"
               label="Search"
-              prepend-inner-icon="mdi-magnify"
               single-line
-          />
+          >
+            <template #prepend-inner>
+              <v-icon icon="mdi-magnify" style="opacity: 1!important;"/>
+            </template>
+          </v-text-field>
         </v-sheet>
       </v-sheet>
-
 
       <Categories :categories="useCategoryStore().meditationCategories"/>
       <AddConfigurationItem Item="All Meditations"/>
 
 
       <v-data-table-server
-          class="mt-10 rounded-lg bg-light-brown-1"
+          class="mt-8 rounded-lg bg-light-brown-1"
           v-if="!!items.size"
           :items-length="+meta.total"
           :page="meta.current_page"
