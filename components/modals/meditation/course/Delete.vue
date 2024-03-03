@@ -1,10 +1,6 @@
 <script setup>
 
 
-defineComponent({
-  name: 'DeleteMeditation',
-})
-
 defineProps({
   title: {
     type: String,

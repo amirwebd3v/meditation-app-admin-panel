@@ -44,7 +44,7 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3">Delete Single Meditation</span>
+      <span class="pl-3">Delete Video</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 

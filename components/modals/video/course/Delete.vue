@@ -15,7 +15,7 @@ defineProps({
 const loading = ref()
 
 
-const deleteLesson = async () => {
+const deleteCourse = async () => {
   loading.value = true
   // await useMeditationStore().delete(request)
   // dialog.value = false
@@ -44,7 +44,7 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3">Delete Single Meditation</span>
+      <span class="pl-3">Delete Video Course</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 
@@ -100,7 +100,7 @@ function close() {
           size="large"
           variant="outlined"
           text="Delete"
-          @click="deleteLesson"
+          @click="deleteCourse"
       >
       </v-btn>
     </template>

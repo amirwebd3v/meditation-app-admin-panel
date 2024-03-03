@@ -1,27 +1,44 @@
 <script setup lang="ts">
-import type {CourseStoreRequest} from "~/utils/requests";
-import {CourseType} from "~/utils/enums";
+import type { LessonStoreRequest} from "~/utils/requests";
 import {useCategoryStore} from "~/stores/category";
 import {useValidationStore} from "~/stores/validation";
-import {useMeditationStore} from "~/stores/meditation";
+import {useLessonStore} from "~/stores/lesson";
 import {storeToRefs} from "pinia";
 
 
+
 /*********************************************/
+const props = defineProps({
+  btnOutTable: {
+    type: Boolean,
+    default: true
+  },
+  btnInTable: {
+    type: Boolean,
+    default: false
+  },
+  courseId: {
+    type: String,
+    required: true
+  }
+})
+
+/*********************************************/
+const isBtnText = ref()
 const loading = ref()
-const {allMeditationCategories} = storeToRefs(useCategoryStore());
+const {allVideoCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
+  course_id: props.courseId,
   title: '',
   description: null,
   categories: [],
   price: 0,
-  type: CourseType.Meditation,
-  is_popular: false
+  is_popular: false,
 }
 
-const request = reactive<CourseStoreRequest>({...initialState})
+const request = reactive<LessonStoreRequest>({...initialState})
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -29,30 +46,30 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const allMeditationCategoriesArray = computed(() => Array.from(allMeditationCategories.value.values()))
+const allVideoCategoriesArray = computed(() => Array.from(allVideoCategories.value.values()))
 
 const selectAllCategories = computed(() => {
-  return request.categories.length === allMeditationCategoriesArray.value.length
+  return request.categories.length === allVideoCategoriesArray.value.length
 })
 
 const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allMeditationCategoriesArray.value.length
+  return request.categories.length > 0 && request.categories.length < allVideoCategoriesArray.value.length
 })
 
 const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = allMeditationCategoriesArray.value.slice()
+    request.categories = allVideoCategoriesArray.value.slice()
   }
 }
 
 /**********************************************/
-const saveCourse = async () => {
+const saveLesson = async () => {
   loading.value = true
   try {
-    await useMeditationStore().store(request)
-    useEvent('successMessage', 'Meditation Course is successfully Added.')
+    await useLessonStore().store(request)
+    useEvent('successMessage', 'Video is successfully Added.')
     useEvent('closeModal', false)
   } catch (err) {
     useEvent('errorMessage', useValidationStore().errors)
@@ -75,10 +92,19 @@ function close() {
   <LazyModalsMain>
     <template #dialogButton="props">
       <v-btn
+          v-if="btnInTable"
+          class="text-primary"
+          variant="text"
+          icon="mdi mdi-plus"
+          v-bind="props"
+          size="small">
+      </v-btn>
+      <v-btn
+          v-if="btnOutTable"
           color="primary"
           :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
           v-bind="props"
-          text="Add Meditation"
+          :text="btnOutTable ? isBtnText = 'Add course' : ''"
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"
           rounded="xl"
@@ -92,7 +118,7 @@ function close() {
       </v-btn>
     </template>
     <template #header>
-      <span class="pl-3">Add Meditation Course</span>
+      <span class="pl-3">Add video</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
     <template #columns>
@@ -100,7 +126,7 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        placeholder="Enter meditation title" :disabled="loading" :error-messages="errors['title']"/>
+                        placeholder="Enter video title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Description</div>
@@ -120,7 +146,7 @@ function close() {
               color="primary"
               density="comfortable"
               single-line
-              :items="allMeditationCategoriesArray"
+              :items="allVideoCategoriesArray"
               auto-select-first
               item-title="name"
               item-value="id"
@@ -234,7 +260,7 @@ function close() {
           size="large"
           variant="outlined"
           text="Save"
-          @click="saveCourse"
+          @click="saveLesson"
       >
       </v-btn>
     </template>
