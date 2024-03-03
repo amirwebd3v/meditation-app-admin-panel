@@ -51,7 +51,7 @@ const isVideoCoursePage = computed(() => {
   return currentRouteName === 'panel-videos-course-title-lessons';
 })
 
-const {allCategories} = storeToRefs(useCategoryStore())
+const {allVideoCategories} = storeToRefs(useCategoryStore())
 
 </script>
 
@@ -92,7 +92,7 @@ const {allCategories} = storeToRefs(useCategoryStore())
               color="primary"
               density="comfortable"
               single-line
-              :items="[...allCategories.values()]"
+              :items="[...allVideoCategories.values()]"
               item-title="name"
               item-value="id"
           />

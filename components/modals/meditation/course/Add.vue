@@ -10,7 +10,7 @@ import {storeToRefs} from "pinia";
 /*********************************************/
 const isBtnText = ref()
 const loading = ref()
-const {allCategories} = storeToRefs(useCategoryStore());
+const {allMeditationCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
@@ -30,21 +30,21 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
+const allMeditationCategoriesArray = computed(() => Array.from(allMeditationCategories.value.values()))
 
 const selectAllCategories = computed(() => {
-  return request.categories.length === allCategoriesArray.value.length
+  return request.categories.length === allMeditationCategoriesArray.value.length
 })
 
 const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
+  return request.categories.length > 0 && request.categories.length < allMeditationCategoriesArray.value.length
 })
 
 const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = allCategoriesArray.value.slice()
+    request.categories = allMeditationCategoriesArray.value.slice()
   }
 }
 
@@ -122,7 +122,7 @@ function close() {
               color="primary"
               density="comfortable"
               single-line
-              :items="allCategoriesArray"
+              :items="allMeditationCategoriesArray"
               auto-select-first
               item-title="name"
               item-value="id"
