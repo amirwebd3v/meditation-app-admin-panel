@@ -25,7 +25,7 @@ const course : Course = (await useMeditationStore().get(useRoute().params.id.toS
 const headers = ref([
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
-  {key: 'price', title: 'PRICE ($)', sortable: true, align: 'start'},
+  {key: 'price', title: 'PRICE($)', sortable: true, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},

@@ -34,7 +34,7 @@ const headers = [
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
-  {key: 'price', title: 'PRICE ($)', sortable: true, align: 'start'},
+  {key: 'price', title: 'PRICE($)', sortable: true, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
 ]
 
