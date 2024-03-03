@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Modal from "~/components/modals/Modal.vue";
 import type { LessonStoreRequest} from "~/utils/requests";
 import {useCategoryStore} from "~/stores/category";
 import {useValidationStore} from "~/stores/validation";
@@ -90,7 +89,7 @@ function close() {
 </script>
 
 <template>
-  <Modal>
+  <LazyModalsMain>
     <template #dialogButton="props">
       <v-btn
           v-if="btnInTable"
@@ -265,6 +264,6 @@ function close() {
       >
       </v-btn>
     </template>
-  </Modal>
+  </LazyModalsMain>
 </template>
 

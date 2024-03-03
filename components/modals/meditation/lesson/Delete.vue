@@ -1,5 +1,4 @@
 <script setup>
-import Modal from "~/components/modals/Modal.vue";
 
 
 defineComponent({
@@ -36,7 +35,7 @@ function close() {
 <template>
 
 
-  <Modal>
+  <LazyModalsMain>
 
     <template #dialogButton="props">
       <v-btn
@@ -110,6 +109,6 @@ function close() {
       </v-btn>
     </template>
 
-  </Modal>
+  </LazyModalsMain>
 
 </template>

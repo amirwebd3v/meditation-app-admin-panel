@@ -102,7 +102,7 @@ const load = async (options = {}) => {
         </template>
 
         <template #item.category="{item}">
-          <v-tooltip :text="item?.categories.map(category => category.name).join(', ')" max-width="270">
+          <v-tooltip :text="item?.categories.map((category : Category) => category.name).join(', ')" max-width="270">
             <template v-slot:activator="{props}">
               <div class="text-truncate" style="max-width: 125px;" v-bind="props">
                 {{item?.categories[0]?.name}}

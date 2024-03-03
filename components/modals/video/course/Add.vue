@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import Base from "~/components/modals/Modal.vue";
+
 
 
 defineComponent({
@@ -33,7 +33,7 @@ const isVideoCoursePage = computed(() => {
 
 <template>
 
-  <Base :form-title="formTitle" :icon="icon">
+  <LazyModalsMain>
 
     <template v-slot:button="props">
       <v-btn
@@ -145,7 +145,7 @@ const isVideoCoursePage = computed(() => {
       </v-row>
     </template>
 
-  </Base>
+  </LazyModalsMain>
 
 
 </template>

@@ -43,11 +43,14 @@ interface LessonStoreRequest {
 interface LessonUpdateRequest {
     id: string
     categories?: number[]
+    title: string
+    url: string
+    duration: string
     thumbnail?: string
-    title?: string
     description?: string
-    price?: number
-    is_popular?: boolean
+    price: number
+    is_new: boolean
+    is_popular: boolean
 }
 
 
@@ -56,5 +59,6 @@ export {
     CourseIndexRequest,
     CourseStoreRequest,
     CourseUpdateRequest,
-    LessonStoreRequest
+    LessonStoreRequest,
+    LessonUpdateRequest,
 }

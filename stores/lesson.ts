@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 import useApi from '~/composables/api'
 import type {Course, Lesson} from "~/utils/types";
 import type {PaginatorMeta, QueryParams} from "l5-client";
-import type { LessonStoreRequest} from "~/utils/requests";
+import type {LessonStoreRequest, LessonUpdateRequest} from "~/utils/requests";
 
 export const useLessonStore = defineStore('lesson', {
     state: () => ({
@@ -26,6 +26,12 @@ export const useLessonStore = defineStore('lesson', {
         async store(request: LessonStoreRequest): Promise<Lesson> {
             const {course_id, ...body} = request
             return await useApi().post(`/admin/v1/course/${course_id}/lesson`, {body})
+        },
+
+        async update(request: LessonUpdateRequest) {
+            const {id, ...body} = request
+            const data = await useApi().put(`/admin/v1/lesson/${id}`, {body})
+            this.items.set(data.uuid, data)
         },
     },
 });

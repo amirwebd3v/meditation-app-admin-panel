@@ -1,7 +1,5 @@
 <script setup lang="ts">
 
-import Base from "~/components/modals/Modal.vue";
-
 import {storeToRefs} from "pinia";
 import {useCategoryStore} from "~/stores/category";
 
@@ -59,7 +57,7 @@ const {allCategories} = storeToRefs(useCategoryStore())
 
 <template>
 
-  <Base :form-title="formTitle" :icon="icon">
+  <LazyModalsMain>
 
     <template v-slot:button="props">
       <v-btn
@@ -163,7 +161,7 @@ const {allCategories} = storeToRefs(useCategoryStore())
       </v-btn>
     </template>
 
-  </Base>
+  </LazyModalsMain>
 
 
 </template>

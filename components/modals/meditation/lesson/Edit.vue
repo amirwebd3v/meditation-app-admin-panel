@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import Modal from "~/components/modals/Modal.vue";
 
 import {useMeditationStore} from "~/stores/meditation";
 import {useValidationStore} from "~/stores/validation";
@@ -112,7 +111,7 @@ function close() {
 
 <template>
 
-  <Modal>
+  <LazyModalsMain>
 
     <template #dialogButton="props">
       <v-btn class="text-primary" variant="text" icon="mdi mdi-pencil-outline" v-bind="props" size="small"/>
@@ -255,7 +254,7 @@ function close() {
       </v-btn>
     </template>
 
-  </Modal>
+  </LazyModalsMain>
 
 
 </template>
