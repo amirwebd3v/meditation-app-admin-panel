@@ -9,18 +9,6 @@ import {storeToRefs} from "pinia";
 
 
 /*********************************************/
-defineProps({
-  btnOutTable: {
-    type: Boolean,
-    default: true
-  },
-  btnInTable: {
-    type: Boolean,
-    default: false
-  },
-})
-
-/*********************************************/
 const isBtnText = ref()
 const loading = ref()
 const {allCategories} = storeToRefs(useCategoryStore());
@@ -88,21 +76,12 @@ function close() {
 <template>
   <Modal>
     <template #dialogButton="props">
-      <!--              <v-btn-->
-      <!--                  v-if="btnInTable"-->
-      <!--                  class="text-primary"-->
-      <!--                  variant="text"-->
-      <!--                  icon="mdi mdi-plus"-->
-      <!--                  v-bind="props"-->
-      <!--                  size="small">-->
-      <!--              </v-btn>-->
 
       <v-btn
-          v-if="btnOutTable"
           color="primary"
           :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
           v-bind="props"
-          :text="btnOutTable ? isBtnText = 'Add Meditation' : ''"
+          text="Add Meditation"
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"
           rounded="xl"

@@ -25,7 +25,7 @@ useListen('closeModal', (value: Boolean) => {
     <v-card class="bg-light-brown-1 py-1" rounded="lg">
       <v-container>
 
-        <v-card-title class="v-row justify-space-between align-center">
+        <v-card-title class="v-row justify-space-between align-center mt-auto">
           <slot name="header"/>
         </v-card-title>
 

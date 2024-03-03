@@ -2,9 +2,6 @@
 
 import Categories from "~/components/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/configuration/AddConfigurationItem.vue";
-import Add from "~/components/modals/meditation/course/Add.vue";
-import Edit from "~/components/modals/meditation/course/Edit.vue";
-import DeleteMeditation from "~/components/modals/meditation/course/Delete.vue";
 import {useMeditationStore} from "~/stores/meditation"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
@@ -174,8 +171,8 @@ const goToLesson = (courseId: string) => {
               </template>
 
               <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded>
-                <Add :btn-out-table="false" :btn-in-table="true"/>
-                <Edit
+                <LazyModalsMeditationLessonAdd :course-id="item.uuid" :btn-out-table="false" :btn-in-table="true"/>
+                <LazyModalsMeditationCourseEdit
                     :id="item.uuid"
                     :title="item.title"
                     :description="item.description"
@@ -183,7 +180,7 @@ const goToLesson = (courseId: string) => {
                     :price="item.price"
                     :is-popular="item.is_popular"
                 />
-                <DeleteMeditation :id="item.uuid" :title="item.title"/>
+                <LazyModalsMeditationCourseDelete :id="item.uuid" :title="item.title"/>
               </v-card>
             </v-menu>
             <v-icon

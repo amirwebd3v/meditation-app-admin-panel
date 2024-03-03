@@ -3,9 +3,6 @@ import {useLessonStore} from "~/stores/lesson"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category, Course} from "~/utils/types";
-import DeleteMeditation from "~/components/modals/meditation/course/Delete.vue";
-import Edit from "~/components/modals/meditation/course/Edit.vue";
-import Add from "~/components/modals/meditation/course/Add.vue";
 
 /***********************************************/
 definePageMeta({
@@ -77,7 +74,7 @@ const load = async (options = {}) => {
           ></v-text-field>
         </v-sheet>
         <v-sheet class="bg-transparent ml-auto">
-          <Add/>
+          <LazyModalsMeditationLessonAdd/>
         </v-sheet>
       </v-sheet>
       <!--     End First section-->
@@ -139,7 +136,7 @@ const load = async (options = {}) => {
 
           <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
 
-            <Edit
+            <LazyModalsMeditationLessonEdit
                 :id="item.uuid"
                 :title="item.title"
                 :description="item.description"
@@ -147,7 +144,7 @@ const load = async (options = {}) => {
                 :price="item.price"
                 :is-popular="item.is_popular"
             />
-            <DeleteMeditation :id="item.uuid" :title="item.title"/>          </div>
+            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title"/>          </div>
 
         </template>
       </v-data-table-server>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {User} from '~/utils/types'
+
 const router = useRouter();
 const showHeader = ref(true);
 const showNavItem = ref(true);
@@ -16,6 +17,11 @@ watchEffect(() => {
 
 const currentUser: User = useSanctumUser().value.data
 
+const isActiveLink = computed(() => {
+  return (linkPath) => router.currentRoute.value.path.startsWith(linkPath);
+})
+
+
 </script>
 
 <template>
@@ -24,28 +30,28 @@ const currentUser: User = useSanctumUser().value.data
       <v-row justify="space-between" align="center">
         <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = <any>!drawer"/>
         <nuxt-link to="/panel" class="float-md-right logo">
-          <v-img width="42" height="40" src="/img/logo.svg" />
+          <v-img width="42" height="40" src="/img/logo.svg"/>
         </nuxt-link>
 
         <div class="hidden-sm-and-down">
           <v-row class="align-center">
             <div class="mr-15" v-if="showNavItem">
               <nuxt-link :to="{name:  'panel-videos'}" class="mr-2" variant="text">
-                <template v-slot:default="{ isActive, isExactActive }">
-                  <span :class="[isActive || isExactActive ? 'text-primary text-decoration-underline' : 'text-white']"
+                  <span :class="
+                  [isActiveLink('/panel/videos') ?
+                  'text-primary text-decoration-underline' : 'text-white']"
                   >Video courses</span>
-                </template>
               </nuxt-link>
               <nuxt-link :to="{name:  'panel-meditations'}" class="px-8" variant="text">
-                <template v-slot:default="{ isActive, isExactActive }">
-                  <span :class="[isActive || isExactActive ? 'text-primary text-decoration-underline' : 'text-white']"
+                  <span :class="
+                  [isActiveLink('/panel/meditations') ?
+                   'text-primary text-decoration-underline' : 'text-white']"
                   >Meditations</span>
-                </template>
               </nuxt-link>
             </div>
             <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="32"></v-avatar>
-            <p class="font-16 font-weight-light mx-2" v-text="currentUser.name" />
-            <v-btn class="mr-3" icon="mdi mdi-logout" @click="useSanctumAuth().logout" />
+            <p class="font-16 font-weight-light mx-2" v-text="currentUser.name"/>
+            <v-btn class="mr-3" icon="mdi mdi-logout" @click="useSanctumAuth().logout"/>
           </v-row>
         </div>
       </v-row>

@@ -34,10 +34,10 @@ interface Media {
     name: string
     size: string
     urls: {
-        original: string|undefined
-        large: string|undefined
-        medium: string|undefined
-        small: string|undefined
+        original: string | undefined
+        large: string | undefined
+        medium: string | undefined
+        small: string | undefined
     }
     uuid: string
     _entity: string
@@ -53,7 +53,7 @@ interface Lesson {
     price: number
     is_new: boolean
     is_popular: boolean
-    thumbnail: Media|null
+    thumbnail: Media | null
     created_at: number
     updated_at: number
 }
@@ -62,9 +62,9 @@ interface User {
     uuid: string
     name: string
     email: string
-    avatar: Media
+    avatar: Media['urls']
     roles: string[]
-    email_verified_at: number|null
+    email_verified_at: number | null
     created_at: number
     updated_at: number
 }

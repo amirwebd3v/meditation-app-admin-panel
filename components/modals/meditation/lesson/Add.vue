@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import Modal from "~/components/modals/Modal.vue";
-import type {CourseStoreRequest} from "~/utils/requests";
-import {CourseType} from "~/utils/enums";
+import type { LessonStoreRequest} from "~/utils/requests";
 import {useCategoryStore} from "~/stores/category";
 import {useValidationStore} from "~/stores/validation";
 import {useLessonStore} from "~/stores/lesson";
 import {storeToRefs} from "pinia";
 
 
+
 /*********************************************/
-defineProps({
+const props = defineProps({
   btnOutTable: {
     type: Boolean,
     default: true
@@ -18,6 +18,10 @@ defineProps({
     type: Boolean,
     default: false
   },
+  courseId: {
+    type: String,
+    required: true
+  }
 })
 
 /*********************************************/
@@ -27,15 +31,15 @@ const {allCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
+  course_id: props.courseId,
   title: '',
   description: null,
   categories: [],
   price: 0,
-  type: CourseType.Meditation,
-  is_popular: false
+  is_popular: false,
 }
 
-const request = reactive<CourseStoreRequest>({...initialState})
+const request = reactive<LessonStoreRequest>({...initialState})
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -66,7 +70,7 @@ const saveLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().store(request)
-    useEvent('successMessage', 'Meditation Course is successfully Added.')
+    useEvent('successMessage', 'Single Meditation is successfully Added.')
     useEvent('closeModal', false)
   } catch (err) {
     useEvent('errorMessage', useValidationStore().errors)
@@ -88,15 +92,14 @@ function close() {
 <template>
   <Modal>
     <template #dialogButton="props">
-      <!--              <v-btn-->
-      <!--                  v-if="btnInTable"-->
-      <!--                  class="text-primary"-->
-      <!--                  variant="text"-->
-      <!--                  icon="mdi mdi-plus"-->
-      <!--                  v-bind="props"-->
-      <!--                  size="small">-->
-      <!--              </v-btn>-->
-
+      <v-btn
+          v-if="btnInTable"
+          class="text-primary"
+          variant="text"
+          icon="mdi mdi-plus"
+          v-bind="props"
+          size="small">
+      </v-btn>
       <v-btn
           v-if="btnOutTable"
           color="primary"
@@ -116,7 +119,7 @@ function close() {
       </v-btn>
     </template>
     <template #header>
-      <span class="pl-3">Add Meditation Course</span>
+      <span class="pl-3">Add Single Meditation</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
     <template #columns>
@@ -124,7 +127,7 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        placeholder="Enter lesson title" :disabled="loading" :error-messages="errors['title']"/>
+                        placeholder="Enter single Meditation title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Description</div>
