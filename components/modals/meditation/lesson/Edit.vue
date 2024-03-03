@@ -1,12 +1,12 @@
 <script setup lang="ts">
 
 
-import {useMeditationStore} from "~/stores/meditation";
+import {useLessonStore} from "~/stores/lesson";
 import {useValidationStore} from "~/stores/validation";
 import {useCategoryStore} from "~/stores/category";
 import {useMediaStore} from "~/stores/media";
 import {storeToRefs} from "pinia";
-import type {CourseUpdateRequest} from "~/utils/requests";
+import type { LessonUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
 
 
@@ -54,7 +54,7 @@ const initialState = {
   price: props.price,
   is_popular: props.isPopular,
 }
-const request = reactive<CourseUpdateRequest>({...initialState})
+const request = reactive<LessonUpdateRequest>({...initialState})
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -88,10 +88,10 @@ const upload = async (files: File[]) => {
 
 
 
-const updateCourse = async () => {
+const updateLesson = async () => {
   loading.value = true
   try {
-    await useMeditationStore().update(request)
+    await useLessonStore().update(request)
     useEvent('closeModal', false)
   } catch (err) {
     console.error(err)
@@ -118,7 +118,7 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3">Edit Meditation Course</span>
+      <span class="pl-3">Edit Single Meditation</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 
@@ -131,7 +131,7 @@ function close() {
           />
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Course description</div>
+          <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Description</div>
           <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
         </v-col>
         <v-col cols="12" class="py-0">
@@ -249,7 +249,7 @@ function close() {
           size="large"
           variant="outlined"
           text="Save"
-          @click="updateCourse"
+          @click="updateLesson"
       >
       </v-btn>
     </template>
