@@ -2,6 +2,8 @@ import {defineStore} from 'pinia'
 import useApi from '~/composables/api'
 import type {Category} from "~/utils/types";
 import {CourseType} from "~/utils/enums";
+import type {CategoryStoreRequest} from "~/utils/requests";
+
 
 
 export const useCategoryStore = defineStore('category', {
@@ -24,6 +26,10 @@ export const useCategoryStore = defineStore('category', {
                 search: [{field: 'courses.type', value: CourseType.Video}]
             })
             response.data.forEach(c => this.videoCategories.set(c.id, c))
+        },
+
+        async store(request: CategoryStoreRequest): Promise<Category> {
+            return await useApi().post('/admin/v1/category', {body: request})
         },
     },
 
