@@ -27,21 +27,33 @@ watch(loading, (val) => {
   }, 2000);
 });
 
-// onBeforeMount(() => {
-//   if (useSanctumAuth().isAuthenticated) {
-//     navigateTo('/panel')
-//   }
-// })
+onBeforeMount(() => {
+  if (useSanctumAuth().isAuthenticated) {
+    navigateTo('/panel')
+  }
+})
+
+const errors = ref([])
 
 async function login() {
   loading.value = true;
-  try {
-    await useSanctumAuth().login(form.value);
-  } catch (error) {
-    console.error('Login failed:', error);
-  } finally {
-    loading.value = false;
-  }
+  useSanctumAuth().login(form.value)
+      .catch((error) => {
+        errors.value = error.response._data.errors
+      })
+      .finally(() => {
+        loading.value = false;
+      })
+
+
+  // loading.value = true;
+  // try {
+  //   await useSanctumAuth().login(form.value);
+  // } catch (error) {
+  //   console.error('Login failed:', error);
+  // } finally {
+  //   loading.value = false;
+  // }
 }
 
 </script>
@@ -55,17 +67,17 @@ async function login() {
         <p class="text-center mb-12 font-weight-bold text-white" style="font-size: 23px;">Welcome to admin panel</p>
         <v-form>
           <v-text-field v-model="form.email" density="compact" placeholder="Enter Email"
-                        variant="outlined"></v-text-field>
+                        variant="outlined" />
           <v-text-field v-model="form.password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                         :type="visible ? 'text' : 'password'" autocomplete="off"
                         density="compact" placeholder="Enter Password" variant="outlined"
-                        @click:append-inner="visible = !visible"/>
+                        @click:append-inner="visible = !visible" :error-messages="errors['email']"/>
           <v-btn
               :disabled="loading"
               :loading="loading"
               @click="login"
               block rounded="xl"
-              class="mb-8"
+              class="mb-8 mt-4"
               color="primary"
               size="large"
               variant="flat"
