@@ -31,7 +31,7 @@ interface LessonStoreRequest {
     course_id: string
     categories?: number[]
     title: string
-    url: string
+    source: string
     duration: string
     thumbnail?: string
     description?: string
