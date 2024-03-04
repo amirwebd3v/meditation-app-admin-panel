@@ -50,6 +50,7 @@ interface Lesson {
     title: string
     description: string
     duration: number
+    source: string|Media
     price: number
     is_new: boolean
     is_popular: boolean
