@@ -1,6 +1,7 @@
 .v-btn--contained {
   box-shadow: none;
 }
+
 .v-btn{
   text-transform: none;
   letter-spacing: 0;
@@ -15,33 +16,6 @@
   }
 }
 
-.theme--light.v-btn--active::before {
-  opacity: 0.18;
-}
-
-.custom-lg-btn {
-  &.v-btn:not(.v-btn--round).v-size--x-large {
-    padding: 0;
-    min-width: 95px;
-  }
-  &.v-btn--fab.v-size--x-large {
-    width: 95px;
-    height: 95px;
-  }
-}
-
-.btn-custom-nm {
-  padding: 0 25px !important;
-}
-
-.btn-custom-md {
-  padding: 15px 35px !important;
-}
-
-.btn-custom-lg {
-  padding: 15px 45px !important;
-}
-
 .v-label {
-  opacity: 100% !important;
+  opacity: 1 !important;
 }

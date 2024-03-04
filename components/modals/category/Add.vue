@@ -2,12 +2,6 @@
 import {useValidationStore} from "~/stores/validation";
 
 
-defineComponent({
-  name: 'AddCategory',
-})
-
-
-
 
 const loading = ref(false)
 

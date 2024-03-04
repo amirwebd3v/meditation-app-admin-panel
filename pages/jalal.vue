@@ -12,11 +12,11 @@
     >
 
       <template v-slot:search="{props}">
-        <v-sheet class="d-flex mb-6 bg-transparent align-center" v-if="searchableFields.length">
-          <v-sheet class="bg-transparent">
+        <v-sheet class="d-flex mb-6  align-center" v-if="searchableFields.length">
+          <v-sheet class="">
             <h2 class="text-white pr-10 me-auto">Meditations</h2>
           </v-sheet>
-          <v-sheet class="bg-transparent mr-5" width="475px">
+          <v-sheet class=" mr-5" width="475px">
             <v-text-field
                 @keyup.enter="props.search"
                 @click:clear="props.search"

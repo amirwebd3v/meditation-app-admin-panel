@@ -66,11 +66,11 @@ const goToLesson = (courseId: string) => {
   <div class="mt-6">
     <v-container>
       <!--      First section-->
-      <v-sheet class="d-flex mb-6 bg-transparent align-center">
-        <v-sheet class="bg-transparent">
+      <v-sheet class="d-flex mb-6 align-center">
+        <v-sheet color="red">
           <h2 class="text-white pr-10 me-auto">Videos</h2>
         </v-sheet>
-        <v-sheet class="bg-transparent mr-5" width="475px">
+        <v-sheet class="mr-5" width="475px">
           <v-text-field
               @keyup.enter="load"
               v-model="searchText"

@@ -48,19 +48,19 @@ const load = async (options = {}) => {
   <div class="mt-5">
     <v-container>
       <!--     Start First section-->
-      <v-sheet class="bg-transparent mb-7">
+      <v-sheet class=" mb-7">
         <div class="d-flex align-center cursor-pointer w-0" @click="useRouter().back()">
           <v-icon size="x-large" class="pr-2" icon="mdi-chevron-left"/>
           <p class="font-weight-thin">Back</p>
         </div>
       </v-sheet>
 
-      <v-sheet class="d-flex mb-6 bg-transparent align-center">
+      <v-sheet class="d-flex mb-6  align-center">
 
-        <v-sheet class="bg-transparent">
+        <v-sheet class="">
           <h2 class="text-white pr-10 me-auto">{{ course.title }}</h2>
         </v-sheet>
-        <v-sheet class="bg-transparent mr-5" width="475px">
+        <v-sheet class=" mr-5" width="475px">
           <v-text-field
               @keyup.enter="load"
               v-model="searchText"
@@ -73,7 +73,7 @@ const load = async (options = {}) => {
               single-line
           ></v-text-field>
         </v-sheet>
-        <v-sheet class="bg-transparent ml-auto">
+        <v-sheet class=" ml-auto">
           <LazyModalsMeditationLessonAdd/>
         </v-sheet>
       </v-sheet>
