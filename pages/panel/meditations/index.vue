@@ -96,7 +96,6 @@ const goToLesson = (courseId: string) => {
 
       <v-data-table-server
           class="mt-8 rounded-lg bg-light-brown-1"
-          v-if="!!items.size"
           :items-length="+meta.total"
           :page="meta.current_page"
           :items="[...items.values()]"
