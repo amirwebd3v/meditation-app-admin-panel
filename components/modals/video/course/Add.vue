@@ -161,6 +161,7 @@ function close() {
               :disabled="loading"
               variant="outlined"
               v-model="request.price"
+              type="number"
               color="primary"
               density="comfortable"
               :rules="[numberOrFloatRule]"
