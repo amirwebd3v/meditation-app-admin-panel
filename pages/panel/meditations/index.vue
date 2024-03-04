@@ -105,7 +105,6 @@ const goToLesson = (courseId: string) => {
           :headers="headers"
           sort-desc-icon="mdi-arrow-up-thin"
           sort-asc-icon="mdi-arrow-down-thin"
-          sor
       >
         <template #item.title="{item}">
           <v-tooltip :text="item.title">
