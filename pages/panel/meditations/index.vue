@@ -41,7 +41,7 @@ const load = async (options = {}) => {
   const search: FilterSearchItem[] = searchText.value === '' ? [] : [
     {field: 'title', operator: 'ilike', value: searchText.value},
     {field: 'description', operator: 'ilike', value: searchText.value},
-    {field: 'price', operator: 'ilike', value: searchText.value},
+    {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
   params.relations = ['categories']
