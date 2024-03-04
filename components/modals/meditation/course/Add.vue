@@ -54,8 +54,6 @@ const saveCourse = async () => {
     await useMeditationStore().store(request)
     useEvent('successMessage', 'Meditation Course is successfully Added.')
     useEvent('closeModal', false)
-  } catch (err) {
-    useEvent('errorMessage', useValidationStore().errors)
   } finally {
     loading.value = false
     Object.assign(request, initialState);

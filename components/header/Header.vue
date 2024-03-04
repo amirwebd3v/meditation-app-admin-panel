@@ -49,7 +49,7 @@ const isActiveLink = computed(() => {
                   >Meditations</span>
               </nuxt-link>
             </div>
-            <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="32"></v-avatar>
+            <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="32"/>
             <p class="font-16 font-weight-light mx-2" v-text="currentUser.name"/>
             <v-btn class="mr-3" icon="mdi mdi-logout" @click="useSanctumAuth().logout"/>
           </v-row>
@@ -60,7 +60,7 @@ const isActiveLink = computed(() => {
   <v-navigation-drawer class="bg-light" v-model="drawer" temporary>
     <v-list-item :title="currentUser.name">
       <template v-slot:prepend>
-        <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="46"></v-avatar>
+        <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="46"/>
       </template>
     </v-list-item>
 

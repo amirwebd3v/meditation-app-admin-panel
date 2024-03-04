@@ -44,16 +44,6 @@ async function login() {
       .finally(() => {
         loading.value = false;
       })
-
-
-  // loading.value = true;
-  // try {
-  //   await useSanctumAuth().login(form.value);
-  // } catch (error) {
-  //   console.error('Login failed:', error);
-  // } finally {
-  //   loading.value = false;
-  // }
 }
 
 </script>
