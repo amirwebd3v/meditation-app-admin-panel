@@ -106,12 +106,12 @@ const activeButton = {
 }
 
 const searchableFields: Array<Omit<FilterSearchItem, 'value'>> = [
-  {field: 'title', operator: 'like'},
-  {field: 'description', operator: 'like'},
-  {field: 'price', operator: 'like'},
-  {field: 'is_popular', operator: 'like'},
+  {field: 'title', operator: 'ilike'},
+  {field: 'description', operator: 'ilike'},
+  {field: 'price', operator: 'ilike'},
+  {field: 'is_popular', operator: 'ilike'},
   {field: 'categories.slug', operator: 'in'},
-  {field: 'categories.name', operator: 'like'},
+  {field: 'categories.name', operator: 'ilike'},
 ]
 
 const headers = [

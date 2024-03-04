@@ -37,9 +37,9 @@ const headers = [
 const load = async (options = {}) => {
   loading.value = true
   const search: FilterSearchItem[] = searchText.value === '' ? [] : [
-    {field: 'title', operator: 'like', value: searchText.value},
-    {field: 'description', operator: 'like', value: searchText.value},
-    {field: 'price', operator: 'like', value: searchText.value},
+    {field: 'title', operator: 'ilike', value: searchText.value},
+    {field: 'description', operator: 'ilike', value: searchText.value},
+    {field: 'price', operator: 'ilike', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
   params.relations = ['categories']
