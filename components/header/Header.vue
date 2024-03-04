@@ -64,11 +64,13 @@ const isActiveLink = computed(() => {
       </template>
     </v-list-item>
 
-    <v-divider thickness="2"/>
+    <v-divider thickness="1"/>
 
-    <v-list density="compact" nav v-if="showNavItem">
-      <v-list-item :to="{name : 'panel-videos'}" prepend-icon="mdi-video-box" title="Video courses"></v-list-item>
-      <v-list-item :to="{name : 'panel-meditations'}" prepend-icon="mdi-meditation" title="Meditations"></v-list-item>
+    <v-list density="compact" nav v-if="showNavItem" bg-color="light">
+      <v-list-item :to="{name : 'panel-videos'}" prepend-icon="mdi-video-box"
+                   active-color="primary" title="Video courses"/>
+      <v-list-item :to="{name : 'panel-meditations'}" prepend-icon="mdi-meditation"
+                   active-color="primary" title="Meditations"/>
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
