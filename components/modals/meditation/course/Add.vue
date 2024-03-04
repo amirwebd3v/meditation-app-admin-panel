@@ -162,6 +162,7 @@ function close() {
               variant="outlined"
               v-model="request.price"
               color="primary"
+              type="number"
               density="comfortable"
               :rules="[numberOrFloatRule]"
               validate-on="blur"
