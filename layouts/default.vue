@@ -27,13 +27,6 @@ const snackbar = ref({
   icon: '',
 })
 
-useListen('errorMessage', (value: String) => {
-  snackbar.value.color = 'error'
-  snackbar.value.type = 'Error'
-  snackbar.value.text = value
-  snackbar.value.icon = 'mdi-alert-circle'
-  snackbar.value.status = true
-})
 
 
 useListen('successMessage', (value: String) => {

@@ -71,9 +71,7 @@ const saveLesson = async () => {
     await useLessonStore().store(request)
     useEvent('successMessage', 'Video is successfully Added.')
     useEvent('closeModal', false)
-  } catch (err) {
-    useEvent('errorMessage', useValidationStore().errors)
-  } finally {
+  }  finally {
     loading.value = false
     Object.assign(request, initialState);
   }
