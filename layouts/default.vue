@@ -30,7 +30,7 @@ const snackbar = ref({
 
 
 useListen('successMessage', (value: String) => {
-  snackbar.value.color = 'success'
+  snackbar.value.color = 'primary'
   snackbar.value.type = 'Success'
   snackbar.value.text = value
   snackbar.value.icon = 'mdi-check-circle'

@@ -55,7 +55,7 @@ const saveCourse = async () => {
     // await useVideoStore().store(request)
     useEvent('successMessage', 'Video Course is successfully Added.')
     useEvent('closeModal', false)
-  }  finally {
+  } finally {
     loading.value = false
     Object.assign(request, initialState);
   }
