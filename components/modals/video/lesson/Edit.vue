@@ -139,7 +139,6 @@ function close() {
           <v-autocomplete
               variant="outlined"
               :disabled="loading"
-              clearable
               chips
               closable-chips
               multiple

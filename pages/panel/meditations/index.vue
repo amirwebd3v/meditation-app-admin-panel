@@ -76,7 +76,6 @@ const goToLesson = (courseId: string) => {
           <v-text-field
               @keyup.enter="load"
               v-model="searchText"
-              clearable
               density="compact"
               hide-details
               variant="outlined"
