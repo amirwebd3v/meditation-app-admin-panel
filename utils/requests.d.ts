@@ -1,6 +1,6 @@
 import type {QueryParams} from "l5-client";
 import type {CourseType} from "~/utils/enums";
-
+import type {Category} from "~/utils/types";
 
 
 interface CourseStoreRequest {
@@ -53,6 +53,9 @@ interface LessonUpdateRequest {
     is_popular: boolean
 }
 
+interface CategoryStoreRequest {
+    name: Category['name']
+}
 
 
 export {
@@ -61,4 +64,5 @@ export {
     CourseUpdateRequest,
     LessonStoreRequest,
     LessonUpdateRequest,
+    CategoryStoreRequest
 }

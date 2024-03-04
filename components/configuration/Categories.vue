@@ -51,12 +51,3 @@ defineProps({
     </v-col>
   </v-row>
 </template>
-
-<style scoped lang="scss">
-div:deep(.v-slide-group) {
-  .v-slide-group__prev,
-  .v-slide-group__next {
-    display: none !important;
-  }
-}
-</style>

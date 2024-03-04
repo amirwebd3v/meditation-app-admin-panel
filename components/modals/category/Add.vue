@@ -1,22 +1,45 @@
-<script setup>
+<script setup lang="ts">
 import {useValidationStore} from "~/stores/validation";
+import type {CategoryStoreRequest} from "~/utils/requests";
+import {storeToRefs} from "pinia";
 
-
-
+/*********************************************/
+const {errors} = storeToRefs(useValidationStore());
 const loading = ref(false)
 
+const categoryFieldRules = [
+  (v: string) => (v && v.length >= 3) || 'Minimum 3 characters',
+  (v: string) => (v && v.length <= 30) || 'Maximum 30 characters',
+];
+
+/*********************************************/
+const initialState = {
+  name : ''
+}
+
+const request = reactive<CategoryStoreRequest>({...initialState})
+
+/*********************************************/
 const saveCategory = async () => {
   loading.value = true
-  // await useCategoryStore().store(request)
-  loading.value = false
+  try {
+    await useCategoryStore().store(request)
+    useEvent('successMessage', 'New category is successfully Added.')
+    useEvent('closeModal', false)
+  } finally {
+    loading.value = false
+    Object.assign(request, initialState);
+  }
 }
 
 
 function close() {
-  // Object.assign(request, initialState);
+  Object.assign(request, initialState);
   useValidationStore().clearErrors()
   useEvent('closeModal', false)
 }
+
+
 </script>
 
 <template>
@@ -50,9 +73,13 @@ function close() {
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
-          <div class="text-subtitle-1 text-medium-emphasis py-2">Category</div>
-          <v-text-field variant="outlined" color="primary" density="comfortable"
-                        placeholder="Enter category name"/>
+          <div class="text-subtitle-1 text-white text-medium-emphasis py-2">Category</div>
+          <v-text-field
+              v-model="request.name"
+              clearable
+              :rules="categoryFieldRules"
+              variant="outlined" color="primary" density="comfortable"
+              placeholder="Enter category name(s)" :error-messages="errors['name']"/>
         </v-col>
       </v-row>
     </template>
