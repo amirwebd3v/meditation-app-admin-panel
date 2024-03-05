@@ -168,6 +168,7 @@ const goToLesson = (courseId: string) => {
               </v-card>
             </v-menu>
             <v-icon
+                v-if="item.set === 'SINGLE'"
                 class="text-primary"
                 icon="mdi-chevron-right"
                 size="x-large"
