@@ -35,7 +35,7 @@ useListen('closeModal', (value: Boolean) => {
             <slot name="columns" />
           </v-card-text>
 
-          <v-card-actions class="float-right pt-0 mr-1 mt-auto">
+          <v-card-actions class="float-right mt-3 mr-1">
             <div class="d-sm-flex">
               <slot name="actionButtons"/>
             </div>
@@ -48,10 +48,3 @@ useListen('closeModal', (value: Boolean) => {
   </v-dialog>
 
 </template>
-
-
-<style scoped lang="scss">
-div:deep(.v-file-input) {
-  height: 150px;
-}
-</style>

@@ -73,7 +73,7 @@ function close() {
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis py-2">Category</div>
+          <div class="text-white py-2">Category</div>
           <v-text-field
               v-model="request.name"
               clearable

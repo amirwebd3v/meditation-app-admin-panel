@@ -12,5 +12,24 @@
       color: #9ab157!important;
       opacity: 1!important;
   }
+
 }
 
+.v-input--density-default {
+  --v-input-control-height: 100px !important;
+}
+
+
+.file-input-label {
+  .v-label.v-field-label {
+    position: absolute;
+    left: 47%;
+    transform: translateX(-47%);
+    top: 38%!important;
+    text-decoration: underline;
+    color: #96AE50 !important;
+  }
+  .v-field--focused .v-label.v-field-label {
+    display: none!important;
+  }
+}

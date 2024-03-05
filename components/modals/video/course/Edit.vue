@@ -182,12 +182,11 @@ function close() {
           </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Price ($)</div>
+          <div class="text-white pb-2">Price ($)</div>
           <v-text-field
               :disabled="loading"
               variant="outlined"
               v-model="request.price"
-              type="number"
               color="primary"
               density="comfortable"
               :rules="[numberOrFloatRule]"
@@ -196,15 +195,15 @@ function close() {
           />
         </v-col>
           <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5 text-white">Popular</div>
+          <div class="text-white mb-md-5 text-white">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
             <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
             <v-radio density="compact" :value="true" label="Yes" color="primary"/>
           </v-radio-group>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis text-white pb-2">Upload a picture</div>
-          <v-file-input @update:model-value="upload" placeholder="Upload your documents"
+          <div class="text-white pb-2">Upload a picture</div>
+          <v-file-input class="file-input-label" label="Select a picture to Upload" @update:model-value="upload"
                         variant="outlined" prepend-icon="" color="primary" hide-details="">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">

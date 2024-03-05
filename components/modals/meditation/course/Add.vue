@@ -97,17 +97,17 @@ function close() {
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis py-2">Title</div>
+          <div class="text-white py-2">Title</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
                         placeholder="Enter meditation title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Description</div>
+          <div class="text-white pb-2">Description</div>
           <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
                       v-model="request.description"/>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Select category</div>
+          <div class="text-white pb-2">Select category</div>
           <v-autocomplete
               variant="outlined"
               :disabled="loading"
@@ -154,13 +154,12 @@ function close() {
           </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Price ($)</div>
+          <div class="text-white pb-2">Price ($)</div>
           <v-text-field
               :disabled="loading"
               variant="outlined"
               v-model="request.price"
               color="primary"
-              type="number"
               density="comfortable"
               :rules="[numberOrFloatRule]"
               validate-on="blur"
@@ -168,7 +167,7 @@ function close() {
           ></v-text-field>
         </v-col>
         <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5">Popular</div>
+          <div class="text-white mb-md-5">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
                          :error-messages="errors['is_popular']">
             <v-radio
@@ -187,8 +186,8 @@ function close() {
           </v-radio-group>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis text-white pb-2">Upload a picture</div>
-          <v-file-input placeholder="Upload your documents" variant="outlined" prepend-icon="" color="primary"
+          <div class="text-white pb-2">Upload a picture</div>
+          <v-file-input class="file-input-label"  label="Select a picture to Upload" variant="outlined" prepend-icon="" color="primary"
                         hide-details="" :disabled="loading">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">

@@ -23,3 +23,7 @@ logs
 .env.*
 !.env.docker
 !.env.example
+
+# files
+components/jmodal.vue
+components/table-server.vue
