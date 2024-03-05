@@ -5,7 +5,7 @@ interface Course {
     lessons_count: number
     price: number
     price_type: string
-    set: string
+    set: 'SINGLE' | 'MULTIPLE'
     thumbnail: Media | null
     title: string
     type: string
@@ -51,7 +51,6 @@ interface Lesson {
     description: string
     duration: number
     source: string|Media
-    price: number
     is_new: boolean
     is_popular: boolean
     thumbnail: Media | null

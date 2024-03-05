@@ -35,10 +35,6 @@ const props = defineProps({
     type: Array<number>,
     required: true
   },
-  price: {
-    type: Number,
-    required: true
-  },
   isPopular: {
     type: Boolean,
     required: true
@@ -51,7 +47,6 @@ const initialState = {
   title: props.title,
   description: props.description,
   categories: props.categories,
-  price: props.price,
   is_popular: props.isPopular,
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
@@ -180,20 +175,6 @@ function close() {
             </template>
 
           </v-autocomplete>
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Price ($)</div>
-          <v-text-field
-              :disabled="loading"
-              variant="outlined"
-              v-model="request.price"
-              type="number"
-              color="primary"
-              density="comfortable"
-              :rules="[numberOrFloatRule]"
-              validate-on="blur"
-              :error-messages="errors['price']"
-          />
         </v-col>
           <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5 text-white">Popular</div>

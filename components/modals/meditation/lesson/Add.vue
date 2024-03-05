@@ -35,7 +35,6 @@ const initialState = {
   title: '',
   description: null,
   categories: [],
-  price: 0,
   is_popular: false,
 }
 
@@ -178,20 +177,6 @@ function close() {
             </template>
 
           </v-autocomplete>
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <div class="text-subtitle-1 text-white text-medium-emphasis pb-2">Price ($)</div>
-          <v-text-field
-              :disabled="loading"
-              variant="outlined"
-              v-model="request.price"
-              type="number"
-              color="primary"
-              density="comfortable"
-              :rules="[numberOrFloatRule]"
-              validate-on="blur"
-              :error-messages="errors['price']"
-          ></v-text-field>
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-subtitle-1 text-white text-medium-emphasis mb-md-5">Popular</div>

@@ -22,7 +22,6 @@ const course : Course = (await useMeditationStore().get(useRoute().params.id.toS
 const headers = ref([
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
-  {key: 'price', title: 'PRICE($)', sortable: true, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
@@ -33,7 +32,6 @@ const load = async (options = {}) => {
   loading.value = true
   const search: FilterSearchItem[] = searchText.value === '' ? [] : [
     {field: 'title', operator: 'ilike', value: searchText.value},
-    {field: 'price', operator: 'like', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
   params.relations = ['categories']
@@ -124,12 +122,6 @@ const load = async (options = {}) => {
           </v-card>
         </template>
 
-
-        <template #item.price="{item}">
-          {{ item.price || 'Free' }}
-        </template>
-
-
         <template #item.actions="{item}">
 
           <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
@@ -139,7 +131,6 @@ const load = async (options = {}) => {
                 :title="item.title"
                 :description="item.description"
                 :categories="item.categories.map((c : Category) => c.id)"
-                :price="item.price"
                 :is-popular="item.is_popular"
             />
             <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title"/>          </div>

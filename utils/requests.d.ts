@@ -37,7 +37,6 @@ interface LessonStoreRequest {
     duration: string
     thumbnail?: string
     description?: string
-    price: number
     is_new: boolean
     is_popular: boolean
 }
@@ -50,7 +49,6 @@ interface LessonUpdateRequest {
     duration: string
     thumbnail?: string
     description?: string
-    price: number
     is_new: boolean
     is_popular: boolean
 }
