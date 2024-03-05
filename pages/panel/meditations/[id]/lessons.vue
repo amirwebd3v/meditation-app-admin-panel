@@ -56,7 +56,7 @@ const load = async (options = {}) => {
       <v-sheet class="d-flex mb-6  align-center">
 
         <v-sheet class="">
-          <h2 class="text-white pr-10 me-auto">{{ course.title }} Meditation</h2>
+          <h2 class="text-white pr-10 me-auto">{{ course.title }} meditation</h2>
         </v-sheet>
         <v-sheet class="mr-5 pt-5" width="475px">
           <v-text-field
@@ -85,8 +85,8 @@ const load = async (options = {}) => {
           @update:options="load"
           :loading="loading"
           :headers="headers"
-          sort-desc-icon="mdi-swap-vertical"
-          sort-asc-icon="mdi-swap-vertical"
+          sort-desc-icon="mdi-arrow-up-thin"
+          sort-asc-icon="mdi-arrow-down-thin"
       >
         <template #item.title="{item}">
           <v-tooltip :text="item.title">
