@@ -68,14 +68,13 @@ const goToLesson = (courseId: string) => {
       <!--      First section-->
       <v-sheet class="d-flex mb-6 align-center">
         <v-sheet color="red">
-          <h2 class="text-white pr-10 me-auto">Videos</h2>
+          <h2 class="text-white pb-5 pr-10 me-auto pb-5">Videos</h2>
         </v-sheet>
         <v-sheet class="mr-5" width="475px">
           <v-text-field
               @keyup.enter="load"
               v-model="searchText"
               density="compact"
-              hide-details
               variant="outlined"
               label="Search"
               single-line

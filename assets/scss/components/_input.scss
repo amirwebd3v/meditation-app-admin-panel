@@ -23,13 +23,10 @@
 .file-input-label {
   .v-label.v-field-label {
     position: absolute;
-    left: 47%;
-    transform: translateX(-47%);
+    left: 45%;
+    transform: translateX(-45%);
     top: 38%!important;
     text-decoration: underline;
     color: #96AE50 !important;
-  }
-  .v-field--focused .v-label.v-field-label {
-    display: none!important;
   }
 }

@@ -27,3 +27,4 @@ logs
 # files
 components/jmodal.vue
 components/table-server.vue
+pages/jalal.vue

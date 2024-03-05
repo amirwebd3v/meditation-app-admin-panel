@@ -7,11 +7,6 @@ import {storeToRefs} from "pinia";
 const {errors} = storeToRefs(useValidationStore());
 const loading = ref(false)
 
-const categoryFieldRules = [
-  (v: string) => (v && v.length >= 3) || 'Minimum 3 characters',
-  (v: string) => (v && v.length <= 30) || 'Maximum 30 characters',
-];
-
 /*********************************************/
 const initialState = {
   name : ''
@@ -77,7 +72,6 @@ function close() {
           <v-text-field
               v-model="request.name"
               clearable
-              :rules="categoryFieldRules"
               variant="outlined" color="primary" density="comfortable"
               placeholder="Enter category name(s)" :error-messages="errors['name']"/>
         </v-col>

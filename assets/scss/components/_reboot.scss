@@ -80,16 +80,13 @@ input:-webkit-autofill:active{
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
+
   .custom-label {
     .v-input__slot {
       align-items: flex-start;
     }
-
-    .v-label {
-      min-height: 58px;
-      white-space: pre-line !important;
-    }
   }
+
   .inner-top-spacer {
     padding-top: 30px;
   }
