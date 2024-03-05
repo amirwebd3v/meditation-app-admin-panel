@@ -36,17 +36,15 @@ const isActiveLink = computed(() => {
         <div class="hidden-sm-and-down">
           <v-row class="align-center">
             <div class="mr-15" v-if="showNavItem">
-              <nuxt-link :to="{name:  'panel-videos'}" class="mr-2" variant="text">
-                  <span :class="
+              <nuxt-link :to="{name:  'panel-videos'}" variant="text" :class="
                   [isActiveLink('/panel/videos') ?
-                  'text-primary text-decoration-underline' : 'text-white']"
-                  >Video courses</span>
+                  'text-primary text-decoration-underline' : 'text-white text-decoration-none']">
+                Video courses
               </nuxt-link>
-              <nuxt-link :to="{name:  'panel-meditations'}" class="px-8" variant="text">
-                  <span :class="
+              <nuxt-link :to="{name:  'panel-meditations'}" class="px-8" variant="text" :class="
                   [isActiveLink('/panel/meditations') ?
-                   'text-primary text-decoration-underline' : 'text-white']"
-                  >Meditations</span>
+                   'text-primary text-decoration-underline' : 'text-white text-decoration-none']">
+                Meditations
               </nuxt-link>
             </div>
             <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="32"/>
