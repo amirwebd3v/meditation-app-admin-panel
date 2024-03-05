@@ -14,6 +14,7 @@ const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
   title: '',
+  set: 'MULTIPLE',
   description: null,
   categories: [],
   price: 0,

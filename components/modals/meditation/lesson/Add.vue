@@ -31,6 +31,7 @@ const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
   course_id: props.courseId,
+  set: 'MULTIPLE',
   title: '',
   description: null,
   categories: [],

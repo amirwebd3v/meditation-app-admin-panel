@@ -7,6 +7,7 @@ interface CourseStoreRequest {
     type: CourseType
     categories?: number[]
     title: string
+    set: 'SINGLE' | 'MULTIPLE'
     thumbnail?: string
     description?: string
     price: number
@@ -30,6 +31,7 @@ interface CourseIndexRequest extends QueryParams {
 interface LessonStoreRequest {
     course_id: string
     categories?: number[]
+    set: 'SINGLE' | 'MULTIPLE'
     title: string
     source: string
     duration: string
