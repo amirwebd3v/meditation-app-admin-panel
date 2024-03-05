@@ -4,6 +4,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import * as components from "vuetify/components";
 import * as labsComponents from 'vuetify/labs/components'
 import * as directives from "vuetify/directives";
+import {VTextField} from "vuetify/components/VTextField";
 
 
 
@@ -43,7 +44,15 @@ export default defineNuxtPlugin((nuxtApp) => {
                 light: LightTheme,
             },
         },
-    });
+        defaults: {
+            VTextField: {
+                rules: [
+                    (v: string) => (v && v.length >= 3) || 'Minimum 3 characters',
+                    (v: string) => (v && v.length <= 30) || 'Maximum 30 characters',
+                ]
+            }
+        }
+    })
     nuxtApp.vueApp.use(vuetify);
 
 });
