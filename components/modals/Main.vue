@@ -19,7 +19,7 @@ useListen('closeModal', (value: Boolean) => {
   >
 
     <template v-slot:activator="{ props }">
-      <slot name="dialogButton" v-bind="props"/>
+      <slot name="dialogButton" v-bind="props" class=""/>
     </template>
 
     <v-card class="bg-light-brown-1 py-1" rounded="lg">

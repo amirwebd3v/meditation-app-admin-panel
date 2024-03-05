@@ -97,7 +97,7 @@ function close() {
           color="primary"
           :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
           v-bind="props"
-          :text="btnOutTable ? isBtnText = 'Add course' : ''"
+          :text="btnOutTable ? isBtnText = 'Add video' : ''"
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"
           rounded="xl"

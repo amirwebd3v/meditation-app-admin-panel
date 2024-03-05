@@ -56,9 +56,9 @@ const load = async (options = {}) => {
       <v-sheet class="d-flex mb-6  align-center">
 
         <v-sheet class="">
-          <h2 class="text-white pb-5 pr-10 me-auto">{{ course.title }} Meditation</h2>
+          <h2 class="text-white pr-10 me-auto">{{ course.title }} Meditation</h2>
         </v-sheet>
-        <v-sheet class=" mr-5" width="475px">
+        <v-sheet class="mr-5 pt-5" width="475px">
           <v-text-field
               @keyup.enter="load"
               v-model="searchText"
