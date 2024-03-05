@@ -12,7 +12,7 @@ defineProps({
 
 <template>
   <!--      Second section-->
-  <v-row justify="space-between" align="center" class="mt-2 px-3">
+  <v-row justify="space-between" align="center" class="px-3">
     <span class="text-white font-weight-medium font-18">Categories</span>
     <LazyModalsCategoryAdd/>
   </v-row>

@@ -63,12 +63,11 @@ const goToLesson = (courseId: string) => {
 </script>
 
 <template>
-  <div class="mt-6">
     <v-container>
       <!--      First section-->
       <v-sheet class="d-flex mb-6 align-center">
         <v-sheet color="red">
-          <h2 class="text-white pr-10 me-auto pb-5">Videos</h2>
+          <h2 class="text-white pr-10 me-auto">Videos</h2>
         </v-sheet>
         <v-sheet class="mr-5 pt-5" width="475px">
           <v-text-field
@@ -177,7 +176,6 @@ const goToLesson = (courseId: string) => {
         </template>
       </v-data-table-server>
     </v-container>
-  </div>
 </template>
 
 

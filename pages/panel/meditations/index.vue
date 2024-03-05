@@ -65,7 +65,6 @@ const goToLesson = (courseId: string) => {
 </script>
 
 <template>
-  <div class="mt-6">
     <v-container>
       <!--      First section-->
       <v-sheet class="d-flex mb-6  align-center">
@@ -191,7 +190,6 @@ const goToLesson = (courseId: string) => {
         </template>
       </v-data-table-server>
     </v-container>
-  </div>
 </template>
 
 

@@ -19,7 +19,7 @@ useListen('closeModal', (value: Boolean) => {
   >
 
     <template v-slot:activator="{ props }">
-      <slot name="dialogButton" v-bind="props" class=""/>
+      <slot name="dialogButton" v-bind="props"/>
     </template>
 
     <v-card class="bg-light-brown-1 py-1" rounded="lg">
@@ -35,7 +35,7 @@ useListen('closeModal', (value: Boolean) => {
             <slot name="columns" />
           </v-card-text>
 
-          <v-card-actions class="float-right mt-3 mr-1">
+          <v-card-actions class="float-right mr-1">
             <div class="d-sm-flex">
               <slot name="actionButtons"/>
             </div>
