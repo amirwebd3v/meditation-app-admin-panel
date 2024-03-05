@@ -21,7 +21,7 @@ const course : Course = (await useVideoStore().get(useRoute().params.id.toString
 
 const headers = ref([
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
+  // {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
@@ -96,15 +96,15 @@ const load = async (options = {}) => {
           </v-tooltip>
         </template>
 
-        <template #item.category="{item}">
-          <v-tooltip :text="item?.categories.map((category : Category) => category.name).join(', ')" max-width="270">
-            <template v-slot:activator="{props}">
-              <div class="text-truncate" style="max-width: 125px;" v-bind="props">
-                {{item?.categories[0]?.name}}
-              </div>
-            </template>
-          </v-tooltip>
-        </template>
+<!--        <template #item.category="{item}">-->
+<!--          <v-tooltip :text="item?.categories.map((category : Category) => category.name).join(', ')" max-width="270">-->
+<!--            <template v-slot:activator="{props}">-->
+<!--              <div class="text-truncate" style="max-width: 125px;" v-bind="props">-->
+<!--                {{item?.categories[0]?.name}}-->
+<!--              </div>-->
+<!--            </template>-->
+<!--          </v-tooltip>-->
+<!--        </template>-->
 
 
         <template #item.description="{item}">

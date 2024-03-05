@@ -28,7 +28,7 @@ const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'set', title: 'TYPE', align: 'start', sortable: false},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
-  {key: 'description', title: 'DESCRIPTION', sortable: false},
+  // {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'price', title: 'PRICE($)', sortable: true, align: 'start'},
@@ -128,13 +128,13 @@ const goToLesson = (courseId: string) => {
           <div style="max-width: 125px;">{{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}</div>
         </template>
 
-        <template #item.description="{item}">
-          <v-tooltip :text="item.description" max-width="270">
-            <template v-slot:activator="{ props }">
-              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.description }}</div>
-            </template>
-          </v-tooltip>
-        </template>
+<!--        <template #item.description="{item}">-->
+<!--          <v-tooltip :text="item.description" max-width="270">-->
+<!--            <template v-slot:activator="{ props }">-->
+<!--              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.description }}</div>-->
+<!--            </template>-->
+<!--          </v-tooltip>-->
+<!--        </template>-->
 
         <template #item.lessons_count="{item}">
           <div style="max-width: 90px;">{{ item.lessons_count }}</div>
