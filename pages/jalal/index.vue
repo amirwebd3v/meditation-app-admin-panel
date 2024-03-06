@@ -57,6 +57,10 @@
         </div>
       </template>
 
+      <template v-slot:item.set="{item}">
+        {{ item.set == 'SINGLE' ? 'Single' : 'Course' }}
+      </template>
+
       <template v-slot:item.title="{item}">
         <v-tooltip :text="item.title">
           <template v-slot:activator="{ props }">
@@ -77,7 +81,7 @@
       </template>
 
       <template v-slot:item.actions="{ item }">
-        <modal :active-button="activeButton" :title="item.title">
+        <menu-modal :active-button="activeButton" :title="item.title">
           <template v-slot:content>
             <v-card-text v-text="item.description" />
           </template>
@@ -85,7 +89,7 @@
             <v-spacer />
             <v-btn rounded="xl" class="bg-primary" variant="outlined">Save</v-btn>
           </template>
-        </modal>
+        </menu-modal>
       </template>
 
     </table-server>
@@ -100,9 +104,8 @@ import type {FilterSearchItem} from "l5-client/src/types";
 const {items, meta} = storeToRefs(useMeditationStore())
 
 const activeButton = {
-  color: 'surface-variant',
-  text: 'Open Dialog',
-  variant: 'flat'
+  color: 'light-brown-1',
+  variant: 'icon'
 }
 
 const searchableFields: Array<Omit<FilterSearchItem, 'value'>> = [
@@ -116,12 +119,12 @@ const searchableFields: Array<Omit<FilterSearchItem, 'value'>> = [
 
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'set', title: 'TYPE', align: 'center', sortable: false},
+  {key: 'set', title: 'TYPE', align: 'center', sortable: true},
   {key: 'category', title: 'CATEGORY', align: 'start', sortable: false},
-  {key: 'description', title: 'DESCRIPTION', align: 'start', sortable: false},
+  // {key: 'description', title: 'DESCRIPTION', align: 'start', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', align: 'center', sortable: true},
   {key: 'thumbnail', title: 'PICTURE', align: 'center', sortable: false},
-  {key: 'is_popular', title: 'POPULAR', align: 'center', sortable: true},
+  // {key: 'is_popular', title: 'POPULAR', align: 'center', sortable: true},
   {key: 'price', title: 'PRICE', align: 'center', sortable: true},
   {key: 'actions', title: '', align: 'start', sortable: false},
 ]
@@ -130,13 +133,4 @@ const headers = [
 
 
 <style scoped lang="scss">
-div:deep(.v-table__wrapper) {
-  thead {
-    background-color: #7B6345;
-  }
-
-  table > tbody > tr:not(:last-child) > td {
-    border-bottom: 1px solid #7B6345;
-  }
-}
 </style>

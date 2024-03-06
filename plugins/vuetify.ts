@@ -8,7 +8,7 @@ import {VTextField} from "vuetify/components/VTextField";
 
 
 
-const LightTheme: ThemeDefinition = {
+const DarkTheme: ThemeDefinition = {
     colors: {
         background: '#3F3432',
         white: '#FFFFFF',
@@ -40,8 +40,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         },
         directives,
         theme: {
+            defaultTheme: 'dark',
             themes: {
-                light: LightTheme,
+                dark: DarkTheme,
             },
         },
         defaults: {

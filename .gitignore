@@ -25,6 +25,5 @@ logs
 !.env.example
 
 # files
-components/jmodal.vue
-components/table-server.vue
-pages/jalal.vue
+components/jalal
+pages/jalal

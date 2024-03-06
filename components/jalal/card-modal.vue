@@ -1,7 +1,7 @@
 <template>
   <v-dialog max-width="500">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" :color="activeButton.color" :text="activeButton.text" :variant="activeButton.variant" />
+      <v-btn v-bind="activatorProps" :color="activeButton.color" :text="activeButton.text" class="text-primary" density="compact" variant="flat" icon="mdi-dots-vertical" />
     </template>
 
     <template v-slot:default="{ isActive }">
@@ -31,7 +31,8 @@ const props = defineProps({
     type: Object,
     default: {
       color: 'surface-variant',
-      text: 'Open Dialog',
+      text: '',
+      icon: 'mdi-dots-vertical',
       variant: 'flat'
     }
   }
