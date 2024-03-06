@@ -23,7 +23,3 @@ logs
 .env.*
 !.env.docker
 !.env.example
-
-# files
-components/jalal
-pages/jalal
