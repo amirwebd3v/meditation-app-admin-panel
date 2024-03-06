@@ -1,7 +1,8 @@
 <script setup>
+import {useMeditationStore} from "~/stores/meditation";
+import {useValidationStore} from "~/stores/validation";
 
-
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     required: true
@@ -12,18 +13,26 @@ defineProps({
   }
 })
 
-const loading = ref()
+const loading = ref(false)
 
 
 const deleteLesson = async () => {
   loading.value = true
-  // await useMeditationStore().delete(request)
-  // dialog.value = false
-  // loading.value = false
+  try {
+    await useMeditationStore().destroy(props.id)
+    useEvent('successMessage', 'Meditation lesson is successfully Deleted.')
+    useEvent('closeModal', false)
+  } catch (err) {
+    useEvent('errorMessage', err.data.message)
+  } finally {
+    loading.value = false
+    useValidationStore().clearErrors()
+  }
 }
 
 function close() {
   useEvent('closeModal', false)
+  useValidationStore().clearErrors()
 }
 
 </script>
@@ -62,7 +71,7 @@ function close() {
           </div>
           <div class="pb-5">
              <span class="text-white font-14  text-justify">
-            <strong class="font-16 text-orange">"{{ title }}"</strong>
+            <strong class="font-16 text-orange">"{{ props.title }}"</strong>
             and its all of data will be permanently deleted.
           </span>
           </div>

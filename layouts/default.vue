@@ -18,6 +18,9 @@ onMounted(async () => {
 
 //Todo: create enum types for snackbar
 
+
+
+
 const snackbar = ref({
   status: false,
   text: '',
@@ -34,6 +37,14 @@ useListen('successMessage', (value: String) => {
   snackbar.value.type = 'Success'
   snackbar.value.text = value
   snackbar.value.icon = 'mdi-check-circle'
+  snackbar.value.status = true
+})
+
+useListen('errorMessage', (value: String) => {
+  snackbar.value.color = 'error'
+  snackbar.value.type = 'Error'
+  snackbar.value.text = value
+  snackbar.value.icon = 'mdi-alert-circle'
   snackbar.value.status = true
 })
 

@@ -1,7 +1,10 @@
 <script setup>
 
 
-defineProps({
+import {useVideoStore} from "~/stores/video";
+import {useValidationStore} from "~/stores/validation";
+
+const props = defineProps({
   title: {
     type: String,
     required: true
@@ -12,19 +15,28 @@ defineProps({
   }
 })
 
-const loading = ref()
+const loading = ref(false)
 
 
 const deleteCourse = async () => {
   loading.value = true
-  // await useMeditationStore().delete(request)
-  // dialog.value = false
-  // loading.value = false
+  try {
+    await useVideoStore().destroy(props.id)
+    useEvent('successMessage', 'Video Course is successfully Deleted.')
+    useEvent('closeModal', false)
+  } catch (err) {
+    useEvent('errorMessage', err.data.message)
+  } finally {
+    loading.value = false
+    useValidationStore().clearErrors()
+  }
 }
 
 function close() {
   useEvent('closeModal', false)
+  useValidationStore().clearErrors()
 }
+
 
 </script>
 
