@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <table-server
+    <jalal-table-server
         :perPage="10"
         :items="items"
         :headers="headers"
@@ -81,18 +81,40 @@
       </template>
 
       <template v-slot:item.actions="{ item }">
-        <menu-modal :active-button="activeButton" :title="item.title">
-          <template v-slot:content>
-            <v-card-text v-text="item.description" />
-          </template>
-          <template v-slot:action="{ isActive }">
-            <v-spacer />
-            <v-btn rounded="xl" class="bg-primary" variant="outlined">Save</v-btn>
-          </template>
-        </menu-modal>
+        <omni-menu>
+          <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded>
+            <jalal-menu-modal :active-button="{color: 'light-brown-1', variant: 'icon', icon: 'mdi-plus'}" :title="item.title">
+              <template v-slot:content>
+                <v-card-text v-text="item.description"/>
+              </template>
+              <template v-slot:action="{ isActive }">
+                <v-spacer/>
+                <v-btn rounded="xl" class="bg-primary" variant="outlined">Save</v-btn>
+              </template>
+            </jalal-menu-modal>
+            <jalal-menu-modal :active-button="{color: 'light-brown-1', variant: 'icon', icon: 'mdi-pencil-outline'}" :title="item.title">
+              <template v-slot:content>
+                <v-card-text v-text="item.description"/>
+              </template>
+              <template v-slot:action="{ isActive }">
+                <v-spacer/>
+                <v-btn rounded="xl" class="bg-primary" variant="outlined">Save</v-btn>
+              </template>
+            </jalal-menu-modal>
+            <jalal-menu-modal :active-button="{color: 'light-brown-1', variant: 'icon', icon: 'mdi-delete-outline'}" :title="item.title">
+              <template v-slot:content>
+                <v-card-text v-text="item.description"/>
+              </template>
+              <template v-slot:action="{ isActive }">
+                <v-spacer/>
+                <v-btn rounded="xl" class="bg-primary" variant="outlined">Save</v-btn>
+              </template>
+            </jalal-menu-modal>
+          </v-card>
+        </omni-menu>
       </template>
 
-    </table-server>
+    </jalal-table-server>
   </v-container>
 </template>
 
@@ -102,11 +124,6 @@
 import type {FilterSearchItem} from "l5-client/src/types";
 
 const {items, meta} = storeToRefs(useMeditationStore())
-
-const activeButton = {
-  color: 'light-brown-1',
-  variant: 'icon'
-}
 
 const searchableFields: Array<Omit<FilterSearchItem, 'value'>> = [
   {field: 'title', operator: 'ilike'},
