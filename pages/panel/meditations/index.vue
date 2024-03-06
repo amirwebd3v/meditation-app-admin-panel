@@ -61,6 +61,7 @@ const goToLesson = (courseId: string) => {
   }
 }
 
+console.log(useCategoryStore().meditationCategories)
 
 </script>
 
@@ -72,7 +73,7 @@ const goToLesson = (courseId: string) => {
           <h2 class="text-white pr-10 me-auto">Meditations</h2>
         </v-sheet>
         <v-sheet class="mr-5 pt-5" width="475px">
-          <v-text-field
+          <v-text-field maxlength="30"
               @keyup.enter="load"
               v-model="searchText"
               density="compact"

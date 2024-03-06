@@ -7,7 +7,6 @@ import * as directives from "vuetify/directives";
 import {VTextField} from "vuetify/components/VTextField";
 
 
-
 const DarkTheme: ThemeDefinition = {
     colors: {
         background: '#3F3432',
@@ -34,7 +33,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     const vuetify = createVuetify({
         ssr: true,
-        components:{
+        components: {
             ...components,
             ...labsComponents
         },
@@ -50,7 +49,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                 rules: [
                     (v: string) => (v && v.length >= 3) || 'Minimum 3 characters',
                     (v: string) => (v && v.length <= 30) || 'Maximum 30 characters',
-                ]
+                ],
             }
         }
     })

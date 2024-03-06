@@ -59,7 +59,7 @@ const load = async (options = {}) => {
           <h2 class="text-white pr-10 me-auto">{{ course.title }} meditation</h2>
         </v-sheet>
         <v-sheet class="mr-5 pt-5" width="475px">
-          <v-text-field
+          <v-text-field maxlength="30"
               @keyup.enter="load"
               v-model="searchText"
               density="compact"

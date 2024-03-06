@@ -69,7 +69,7 @@ function close() {
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Category</div>
-          <v-text-field
+          <v-text-field maxlength="30"
               v-model="request.name"
               clearable
               variant="outlined" color="primary" density="comfortable"

@@ -26,7 +26,7 @@ const props = defineProps({
 /*********************************************/
 const isBtnText = ref()
 const loading = ref()
-const {allMeditationCategories} = storeToRefs(useCategoryStore());
+const {allCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
@@ -46,21 +46,21 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const allMeditationCategoriesArray = computed(() => Array.from(allMeditationCategories.value.values()))
+const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
 
 const selectAllCategories = computed(() => {
-  return request.categories.length === allMeditationCategoriesArray.value.length
+  return request.categories.length === allCategoriesArray.value.length
 })
 
 const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allMeditationCategoriesArray.value.length
+  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
 })
 
 const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = allMeditationCategoriesArray.value.slice()
+    request.categories = allCategoriesArray.value.slice()
   }
 }
 
@@ -123,7 +123,7 @@ function close() {
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Title</div>
-          <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
+          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
                         placeholder="Enter single Meditation title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
@@ -143,7 +143,7 @@ function close() {
               color="primary"
               density="comfortable"
               single-line
-              :items="allMeditationCategoriesArray"
+              :items="allCategoriesArray"
               auto-select-first
               item-title="name"
               item-value="id"

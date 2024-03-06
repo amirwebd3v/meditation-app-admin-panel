@@ -10,7 +10,7 @@ import {storeToRefs} from "pinia";
 /*********************************************/
 
 const loading = ref()
-const {allVideoCategories} = storeToRefs(useCategoryStore());
+const {allCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
@@ -29,21 +29,21 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const allVideoCategoriesArray = computed(() => Array.from(allVideoCategories.value.values()))
+const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
 
 const selectAllCategories = computed(() => {
-  return request.categories.length === allVideoCategoriesArray.value.length
+  return request.categories.length === allCategoriesArray.value.length
 })
 
 const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allVideoCategoriesArray.value.length
+  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
 })
 
 const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = allVideoCategoriesArray.value.slice()
+    request.categories = allCategoriesArray.value.slice()
   }
 }
 
@@ -98,7 +98,7 @@ function close() {
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Title</div>
-          <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.title"
+          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
                         placeholder="Enter course title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
@@ -118,7 +118,7 @@ function close() {
               color="primary"
               density="comfortable"
               single-line
-              :items="allVideoCategoriesArray"
+              :items="allCategoriesArray"
               auto-select-first
               item-title="name"
               item-value="id"
@@ -156,7 +156,7 @@ function close() {
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-white pb-2">Price ($)</div>
-          <v-text-field
+          <v-text-field maxlength="30"
               :disabled="loading"
               variant="outlined"
               v-model="request.price"

@@ -1,7 +1,7 @@
 <template>
 
     <slot name="search" :props="{...props, loading, search: transform.search}">
-      <v-text-field
+      <v-text-field maxlength="30"
           v-if="searchableFields.length"
           @keyup.enter="transform.search"
           @click:clear="transform.search"

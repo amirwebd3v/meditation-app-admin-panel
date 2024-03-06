@@ -5,7 +5,6 @@ import {CourseType} from "~/utils/enums";
 import type {CategoryStoreRequest} from "~/utils/requests";
 
 
-
 export const useCategoryStore = defineStore('category', {
     state: () => ({
         meditationCategories: new Map<number, Category>(),
@@ -34,16 +33,11 @@ export const useCategoryStore = defineStore('category', {
     },
 
     getters: {
-        allMeditationCategories(state): Map<number, Category> {
-            const all = state.meditationCategories
-            state.meditationCategories.forEach((value, key) => all.set(key, value))
-            return all
+        allCategories(state): Map<number, Category> {
+            const allCategories = new Map<number, Category>();
+            state.meditationCategories.forEach((value, key) => allCategories.set(key, value));
+            state.videoCategories.forEach((value, key) => allCategories.set(key, value));
+            return allCategories;
         },
-        allVideoCategories(state): Map<number, Category> {
-            const all = state.videoCategories
-            state.videoCategories.forEach((value, key) => all.set(key, value))
-            return all
-        }
-
-    }
+    },
 })

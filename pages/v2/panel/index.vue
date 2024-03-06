@@ -17,7 +17,7 @@
             <h2 class="text-white pr-10 me-auto">Meditations</h2>
           </v-sheet>
           <v-sheet class="mr-5 pt-5" width="475px">
-            <v-text-field
+            <v-text-field maxlength="30"
                 @keyup.enter="props.search"
                 @click:clear="props.search"
                 :label="props.searchLabel"
