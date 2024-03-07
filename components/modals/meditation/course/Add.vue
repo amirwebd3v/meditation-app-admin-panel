@@ -8,6 +8,7 @@ import {storeToRefs} from "pinia";
 
 
 /*********************************************/
+const selectedCourse = ref('')
 const loading = ref()
 const {allCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
@@ -73,22 +74,42 @@ function close() {
 <template>
   <LazyModalsMain>
     <template #dialogButton="props">
-      <v-btn
-          color="primary"
-          :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
-          v-bind="props"
-          text="Add Meditation"
-          :size="$vuetify.display.smAndDown ? 'small' : 'default'"
-          :icon="$vuetify.display.smAndDown"
-          rounded="xl"
-      >
-        <template v-slot:default v-if="$vuetify.display.smAndDown">
-          <v-icon icon="mdi-plus"/>
-        </template>
-        <template v-slot:prepend v-if="$vuetify.display.smAndUp">
-          <v-icon class="pr-3" icon="mdi-plus"/>
-        </template>
-      </v-btn>
+      <v-row class="mt-15 mb-0 pb-0" justify="space-evenly">
+        <v-btn text="Single"
+               :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+               color="primary"
+               v-bind="props"
+               :class="{
+                'px-7': $vuetify.display.smAndDown,
+                'px-12':$vuetify.display.mdAndUp,
+                 'text-white' : true}"
+               size="large"
+               variant="outlined"
+               @click="selectedCourse = 'single'">
+          <template #prepend>
+            <v-radio v-model="selectedCourse" value="single" readonly disabled style="opacity: 1; color: #96AE50;" />
+          </template>
+        </v-btn>
+
+        <v-btn text="Course"
+               :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
+               color="primary"
+               v-bind="props"
+               :class="{
+                'px-7': $vuetify.display.smAndDown,
+                'px-12':$vuetify.display.mdAndUp,
+                 'text-white' : true
+               }"
+               size="large"
+               variant="outlined"
+               @click="selectedCourse = 'course'"
+        >
+          <template #prepend>
+            <v-radio v-model="selectedCourse" value="course" readonly disabled style="opacity: 1;color: #96AE50;" />
+          </template>
+        </v-btn>
+
+      </v-row>
     </template>
     <template #header>
       <span class="pl-3">Add Meditation Course</span>

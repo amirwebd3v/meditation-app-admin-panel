@@ -61,7 +61,6 @@ const goToLesson = (courseId: string) => {
   }
 }
 
-console.log(useCategoryStore().meditationCategories)
 
 </script>
 
