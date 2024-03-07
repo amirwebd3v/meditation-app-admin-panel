@@ -4,10 +4,9 @@ import "@mdi/font/css/materialdesignicons.css";
 import * as components from "vuetify/components";
 import * as labsComponents from 'vuetify/labs/components'
 import * as directives from "vuetify/directives";
-import {VTextField} from "vuetify/components/VTextField";
 
 
-const DarkTheme: ThemeDefinition = {
+const LightTheme: ThemeDefinition = {
     colors: {
         background: '#3F3432',
         white: '#FFFFFF',
@@ -39,9 +38,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         },
         directives,
         theme: {
-            defaultTheme: 'dark',
             themes: {
-                dark: DarkTheme,
+                light: LightTheme,
             },
         },
         defaults: {

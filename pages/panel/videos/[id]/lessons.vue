@@ -21,8 +21,9 @@ const course : Course = (await useVideoStore().get(useRoute().params.id.toString
 
 const headers = ref([
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
+  {key: 'is_lock', title: 'Free/Paid', sortable: true, align: 'start'},
   // {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
-  {key: 'description', title: 'DESCRIPTION', sortable: false},
+  {key: 'description', title: 'DESCRIPTION', sortable: true},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
 ])
@@ -119,6 +120,10 @@ const load = async (options = {}) => {
           <v-card v-if="!!item.thumbnail" class="my-1 pl-2" elevation="0" rounded color="light">
             <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
           </v-card>
+        </template>
+
+        <template #item.is_lock="{ item }">
+          {{ item.is_lock ? 'Paid' : 'Free' }}
         </template>
 
         <template #item.actions="{item}">
