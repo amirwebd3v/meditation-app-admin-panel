@@ -1,10 +1,11 @@
+import type {CourseType} from "~/utils/enums";
+
 interface Course {
     created_at: number
     description: string
     categories: Category[]
     lessons_count: number
     price: number
-    price_type: string
     set: 'SINGLE' | 'MULTIPLE'
     thumbnail: Media | null
     title: string
@@ -53,6 +54,7 @@ interface Lesson {
     source: string|Media
     is_new: boolean
     is_popular: boolean
+    is_lock: boolean
     thumbnail: Media | null
     created_at: number
     updated_at: number
@@ -73,6 +75,7 @@ interface User {
 interface Category {
     _entity: string
     id: number
+    type: CourseType
     name: string
     slug: string
     description: string

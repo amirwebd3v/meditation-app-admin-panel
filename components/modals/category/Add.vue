@@ -9,7 +9,8 @@ const loading = ref(false)
 
 /*********************************************/
 const initialState = {
-  name : ''
+  name : '',
+  type : '',
 }
 
 const request = reactive<CategoryStoreRequest>({...initialState})
@@ -19,6 +20,7 @@ const saveCategory = async () => {
   loading.value = true
   try {
     await useCategoryStore().store(request)
+    await useCategoryStore().fetch()
     useEvent('successMessage', 'New category is successfully Added.')
     useEvent('closeModal', false)
   } finally {

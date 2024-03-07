@@ -55,6 +55,7 @@ interface LessonUpdateRequest {
 
 interface CategoryStoreRequest {
     name: Category['name']
+    type: Category['type']
 }
 
 

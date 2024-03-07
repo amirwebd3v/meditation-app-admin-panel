@@ -12,17 +12,20 @@ export const useCategoryStore = defineStore('category', {
     }),
     actions: {
         async fetch() {
+            this.meditationCategories.clear()
+            this.videoCategories.clear()
+
             let response = await useApi().paginate<Category>('/admin/v1/category', {
                 sort: {created_at: 'desc'},
                 pagination: {page: 1, perPage: -1},
-                search: [{field: 'courses.type', value: CourseType.Meditation}]
+                search: [{field: 'type', value: CourseType.Meditation}]
             })
             response.data.forEach(c => this.meditationCategories.set(c.id, c))
 
             response = await useApi().paginate<Category>('/admin/v1/category', {
                 sort: {created_at: 'desc'},
                 pagination: {page: 1, perPage: -1},
-                search: [{field: 'courses.type', value: CourseType.Video}]
+                search: [{field: 'type', value: CourseType.Video}]
             })
             response.data.forEach(c => this.videoCategories.set(c.id, c))
         },
