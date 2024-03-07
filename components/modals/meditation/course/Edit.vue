@@ -35,6 +35,14 @@ const props = defineProps({
     type: Array<number>,
     required: true
   },
+  isLock:{
+    type: Boolean,
+    required: true
+  },
+  quantity:{
+    type: Number,
+    required: true
+  },
   price: {
     type: Number,
     required: true
@@ -52,6 +60,7 @@ const initialState = {
   description: props.description,
   categories: props.categories,
   price: props.price,
+  is_lock: props.isLock,
   is_popular: props.isPopular,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
@@ -118,24 +127,27 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3">Edit Meditation Course</span>
+      <span class="pl-3" v-if="props.quantity === 1">Edit single Meditation Course</span>
+      <span class="pl-3" v-if="props.quantity !== 1">Edit Meditation Course</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
-          <div class="text-subtitle-1 text-medium-emphasis py-2 text-white">Title</div>
-          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        :error-messages="errors['title']"
-          />
+          <div class="text-white py-2">Title</div>
+          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable"
+                        v-model="request.title"
+                        placeholder="Enter meditation title" :disabled="loading"
+                        :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Course description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
+          <div class="text-white pb-2">Description</div>
+          <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
+                      v-model="request.description"/>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Select category</div>
+          <div class="text-white pb-2">Select category</div>
           <v-autocomplete
               variant="outlined"
               :disabled="loading"
@@ -147,10 +159,10 @@ function close() {
               density="comfortable"
               single-line
               :items="allCategoriesArray"
+              menu-icon="mdi mdi-chevron-down"
               auto-select-first
               item-title="name"
               item-value="id"
-              menu-icon="mdi-chevron-down"
           >
             <template v-slot:chip="{ props,item, index }">
               <v-chip v-if="index < 2" v-bind="props">
@@ -181,41 +193,95 @@ function close() {
 
           </v-autocomplete>
         </v-col>
-        <v-col cols="6" class="py-0">
-          <div class="text-white pb-2">Price ($)</div>
-          <v-text-field maxlength="30"
-              :disabled="loading"
-              variant="outlined"
-              v-model="request.price"
-              color="primary"
-              density="comfortable"
-              :rules="[numberOrFloatRule]"
-              validate-on="blur"
-              :error-messages="errors['price']"
-          />
-        </v-col>
-          <v-col cols="6" class="py-0">
-          <div class="text-white mb-md-5 text-white">Popular</div>
-          <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
-            <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
-            <v-radio density="compact" :value="true" label="Yes" color="primary"/>
-          </v-radio-group>
-        </v-col>
+
+        <!--                <v-col cols="6" class="py-0">-->
+        <!--                  <div class="text-white mb-md-5">Popular</div>-->
+        <!--                  <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"-->
+        <!--                                 :error-messages="errors['is_popular']">-->
+        <!--                    <v-radio-->
+        <!--                        density="compact"-->
+        <!--                        :value="false"-->
+        <!--                        label="No"-->
+        <!--                        color="primary"-->
+        <!--                        class="pr-md-8"-->
+        <!--                    />-->
+        <!--                    <v-radio-->
+        <!--                        density="compact"-->
+        <!--                        :value="true"-->
+        <!--                        label="Yes"-->
+        <!--                        color="primary"-->
+        <!--                    />-->
+        <!--                  </v-radio-group>-->
+        <!--                </v-col>-->
         <v-col cols="12" class="py-0">
-          <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label mb-2" label="Select a picture to Upload" @update:model-value="upload"
-                        variant="outlined" prepend-icon="" color="primary" hide-details="">
+          <div class="text-white pb-1">Upload a track</div>
+          <v-file-input class="file-input-label mb-3" label="Select track to Upload" variant="outlined"
+                        prepend-icon="" color="primary"
+                        hide-details="" :disabled="loading">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="100" height="100" class="justify-center align-center">
+                <v-card width="45" height="45" class="justify-center align-center">
                   <v-col align-self="auto">
-                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
+                    <v-img width="auto" height="25" cover
+                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
+                    </v-img>
                     <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                   </v-col>
                 </v-card>
               </template>
             </template>
           </v-file-input>
+        </v-col>
+        <v-col cols="12" class="py-0" v-if="props.quantity === 1">
+          <div class="text-white pb-1">Upload a picture</div>
+          <v-file-input class="file-input-label mb-3" label="Select a picture to Upload" variant="outlined"
+                        prepend-icon="" color="primary"
+                        hide-details="" :disabled="loading">
+            <template v-slot:selection="{ fileNames }">
+              <template v-for="fileName in fileNames" :key="fileName">
+                <v-card width="45" height="45" class="justify-center align-center">
+                  <v-col align-self="auto">
+                    <v-img width="auto" height="25" cover
+                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
+                    </v-img>
+                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
+                  </v-col>
+                </v-card>
+              </template>
+            </template>
+          </v-file-input>
+        </v-col>
+        <v-col cols="6" class="py-0" v-if="props.quantity === 1">
+          <div class="text-white mb-md-5">Free/Paid</div>
+          <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
+                         :error-messages="errors['is_lock']">
+            <v-radio
+                density="compact"
+                :value="false"
+                label="Free"
+                color="primary"
+                class="pr-md-8"
+            />
+            <v-radio
+                density="compact"
+                :value="true"
+                label="Paid"
+                color="primary"
+            />
+          </v-radio-group>
+        </v-col>
+        <v-col cols="6" class="py-0">
+          <div class="text-white pb-2">Price($)</div>
+          <v-text-field maxlength="30"
+                        :disabled="loading"
+                        variant="outlined"
+                        v-model="request.price"
+                        color="primary"
+                        density="comfortable"
+                        :rules="[numberOrFloatRule]"
+                        validate-on="blur"
+                        :error-messages="errors['price']"
+          ></v-text-field>
         </v-col>
       </v-row>
     </template>

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { LessonStoreRequest} from "~/utils/requests";
+import type {LessonStoreRequest} from "~/utils/requests";
 import {useCategoryStore} from "~/stores/category";
 import {useValidationStore} from "~/stores/validation";
 import {useLessonStore} from "~/stores/lesson";
 import {storeToRefs} from "pinia";
-
 
 
 /*********************************************/
@@ -66,7 +65,7 @@ const saveLesson = async () => {
     await useLessonStore().store(request)
     useEvent('successMessage', 'Video is successfully Added.')
     useEvent('closeModal', false)
-  }  finally {
+  } finally {
     loading.value = false
     Object.assign(request, initialState);
   }
@@ -175,8 +174,9 @@ function close() {
         </v-col>
         <v-col cols="12">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label mb-2"  label="Select a picture to Upload" variant="outlined" prepend-icon="" color="primary"
-                        hide-details="" :disabled="loading" >
+          <v-file-input class="file-input-label mb-2" label="Select a picture to Upload" variant="outlined"
+                        prepend-icon="" color="primary"
+                        hide-details="" :disabled="loading">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="45" height="45" class="justify-center align-center">
@@ -191,7 +191,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="12" class="mt-6">
+        <v-col cols="6" class="mt-6">
           <div class="text-white">Free/Locked</div>
           <v-radio-group class="mt-5" inline v-model="request.status" :disabled="loading"
                          :error-messages="errors['status']">
@@ -210,6 +210,26 @@ function close() {
             />
           </v-radio-group>
         </v-col>
+        <v-col cols="6" class="mt-6">
+          <div class="text-white">Popular</div>
+          <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
+                         :error-messages="errors['is_popular']">
+            <v-radio
+                density="compact"
+                :value="false"
+                label="No"
+                color="primary"
+                class="pr-md-8"
+            />
+            <v-radio
+                density="compact"
+                :value="true"
+                label="Yes"
+                color="primary"
+            />
+          </v-radio-group>
+        </v-col>
+
       </v-row>
     </template>
     <template #actionButtons>

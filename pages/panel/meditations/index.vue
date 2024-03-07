@@ -172,6 +172,8 @@ const goToLesson = (courseId: string) => {
                     :id="item.uuid"
                     :title="item.title"
                     :description="item.description"
+                    :is-lock="item.is_lock"
+                    :quantity="item.lessons_count"
                     :categories="item.categories.map((c : Category) => c.id)"
                     :price="item.price"
                     :is-popular="item.is_popular"
