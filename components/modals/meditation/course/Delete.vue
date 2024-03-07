@@ -74,7 +74,9 @@ function close() {
           <div class="pb-5">
              <span class="text-white font-14  text-justify">
             <strong class="font-16 text-orange">"{{ props.title }}"</strong>
-            and its all of data will be permanently deleted.
+            This course has <strong class="font-16 text-orange">"?"</strong> transaction(s), and
+               <strong class="font-16 text-orange">"?"</strong> lesson(s) inside it.
+               Be patient that all of its data will be permanently deleted.
           </span>
           </div>
 

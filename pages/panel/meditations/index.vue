@@ -167,7 +167,7 @@ const goToLesson = (courseId: string) => {
               </template>
 
               <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded>
-                <LazyModalsMeditationLessonAdd :course-id="item.uuid" :btn-out-table="false" :btn-in-table="true"/>
+                <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title" :btn-out-table="false" :btn-in-table="true"/>
                 <LazyModalsMeditationCourseEdit
                     :id="item.uuid"
                     :title="item.title"

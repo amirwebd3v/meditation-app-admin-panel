@@ -20,6 +20,10 @@ const props = defineProps({
   courseId: {
     type: String,
     required: true
+  },
+  courseTitle: {
+    type: String,
+    required: true
   }
 })
 
@@ -34,35 +38,10 @@ const initialState = {
   set: 'MULTIPLE',
   title: '',
   description: null,
-  categories: [],
   is_popular: false,
 }
 
 const request = reactive<LessonStoreRequest>({...initialState})
-
-const numberOrFloatRule = (value: string) => {
-  const pattern = /^-?\d+\.?\d*$/
-  return pattern.test(value)
-}
-
-/********************************************/
-const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
-
-const selectAllCategories = computed(() => {
-  return request.categories.length === allCategoriesArray.value.length
-})
-
-const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
-})
-
-const toggle = () => {
-  if (selectAllCategories.value) {
-    request.categories = []
-  } else {
-    request.categories = allCategoriesArray.value.slice()
-  }
-}
 
 /**********************************************/
 const saveLesson = async () => {
@@ -116,7 +95,7 @@ function close() {
       </v-btn>
     </template>
     <template #header>
-      <span class="pl-3">Add Single Meditation</span>
+      <span class="pl-3">Add meditation for {{ props.courseTitle }}</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
     <template #columns>
@@ -132,51 +111,22 @@ function close() {
                       v-model="request.description"/>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-white pb-2">Select category</div>
-          <v-autocomplete
-              variant="outlined"
-              :disabled="loading"
-              chips
-              closable-chips
-              multiple
-              v-model="request.categories"
-              color="primary"
-              density="comfortable"
-              single-line
-              :items="allCategoriesArray"
-              auto-select-first
-              item-title="name"
-              item-value="id"
-          >
-
-            <template v-slot:chip="{ props,item, index }">
-              <v-chip v-if="index < 2" v-bind="props">
-                <span>{{ item.title }}</span>
-              </v-chip>
-              <span
-                  v-if="index === 2 && request.categories"
-                  class="text-grey text-caption align-self-center"
-              >
-              (+{{ request?.categories.length - 2 }} others)
-              </span>
+          <div class="text-white pb-1">Upload a track</div>
+          <v-file-input class="file-input-label mb-3"  label="Select track to Upload" variant="outlined" prepend-icon="" color="primary"
+                        hide-details="" :disabled="loading">
+            <template v-slot:selection="{ fileNames }">
+              <template v-for="fileName in fileNames" :key="fileName">
+                <v-card width="45" height="45" class="justify-center align-center">
+                  <v-col align-self="auto">
+                    <v-img width="auto" height="25" cover
+                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
+                    </v-img>
+                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
+                  </v-col>
+                </v-card>
+              </template>
             </template>
-            <template v-slot:prepend-item>
-              <v-list-item
-                  title="All Categories"
-                  @click="toggle"
-              >
-                <template v-slot:prepend>
-                  <v-checkbox-btn
-                      color="primary"
-                      :indeterminate="selectSomeCategories && !selectAllCategories"
-                      :model-value="selectAllCategories"
-                  ></v-checkbox-btn>
-                </template>
-              </v-list-item>
-              <v-divider></v-divider>
-            </template>
-
-          </v-autocomplete>
+          </v-file-input>
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-white mb-md-5">Popular</div>
@@ -197,24 +147,7 @@ function close() {
             />
           </v-radio-group>
         </v-col>
-        <v-col cols="12" class="py-0">
-          <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label mb-2"  label="Select a picture to Upload" variant="outlined" prepend-icon="" color="primary"
-                        hide-details="" :disabled="loading">
-            <template v-slot:selection="{ fileNames }">
-              <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="45" height="45" class="justify-center align-center">
-                  <v-col align-self="auto">
-                    <v-img width="auto" height="25" cover
-                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                    </v-img>
-                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
-                  </v-col>
-                </v-card>
-              </template>
-            </template>
-          </v-file-input>
-        </v-col>
+
       </v-row>
     </template>
     <template #actionButtons>
