@@ -31,12 +31,12 @@ defineProps({
           <v-chip size="large" class="px-4 font-weight-light text-white bg-primary" text="All"
                   style="border-color: #96AE50 !important;" variant="outlined">
             <template v-slot:append>
-              <v-icon class="mdi mdi-close pl-4 cursor-pointer" size="x-small" @click=""></v-icon>
+              <v-icon class="mdi mdi-close pl-5 cursor-pointer" size="x-small" @click=""></v-icon>
             </template>
           </v-chip>
           <v-chip
               size="large"
-              class="px-4 font-weight-light text-white"
+              class="pr-4 font-weight-light text-white"
               style="border-color: #96AE50 !important;"
               variant="outlined"
               v-for="category in [...categories.values()]"
