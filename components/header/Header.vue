@@ -66,9 +66,9 @@ const isActiveLink = computed(() => {
 
     <v-list density="compact" nav v-if="showNavItem" bg-color="light">
       <v-list-item :to="{name : 'panel-videos'}" prepend-icon="mdi-video-box"
-                   active-color="primary" title="Video courses"/>
+                   color="primary" title="Video courses"/>
       <v-list-item :to="{name : 'panel-meditations'}" prepend-icon="mdi-meditation"
-                   active-color="primary" title="Meditations"/>
+                   color="primary" title="Meditations"/>
     </v-list>
     <template v-slot:append>
       <div class="pa-2">

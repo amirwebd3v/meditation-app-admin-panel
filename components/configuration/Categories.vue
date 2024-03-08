@@ -26,7 +26,7 @@ defineProps({
             selected-class="text-white bg-primary border-none"
             variant="flat"
             mandatory="force"
-            show-arrows="false"
+            :show-arrows="false"
         >
           <v-chip size="large" class="px-4 font-weight-light text-white bg-primary" text="All"
                   style="border-color: #96AE50 !important;" variant="outlined">
@@ -44,7 +44,7 @@ defineProps({
               :text="category.name"
           >
             <template v-slot:append>
-              <LazyModalsCategoryDelete :id="category.id" :name="category.name"/>
+              <LazyModalsCategoryDelete :id="`categories-chip-${category.id}`" :name="category.name"/>
             </template>
           </v-chip>
         </v-chip-group>
