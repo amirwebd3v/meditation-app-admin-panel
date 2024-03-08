@@ -178,7 +178,7 @@ const goToLesson = (courseId: string) => {
                     :price="item.price"
                     :is-popular="item.is_popular"
                 />
-                <LazyModalsMeditationCourseDelete :id="item.uuid" :title="item.title"/>
+                <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0" :id="item.uuid" :title="item.title"/>
               </v-card>
             </v-menu>
             <v-icon
