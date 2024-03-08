@@ -4,8 +4,13 @@ import type {Category} from "~/utils/types";
 defineProps({
   categories: {
     type: Map<number, Category>,
+    required: true,
     default: []
   },
+  type: {
+    type: String,
+    required: true
+  }
 })
 
 </script>
@@ -14,7 +19,7 @@ defineProps({
   <!--      Second section-->
   <v-row justify="space-between" align="center" class="px-3">
     <span class="text-white font-weight-medium font-18">Categories</span>
-    <LazyModalsCategoryAdd/>
+    <LazyModalsCategoryAdd :category-type="type" />
   </v-row>
 
   <!--      Third section-->
@@ -44,7 +49,7 @@ defineProps({
               :text="category.name"
           >
             <template v-slot:append>
-              <LazyModalsCategoryDelete :id="`categories-chip-${category.id}`" :name="category.name"/>
+              <LazyModalsCategoryDelete :slug="category.slug" :name="category.name" :category-type="type"/>
             </template>
           </v-chip>
         </v-chip-group>

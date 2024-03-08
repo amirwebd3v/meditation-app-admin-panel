@@ -75,6 +75,7 @@ const goToLesson = (courseId: string) => {
           <v-text-field maxlength="30"
               @keyup.enter="load"
               v-model="searchText"
+              :rules="[v => (v && v.length <= 30) || 'Maximum 30 characters']"
               density="compact"
               variant="outlined"
               label="Search"
@@ -87,7 +88,7 @@ const goToLesson = (courseId: string) => {
         </v-sheet>
       </v-sheet>
 
-      <Categories :categories="useCategoryStore().meditationCategories"/>
+      <Categories :categories="useCategoryStore().meditationCategories" :type="CourseType.Meditation"/>
       <AddConfigurationItem Item="All Meditations"/>
 
 
@@ -136,7 +137,7 @@ const goToLesson = (courseId: string) => {
 <!--        </template>-->
 
         <template #item.lessons_count="{item}">
-          <div style="max-width: 90px;">{{ item.lessons_count }}</div>
+          <div style="max-width: 90px;">{{ item.lessons_count > 1 ? item.lessons_count : ''  }}</div>
         </template>
 
 
@@ -167,7 +168,10 @@ const goToLesson = (courseId: string) => {
               </template>
 
               <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded>
-                <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title" :btn-out-table="false" :btn-in-table="true"/>
+                <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
+                                               :btn-out-table="false" :btn-in-table="true"
+                                                v-if="item.lessons_count > 1"
+                />
                 <LazyModalsMeditationCourseEdit
                     :id="item.uuid"
                     :title="item.title"
@@ -176,9 +180,9 @@ const goToLesson = (courseId: string) => {
                     :quantity="item.lessons_count"
                     :categories="item.categories.map((c : Category) => c.id)"
                     :price="item.price"
-                    :is-popular="item.is_popular"
                 />
-                <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0" :id="item.uuid" :title="item.title"/>
+                <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
+                                                  :id="item.uuid" :title="item.title"/>
               </v-card>
             </v-menu>
             <v-icon

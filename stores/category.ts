@@ -33,6 +33,10 @@ export const useCategoryStore = defineStore('category', {
         async store(request: CategoryStoreRequest): Promise<Category> {
             return await useApi().post('/admin/v1/category', {body: request})
         },
+
+        async destroy(slug:string) {
+            await useApi().destroy(`/admin/v1/category/${slug}`);
+        },
     },
 
     getters: {

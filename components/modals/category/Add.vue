@@ -3,14 +3,24 @@ import {useValidationStore} from "~/stores/validation";
 import type {CategoryStoreRequest} from "~/utils/requests";
 import {storeToRefs} from "pinia";
 
+
+
 /*********************************************/
 const {errors} = storeToRefs(useValidationStore());
 const loading = ref(false)
 
 /*********************************************/
+const props = defineProps({
+  categoryType : {
+    type: String,
+    required: true
+  }
+})
+
+/*********************************************/
 const initialState = {
   name : '',
-  type : '',
+  type : props.categoryType,
 }
 
 const request = reactive<CategoryStoreRequest>({...initialState})
@@ -20,10 +30,10 @@ const saveCategory = async () => {
   loading.value = true
   try {
     await useCategoryStore().store(request)
-    await useCategoryStore().fetch()
-    useEvent('successMessage', 'New category is successfully Added.')
+    useEvent('successMessage', `${request.name} is successfully Added to ${request.type.toLowerCase()}. `)
     useEvent('closeModal', false)
   } finally {
+    await useCategoryStore().fetch()
     loading.value = false
     Object.assign(request, initialState);
   }

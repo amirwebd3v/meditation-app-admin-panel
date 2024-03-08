@@ -31,7 +31,6 @@ export const useVideoStore = defineStore('video', {
         },
         async destroy(id:string) {
             await useApi().destroy(`/admin/v1/course/${id}`);
-            this.items.delete(id);
         },
     },
 })
