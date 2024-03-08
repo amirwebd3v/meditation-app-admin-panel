@@ -22,7 +22,6 @@ const course : Course = (await useVideoStore().get(useRoute().params.id.toString
 const headers = ref([
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'is_lock', title: 'Free/Lock', sortable: true, align: 'start'},
-  // {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: true},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
@@ -35,7 +34,6 @@ const load = async (options = {}) => {
     {field: 'title', operator: 'ilike', value: searchText.value},
   ]
   const params = useApi().prepareQueryParams(options, search)
-  params.relations = ['categories']
   await useLessonStore().paginate(course.uuid, params)
   loading.value = false
 }
