@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type {LessonStoreRequest} from "~/utils/requests";
-import {useCategoryStore} from "~/stores/category";
 import {useValidationStore} from "~/stores/validation";
 import {useLessonStore} from "~/stores/lesson";
 import {storeToRefs} from "pinia";
@@ -25,38 +24,24 @@ const props = defineProps({
 /*********************************************/
 const isBtnText = ref()
 const loading = ref()
-const {allCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
+
+const validateLink = (value) => {
+
+  const isValidURL = /^https?:\/\/.*/.test(value);
+  return isValidURL || 'Please enter a valid URL (starting with http:// or https://)';
+};
 /********************************************/
 const initialState = {
   course_id: props.courseId,
+  link: '',
   title: '',
   description: null,
-  categories: [],
   is_popular: false,
-  status: false,
+  is_lock: false,
 }
 
 const request = reactive<LessonStoreRequest>({...initialState})
-
-/********************************************/
-const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
-
-const selectAllCategories = computed(() => {
-  return request.categories.length === allCategoriesArray.value.length
-})
-
-const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
-})
-
-const toggle = () => {
-  if (selectAllCategories.value) {
-    request.categories = []
-  } else {
-    request.categories = allCategoriesArray.value.slice()
-  }
-}
 
 /**********************************************/
 const saveLesson = async () => {
@@ -121,56 +106,16 @@ function close() {
                         placeholder="Enter video title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
+          <div class="text-white pb-2">Video Link</div>
+          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.link"
+                        placeholder="https://" :disabled="loading" :error-messages="errors['source']"
+                        :rules="[validateLink]"
+          />
+        </v-col>
+        <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Description</div>
           <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
                       v-model="request.description"/>
-        </v-col>
-        <v-col cols="12" class="py-0">
-          <div class="text-white pb-2">Select category</div>
-          <v-autocomplete
-              variant="outlined"
-              :disabled="loading"
-              chips
-              closable-chips
-              multiple
-              v-model="request.categories"
-              color="primary"
-              density="comfortable"
-              single-line
-              :items="allCategoriesArray"
-              auto-select-first
-              item-title="name"
-              item-value="id"
-          >
-
-            <template v-slot:chip="{ props,item, index }">
-              <v-chip v-if="index < 2" v-bind="props">
-                <span>{{ item.title }}</span>
-              </v-chip>
-              <span
-                  v-if="index === 2 && request.categories"
-                  class="text-grey text-caption align-self-center"
-              >
-              (+{{ request?.categories.length - 2 }} others)
-              </span>
-            </template>
-            <template v-slot:prepend-item>
-              <v-list-item
-                  title="All Categories"
-                  @click="toggle"
-              >
-                <template v-slot:prepend>
-                  <v-checkbox-btn
-                      color="primary"
-                      :indeterminate="selectSomeCategories && !selectAllCategories"
-                      :model-value="selectAllCategories"
-                  ></v-checkbox-btn>
-                </template>
-              </v-list-item>
-              <v-divider></v-divider>
-            </template>
-
-          </v-autocomplete>
         </v-col>
         <v-col cols="12">
           <div class="text-white pb-2">Upload a picture</div>
@@ -191,10 +136,10 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="mt-6">
+        <v-col cols="6" class="pt-3">
           <div class="text-white">Free/Locked</div>
-          <v-radio-group class="mt-5" inline v-model="request.status" :disabled="loading"
-                         :error-messages="errors['status']">
+          <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
+                         :error-messages="errors['is_lock']">
             <v-radio
                 density="compact"
                 :value="false"
@@ -210,7 +155,7 @@ function close() {
             />
           </v-radio-group>
         </v-col>
-        <v-col cols="6" class="mt-6">
+        <v-col cols="6" class="pt-3">
           <div class="text-white">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
                          :error-messages="errors['is_popular']">

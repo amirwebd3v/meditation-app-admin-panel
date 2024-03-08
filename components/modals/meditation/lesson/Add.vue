@@ -4,6 +4,7 @@ import {useCategoryStore} from "~/stores/category";
 import {useValidationStore} from "~/stores/validation";
 import {useLessonStore} from "~/stores/lesson";
 import {storeToRefs} from "pinia";
+import {MeditationType} from "~/utils/enums";
 
 
 
@@ -30,15 +31,15 @@ const props = defineProps({
 /*********************************************/
 const isBtnText = ref()
 const loading = ref()
-const {allCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
   course_id: props.courseId,
-  set: 'MULTIPLE',
+  set: MeditationType.Course,
   title: '',
   description: null,
   is_popular: false,
+  is_lock: false,
 }
 
 const request = reactive<LessonStoreRequest>({...initialState})
@@ -48,7 +49,7 @@ const saveLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().store(request)
-    useEvent('successMessage', 'Single Meditation is successfully Added.')
+    useEvent('successMessage', `${request.title} is successfully Added to ${props.courseTitle}.`)
     useEvent('closeModal', false)
   }  finally {
     loading.value = false
@@ -111,7 +112,7 @@ function close() {
                       v-model="request.description"/>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-white pb-1">Upload a track</div>
+          <div class="text-white pb-2">Upload a track</div>
           <v-file-input class="file-input-label mb-3"  label="Select track to Upload" variant="outlined" prepend-icon="" color="primary"
                         hide-details="" :disabled="loading">
             <template v-slot:selection="{ fileNames }">
@@ -128,7 +129,26 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="py-0">
+        <v-col cols="6" class="pt-3">
+          <div class="text-white mb-md-5">Free/Paid</div>
+          <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
+                         :error-messages="errors['is_lock']">
+            <v-radio
+                density="compact"
+                :value="false"
+                label="Free"
+                color="primary"
+                class="pr-md-8"
+            />
+            <v-radio
+                density="compact"
+                :value="true"
+                label="Paid"
+                color="primary"
+            />
+          </v-radio-group>
+        </v-col>
+        <v-col cols="6" class="pt-3 pb-0">
           <div class="text-white mb-md-5">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
                          :error-messages="errors['is_popular']">

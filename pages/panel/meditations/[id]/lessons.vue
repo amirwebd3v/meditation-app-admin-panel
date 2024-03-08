@@ -17,7 +17,7 @@ onMounted(async () => {
 const loading = ref(true)
 const searchText = ref('')
 const {items, meta} = storeToRefs(useLessonStore())
-const course : Course = (await useMeditationStore().get(useRoute().params.id.toString()))
+const course: Course = (await useMeditationStore().get(useRoute().params.id.toString()))
 
 const headers = ref([
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
@@ -59,17 +59,18 @@ const load = async (options = {}) => {
         </v-sheet>
         <v-sheet class="mr-5 pt-5" width="475px">
           <v-text-field maxlength="30"
-              @keyup.enter="load"
-              v-model="searchText"
-              density="compact"
-              variant="outlined"
-              label="Search"
-              prepend-inner-icon="mdi-magnify"
-              single-line
+                        @keyup.enter="load"
+                        v-model="searchText"
+                        :rules="[v => (v && v.length <= 30) || 'Maximum 30 characters']"
+                        density="compact"
+                        variant="outlined"
+                        label="Search"
+                        prepend-inner-icon="mdi-magnify"
+                        single-line
           ></v-text-field>
         </v-sheet>
         <v-sheet class=" ml-auto">
-          <LazyModalsMeditationLessonAdd/>
+          <LazyModalsMeditationLessonAdd :course-title="course.title"/>
         </v-sheet>
       </v-sheet>
       <!--     End First section-->
@@ -77,7 +78,7 @@ const load = async (options = {}) => {
       <!--    Start Second section-->
 
       <v-data-table-server
-          class="mt-10 rounded-lg bg-light-brown-1"
+          class="rounded-lg bg-light-brown-1"
           :items-length="+meta.total"
           :page="meta.current_page"
           :items="[...items.values()]"
@@ -95,15 +96,15 @@ const load = async (options = {}) => {
           </v-tooltip>
         </template>
 
-        <template #item.category="{item}">
-          <v-tooltip :text="item?.categories.map((category : Category) => category.name).join(', ')" max-width="270">
-            <template v-slot:activator="{props}">
-              <div class="text-truncate" style="max-width: 125px;" v-bind="props">
-                {{item?.categories[0]?.name}}
-              </div>
-            </template>
-          </v-tooltip>
-        </template>
+        <!--        <template #item.category="{item}">-->
+        <!--          <v-tooltip :text="item?.categories.map((category : Category) => category.name).join(', ')" max-width="270">-->
+        <!--            <template v-slot:activator="{props}">-->
+        <!--              <div class="text-truncate" style="max-width: 125px;" v-bind="props">-->
+        <!--                {{item?.categories[0]?.name}}-->
+        <!--              </div>-->
+        <!--            </template>-->
+        <!--          </v-tooltip>-->
+        <!--        </template>-->
 
 
         <template #item.description="{item}">
@@ -127,16 +128,16 @@ const load = async (options = {}) => {
         <template #item.actions="{item}">
 
           <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
-
+            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title"/>
             <LazyModalsMeditationLessonEdit
+                :course-title="course.title"
                 :id="item.uuid"
                 :title="item.title"
                 :description="item.description"
-                :categories="item.categories.map((c : Category) => c.id)"
+                :is-lock="item.is_lock"
                 :is-popular="item.is_popular"
             />
-            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title"/>          </div>
-
+          </div>
         </template>
       </v-data-table-server>
       <!--    End Second section-->

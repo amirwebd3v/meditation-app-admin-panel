@@ -17,11 +17,11 @@ onMounted(async () => {
 const loading = ref(true)
 const searchText = ref('')
 const {items, meta} = storeToRefs(useLessonStore())
-const course : Course = (await useVideoStore().get(useRoute().params.id.toString()))
+const course: Course = (await useVideoStore().get(useRoute().params.id.toString()))
 
 const headers = ref([
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'is_lock', title: 'Free/Lock', sortable: true, align: 'start'},
+  {key: 'is_lock', title: 'FREE/PAID', sortable: true, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: true},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
@@ -59,13 +59,14 @@ const load = async (options = {}) => {
         </v-sheet>
         <v-sheet class="mr-5 pt-5" width="475px">
           <v-text-field maxlength="30"
-              @keyup.enter="load"
-              v-model="searchText"
-              density="compact"
-              variant="outlined"
-              label="Search"
-              prepend-inner-icon="mdi-magnify"
-              single-line
+                        @keyup.enter="load"
+                        v-model="searchText"
+                        :rules="[v => (v && v.length <= 30) || 'Maximum 30 characters']"
+                        density="compact"
+                        variant="outlined"
+                        label="Search"
+                        prepend-inner-icon="mdi-magnify"
+                        single-line
           ></v-text-field>
         </v-sheet>
         <v-sheet class="ml-auto">
@@ -77,7 +78,7 @@ const load = async (options = {}) => {
       <!--    Start Second section-->
 
       <v-data-table-server
-          class="mt-10 rounded-lg bg-light-brown-1"
+          class="rounded-lg bg-light-brown-1"
           :items-length="+meta.total"
           :page="meta.current_page"
           :items="[...items.values()]"
@@ -95,16 +96,6 @@ const load = async (options = {}) => {
           </v-tooltip>
         </template>
 
-<!--        <template #item.category="{item}">-->
-<!--          <v-tooltip :text="item?.categories.map((category : Category) => category.name).join(', ')" max-width="270">-->
-<!--            <template v-slot:activator="{props}">-->
-<!--              <div class="text-truncate" style="max-width: 125px;" v-bind="props">-->
-<!--                {{item?.categories[0]?.name}}-->
-<!--              </div>-->
-<!--            </template>-->
-<!--          </v-tooltip>-->
-<!--        </template>-->
-
 
         <template #item.description="{item}">
           <v-tooltip :text="item.description" max-width="210">
@@ -121,21 +112,21 @@ const load = async (options = {}) => {
         </template>
 
         <template #item.is_lock="{ item }">
-          {{ item.is_lock ? 'Lock' : 'Free' }}
+          {{ item.is_lock ? 'Paid' : 'Free' }}
         </template>
 
         <template #item.actions="{item}">
 
           <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
-            <LazyModalsVideoLessonDelete :id="item.uuid" :title="item.title"/>
-
             <LazyModalsVideoLessonEdit
                 :id="item.uuid"
                 :title="item.title"
+                :link="item.source"
                 :description="item.description"
-                :categories="item.categories.map((c : Category) => c.id)"
                 :is-popular="item.is_popular"
             />
+
+            <LazyModalsVideoLessonDelete :id="item.uuid" :title="item.title"/>
           </div>
 
         </template>

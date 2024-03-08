@@ -1,8 +1,10 @@
 <script setup>
-import {useMeditationStore} from "~/stores/meditation";
-import {useValidationStore} from "~/stores/validation";
 
 const props = defineProps({
+  courseTitle: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true
@@ -19,8 +21,8 @@ const loading = ref(false)
 const deleteLesson = async () => {
   loading.value = true
   try {
-    await useMeditationStore().destroy(props.id)
-    useEvent('successMessage', 'Meditation lesson is successfully Deleted.')
+    // await useLessonStore().destroy(props.id)
+    useEvent('successMessage', `${props.title} is successfully Deleted from ${props.courseTitle}.`)
     useEvent('closeModal', false)
   } catch (err) {
     useEvent('errorMessage', err.data.message)
@@ -53,7 +55,7 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3">Delete Single Meditation</span>
+      <span class="pl-3">Delete meditation</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 

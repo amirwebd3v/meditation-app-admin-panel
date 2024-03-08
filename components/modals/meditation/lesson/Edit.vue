@@ -14,11 +14,14 @@ import type {Preview} from "~/utils/types";
 /********************************************/
 const loading = ref()
 const route = useRoute()
-const {allCategories} = storeToRefs(useCategoryStore())
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
 /********************************************/
 const props = defineProps({
+  courseTitle: {
+    type: String,
+    required: true
+  },
   id: {
     type: String,
     required: true,
@@ -39,6 +42,10 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
+  isLock: {
+    type: Boolean,
+    required: true
+  },
 })
 
 /********************************************/
@@ -48,32 +55,9 @@ const initialState = {
   description: props.description,
   categories: props.categories,
   is_popular: props.isPopular,
+  is_lock: props.isLock
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
-
-const numberOrFloatRule = (value: string) => {
-  const pattern = /^-?\d+\.?\d*$/
-  return pattern.test(value)
-}
-
-/********************************************/
-const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
-
-const selectAllCategories = computed(() => {
-  return request.categories.length === allCategoriesArray.value.length
-})
-
-const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
-})
-
-const toggle = () => {
-  if (selectAllCategories.value) {
-    request.categories = []
-  } else {
-    request.categories = allCategoriesArray.value.slice()
-  }
-}
 
 /**********************************************/
 const upload = async (files: File[]) => {
@@ -113,75 +97,21 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3">Edit Single Meditation</span>
+      <span class="pl-3">Edit meditation for {{ props.courseTitle }}</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
-          <div class="text-subtitle-1 text-medium-emphasis py-2 text-white">Title</div>
+          <div class="text-white pb-2">Title</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
                         :error-messages="errors['title']"
           />
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Description</div>
+          <div class="text-white pb-2">Description</div>
           <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
-        </v-col>
-        <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Select category</div>
-          <v-autocomplete
-              variant="outlined"
-              :disabled="loading"
-              chips
-              closable-chips
-              multiple
-              v-model="request.categories"
-              color="primary"
-              density="comfortable"
-              single-line
-              :items="allCategoriesArray"
-              auto-select-first
-              item-title="name"
-              item-value="id"
-              menu-icon="mdi-chevron-down"
-          >
-            <template v-slot:chip="{ props,item, index }">
-              <v-chip v-if="index < 2" v-bind="props">
-                <span>{{ item.title }}</span>
-              </v-chip>
-              <span
-                  v-if="index === 2 && request.categories"
-                  class="text-grey text-caption align-self-center"
-              >
-              (+{{ request?.categories.length - 2 }} others)
-              </span>
-            </template>
-            <template v-slot:prepend-item>
-              <v-list-item
-                  title="All Categories"
-                  @click="toggle"
-              >
-                <template v-slot:prepend>
-                  <v-checkbox-btn
-                      color="primary"
-                      :indeterminate="selectSomeCategories && !selectAllCategories"
-                      :model-value="selectAllCategories"
-                  ></v-checkbox-btn>
-                </template>
-              </v-list-item>
-              <v-divider></v-divider>
-            </template>
-
-          </v-autocomplete>
-        </v-col>
-          <v-col cols="6" class="py-0">
-          <div class="text-white mb-md-5 text-white">Popular</div>
-          <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
-            <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
-            <v-radio density="compact" :value="true" label="Yes" color="primary"/>
-          </v-radio-group>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
@@ -198,6 +128,32 @@ function close() {
               </template>
             </template>
           </v-file-input>
+        </v-col>
+        <v-col cols="6" class="pt-3">
+          <div class="text-white mb-md-5">Free/Paid</div>
+          <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
+                         :error-messages="errors['is_lock']">
+            <v-radio
+                density="compact"
+                :value="false"
+                label="Free"
+                color="primary"
+                class="pr-md-8"
+            />
+            <v-radio
+                density="compact"
+                :value="true"
+                label="Paid"
+                color="primary"
+            />
+          </v-radio-group>
+        </v-col>
+        <v-col cols="6" class="pt-3 pb-0">
+          <div class="text-white mb-md-5 text-white">Popular</div>
+          <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
+            <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
+            <v-radio density="compact" :value="true" label="Yes" color="primary"/>
+          </v-radio-group>
         </v-col>
       </v-row>
     </template>

@@ -10,7 +10,7 @@ import {storeToRefs} from "pinia";
 /*********************************************/
 
 const loading = ref()
-const {allCategories} = storeToRefs(useCategoryStore());
+const {videoCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
@@ -29,21 +29,21 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
+const videoCategoriesArray = computed(() => Array.from(videoCategories.value.values()))
 
 const selectAllCategories = computed(() => {
-  return request.categories.length === allCategoriesArray.value.length
+  return request.categories.length === videoCategoriesArray.value.length
 })
 
 const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
+  return request.categories.length > 0 && request.categories.length < videoCategoriesArray.value.length
 })
 
 const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = allCategoriesArray.value.slice()
+    request.categories = videoCategoriesArray.value.slice()
   }
 }
 
@@ -118,7 +118,7 @@ function close() {
               color="primary"
               density="comfortable"
               single-line
-              :items="allCategoriesArray"
+              :items="videoCategoriesArray"
               auto-select-first
               item-title="name"
               item-value="id"
@@ -156,7 +156,7 @@ function close() {
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-white pb-2">Price ($)</div>
-          <v-text-field maxlength="30"
+          <v-text-field maxlength="6"
               :disabled="loading"
               variant="outlined"
               v-model="request.price"

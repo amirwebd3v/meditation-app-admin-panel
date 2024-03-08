@@ -14,7 +14,7 @@ import type {Preview} from "~/utils/types";
 /********************************************/
 const loading = ref()
 const route = useRoute()
-const {allCategories} = storeToRefs(useCategoryStore())
+const {videoCategories} = storeToRefs(useCategoryStore())
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
 /********************************************/
@@ -39,10 +39,6 @@ const props = defineProps({
     type: Number,
     required: true
   },
-  isPopular: {
-    type: Boolean,
-    required: true
-  },
 })
 
 /********************************************/
@@ -52,7 +48,6 @@ const initialState = {
   description: props.description,
   categories: props.categories,
   price: props.price,
-  is_popular: props.isPopular,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
 
@@ -62,21 +57,21 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
+const videoCategoriesArray = computed(() => Array.from(videoCategories.value.values()))
 
 const selectAllCategories = computed(() => {
-  return request.categories.length === allCategoriesArray.value.length
+  return request.categories.length === videoCategoriesArray.value.length
 })
 
 const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
+  return request.categories.length > 0 && request.categories.length < videoCategoriesArray.value.length
 })
 
 const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = allCategoriesArray.value.slice()
+    request.categories = videoCategoriesArray.value.slice()
   }
 }
 
@@ -125,7 +120,7 @@ function close() {
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
-          <div class="text-subtitle-1 text-medium-emphasis py-2 text-white">Title</div>
+          <div class="text-white pb-2">Title</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
                         :error-messages="errors['title']"
           />
@@ -146,7 +141,7 @@ function close() {
               color="primary"
               density="comfortable"
               single-line
-              :items="allCategoriesArray"
+              :items="videoCategoriesArray"
               auto-select-first
               item-title="name"
               item-value="id"
@@ -183,7 +178,7 @@ function close() {
         </v-col>
         <v-col cols="6" class="py-0">
           <div class="text-white pb-2">Price ($)</div>
-          <v-text-field maxlength="30"
+          <v-text-field maxlength="6"
               :disabled="loading"
               variant="outlined"
               v-model="request.price"
@@ -193,13 +188,6 @@ function close() {
               validate-on="blur"
               :error-messages="errors['price']"
           />
-        </v-col>
-          <v-col cols="6" class="py-0">
-          <div class="text-white mb-md-5 text-white">Popular</div>
-          <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
-            <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
-            <v-radio density="compact" :value="true" label="Yes" color="primary"/>
-          </v-radio-group>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>

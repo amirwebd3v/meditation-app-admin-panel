@@ -12,7 +12,7 @@ const singleCourseModal = ref()
 const CourseModal = ref()
 const selectedCourse = ref('')
 const loading = ref()
-const {allCategories} = storeToRefs(useCategoryStore());
+const {meditationCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
@@ -22,7 +22,6 @@ const initialState = {
   categories: [],
   price: 0,
   type: CourseType.Meditation,
-  // is_popular: false,
   is_lock: false
 }
 
@@ -34,21 +33,21 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const allCategoriesArray = computed(() => Array.from(allCategories.value.values()))
+const meditationCategoriesArray = computed(() => Array.from(meditationCategories.value.values()))
 
 const selectAllCategories = computed(() => {
-  return request.categories.length === allCategoriesArray.value.length
+  return request.categories.length === meditationCategoriesArray.value.length
 })
 
 const selectSomeCategories = computed(() => {
-  return request.categories.length > 0 && request.categories.length < allCategoriesArray.value.length
+  return request.categories.length > 0 && request.categories.length < meditationCategoriesArray.value.length
 })
 
 const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = allCategoriesArray.value.slice()
+    request.categories = meditationCategoriesArray.value.slice()
   }
 }
 
@@ -169,7 +168,7 @@ function closeCourseModal(val) {
                     density="comfortable"
                     menu-icon="mdi mdi-chevron-down"
                     single-line
-                    :items="allCategoriesArray"
+                    :items="meditationCategoriesArray"
                     auto-select-first
                     item-title="name"
                     item-value="id"
@@ -206,7 +205,7 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="6" class="py-0">
                 <div class="text-white pb-2">Price ($)</div>
-                <v-text-field maxlength="30"
+                <v-text-field maxlength="6"
                               :disabled="loading"
                               variant="outlined"
                               v-model="request.price"
@@ -217,27 +216,8 @@ function closeCourseModal(val) {
                               :error-messages="errors['price']"
                 ></v-text-field>
               </v-col>
-<!--              <v-col cols="6" class="py-0">-->
-<!--                <div class="text-white mb-md-5">Popular</div>-->
-<!--                <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"-->
-<!--                               :error-messages="errors['is_popular']">-->
-<!--                  <v-radio-->
-<!--                      density="compact"-->
-<!--                      :value="false"-->
-<!--                      label="No"-->
-<!--                      color="primary"-->
-<!--                      class="pr-md-8"-->
-<!--                  />-->
-<!--                  <v-radio-->
-<!--                      density="compact"-->
-<!--                      :value="true"-->
-<!--                      label="Yes"-->
-<!--                      color="primary"-->
-<!--                  />-->
-<!--                </v-radio-group>-->
-<!--              </v-col>-->
               <v-col cols="12" class="py-0">
-                <div class="text-white pb-1">Upload a picture</div>
+                <div class="text-white pb-2">Upload a picture</div>
                 <v-file-input class="file-input-label mb-3" label="Select a picture to Upload" variant="outlined"
                               prepend-icon="" color="primary"
                               hide-details="" :disabled="loading">
@@ -299,8 +279,9 @@ function closeCourseModal(val) {
         </template>
       </v-card>
     </template>
-
   </v-dialog>
+
+
   <v-dialog :activator="singleCourseModal" max-width="600">
 
     <template v-slot:default="{ isActive }">
@@ -339,7 +320,7 @@ function closeCourseModal(val) {
                     color="primary"
                     density="comfortable"
                     single-line
-                    :items="allCategoriesArray"
+                    :items="meditationCategoriesArray"
                     menu-icon="mdi mdi-chevron-down"
                     auto-select-first
                     item-title="name"
@@ -375,27 +356,8 @@ function closeCourseModal(val) {
                 </v-autocomplete>
               </v-col>
 
-              <!--                <v-col cols="6" class="py-0">-->
-              <!--                  <div class="text-white mb-md-5">Popular</div>-->
-              <!--                  <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"-->
-              <!--                                 :error-messages="errors['is_popular']">-->
-              <!--                    <v-radio-->
-              <!--                        density="compact"-->
-              <!--                        :value="false"-->
-              <!--                        label="No"-->
-              <!--                        color="primary"-->
-              <!--                        class="pr-md-8"-->
-              <!--                    />-->
-              <!--                    <v-radio-->
-              <!--                        density="compact"-->
-              <!--                        :value="true"-->
-              <!--                        label="Yes"-->
-              <!--                        color="primary"-->
-              <!--                    />-->
-              <!--                  </v-radio-group>-->
-              <!--                </v-col>-->
               <v-col cols="12" class="py-0">
-                <div class="text-white pb-1">Upload a track</div>
+                <div class="text-white pb-2">Upload a track</div>
                 <v-file-input class="file-input-label mb-3" label="Select track to Upload" variant="outlined"
                               prepend-icon="" color="primary"
                               hide-details="" :disabled="loading">
@@ -414,7 +376,7 @@ function closeCourseModal(val) {
                 </v-file-input>
               </v-col>
               <v-col cols="12" class="py-0">
-                <div class="text-white pb-1">Upload a picture</div>
+                <div class="text-white pb-2">Upload a picture</div>
                 <v-file-input class="file-input-label mb-3" label="Select a picture to Upload" variant="outlined"
                               prepend-icon="" color="primary"
                               hide-details="" :disabled="loading">
@@ -432,7 +394,7 @@ function closeCourseModal(val) {
                   </template>
                 </v-file-input>
               </v-col>
-              <v-col cols="6" class="py-0">
+              <v-col cols="6" class="pt-3">
                 <div class="text-white mb-md-5">Free/Paid</div>
                 <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                                :error-messages="errors['is_lock']">
@@ -451,9 +413,9 @@ function closeCourseModal(val) {
                   />
                 </v-radio-group>
               </v-col>
-              <v-col cols="6" class="py-0">
+              <v-col cols="6" class="pt-2 pb-0" v-if="request.is_lock">
                 <div class="text-white pb-2">Price($)</div>
-                <v-text-field maxlength="30"
+                <v-text-field maxlength="6"
                               :disabled="loading"
                               variant="outlined"
                               v-model="request.price"
