@@ -1,8 +1,8 @@
 version: '3.9'
 services:
   app:
-    container_name: 'omni.hidevs.ir'
-    image: 'omni_hidevs_ir'
+    container_name: 'omni-front'
+    image: "omni-front"
     build:
       context: .
       dockerfile: Dockerfile
