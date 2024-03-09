@@ -34,6 +34,9 @@ const headers = <readonly []>[
 
 /***********************************************/
 const load = async (options = {}) => {
+  if (loading.value) {
+    return
+  }
   loading.value = true
   const search: FilterSearchItem[] = searchText.value === '' ? [] : [
     {field: 'title', operator: 'ilike', value: searchText.value},
@@ -92,6 +95,7 @@ const load = async (options = {}) => {
           :headers="headers"
           sort-desc-icon="mdi-arrow-up-thin"
           sort-asc-icon="mdi-arrow-down-thin"
+          show-current-page
       >
         <template #item.title="{item}">
           <v-tooltip :text="item.title">
