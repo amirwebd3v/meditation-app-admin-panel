@@ -137,7 +137,7 @@ const goToLesson = (courseId: string) => {
 <!--        </template>-->
 
         <template #item.lessons_count="{item}">
-          <div style="max-width: 90px;">{{ item.set === 'SINGLE' ? item.lessons_count : ''  }}</div>
+          <div style="max-width: 90px;">{{ item.set === 'MULTIPLE' ? item.lessons_count : ''  }}</div>
         </template>
 
         <template #item.thumbnail="{ item }">
