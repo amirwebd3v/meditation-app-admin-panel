@@ -137,9 +137,8 @@ const goToLesson = (courseId: string) => {
 <!--        </template>-->
 
         <template #item.lessons_count="{item}">
-          <div style="max-width: 90px;">{{ item.lessons_count > 1 ? item.lessons_count : ''  }}</div>
+          <div style="max-width: 90px;">{{ item.set === 'SINGLE' ? item.lessons_count : ''  }}</div>
         </template>
-
 
         <template #item.thumbnail="{ item }">
           <v-card v-if="!!item.thumbnail" class="my-1 pl-2" elevation="0" rounded color="light">
