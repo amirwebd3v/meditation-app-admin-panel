@@ -8,7 +8,7 @@ import {useMediaStore} from "~/stores/media";
 import {storeToRefs} from "pinia";
 import type {CourseUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
-
+import {CourseType} from "~/utils/enums";
 
 
 /********************************************/
@@ -66,7 +66,8 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const meditationCategoriesArray = computed(() => Array.from(meditationCategories.value.values()))
+const meditationCategoriesArray = computed(() =>
+    Array.from(useCategoryStore().allCategories(CourseType.Meditation).values()))
 
 const selectAllCategories = computed(() => {
   return request.categories.length === meditationCategoriesArray.value.length
@@ -80,7 +81,7 @@ const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = meditationCategoriesArray.value.slice()
+    request.categories = meditationCategoriesArray.value.map(c => c.id)
   }
 }
 

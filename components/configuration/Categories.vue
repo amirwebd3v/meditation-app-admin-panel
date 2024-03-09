@@ -13,6 +13,16 @@ defineProps({
   }
 })
 
+const emit = defineEmits(['update:selectedCategories'])
+
+const selectedCategories = ref([])
+
+const handleCategorySelection = (selected) => {
+  selectedCategories.value = selected
+  const selectedChips = selectedCategories.value.length === 0 ? [] : selectedCategories.value
+  emit('update:selectedCategories', selectedChips)
+}
+
 </script>
 
 <template>
@@ -32,14 +42,17 @@ defineProps({
             variant="flat"
             mandatory="force"
             :show-arrows="false"
+            @update:model-value="handleCategorySelection"
         >
-          <v-chip size="large" class="px-4 font-weight-light text-white bg-primary" text="All"
-                  style="border-color: #96AE50 !important;" variant="outlined">
+
+          <v-chip size="large" :ripple="false" class="px-4 font-weight-light text-white" text="All"
+                  style="border-color: #96AE50 !important;" variant="outlined" >
             <template v-slot:append>
               <v-icon class="mdi mdi-close pl-5 cursor-pointer" size="x-small" @click=""></v-icon>
             </template>
           </v-chip>
           <v-chip
+              :ripple="false"
               size="large"
               class="pr-4 font-weight-light text-white"
               style="border-color: #96AE50 !important;"

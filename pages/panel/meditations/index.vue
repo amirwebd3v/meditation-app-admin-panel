@@ -18,14 +18,12 @@ onMounted(async () => {
   await load()
 })
 
-watch(items, () => {
-  meta.value = { ...meta.value }
-})
 /***********************************************/
 const menu = ref(false)
 const loading = ref(false)
 const searchText = ref('')
 const router = useRouter();
+const selectedCategories = ref([])
 
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
@@ -44,15 +42,26 @@ const load = async (options = {}) => {
     return
   }
   loading.value = true
-  const search: FilterSearchItem[] = searchText.value === '' ? [] : [
-    {field: 'title', operator: 'ilike', value: searchText.value},
-    {field: 'description', operator: 'ilike', value: searchText.value},
-    {field: 'price', operator: 'like', value: searchText.value},
+  const search : FilterSearchItem[] = [
+    ...searchText.value === '' ? [] : [
+      { field: 'title', operator: 'ilike', value: searchText.value },
+      { field: 'description', operator: 'ilike', value: searchText.value },
+      { field: 'price', operator: 'like', value: searchText.value }
+    ],
+    ...selectedCategories.value.length > 0 ? [
+      { field: 'categories.slug', operator: 'in', value: selectedCategories.value }
+    ] : []
   ]
   const params = useApi().prepareQueryParams(options, search)
   params.relations = ['categories']
   await useMeditationStore().paginate(params)
   loading.value = false
+}
+
+const handleSelectedCategories = (categories) => {
+  selectedCategories.value = categories
+  console.log(selectedCategories.value)
+  // load()
 }
 
 
@@ -94,14 +103,15 @@ const goToLesson = (courseId: string) => {
         </v-sheet>
       </v-sheet>
 
-      <Categories :categories="useCategoryStore().meditationCategories" :type="CourseType.Meditation"/>
+      <Categories :categories="useCategoryStore().meditationCategories" :type="CourseType.Meditation"
+                  @update:selectedCategories="handleSelectedCategories"/>
       <AddConfigurationItem Item="All Meditations"/>
 
 
       <v-data-table-server
           class="mt-8 rounded-lg bg-light-brown-1"
           :items-length="+meta.total"
-          :page="meta.current_page"
+          :page="+meta.current_page"
           :items="[...items.values()]"
           @update:options="load"
           :loading="loading"

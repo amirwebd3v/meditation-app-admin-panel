@@ -3,7 +3,6 @@ import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseType} from "~/utils/enums";
 import {useCategoryStore} from "~/stores/category";
 import {useValidationStore} from "~/stores/validation";
-import {useVideoStore} from "~/stores/video";
 import {storeToRefs} from "pinia";
 
 
@@ -29,7 +28,8 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const videoCategoriesArray = computed(() => Array.from(videoCategories.value.values()))
+const videoCategoriesArray = computed(() =>
+    Array.from(useCategoryStore().allCategories(CourseType.Video).values()))
 
 const selectAllCategories = computed(() => {
   return request.categories.length === videoCategoriesArray.value.length
@@ -43,7 +43,7 @@ const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = videoCategoriesArray.value.slice()
+    request.categories = videoCategoriesArray.value.map(c => c.id)
   }
 }
 

@@ -1,12 +1,13 @@
 import type {CourseType} from "~/utils/enums";
 import type {Category} from "~/utils/types";
+import {CourseKind} from "~/utils/enums";
 
 
 interface CourseStoreRequest {
     type: CourseType
     categories?: number[]
     title: string
-    set: 'SINGLE' | 'MULTIPLE'
+    set: CourseKind
     thumbnail?: string
     description?: string
     price: number
@@ -27,7 +28,7 @@ interface CourseUpdateRequest {
 interface LessonStoreRequest {
     course_id: string
     categories?: number[]
-    set: 'SINGLE' | 'MULTIPLE'
+    set: CourseKind
     title: string
     source: string
     duration: string

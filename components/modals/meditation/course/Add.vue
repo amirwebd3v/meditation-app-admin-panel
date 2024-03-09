@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
-import {CourseType, MeditationType} from "~/utils/enums";
-import {useCategoryStore} from "~/stores/category";
+import {CourseKind, CourseType} from "~/utils/enums";
 import {useValidationStore} from "~/stores/validation";
 import {useMeditationStore} from "~/stores/meditation";
 import {storeToRefs} from "pinia";
@@ -10,14 +9,13 @@ import {storeToRefs} from "pinia";
 /*********************************************/
 const singleCourseModal = ref()
 const CourseModal = ref()
-const selectedCourse = ref('')
+const selectedCourse = ref<CourseKind>()
 const loading = ref()
-const {meditationCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
   title: '',
-  set: MeditationType.Course,
+  set: CourseKind.Course,
   description: null,
   categories: [],
   price: 0,
@@ -33,7 +31,8 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const meditationCategoriesArray = computed(() => Array.from(meditationCategories.value.values()))
+const meditationCategoriesArray = computed(() =>
+    Array.from(useCategoryStore().allCategories(CourseType.Meditation).values()))
 
 const selectAllCategories = computed(() => {
   return request.categories.length === meditationCategoriesArray.value.length
@@ -47,7 +46,7 @@ const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = meditationCategoriesArray.value.slice()
+    request.categories = meditationCategoriesArray.value.map(c => c.id)
   }
 }
 
@@ -94,9 +93,9 @@ function closeCourseModal(val) {
                  'text-white' : true}"
                size="large"
                variant="outlined"
-               @click="selectedCourse = 'single'">
+               @click="selectedCourse = CourseKind.Single">
           <template #prepend>
-            <v-radio v-model="selectedCourse" value="single" readonly disabled style="opacity: 1; color: #96AE50;"/>
+            <v-radio v-model="selectedCourse" :value="CourseKind.Single" readonly disabled style="opacity: 1; color: #96AE50;"/>
           </template>
         </v-btn>
 
@@ -111,10 +110,10 @@ function closeCourseModal(val) {
                }"
                size="large"
                variant="outlined"
-               @click="selectedCourse = 'course'"
+               @click="selectedCourse = CourseKind.Course"
         >
           <template #prepend>
-            <v-radio v-model="selectedCourse" value="course" readonly disabled style="opacity: 1;color: #96AE50;"/>
+            <v-radio v-model="selectedCourse" :value="CourseKind.Course" readonly disabled style="opacity: 1;color: #96AE50;"/>
           </template>
         </v-btn>
 

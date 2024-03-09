@@ -4,6 +4,7 @@ import type {Course} from "~/utils/types";
 import type {PaginatorMeta, QueryParams} from "l5-client";
 import type {CourseStoreRequest, CourseUpdateRequest} from "~/utils/requests";
 
+
 export const useVideoStore = defineStore('video', {
     state: () => ({
         items: new Map<string, Course>(),

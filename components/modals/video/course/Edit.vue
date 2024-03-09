@@ -8,13 +8,13 @@ import {useMediaStore} from "~/stores/media";
 import {storeToRefs} from "pinia";
 import type {CourseUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
+import {CourseType} from "~/utils/enums";
 
 
 
 /********************************************/
 const loading = ref()
 const route = useRoute()
-const {videoCategories} = storeToRefs(useCategoryStore())
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
 /********************************************/
@@ -57,7 +57,8 @@ const numberOrFloatRule = (value: string) => {
 }
 
 /********************************************/
-const videoCategoriesArray = computed(() => Array.from(videoCategories.value.values()))
+const videoCategoriesArray = computed(() =>
+    Array.from(useCategoryStore().allCategories(CourseType.Video).values()))
 
 const selectAllCategories = computed(() => {
   return request.categories.length === videoCategoriesArray.value.length
@@ -71,7 +72,7 @@ const toggle = () => {
   if (selectAllCategories.value) {
     request.categories = []
   } else {
-    request.categories = videoCategoriesArray.value.slice()
+    request.categories = videoCategoriesArray.value.map(c => c.id)
   }
 }
 

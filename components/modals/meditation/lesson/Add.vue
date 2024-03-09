@@ -4,7 +4,7 @@ import {useCategoryStore} from "~/stores/category";
 import {useValidationStore} from "~/stores/validation";
 import {useLessonStore} from "~/stores/lesson";
 import {storeToRefs} from "pinia";
-import {MeditationType} from "~/utils/enums";
+import {CourseKind} from "~/utils/enums";
 
 
 
@@ -35,7 +35,7 @@ const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
   course_id: props.courseId,
-  set: MeditationType.Course,
+  set: CourseKind.Course,
   title: '',
   description: null,
   is_popular: false,

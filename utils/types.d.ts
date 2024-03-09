@@ -1,4 +1,5 @@
 import type {CourseType} from "~/utils/enums";
+import {CourseKind} from "~/utils/enums";
 
 interface Course {
     created_at: number
@@ -6,7 +7,7 @@ interface Course {
     categories: Category[]
     lessons_count: number
     price: number
-    set: 'SINGLE' | 'MULTIPLE'
+    set: CourseKind
     thumbnail: Media | null
     title: string
     type: string
