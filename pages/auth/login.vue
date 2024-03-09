@@ -56,12 +56,12 @@ async function login() {
         </div>
         <p class="text-center mb-12 font-weight-bold text-white" style="font-size: 23px;">Welcome to admin panel</p>
         <v-form>
-          <v-text-field maxlength="30" v-model="form.email" density="compact" placeholder="Enter Email"
-                        variant="outlined" :error-messages="errors['email']" />
+          <v-text-field maxlength="31" v-model="form.email" density="compact" placeholder="Enter Email"
+                        variant="outlined" :error-messages="errors['email']" :rules="[]"/>
           <v-text-field maxlength="30" v-model="form.password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                         :type="visible ? 'text' : 'password'" autocomplete="off"
                         density="compact" placeholder="Enter Password" variant="outlined"
-                        @click:append-inner="visible = !visible"/>
+                        @click:append-inner="visible = !visible" :rules="[]"/>
           <v-btn
               :disabled="loading"
               :loading="loading"
