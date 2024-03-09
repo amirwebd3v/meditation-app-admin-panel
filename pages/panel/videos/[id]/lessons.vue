@@ -19,13 +19,13 @@ const searchText = ref('')
 const {items, meta} = storeToRefs(useLessonStore())
 const course: Course = (await useVideoStore().get(useRoute().params.id.toString()))
 
-const headers = ref([
+const headers = <readonly []>[
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'is_lock', title: 'FREE/PAID', sortable: true, align: 'start'},
   {key: 'description', title: 'DESCRIPTION', sortable: true},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
-])
+]
 
 /***********************************************/
 const load = async (options = {}) => {

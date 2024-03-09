@@ -24,7 +24,7 @@ const searchText = ref('')
 const router = useRouter();
 const {items, meta} = storeToRefs(useMeditationStore())
 
-const headers = [
+const headers = <readonly []>[
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'set', title: 'TYPE', align: 'start', sortable: true},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},

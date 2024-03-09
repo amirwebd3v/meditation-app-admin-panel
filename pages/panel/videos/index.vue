@@ -24,7 +24,7 @@ const searchText = ref('')
 const router = useRouter();
 const {items, meta} = storeToRefs(useVideoStore())
 
-const headers = [
+const headers = <readonly []>[
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'center'},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
