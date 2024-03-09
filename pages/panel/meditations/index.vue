@@ -6,6 +6,7 @@ import {useMeditationStore} from "~/stores/meditation"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
+import {VDataTableServer} from "vuetify/components/VDataTable";
 const {items, meta} = storeToRefs(useMeditationStore())
 
 /***********************************************/
@@ -26,7 +27,7 @@ const loading = ref(false)
 const searchText = ref('')
 const router = useRouter();
 
-const headers = <readonly []>[
+const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'set', title: 'TYPE', align: 'start', sortable: true},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'start'},
@@ -35,7 +36,7 @@ const headers = <readonly []>[
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'price', title: 'PRICE($)', sortable: true, align: 'start'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
-]
+] as VDataTableServer['headers']
 
 /***********************************************/
 const load = async (options = {}) => {

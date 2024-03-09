@@ -6,6 +6,7 @@ import {useVideoStore} from "~/stores/video"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
+import {VDataTableServer} from "vuetify/components/VDataTable";
 const {items, meta} = storeToRefs(useVideoStore())
 
 /***********************************************/
@@ -27,14 +28,14 @@ const loading = ref(false)
 const searchText = ref('')
 const router = useRouter();
 
-const headers = <readonly []>[
+const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
   {key: 'category', title: 'CATEGORY', sortable: false, align: 'center'},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'price', title: 'PRICE($)', sortable: true, align: 'center'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
-]
+] as VDataTableServer['headers']
 
 /***********************************************/
 const load = async (options = {}) => {
