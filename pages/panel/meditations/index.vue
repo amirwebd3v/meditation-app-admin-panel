@@ -6,23 +6,25 @@ import {useMeditationStore} from "~/stores/meditation"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
+const {items, meta} = storeToRefs(useMeditationStore())
 
 /***********************************************/
 definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-
 onMounted(async () => {
   await load()
 })
 
+watch(items, () => {
+  meta.value = { ...meta.value }
+})
 /***********************************************/
 const menu = ref(false)
 const loading = ref(true)
 const searchText = ref('')
 const router = useRouter();
-const {items, meta} = storeToRefs(useMeditationStore())
 
 const headers = <readonly []>[
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},

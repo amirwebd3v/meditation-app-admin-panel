@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
-import {CourseType} from "~/utils/enums";
+import {CourseType, MeditationType} from "~/utils/enums";
 import {useCategoryStore} from "~/stores/category";
 import {useValidationStore} from "~/stores/validation";
 import {useMeditationStore} from "~/stores/meditation";
@@ -17,7 +17,7 @@ const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
   title: '',
-  set: 'MULTIPLE',
+  set: MeditationType.Course,
   description: null,
   categories: [],
   price: 0,

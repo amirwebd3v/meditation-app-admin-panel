@@ -2,7 +2,9 @@
 import {useLessonStore} from "~/stores/lesson"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-import type {Category, Course} from "~/utils/types";
+import type {Course} from "~/utils/types";
+
+const {items, meta} = storeToRefs(useLessonStore())
 
 /***********************************************/
 definePageMeta({
@@ -13,10 +15,13 @@ onMounted(async () => {
   await load()
 })
 
+watch(items, () => {
+  meta.value = {...meta.value}
+})
+
 /***********************************************/
 const loading = ref(true)
 const searchText = ref('')
-const {items, meta} = storeToRefs(useLessonStore())
 const course: Course = (await useMeditationStore().get(useRoute().params.id.toString()))
 
 const headers = <readonly []>[
