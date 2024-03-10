@@ -47,9 +47,6 @@ const handleCategorySelection = (selected) => {
 
           <v-chip size="large" :ripple="false" class="px-4 font-weight-light text-white" text="All"
                   style="border-color: #96AE50 !important;" variant="outlined" >
-            <template v-slot:append>
-              <v-icon class="mdi mdi-close pl-5 cursor-pointer" size="x-small" @click=""></v-icon>
-            </template>
           </v-chip>
           <v-chip
               :ripple="false"
@@ -60,6 +57,7 @@ const handleCategorySelection = (selected) => {
               v-for="category in [...categories.values()]"
               :key="category.slug"
               :text="category.name"
+              :value="category.slug"
           >
             <template v-slot:append>
               <LazyModalsCategoryDelete :slug="category.slug" :name="category.name" :category-type="type"/>

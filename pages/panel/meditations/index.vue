@@ -42,14 +42,15 @@ const load = async (options = {}) => {
     return
   }
   loading.value = true
+  let categoriesFilter = selectedCategories.value.filter(c => c !== 0).join(',')
   const search : FilterSearchItem[] = [
     ...searchText.value === '' ? [] : [
       { field: 'title', operator: 'ilike', value: searchText.value },
       { field: 'description', operator: 'ilike', value: searchText.value },
       { field: 'price', operator: 'like', value: searchText.value }
     ],
-    ...selectedCategories.value.length > 0 ? [
-      { field: 'categories.slug', operator: 'in', value: selectedCategories.value }
+    ...categoriesFilter.length > 0 ? [
+      { field: 'categories.slug', operator: 'in', value: categoriesFilter }
     ] : []
   ]
   const params = useApi().prepareQueryParams(options, search)
@@ -60,8 +61,7 @@ const load = async (options = {}) => {
 
 const handleSelectedCategories = (categories) => {
   selectedCategories.value = categories
-  console.log(selectedCategories.value)
-  // load()
+  load()
 }
 
 

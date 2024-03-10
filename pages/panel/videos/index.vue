@@ -27,6 +27,7 @@ const menu = ref(false)
 const loading = ref(false)
 const searchText = ref('')
 const router = useRouter();
+const selectedCategories = ref([])
 
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
@@ -43,10 +44,16 @@ const load = async (options = {}) => {
     return
   }
   loading.value = true
-  const search: FilterSearchItem[] = searchText.value === '' ? [] : [
-    {field: 'title', operator: 'ilike', value: searchText.value},
-    {field: 'description', operator: 'ilike', value: searchText.value},
-    {field: 'price', operator: 'like', value: searchText.value},
+  let categoriesFilter = selectedCategories.value.filter(c => c !== 0).join(',')
+  const search : FilterSearchItem[] = [
+    ...searchText.value === '' ? [] : [
+      { field: 'title', operator: 'ilike', value: searchText.value },
+      { field: 'description', operator: 'ilike', value: searchText.value },
+      { field: 'price', operator: 'like', value: searchText.value }
+    ],
+    ...categoriesFilter.length > 0 ? [
+      { field: 'categories.slug', operator: 'in', value: categoriesFilter }
+    ] : []
   ]
   const params = useApi().prepareQueryParams(options, search)
   params.relations = ['categories']
@@ -54,6 +61,10 @@ const load = async (options = {}) => {
   loading.value = false
 }
 
+const handleSelectedCategories = (categories) => {
+  selectedCategories.value = categories
+  load()
+}
 
 const goToLesson = (courseId: string) => {
   if (courseId) {
@@ -93,7 +104,8 @@ const goToLesson = (courseId: string) => {
       </v-sheet>
     </v-sheet>
 
-    <Categories :categories="useCategoryStore().videoCategories" :type="CourseType.Video"/>
+    <Categories :categories="useCategoryStore().videoCategories" :type="CourseType.Video"
+                @update:selectedCategories="handleSelectedCategories"/>
     <AddConfigurationItem Item="All courses"/>
 
 
