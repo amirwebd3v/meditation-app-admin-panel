@@ -1,9 +1,4 @@
 <script setup>
-
-
-import {useMeditationStore} from "~/stores/meditation";
-import {useValidationStore} from "~/stores/validation";
-
 const props = defineProps({
   title: {
     type: String,
@@ -30,10 +25,9 @@ const deleteCourse = async () => {
   loading.value = true
   try {
     await useMeditationStore().destroy(props.id)
-    useEvent('successMessage', 'Meditation Course is successfully Deleted.')
+    useEvent('refreshMeditationsCourseTable')
+    useEvent('successMessage', `${props.title} is successfully Deleted from Meditations.`)
     useEvent('closeModal', false)
-  } catch (err) {
-    useEvent('errorMessage', err.data.message)
   } finally {
     loading.value = false
     useValidationStore().clearErrors()
@@ -82,7 +76,7 @@ function close() {
           <div class="pb-5">
              <span class="text-white font-14  text-justify">
             <strong class="font-16 text-orange">{{ props.title }}</strong>
-            This course has <strong class="font-16 text-orange">{{ props.transactionCount }}</strong> transaction(s), and
+            has <strong class="font-16 text-orange">{{ props.transactionCount }}</strong> transaction(s), and
                <strong class="font-16 text-orange">{{ props.lessonCount }}</strong> lesson(s) inside it.
                Be patient that all of its data will be permanently deleted.
           </span>

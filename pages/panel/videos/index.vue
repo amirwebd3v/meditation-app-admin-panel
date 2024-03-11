@@ -2,11 +2,12 @@
 
 import Categories from "~/components/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/configuration/AddConfigurationItem.vue";
-import {useVideoStore} from "~/stores/video"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";
+import {CourseType} from "~/utils/enums";
+
 const {items, meta} = storeToRefs(useVideoStore())
 
 /***********************************************/
@@ -14,13 +15,10 @@ definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-onMounted(async () => {
-  await load()
-})
-
-watch(items, () => {
-  meta.value = { ...meta.value }
-})
+onBeforeMount(() => {
+  useCategoryStore().fetch(CourseType.Video);
+  load()
+});
 
 /***********************************************/
 const menu = ref(false)
@@ -45,14 +43,14 @@ const load = async (options = {}) => {
   }
   loading.value = true
   let categoriesFilter = selectedCategories.value.filter(c => c !== 0).join(',')
-  const search : FilterSearchItem[] = [
+  const search: FilterSearchItem[] = [
     ...searchText.value === '' ? [] : [
-      { field: 'title', operator: 'ilike', value: searchText.value },
-      { field: 'description', operator: 'ilike', value: searchText.value },
-      { field: 'price', operator: 'like', value: searchText.value }
+      {field: 'title', operator: 'ilike', value: searchText.value},
+      {field: 'description', operator: 'ilike', value: searchText.value},
+      {field: 'price', operator: 'like', value: searchText.value}
     ],
     ...categoriesFilter.length > 0 ? [
-      { field: 'categories.slug', operator: 'in', value: categoriesFilter }
+      {field: 'categories.slug', operator: 'in', value: categoriesFilter}
     ] : []
   ]
   const params = useApi().prepareQueryParams(options, search)
@@ -66,14 +64,14 @@ const handleSelectedCategories = (categories) => {
   load()
 }
 
+useListen('refreshVideosCourseTable',load)
+
 const goToLesson = (courseId: string) => {
   if (courseId) {
     router.push({
       name: 'panel-videos-id-lessons',
       params: {id: courseId},
     })
-  } else {
-    console.error('No course found with title')
   }
 }
 
@@ -180,13 +178,12 @@ const goToLesson = (courseId: string) => {
                   :description="item.description"
                   :categories="item.categories.map((c : Category) => c.id)"
                   :price="item.price"
-                  :is-popular="item.is_popular"
               />
               <LazyModalsVideoCourseDelete :id="item.uuid" :title="item.title"/>
             </v-card>
           </v-menu>
           <v-icon
-              v-if="item.set === 'MULTIPLE'"
+              v-if="item.set === CourseKind.Course"
               class="text-primary"
               icon="mdi-chevron-right"
               size="x-large"

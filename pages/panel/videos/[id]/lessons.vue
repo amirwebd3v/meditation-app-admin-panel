@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {useLessonStore} from "~/stores/lesson"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Course} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";
+
 const {items, meta} = storeToRefs(useLessonStore())
 
 /***********************************************/
@@ -11,13 +11,11 @@ definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await load()
 })
 
-watch(items, () => {
-  meta.value = { ...meta.value }
-})
+
 
 /***********************************************/
 const loading = ref(false)
@@ -46,6 +44,8 @@ const load = async (options = {}) => {
   loading.value = false
 }
 
+
+useListen('refreshVideosLessonsTable',load)
 </script>
 
 
@@ -78,7 +78,7 @@ const load = async (options = {}) => {
           ></v-text-field>
         </v-sheet>
         <v-sheet class="ml-auto">
-          <LazyModalsVideoLessonAdd/>
+          <LazyModalsVideoLessonAdd :course-title="course.title" :course-id="course.uuid"/>
         </v-sheet>
       </v-sheet>
       <!--     End First section-->
@@ -130,7 +130,8 @@ const load = async (options = {}) => {
             <LazyModalsVideoLessonEdit
                 :id="item.uuid"
                 :title="item.title"
-                :link="item.source"
+                :source="item.source"
+                :is-lock="item.is_lock"
                 :description="item.description"
                 :is-popular="item.is_popular"
             />

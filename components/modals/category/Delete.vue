@@ -23,12 +23,10 @@ const deleteCategory = async () => {
   loading.value = true
   try {
     await useCategoryStore().destroy(props.slug)
+    await useCategoryStore().fetch(props.categoryType)
     useEvent('successMessage', `${props.name} is successfully Deleted from ${props.categoryType.toLowerCase()}.`)
     useEvent('closeModal', false)
-  } catch (err) {
-    useEvent('errorMessage', err.data.message)
   } finally {
-    await useCategoryStore().fetch()
     loading.value = false
     useValidationStore().clearErrors()
   }

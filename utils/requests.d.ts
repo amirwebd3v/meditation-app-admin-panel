@@ -11,7 +11,6 @@ interface CourseStoreRequest {
     thumbnail?: string
     description?: string
     price: number
-    is_popular: boolean
 }
 
 interface CourseUpdateRequest {
@@ -21,7 +20,6 @@ interface CourseUpdateRequest {
     title?: string
     description?: string
     price?: number
-    is_popular?: boolean
 }
 
 

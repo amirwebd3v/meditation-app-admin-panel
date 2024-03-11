@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import AddVideo from "~/components/modals/video/course/Add.vue";
-
 defineProps({
   Item: {
     type: String,
@@ -25,7 +23,7 @@ const isVideoCoursePage = computed(() => {
     <span class="text-white font-weight-medium font-18 ">{{ Item }}</span>
 
     <LazyModalsMeditationCourseType v-if="isMeditationCoursePage"/>
-    <LazyModalsVideoCourseAdd v-if="isVideoCoursePage"/>
+    <LazyModalsVideoCourseAdd  v-if="isVideoCoursePage"/>
 
   </v-row>
 </template>

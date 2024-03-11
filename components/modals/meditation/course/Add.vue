@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseKind, CourseType} from "~/utils/enums";
-import {useValidationStore} from "~/stores/validation";
-import {useMeditationStore} from "~/stores/meditation";
-import {storeToRefs} from "pinia";
-
 
 /*********************************************/
 const singleCourseModal = ref()
@@ -12,15 +8,17 @@ const CourseModal = ref()
 const selectedCourse = ref<CourseKind>()
 const loading = ref()
 const {errors} = storeToRefs(useValidationStore());
+
 /********************************************/
 const initialState = {
-  title: '',
-  set: CourseKind.Course,
+  title: null,
+  set: selectedCourse,
   description: null,
   categories: [],
   price: 0,
   type: CourseType.Meditation,
-  is_lock: false
+  is_lock: false,
+  is_popular: false
 }
 
 const request = reactive<CourseStoreRequest>({...initialState})
@@ -55,11 +53,13 @@ const saveCourse = async () => {
   loading.value = true
   try {
     await useMeditationStore().store(request)
-    useEvent('successMessage', 'Meditation Course is successfully Added.')
+    useEvent('refreshMeditationsCourseTable')
+    useEvent('successMessage', `${request.title} is successfully Added as a ${request.set.toLowerCase()} Meditation.`)
     useEvent('closeModal', false)
+    Object.assign(request, initialState);
   } finally {
     loading.value = false
-    Object.assign(request, initialState);
+    useValidationStore().clearErrors()
   }
 }
 

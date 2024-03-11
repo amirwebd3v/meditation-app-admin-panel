@@ -1,14 +1,6 @@
 <script setup lang="ts">
-
-
-import {useLessonStore} from "~/stores/lesson";
-import {useValidationStore} from "~/stores/validation";
-import {useCategoryStore} from "~/stores/category";
-import {useMediaStore} from "~/stores/media";
-import {storeToRefs} from "pinia";
 import type {LessonUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
-
 
 /********************************************/
 const loading = ref()
@@ -16,7 +8,7 @@ const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
 
-const validateLink = (value) => {
+const validateSource = (value) => {
 
   const isValidURL = /^https?:\/\/.*/.test(value);
   return isValidURL || 'Please enter a valid URL (starting with http:// or https://)';
@@ -31,7 +23,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  link: {
+  source: {
     type: String,
     required: true
   },
@@ -57,7 +49,7 @@ const props = defineProps({
 const initialState = {
   id: props.id,
   title: props.title,
-  link: props.link,
+  source: props.source,
   description: props.description,
   is_popular: props.isPopular,
   is_lock: props.isLock
@@ -76,12 +68,13 @@ const updateLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().update(request)
+    useEvent('successMessage', `${request.title} is successfully Updated.`)
+    useEvent('refreshVideosLessonsTable')
     useEvent('closeModal', false)
-  } catch (err) {
-    console.error(err)
-  } finally {
     Object.assign(request, initialState);
+  } finally {
     loading.value = false
+    useValidationStore().clearErrors()
   }
 }
 
@@ -116,9 +109,9 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Video Link</div>
-          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.link"
+          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.source"
                         placeholder="https://" :disabled="loading" :error-messages="errors['source']"
-                        :rules="[validateLink]"
+                        :rules="[validateSource]"
           />
         </v-col>
         <v-col cols="12" class="py-0">

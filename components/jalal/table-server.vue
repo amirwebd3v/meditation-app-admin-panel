@@ -164,7 +164,7 @@ const transform = {
   }) : [])
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await load()
 })
 

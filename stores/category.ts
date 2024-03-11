@@ -11,30 +11,33 @@ export const useCategoryStore = defineStore('category', {
         videoCategories: new Map<number, Category>(),
     }),
     actions: {
-        async fetch() {
-            this.meditationCategories.clear()
-            this.videoCategories.clear()
+        async fetch(categoryType: CourseType) {
+            try {
+                const response = await useApi().paginate<Category>('/admin/v1/category', {
+                    sort: {created_at: 'desc'},
+                    pagination: {page: 1, perPage: -1},
+                    search: [{field: 'type', value: categoryType}],
+                });
 
-            let response = await useApi().paginate<Category>('/admin/v1/category', {
-                sort: {created_at: 'desc'},
-                pagination: {page: 1, perPage: -1},
-                search: [{field: 'type', value: CourseType.Meditation}]
-            })
-            response.data.forEach(c => this.meditationCategories.set(c.id, c))
-
-            response = await useApi().paginate<Category>('/admin/v1/category', {
-                sort: {created_at: 'desc'},
-                pagination: {page: 1, perPage: -1},
-                search: [{field: 'type', value: CourseType.Video}]
-            })
-            response.data.forEach(c => this.videoCategories.set(c.id, c))
+                let categoriesMap: Map<number, Category> = new Map();
+                if (categoryType === CourseType.Meditation) {
+                    categoriesMap = this.meditationCategories
+                }
+                if (categoryType === CourseType.Video) {
+                    categoriesMap = this.videoCategories;
+                }
+                categoriesMap.clear();
+                response.data.forEach((category) => categoriesMap.set(category.id, category));
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
         },
 
         async store(request: CategoryStoreRequest): Promise<Category> {
             return await useApi().post('/admin/v1/category', {body: request})
         },
 
-        async destroy(slug:string) {
+        async destroy(slug: string) {
             await useApi().destroy(`/admin/v1/category/${slug}`);
         },
     },

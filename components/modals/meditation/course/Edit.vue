@@ -1,20 +1,13 @@
 <script setup lang="ts">
 
-
-import {useMeditationStore} from "~/stores/meditation";
-import {useValidationStore} from "~/stores/validation";
-import {useCategoryStore} from "~/stores/category";
-import {useMediaStore} from "~/stores/media";
-import {storeToRefs} from "pinia";
 import type {CourseUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
-import {CourseType} from "~/utils/enums";
+
 
 
 /********************************************/
 const loading = ref()
 const route = useRoute()
-const {meditationCategories} = storeToRefs(useCategoryStore())
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
 /********************************************/
@@ -39,8 +32,8 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
-  quantity:{
-    type: Number,
+  courseKind:{
+    type: String,
     required: true
   },
   price: {
@@ -52,11 +45,12 @@ const props = defineProps({
 /********************************************/
 const initialState = {
   id: props.id,
+  courseKind: props.courseKind,
   title: props.title,
   description: props.description,
   categories: props.categories,
   price: props.price,
-  is_lock: props.isLock,
+  is_lock: props.price !== 0,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
 
@@ -97,12 +91,13 @@ const updateCourse = async () => {
   loading.value = true
   try {
     await useMeditationStore().update(request)
+    useEvent('successMessage', `${request.title} is successfully Updated.`)
+    useEvent('refreshMeditationsCourseTable')
     useEvent('closeModal', false)
-  } catch (err) {
-    console.error(err)
-  } finally {
     Object.assign(request, initialState);
+  } finally {
     loading.value = false
+    useValidationStore().clearErrors()
   }
 }
 
@@ -123,8 +118,8 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3" v-if="props.quantity === 1">Edit single Meditation Course</span>
-      <span class="pl-3" v-if="props.quantity !== 1">Edit Meditation Course</span>
+      <span class="pl-3" v-if="props.courseKind === CourseKind.Single">Edit single Meditation Course</span>
+      <span class="pl-3" v-if="props.courseKind !== CourseKind.Single">Edit Meditation Course</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 
@@ -209,7 +204,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="12" class="py-0" v-if="props.quantity === 1">
+        <v-col cols="12" class="py-0" v-if="props.courseKind === CourseKind.Single">
           <div class="text-white pb-2">Upload a picture</div>
           <v-file-input class="file-input-label mb-3" label="Select a picture to Upload" variant="outlined"
                         prepend-icon="" color="primary"
@@ -228,7 +223,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-3" v-if="props.quantity === 1">
+        <v-col cols="6" class="pt-3" v-if="props.courseKind === CourseKind.Single">
           <div class="text-white mb-md-5">Free/Paid</div>
           <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                          :error-messages="errors['is_lock']">

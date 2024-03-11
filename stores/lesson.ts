@@ -33,5 +33,9 @@ export const useLessonStore = defineStore('lesson', {
             const data = await useApi().put(`/admin/v1/lesson/${id}`, {body})
             this.items.set(data.uuid, data)
         },
+
+        async destroy(id:string) {
+            await useApi().destroy(`/admin/v1/lesson/${id}`);
+        },
     },
 });

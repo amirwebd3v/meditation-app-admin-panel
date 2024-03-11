@@ -1,35 +1,22 @@
 <script setup lang="ts">
 import Header from "~/components/header/Header.vue";
-import {useCategoryStore} from "~/stores/category";
+
 
 useHead({
-  meta: [
-    {content: 'OmniWell'},
-  ],
-  titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} Meditation ` : "OmniWell";
-  },
-});
-
-
-onMounted(async () => {
-  await useCategoryStore().fetch()
+ title: 'OmniWellScan'
 })
 
+
 //Todo: create enum types for snackbar
-
-
-
 
 const snackbar = ref({
   status: false,
   text: '',
-  timeout: 5000,
+  timeout: 15000,
   type: '',
   color: '',
   icon: '',
 })
-
 
 
 useListen('successMessage', (value: String) => {
@@ -72,15 +59,16 @@ useListen('infoMessage', (value: String) => {
         :color="snackbar.color"
         vertical
         max-width="500"
+        variant="elevated"
     >
 
-      <v-row justify="start"  dense class="pb-3" align="center">
+      <v-row justify="start"  dense class="py-3" align="center">
         <v-icon :icon="snackbar.icon" size="large"></v-icon>
         <h3 class="pl-2">{{snackbar.type}}</h3>
       </v-row>
 
 
-      <p class="font-14 pt-2">{{ snackbar.text }}</p>
+      <p class="font-16 py-2">{{ snackbar.text }}</p>
 <!--      <template #default>-->
 <!--          <v-alert-->
 <!--              border="start"-->

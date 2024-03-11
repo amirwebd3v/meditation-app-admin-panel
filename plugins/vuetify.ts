@@ -28,7 +28,6 @@ const LightTheme: ThemeDefinition = {
 
 
 export default defineNuxtPlugin((nuxtApp) => {
-    // Doing something with nuxtApp
 
     const vuetify = createVuetify({
         ssr: true,

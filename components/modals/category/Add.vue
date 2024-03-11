@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import {useValidationStore} from "~/stores/validation";
 import type {CategoryStoreRequest} from "~/utils/requests";
-import {storeToRefs} from "pinia";
 
 
 
 /*********************************************/
 const {errors} = storeToRefs(useValidationStore());
 const loading = ref(false)
-
 /*********************************************/
 const props = defineProps({
-  categoryType : {
+  categoryType: {
     type: String,
     required: true
   }
@@ -19,8 +16,8 @@ const props = defineProps({
 
 /*********************************************/
 const initialState = {
-  name : '',
-  type : props.categoryType,
+  name: '',
+  type: props.categoryType,
 }
 
 const request = reactive<CategoryStoreRequest>({...initialState})
@@ -30,15 +27,15 @@ const saveCategory = async () => {
   loading.value = true
   try {
     await useCategoryStore().store(request)
-    useEvent('successMessage', `${request.name} is successfully Added to ${request.type.toLowerCase()}. `)
+    await useCategoryStore().fetch(request.type)
+    useEvent('successMessage', `${request.name} is successfully Added to ${request.type.toLowerCase()}s.`)
     useEvent('closeModal', false)
-  } finally {
-    await useCategoryStore().fetch()
-    loading.value = false
     Object.assign(request, initialState);
+  } finally {
+    loading.value = false
+    useValidationStore().clearErrors()
   }
 }
-
 
 function close() {
   Object.assign(request, initialState);
@@ -46,14 +43,11 @@ function close() {
   useEvent('closeModal', false)
 }
 
-
 </script>
 
+
 <template>
-
-
   <LazyModalsMain>
-
     <template #dialogButton="props">
       <v-btn
           color="primary"
@@ -82,10 +76,11 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Category</div>
           <v-text-field maxlength="30"
-              v-model="request.name"
-              clearable
-              variant="outlined" color="primary" density="comfortable"
-              placeholder="Enter category name(s)" :error-messages="errors['name']"/>
+                        v-model="request.name"
+                        clearable
+                        :disabled="loading"
+                        variant="outlined" color="primary" density="comfortable"
+                        placeholder="Enter category name(s)" :error-messages="errors['name']"/>
         </v-col>
       </v-row>
     </template>

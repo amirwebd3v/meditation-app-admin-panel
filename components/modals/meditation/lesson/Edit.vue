@@ -1,11 +1,5 @@
 <script setup lang="ts">
 
-
-import {useLessonStore} from "~/stores/lesson";
-import {useValidationStore} from "~/stores/validation";
-import {useCategoryStore} from "~/stores/category";
-import {useMediaStore} from "~/stores/media";
-import {storeToRefs} from "pinia";
 import type { LessonUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
 
@@ -34,8 +28,12 @@ const props = defineProps({
     type: String,
     required: true
   },
-  categories: {
-    type: Array<number>,
+  source: {
+    type: String,
+    required: true
+  },
+  duration: {
+    type: String,
     required: true
   },
   isPopular: {
@@ -53,7 +51,8 @@ const initialState = {
   id: props.id,
   title: props.title,
   description: props.description,
-  categories: props.categories,
+  source: props.source,
+  duration: props.duration,
   is_popular: props.isPopular,
   is_lock: props.isLock
 }
@@ -71,12 +70,13 @@ const updateLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().update(request)
+    useEvent('successMessage', `${request.title} is successfully Updated.`)
+    useEvent('refreshMeditationsLessonsTable')
     useEvent('closeModal', false)
-  } catch (err) {
-    console.error(err)
-  } finally {
     Object.assign(request, initialState);
+  } finally {
     loading.value = false
+    useValidationStore().clearErrors()
   }
 }
 

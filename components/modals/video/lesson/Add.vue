@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import type {LessonStoreRequest} from "~/utils/requests";
-import {useValidationStore} from "~/stores/validation";
-import {useLessonStore} from "~/stores/lesson";
-import {storeToRefs} from "pinia";
-
 
 /*********************************************/
 const props = defineProps({
@@ -18,7 +14,11 @@ const props = defineProps({
   courseId: {
     type: String,
     required: true
-  }
+  },
+  courseTitle: {
+    type: String,
+    required: true
+  },
 })
 
 /*********************************************/
@@ -26,7 +26,7 @@ const isBtnText = ref()
 const loading = ref()
 const {errors} = storeToRefs(useValidationStore());
 
-const validateLink = (value) => {
+const validateSource = (value) => {
 
   const isValidURL = /^https?:\/\/.*/.test(value);
   return isValidURL || 'Please enter a valid URL (starting with http:// or https://)';
@@ -34,9 +34,11 @@ const validateLink = (value) => {
 /********************************************/
 const initialState = {
   course_id: props.courseId,
-  link: '',
-  title: '',
+  title: null,
+  source: null,
+  duration: null,
   description: null,
+  is_new: true,
   is_popular: false,
   is_lock: false,
 }
@@ -48,11 +50,13 @@ const saveLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().store(request)
-    useEvent('successMessage', 'Video is successfully Added.')
+    useEvent('refreshVideosLessonsTable')
+    useEvent('successMessage', `${request.title} is successfully Added to ${props.courseTitle}.`)
     useEvent('closeModal', false)
+    Object.assign(request, initialState);
   } finally {
     loading.value = false
-    Object.assign(request, initialState);
+    useValidationStore().clearErrors()
   }
 }
 
@@ -107,9 +111,9 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Video Link</div>
-          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.link"
+          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.source"
                         placeholder="https://" :disabled="loading" :error-messages="errors['source']"
-                        :rules="[validateLink]"
+                        :rules="[validateSource]"
           />
         </v-col>
         <v-col cols="12" class="py-0">

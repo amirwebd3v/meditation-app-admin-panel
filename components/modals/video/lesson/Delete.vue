@@ -1,10 +1,10 @@
 <script setup>
 
-
-import {useVideoStore} from "~/stores/video";
-import {useValidationStore} from "~/stores/validation";
-
 const props = defineProps({
+  courseTitle: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true
@@ -23,10 +23,9 @@ const deleteLesson = async () => {
   try {
     await useVideoStore().destroy(props.id)
     useEvent('successMessage', 'Video is successfully Deleted.')
+    useEvent('refreshVideosLessonsTable')
     useEvent('closeModal', false)
-  } catch (err) {
-    useEvent('errorMessage', err.data.message)
-  } finally {
+  }  finally {
     loading.value = false
     useValidationStore().clearErrors()
   }
@@ -73,8 +72,9 @@ function close() {
           </div>
           <div class="pb-5">
              <span class="text-white font-14  text-justify">
-            <strong class="font-16 text-orange">"{{ title }}"</strong>
-            and its all of data will be permanently deleted.
+            <strong class="font-16 text-orange">{{ props.title }}</strong>
+            has <strong class="font-16 text-orange">{{ props.transactionCount }}</strong> transaction(s)
+               inside it. Be patient that all of its data will be permanently deleted.
           </span>
           </div>
 

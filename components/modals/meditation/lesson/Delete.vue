@@ -21,11 +21,10 @@ const loading = ref(false)
 const deleteLesson = async () => {
   loading.value = true
   try {
-    // await useLessonStore().destroy(props.id)
+    await useLessonStore().destroy(props.id)
+    useEvent('refreshMeditationsLessonsTable')
     useEvent('successMessage', `${props.title} is successfully Deleted from ${props.courseTitle}.`)
     useEvent('closeModal', false)
-  } catch (err) {
-    useEvent('errorMessage', err.data.message)
   } finally {
     loading.value = false
     useValidationStore().clearErrors()
@@ -73,8 +72,9 @@ function close() {
           </div>
           <div class="pb-5">
              <span class="text-white font-14  text-justify">
-            <strong class="font-16 text-orange">"{{ props.title }}"</strong>
-            and its all of data will be permanently deleted.
+            <strong class="font-16 text-orange">{{ props.title }}</strong>
+            has <strong class="font-16 text-orange">{{ props.transactionCount }}</strong> transaction(s)
+               inside it. Be patient that all of its data will be permanently deleted.
           </span>
           </div>
 

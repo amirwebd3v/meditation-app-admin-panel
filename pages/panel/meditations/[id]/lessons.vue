@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {useLessonStore} from "~/stores/lesson"
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Course} from "~/utils/types";
@@ -12,16 +11,12 @@ definePageMeta({
   middleware: 'sanctum:auth',
 })
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await load()
 })
 
-watch(items, () => {
-  meta.value = {...meta.value}
-})
-
 /***********************************************/
-const loading = ref(true)
+const loading = ref(false)
 const searchText = ref('')
 const course: Course = (await useMeditationStore().get(useRoute().params.id.toString()))
 
@@ -47,6 +42,8 @@ const load = async (options = {}) => {
   loading.value = false
 }
 
+
+useListen('refreshMeditationsLessonsTable',load)
 </script>
 
 
@@ -79,7 +76,7 @@ const load = async (options = {}) => {
           ></v-text-field>
         </v-sheet>
         <v-sheet class=" ml-auto">
-          <LazyModalsMeditationLessonAdd :course-title="course.title"/>
+          <LazyModalsMeditationLessonAdd :course-title="course.title" :course-id="course.uuid"/>
         </v-sheet>
       </v-sheet>
       <!--     End First section-->
@@ -138,15 +135,17 @@ const load = async (options = {}) => {
         <template #item.actions="{item}">
 
           <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
-            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title"/>
             <LazyModalsMeditationLessonEdit
                 :course-title="course.title"
                 :id="item.uuid"
                 :title="item.title"
+                :source="item.source"
+                :duration="item.duration"
                 :description="item.description"
                 :is-lock="item.is_lock"
                 :is-popular="item.is_popular"
             />
+            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title"/>
           </div>
         </template>
       </v-data-table-server>

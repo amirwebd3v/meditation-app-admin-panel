@@ -1,10 +1,8 @@
 import mitt from 'mitt'
 
-type ApplicationEvents = {
-    'modalStatus': Boolean
-};
 
-const emitter = mitt<ApplicationEvents>()
+
+const emitter = mitt()
 
 const useEvent = emitter.emit
 const useListen = emitter.on

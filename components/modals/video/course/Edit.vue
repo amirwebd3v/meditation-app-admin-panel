@@ -1,22 +1,14 @@
 <script setup lang="ts">
-
-
-import {useVideoStore} from "~/stores/video";
-import {useValidationStore} from "~/stores/validation";
-import {useCategoryStore} from "~/stores/category";
-import {useMediaStore} from "~/stores/media";
-import {storeToRefs} from "pinia";
 import type {CourseUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
 import {CourseType} from "~/utils/enums";
-
-
 
 /********************************************/
 const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
+
 /********************************************/
 const props = defineProps({
   id: {
@@ -87,13 +79,14 @@ const upload = async (files: File[]) => {
 const updateCourse = async () => {
   loading.value = true
   try {
-    // await useVideoStore().update(request)
+    await useVideoStore().update(request)
+    useEvent('successMessage', `${request.title} is successfully Updated.`)
+    useEvent('refreshVideosCourseTable')
     useEvent('closeModal', false)
-  } catch (err) {
-    console.error(err)
-  } finally {
     Object.assign(request, initialState);
+  } finally {
     loading.value = false
+    useValidationStore().clearErrors()
   }
 }
 

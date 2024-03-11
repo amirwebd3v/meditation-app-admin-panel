@@ -1,23 +1,20 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
-import {CourseType} from "~/utils/enums";
-import {useCategoryStore} from "~/stores/category";
-import {useValidationStore} from "~/stores/validation";
-import {storeToRefs} from "pinia";
-
+import {CourseKind, CourseType} from "~/utils/enums";
 
 /*********************************************/
-
 const loading = ref()
-const {videoCategories} = storeToRefs(useCategoryStore());
 const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
-  title: '',
+  title: null,
+  set: CourseKind.Course,
   description: null,
   categories: [],
   price: 0,
   type: CourseType.Video,
+  is_lock: false,
+  is_popular: false
 }
 
 const request = reactive<CourseStoreRequest>({...initialState})
@@ -51,12 +48,14 @@ const toggle = () => {
 const saveCourse = async () => {
   loading.value = true
   try {
-    // await useVideoStore().store(request)
-    useEvent('successMessage', 'Video Course is successfully Added.')
+    await useVideoStore().store(request)
+    useEvent('refreshVideosCourseTable')
+    useEvent('successMessage', `${request.title} is successfully Added as a video ${request.set.toLowerCase()}.`)
     useEvent('closeModal', false)
+    Object.assign(request, initialState);
   } finally {
     loading.value = false
-    Object.assign(request, initialState);
+    useValidationStore().clearErrors()
   }
 }
 

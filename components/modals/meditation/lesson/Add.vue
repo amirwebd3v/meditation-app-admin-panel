@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import type { LessonStoreRequest} from "~/utils/requests";
-import {useCategoryStore} from "~/stores/category";
-import {useValidationStore} from "~/stores/validation";
-import {useLessonStore} from "~/stores/lesson";
-import {storeToRefs} from "pinia";
-import {CourseKind} from "~/utils/enums";
+
 
 
 
@@ -25,7 +21,7 @@ const props = defineProps({
   courseTitle: {
     type: String,
     required: true
-  }
+  },
 })
 
 /*********************************************/
@@ -35,9 +31,11 @@ const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
   course_id: props.courseId,
-  set: CourseKind.Course,
-  title: '',
+  title: null,
+  source: null,
+  duration: null,
   description: null,
+  is_new: true,
   is_popular: false,
   is_lock: false,
 }
@@ -49,11 +47,13 @@ const saveLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().store(request)
+    useEvent('refreshMeditationsLessonsTable')
     useEvent('successMessage', `${request.title} is successfully Added to ${props.courseTitle}.`)
     useEvent('closeModal', false)
+    Object.assign(request, initialState);
   }  finally {
     loading.value = false
-    Object.assign(request, initialState);
+    useValidationStore().clearErrors()
   }
 }
 
@@ -104,7 +104,7 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Title</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        placeholder="Enter single Meditation title" :disabled="loading" :error-messages="errors['title']"/>
+                        placeholder="Enter meditation title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Description</div>
