@@ -7,10 +7,8 @@ const appConfig = useAppConfig()
 const client = new L5Client(appConfig.api.baseUrl, {headers: appConfig.api.headers})
 
 const onResponseError = async ({ request, response, options }) => {
+    useValidationStore().setResponse(response)
     switch (response.status) {
-        case 422:
-            useValidationStore().setErrors(response._data.errors)
-            break
         case 401:
             navigateTo('/auth/login')
             break

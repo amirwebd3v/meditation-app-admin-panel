@@ -1,15 +1,22 @@
 import {defineStore} from "pinia";
+import type {Error} from "~/utils/types";
 
 export const useValidationStore = defineStore('validation', {
-    state: () => ({
-        errors: []
+    state: (): Error => ({
+        status: undefined,
+        message: undefined,
+        errors: undefined
     }),
     getters: {
-        doubleCount: (state) => state.errors,
+        //
     },
     actions: {
-        setErrors(errors: []) {
-            this.errors = errors
+        setResponse(response: Response) {
+            this.status = response.status
+            this.message = response._data.message
+            this.errors = response._data?.errors
+
+            useEvent('errorMessage', this.message)
         },
         clearErrors() {
             this.errors = []

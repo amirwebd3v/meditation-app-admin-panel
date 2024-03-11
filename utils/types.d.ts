@@ -1,6 +1,13 @@
 import type {CourseType} from "~/utils/enums";
 import {CourseKind} from "~/utils/enums";
 
+
+interface Error {
+    status: number|undefined,
+    message: string|undefined,
+    errors: Array<Record<string, Array<string>>>|undefined
+}
+
 interface Course {
     created_at: number
     description: string
@@ -87,6 +94,7 @@ interface Category {
 }
 
 export {
+    Error,
     User,
     Preview,
     Lesson,
