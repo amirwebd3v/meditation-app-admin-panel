@@ -5,7 +5,7 @@ import {CourseKind} from "~/utils/enums";
 interface Error {
     status: number|undefined,
     message: string|undefined,
-    errors: Array<Record<string, Array<string>>>|undefined
+    errors: Record<string, Array<string>>|undefined
 }
 
 interface Course {

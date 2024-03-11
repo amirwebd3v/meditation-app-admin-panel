@@ -16,18 +16,22 @@ export const useCategoryStore = defineStore('category', {
                 const response = await useApi().paginate<Category>('/admin/v1/category', {
                     sort: {created_at: 'desc'},
                     pagination: {page: 1, perPage: -1},
-                    search: [{field: 'type', value: categoryType}],
+                    search: [{field: 'type', operator: '=', value: categoryType}],
                 });
 
                 let categoriesMap: Map<number, Category> = new Map();
-                if (categoryType === CourseType.Meditation) {
-                    categoriesMap = this.meditationCategories
-                }
-                if (categoryType === CourseType.Video) {
-                    categoriesMap = this.videoCategories;
-                }
-                categoriesMap.clear();
                 response.data.forEach((category) => categoriesMap.set(category.id, category));
+
+                switch (categoryType) {
+                    case CourseType.Meditation:
+                        this.meditationCategories = categoriesMap
+                        break
+                    case CourseType.Video:
+                        this.videoCategories = categoriesMap
+                        break
+                    default:
+                        break
+                }
             } catch (error) {
                 console.error('Error fetching categories:', error);
             }

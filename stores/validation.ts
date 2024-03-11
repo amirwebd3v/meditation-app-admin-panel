@@ -5,7 +5,7 @@ export const useValidationStore = defineStore('validation', {
     state: (): Error => ({
         status: undefined,
         message: undefined,
-        errors: undefined
+        errors: {}
     }),
     getters: {
         //
@@ -19,7 +19,7 @@ export const useValidationStore = defineStore('validation', {
             useEvent('errorMessage', this.message)
         },
         clearErrors() {
-            this.errors = []
+            this.errors = {}
         }
     }
 })
