@@ -74,13 +74,13 @@ useListen('infoMessage', (value: String) => {
         max-width="500"
     >
 
-      <v-row justify="start"  dense class="py-3" align="center">
+      <v-row justify="start"  dense class="pb-3" align="center">
         <v-icon :icon="snackbar.icon" size="large"></v-icon>
         <h3 class="pl-2">{{snackbar.type}}</h3>
       </v-row>
 
 
-      <p class="font-14 py-2">{{ snackbar.text }}</p>
+      <p class="font-14 pt-2">{{ snackbar.text }}</p>
 <!--      <template #default>-->
 <!--          <v-alert-->
 <!--              border="start"-->
