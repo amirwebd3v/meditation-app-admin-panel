@@ -23,6 +23,15 @@ const initialState = {
 
 const request = reactive<CourseStoreRequest>({...initialState})
 
+function singleOrCourse(request) {
+  let keysToExclude = ['is_lock', 'is_popular']
+  if (request.set === CourseKind.Course) {
+    for (let key of keysToExclude) {
+      delete request[key];
+    }
+  }
+}
+
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
   return pattern.test(value)
@@ -51,6 +60,7 @@ const toggle = () => {
 /**********************************************/
 const saveCourse = async () => {
   loading.value = true
+  singleOrCourse(request);
   try {
     await useMeditationStore().store(request)
     useEvent('refreshMeditationsCourseTable')
@@ -95,7 +105,8 @@ function closeCourseModal(val) {
                variant="outlined"
                @click="selectedCourse = CourseKind.Single">
           <template #prepend>
-            <v-radio v-model="selectedCourse" :value="CourseKind.Single" readonly disabled style="opacity: 1; color: #96AE50;"/>
+            <v-radio v-model="selectedCourse" :value="CourseKind.Single" readonly disabled
+                     style="opacity: 1; color: #96AE50;"/>
           </template>
         </v-btn>
 
@@ -113,7 +124,8 @@ function closeCourseModal(val) {
                @click="selectedCourse = CourseKind.Course"
         >
           <template #prepend>
-            <v-radio v-model="selectedCourse" :value="CourseKind.Course" readonly disabled style="opacity: 1;color: #96AE50;"/>
+            <v-radio v-model="selectedCourse" :value="CourseKind.Course" readonly disabled
+                     style="opacity: 1;color: #96AE50;"/>
           </template>
         </v-btn>
 
