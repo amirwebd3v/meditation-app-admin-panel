@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseKind, CourseType} from "~/utils/enums";
+import type {Preview} from "~/utils/types";
 
 /*********************************************/
 const singleCourseModal = ref()
@@ -8,12 +9,14 @@ const CourseModal = ref()
 const selectedCourse = ref<CourseKind>()
 const loading = ref()
 const {errors} = storeToRefs(useValidationStore());
-
+const preview = ref<Preview | null>(null)
 /********************************************/
 const initialState = {
   title: null,
   set: selectedCourse,
   description: null,
+  source: null,
+  duration: null,
   categories: [],
   price: 0,
   type: CourseType.Meditation,
@@ -23,14 +26,6 @@ const initialState = {
 
 const request = reactive<CourseStoreRequest>({...initialState})
 
-function singleOrCourse(request) {
-  let keysToExclude = ['is_lock', 'is_popular']
-  if (request.set === CourseKind.Course) {
-    for (let key of keysToExclude) {
-      delete request[key];
-    }
-  }
-}
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -58,6 +53,21 @@ const toggle = () => {
 }
 
 /**********************************************/
+function singleOrCourse(request) {
+  let keysToExclude = ['is_lock', 'is_popular', 'source', 'duration']
+  if (request.set === CourseKind.Course) {
+    for (let key of keysToExclude) {
+      delete request[key];
+    }
+  }
+}
+
+const upload = async (files: File[]) => {
+  preview.value = (await useMediaStore().uploads([files[0]]))[0]
+  request.thumbnail = preview.value?.id
+}
+
+
 const saveCourse = async () => {
   loading.value = true
   singleOrCourse(request);
@@ -229,16 +239,14 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a picture</div>
-                <v-file-input class="file-input-label mb-3" label="Select a picture to Upload" variant="outlined"
-                              prepend-icon="" color="primary"
-                              hide-details="" :disabled="loading">
+                <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
+                              @update:model-value="upload"
+                              variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
-                      <v-card width="45" height="45" class="justify-center align-center">
+                      <v-card width="100" height="100" class="justify-center align-center">
                         <v-col align-self="auto">
-                          <v-img width="auto" height="25" cover
-                                 src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                          </v-img>
+                          <v-img width="48" height="48" cover :src="preview?.url as string"/>
                           <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                         </v-col>
                       </v-card>
@@ -366,7 +374,6 @@ function closeCourseModal(val) {
 
                 </v-autocomplete>
               </v-col>
-
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a track</div>
                 <v-file-input class="file-input-label mb-3" label="Select track to Upload" variant="outlined"
@@ -388,16 +395,15 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a picture</div>
-                <v-file-input class="file-input-label mb-3" label="Select a picture to Upload" variant="outlined"
-                              prepend-icon="" color="primary"
-                              hide-details="" :disabled="loading">
+                <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
+                              @update:model-value="upload"
+                              variant="outlined" prepend-icon="" color="primary"
+                              :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
-                      <v-card width="45" height="45" class="justify-center align-center">
+                      <v-card width="100" height="100" class="justify-center align-center">
                         <v-col align-self="auto">
-                          <v-img width="auto" height="25" cover
-                                 src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                          </v-img>
+                          <v-img width="48" height="48" cover :src="preview?.url as string"/>
                           <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                         </v-col>
                       </v-card>
@@ -437,6 +443,7 @@ function closeCourseModal(val) {
                               :error-messages="errors['price']"
                 ></v-text-field>
               </v-col>
+
             </v-row>
           </v-card-text>
 
