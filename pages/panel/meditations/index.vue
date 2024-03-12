@@ -194,12 +194,12 @@ const goToLesson = (courseId: string) => {
                   :title="item.title"
                   :description="item.description"
                   :is-lock="item.is_lock"
-                  :course-kind="item.set"
+                  :course-set="item.set"
                   :categories="item.categories.map((c : Category) => c.id)"
                   :price="item.price"
               />
               <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
-                                                :id="item.uuid" :title="item.title"/>
+                                                :id="item.uuid" :title="item.title" :course-set="item.set"/>
             </v-card>
           </v-menu>
           <v-icon
