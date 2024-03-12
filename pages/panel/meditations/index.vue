@@ -186,7 +186,7 @@ const goToLesson = (courseId: string) => {
               />
             </template>
 
-            <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded>
+            <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded v-if="menu">
               <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
                                              :btn-out-table="false" :btn-in-table="true"
                                              v-if="item.set === CourseKind.Course && menu"
@@ -201,7 +201,8 @@ const goToLesson = (courseId: string) => {
                   v-if="menu"
               />
               <LazyModalsMeditationCourseDelete v-if="menu" :lesson-count="item.lessons_count" :transaction-count="0"
-                                                :id="item.uuid" :title="item.title" :course-set="item.set"/>
+                                                :id="item.uuid" :title="item.title" :course-set="item.set"
+                                                @closeMenu="v => menu = v"/>
             </v-card>
           </v-menu>
           <v-icon
