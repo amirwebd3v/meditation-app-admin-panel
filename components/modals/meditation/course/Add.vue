@@ -11,15 +11,16 @@ const loading = ref()
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
 /********************************************/
+//Todo: Fix duration value later
+
 const initialState = {
-  title: null,
+  type: CourseType.Meditation,
   set: selectedCourse,
+  title: null,
   description: null,
-  source: null,
-  duration: null,
+  duration: 123,
   categories: [],
   price: 0,
-  type: CourseType.Meditation,
   is_lock: false,
   is_popular: false
 }
@@ -62,10 +63,16 @@ function singleOrCourse(request) {
   }
 }
 
+//Todo: Set file type rules for file-input
 const upload = async (files: File[]) => {
   preview.value = (await useMediaStore().uploads([files[0]]))[0]
-  request.thumbnail = preview.value?.id
+  if(preview.value?.mime_type === 'image/jpeg'){
+    request.thumbnail = preview.value?.id
+  } else if(preview.value?.mime_type === 'audio/mpeg'){
+    request.source = preview.value?.id
+  }
 }
+
 
 
 const saveCourse = async () => {
@@ -79,7 +86,6 @@ const saveCourse = async () => {
     Object.assign(request, initialState);
   } finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 
@@ -87,7 +93,6 @@ const saveCourse = async () => {
 function closeTypeModal() {
   useEvent('closeModal', false)
   Object.assign(request, initialState);
-  useValidationStore().clearErrors()
 }
 
 function closeCourseModal(val) {
@@ -241,6 +246,7 @@ function closeCourseModal(val) {
                 <div class="text-white pb-2">Upload a picture</div>
                 <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
                               @update:model-value="upload"
+                              single-line
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
@@ -376,17 +382,16 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a track</div>
-                <v-file-input class="file-input-label mb-3" label="Select track to Upload" variant="outlined"
-                              prepend-icon="" color="primary"
-                              hide-details="" :disabled="loading">
+                <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
+                              @update:model-value="upload"
+                              single-line
+                              variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
-                      <v-card width="45" height="45" class="justify-center align-center">
+                      <v-card width="100" height="100" class="justify-center align-center">
                         <v-col align-self="auto">
-                          <v-img width="auto" height="25" cover
-                                 src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                          </v-img>
-                          <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
+                          <v-img width="48" height="48" cover :src="preview?.url as string"/>
+                          <v-card-text class="font-12 text-truncate mx-auto">{{ fileName }}</v-card-text>
                         </v-col>
                       </v-card>
                     </template>
@@ -397,6 +402,7 @@ function closeCourseModal(val) {
                 <div class="text-white pb-2">Upload a picture</div>
                 <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
                               @update:model-value="upload"
+                              single-line
                               variant="outlined" prepend-icon="" color="primary"
                               :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
