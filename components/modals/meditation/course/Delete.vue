@@ -79,13 +79,13 @@ function close() {
             </span>
           </div>
           <div class="pb-5">
-             <span class="text-white font-14  text-justify" v-if="courseSet === CourseKind.Course">
+             <span class="text-white font-14  text-justify" v-if="courseSet === CourseSet.Course">
             <strong class="font-16 text-orange">{{ props.title }}</strong>
             has <strong class="font-16 text-orange">{{ props.transactionCount }}</strong> transaction(s), and
                <strong class="font-16 text-orange">{{ props.lessonCount }}</strong> lesson(s) inside it.
                Be patient that all of its data will be permanently deleted.
           </span>
-            <span class="text-white font-14  text-justify" v-if="courseSet === CourseKind.Single">
+            <span class="text-white font-14  text-justify" v-if="courseSet === CourseSet.Single">
             <strong class="font-16 text-orange">{{ props.title }}</strong>
             has <strong class="font-16 text-orange">{{ props.transactionCount }}</strong> transaction(s) inside it.
                Be patient that all of its data will be permanently deleted.

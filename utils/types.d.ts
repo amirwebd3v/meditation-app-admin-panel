@@ -1,5 +1,5 @@
 import type {CourseType} from "~/utils/enums";
-import {CourseKind} from "~/utils/enums";
+import {CourseSet} from "~/utils/enums";
 
 
 interface Error {
@@ -14,7 +14,7 @@ interface Course {
     categories: Category[]
     lessons_count: number
     price: number
-    set: CourseKind
+    set: CourseSet
     thumbnail: Media | null
     title: string
     type: string

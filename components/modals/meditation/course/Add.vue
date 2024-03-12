@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
-import {CourseKind, CourseType} from "~/utils/enums";
+import {CourseSet, CourseType} from "~/utils/enums";
 import type {Preview} from "~/utils/types";
 
 /*********************************************/
 const singleCourseModal = ref()
 const CourseModal = ref()
-const selectedCourse = ref<CourseKind>()
+const selectedCourse = ref<CourseSet>()
 const loading = ref()
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
@@ -56,7 +56,7 @@ const toggle = () => {
 /**********************************************/
 function singleOrCourse(request) {
   let keysToExclude = ['is_lock', 'is_popular', 'source', 'duration']
-  if (request.set === CourseKind.Course) {
+  if (request.set === CourseSet.Course) {
     for (let key of keysToExclude) {
       delete request[key];
     }
@@ -118,9 +118,9 @@ function closeCourseModal(val) {
                  'text-white' : true}"
                size="large"
                variant="outlined"
-               @click="selectedCourse = CourseKind.Single">
+               @click="selectedCourse = CourseSet.Single">
           <template #prepend>
-            <v-radio v-model="selectedCourse" :value="CourseKind.Single" readonly disabled
+            <v-radio v-model="selectedCourse" :value="CourseSet.Single" readonly disabled
                      style="opacity: 1; color: #96AE50;"/>
           </template>
         </v-btn>
@@ -136,10 +136,10 @@ function closeCourseModal(val) {
                }"
                size="large"
                variant="outlined"
-               @click="selectedCourse = CourseKind.Course"
+               @click="selectedCourse = CourseSet.Course"
         >
           <template #prepend>
-            <v-radio v-model="selectedCourse" :value="CourseKind.Course" readonly disabled
+            <v-radio v-model="selectedCourse" :value="CourseSet.Course" readonly disabled
                      style="opacity: 1;color: #96AE50;"/>
           </template>
         </v-btn>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
-import {CourseKind, CourseType} from "~/utils/enums";
+import {CourseSet, CourseType} from "~/utils/enums";
 
 /*********************************************/
 const loading = ref()
@@ -8,7 +8,7 @@ const {errors} = storeToRefs(useValidationStore());
 /********************************************/
 const initialState = {
   title: null,
-  set: CourseKind.Course,
+  set: CourseSet.Course,
   description: null,
   categories: [],
   price: 0,

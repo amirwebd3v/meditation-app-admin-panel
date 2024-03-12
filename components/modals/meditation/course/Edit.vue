@@ -2,7 +2,7 @@
 
 import type {CourseUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
-import {CourseKind} from "~/utils/enums";
+import {CourseSet} from "~/utils/enums";
 
 
 
@@ -79,7 +79,7 @@ const toggle = () => {
 /**********************************************/
 function singleOrCourse(request) {
   let keysToExclude = ['is_lock', 'source', 'duration']
-  if (request.set === CourseKind.Course) {
+  if (request.set === CourseSet.Course) {
     for (let key of keysToExclude) {
       delete request[key];
     }
@@ -129,8 +129,8 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3" v-if="props.courseSet === CourseKind.Single">Edit single Meditation Course</span>
-      <span class="pl-3" v-if="props.courseSet !== CourseKind.Single">Edit Meditation Course</span>
+      <span class="pl-3" v-if="props.courseSet === CourseSet.Single">Edit single Meditation Course</span>
+      <span class="pl-3" v-if="props.courseSet !== CourseSet.Single">Edit Meditation Course</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 
@@ -196,7 +196,7 @@ function close() {
           </v-autocomplete>
         </v-col>
 
-        <v-col cols="12" class="py-0"  v-if="props.courseSet === CourseKind.Single">
+        <v-col cols="12" class="py-0"  v-if="props.courseSet === CourseSet.Single">
           <div class="text-white pb-2">Upload a track</div>
             <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
                           @update:model-value="upload"
@@ -232,7 +232,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-3" v-if="props.courseSet === CourseKind.Single">
+        <v-col cols="6" class="pt-3" v-if="props.courseSet === CourseSet.Single">
           <div class="text-white mb-md-5">Free/Paid</div>
           <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                          :error-messages="errors['is_lock']">

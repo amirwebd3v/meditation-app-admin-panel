@@ -3,11 +3,11 @@ enum CourseType {
     Video = 'VIDEO',
 }
 
-enum CourseKind {
+enum CourseSet {
     Single = 'SINGLE',
     Course = 'MULTIPLE',
 }
 
 export {
-    CourseType, CourseKind
+    CourseType, CourseSet
 }

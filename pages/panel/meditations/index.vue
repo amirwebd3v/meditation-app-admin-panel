@@ -6,7 +6,7 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";
-import {CourseType} from "~/utils/enums";
+import {CourseType,CourseSet} from "~/utils/enums";
 
 const {items, meta} = storeToRefs(useMeditationStore())
 
@@ -189,7 +189,7 @@ const goToLesson = (courseId: string) => {
             <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded v-if="menu">
               <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
                                              :btn-out-table="false" :btn-in-table="true"
-                                             v-if="item.set === CourseKind.Course && menu"
+                                             v-if="item.set === CourseSet.Course && menu"
               />
               <LazyModalsMeditationCourseEdit
                   :id="item.uuid"
@@ -206,7 +206,7 @@ const goToLesson = (courseId: string) => {
             </v-card>
           </v-menu>
           <v-icon
-              v-if="item.set === CourseKind.Course"
+              v-if="item.set === CourseSet.Course"
               class="text-primary"
               icon="mdi-chevron-right"
               size="x-large"
