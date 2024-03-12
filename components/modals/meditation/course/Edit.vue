@@ -2,6 +2,7 @@
 
 import type {CourseUpdateRequest} from "~/utils/requests";
 import type {Preview} from "~/utils/types";
+import {CourseKind} from "~/utils/enums";
 
 
 
@@ -28,11 +29,7 @@ const props = defineProps({
     type: Array<number>,
     required: true
   },
-  isLock:{
-    type: Boolean,
-    required: true
-  },
-  courseKind:{
+  courseSet:{
     type: String,
     required: true
   },
@@ -45,12 +42,12 @@ const props = defineProps({
 /********************************************/
 const initialState = {
   id: props.id,
-  courseKind: props.courseKind,
   title: props.title,
   description: props.description,
+  duration: 123,
   categories: props.categories,
   price: props.price,
-  is_lock: props.price !== 0,
+  is_lock: props.price > 0,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
 
@@ -80,24 +77,38 @@ const toggle = () => {
 }
 
 /**********************************************/
+function singleOrCourse(request) {
+  let keysToExclude = ['is_lock', 'source', 'duration']
+  if (request.set === CourseKind.Course) {
+    for (let key of keysToExclude) {
+      delete request[key];
+    }
+  }
+}
+
+
+//Todo: Set file type rules for file-input
 const upload = async (files: File[]) => {
   preview.value = (await useMediaStore().uploads([files[0]]))[0]
-  request.thumbnail = preview.value?.id
+  if(preview.value?.mime_type === 'image/jpeg'){
+    request.thumbnail = preview.value?.id
+  } else if(preview.value?.mime_type === 'audio/mpeg'){
+    request.source = preview.value?.id
+  }
 }
 
 
 
 const updateCourse = async () => {
   loading.value = true
+  singleOrCourse(request);
   try {
     await useMeditationStore().update(request)
-    useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('refreshMeditationsCourseTable')
+    useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
-    Object.assign(request, initialState);
   } finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 
@@ -118,8 +129,8 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3" v-if="props.courseKind === CourseKind.Single">Edit single Meditation Course</span>
-      <span class="pl-3" v-if="props.courseKind !== CourseKind.Single">Edit Meditation Course</span>
+      <span class="pl-3" v-if="props.courseSet === CourseKind.Single">Edit single Meditation Course</span>
+      <span class="pl-3" v-if="props.courseSet !== CourseKind.Single">Edit Meditation Course</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 
@@ -185,37 +196,35 @@ function close() {
           </v-autocomplete>
         </v-col>
 
-        <v-col cols="12" class="py-0">
+        <v-col cols="12" class="py-0"  v-if="props.courseSet === CourseKind.Single">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label mb-3" label="Select track to Upload" variant="outlined"
-                        prepend-icon="" color="primary"
-                        hide-details="" :disabled="loading">
-            <template v-slot:selection="{ fileNames }">
-              <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="45" height="45" class="justify-center align-center">
-                  <v-col align-self="auto">
-                    <v-img width="auto" height="25" cover
-                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                    </v-img>
-                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
-                  </v-col>
-                </v-card>
+            <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
+                          @update:model-value="upload"
+                          single-line
+                          variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
+              <template v-slot:selection="{ fileNames }">
+                <template v-for="fileName in fileNames" :key="fileName">
+                  <v-card width="100" height="100" class="justify-center align-center">
+                    <v-col align-self="auto">
+                      <v-img width="48" height="48" cover :src="preview?.url as string"/>
+                      <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
+                    </v-col>
+                  </v-card>
+                </template>
               </template>
-            </template>
-          </v-file-input>
+            </v-file-input>
         </v-col>
-        <v-col cols="12" class="py-0" v-if="props.courseKind === CourseKind.Single">
+        <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label mb-3" label="Select a picture to Upload" variant="outlined"
-                        prepend-icon="" color="primary"
-                        hide-details="" :disabled="loading">
+          <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
+                        @update:model-value="upload"
+                        single-line
+                        variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="45" height="45" class="justify-center align-center">
+                <v-card width="100" height="100" class="justify-center align-center">
                   <v-col align-self="auto">
-                    <v-img width="auto" height="25" cover
-                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                    </v-img>
+                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
                     <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                   </v-col>
                 </v-card>
@@ -223,7 +232,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-3" v-if="props.courseKind === CourseKind.Single">
+        <v-col cols="6" class="pt-3" v-if="props.courseSet === CourseKind.Single">
           <div class="text-white mb-md-5">Free/Paid</div>
           <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                          :error-messages="errors['is_lock']">
