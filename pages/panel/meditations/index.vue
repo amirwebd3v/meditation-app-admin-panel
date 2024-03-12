@@ -66,7 +66,7 @@ const handleSelectedCategories = (categories) => {
   load()
 }
 
-useListen('refreshMeditationsCourseTable',load)
+useListen('refreshMeditationsCourseTable', load)
 
 
 const goToLesson = (courseId: string) => {
@@ -132,10 +132,12 @@ const goToLesson = (courseId: string) => {
 
 
       <template #item.category="{item}">
-        <v-tooltip :text="item?.categories.map(category => category.name).join(', ')" max-width="270">
+        <v-tooltip :text="item?.categories
+                   && item.categories.length > 0 ? item.categories.map(category => category.name).join(', ') : ''"
+                   max-width="270">
           <template v-slot:activator="{props}">
             <div class="text-truncate" style="max-width: 125px;" v-bind="props">
-              {{ item?.categories[0]?.name }}
+              {{ item?.categories && item.categories.length > 0 ? item.categories[0].name : '' }}
             </div>
           </template>
         </v-tooltip>
@@ -171,7 +173,6 @@ const goToLesson = (courseId: string) => {
       <template #item.actions="{item}">
         <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
           <v-menu
-              :model-value="menu"
               :close-on-content-click="false"
               location="start"
           >
@@ -181,24 +182,25 @@ const goToLesson = (courseId: string) => {
                   v-bind="props"
                   size="large"
                   icon="mdi mdi-dots-vertical"
+                  @click="menu = true"
               />
             </template>
 
             <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded>
               <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
                                              :btn-out-table="false" :btn-in-table="true"
-                                             v-if="item.set === CourseKind.Course"
+                                             v-if="item.set === CourseKind.Course && menu"
               />
               <LazyModalsMeditationCourseEdit
                   :id="item.uuid"
                   :title="item.title"
                   :description="item.description"
-                  :is-lock="item.is_lock"
                   :course-set="item.set"
                   :categories="item.categories.map((c : Category) => c.id)"
                   :price="item.price"
+                  v-if="menu"
               />
-              <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
+              <LazyModalsMeditationCourseDelete v-if="menu" :lesson-count="item.lessons_count" :transaction-count="0"
                                                 :id="item.uuid" :title="item.title" :course-set="item.set"/>
             </v-card>
           </v-menu>
