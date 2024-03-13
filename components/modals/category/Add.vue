@@ -53,7 +53,7 @@ function close() {
           color="primary"
           :width="$vuetify.display.xs || $vuetify.display.smAndDown  ? '' : '215'"
           v-bind="props"
-          text="Add Category"
+          text="Add Tag"
           :size="$vuetify.display.smAndDown ? 'small' : 'default'"
           :icon="$vuetify.display.smAndDown"
           rounded="xl"
@@ -68,19 +68,19 @@ function close() {
 
     </template>
     <template #header>
-      <span class="pl-3">Add Category</span>
+      <span class="pl-3">Add Tag</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
     <template #columns>
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
-          <div class="text-white py-2">Category</div>
+          <div class="text-white py-2">Tag</div>
           <v-text-field maxlength="30"
                         v-model="request.name"
                         clearable
                         :disabled="loading"
                         variant="outlined" color="primary" density="comfortable"
-                        placeholder="Enter category name(s)" :error-messages="errors['name']"/>
+                        placeholder="Enter tag name" :error-messages="errors['name']"/>
         </v-col>
       </v-row>
     </template>

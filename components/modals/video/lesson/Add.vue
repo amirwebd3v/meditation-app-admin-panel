@@ -123,7 +123,7 @@ function close() {
         </v-col>
         <v-col cols="12">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label mb-2" label="Select a picture to Upload" variant="outlined"
+          <v-file-input class="file-input-label" label="Select a picture to Upload" variant="outlined"
                         prepend-icon="" color="primary"
                         hide-details="" :disabled="loading">
             <template v-slot:selection="{ fileNames }">

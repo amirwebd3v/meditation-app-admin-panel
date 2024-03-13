@@ -182,7 +182,7 @@ function closeCourseModal(val) {
                             v-model="request.description"/>
               </v-col>
               <v-col cols="12" class="py-0">
-                <div class="text-white pb-2">Select category</div>
+                <div class="text-white pb-2">Select Tag(s)</div>
                 <v-autocomplete
                     variant="outlined"
                     :disabled="loading"
@@ -213,7 +213,7 @@ function closeCourseModal(val) {
                   </template>
                   <template v-slot:prepend-item>
                     <v-list-item
-                        title="All Categories"
+                        title="All Tags"
                         @click="toggle"
                     >
                       <template v-slot:prepend>
@@ -244,7 +244,7 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a picture</div>
-                <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
+                <v-file-input class="file-input-label" label="Select a picture to Upload"
                               @update:model-value="upload"
                               single-line
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
@@ -334,7 +334,7 @@ function closeCourseModal(val) {
                             v-model="request.description"/>
               </v-col>
               <v-col cols="12" class="py-0">
-                <div class="text-white pb-2">Select category</div>
+                <div class="text-white pb-2">Select Tag(s)</div>
                 <v-autocomplete
                     variant="outlined"
                     :disabled="loading"
@@ -364,7 +364,7 @@ function closeCourseModal(val) {
                   </template>
                   <template v-slot:prepend-item>
                     <v-list-item
-                        title="All Categories"
+                        title="All Tags"
                         @click="toggle"
                     >
                       <template v-slot:prepend>
@@ -382,7 +382,7 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a track</div>
-                <v-file-input class="file-input-label mb-2" label="Select a track to Upload"
+                <v-file-input class="file-input-label" label="Select a track to Upload"
                               @update:model-value="upload"
                               single-line
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
@@ -400,7 +400,7 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a picture</div>
-                <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
+                <v-file-input class="file-input-label" label="Select a picture to Upload"
                               @update:model-value="upload"
                               single-line
                               variant="outlined" prepend-icon="" color="primary"
@@ -417,7 +417,7 @@ function closeCourseModal(val) {
                   </template>
                 </v-file-input>
               </v-col>
-              <v-col cols="6" class="pt-3">
+              <v-col cols="6" class="pt-1 pb-1">
                 <div class="text-white mb-md-5">Free/Paid</div>
                 <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                                :error-messages="errors['is_lock']">
@@ -436,7 +436,7 @@ function closeCourseModal(val) {
                   />
                 </v-radio-group>
               </v-col>
-              <v-col cols="6" class="pt-2 pb-0" v-if="request.is_lock">
+              <v-col cols="6" class="py-0" v-if="request.is_lock">
                 <div class="text-white pb-2">Price($)</div>
                 <v-text-field maxlength="6"
                               :disabled="loading"

@@ -124,7 +124,7 @@ function close() {
           <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Select category</div>
+          <div class="text-white pb-2">Select Tag(s)</div>
           <v-autocomplete
               variant="outlined"
               :disabled="loading"
@@ -154,7 +154,7 @@ function close() {
             </template>
             <template v-slot:prepend-item>
               <v-list-item
-                  title="All Categories"
+                  title="All Tags"
                   @click="toggle"
               >
                 <template v-slot:prepend>
@@ -165,7 +165,7 @@ function close() {
                   ></v-checkbox-btn>
                 </template>
               </v-list-item>
-              <v-divider></v-divider>
+              <v-divider/>
             </template>
 
           </v-autocomplete>
@@ -185,7 +185,7 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label mb-2" label="Select a picture to Upload" @update:model-value="upload"
+          <v-file-input class="file-input-label" label="Select a picture to Upload" @update:model-value="upload"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">

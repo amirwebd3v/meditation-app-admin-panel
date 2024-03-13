@@ -135,14 +135,14 @@ function close() {
           </v-file-input>
         </v-col>
         <v-col cols="6" class="pt-3 pb-0">
-          <div class="text-white mb-md-5 text-white">Free/Locked</div>
+          <div class="text-white mb-md-5">Free/Locked</div>
           <v-radio-group class="mt-5" inline v-model="request.is_lock" :error-messages="errors['is_lock']">
             <v-radio density="compact" :value="false" label="Free" color="primary" class="pr-md-8"/>
             <v-radio density="compact" :value="true" label="Locked" color="primary"/>
           </v-radio-group>
         </v-col>
         <v-col cols="6" class="pt-3 pb-0">
-          <div class="text-white mb-md-5 text-white">Popular</div>
+          <div class="text-white mb-md-5">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
             <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
             <v-radio density="compact" :value="true" label="Yes" color="primary"/>

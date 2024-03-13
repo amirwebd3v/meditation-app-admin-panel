@@ -28,7 +28,7 @@ const handleCategorySelection = (selected) => {
 <template>
   <!--      Second section-->
   <v-row justify="space-between" align="center" class="px-3">
-    <span class="text-white font-weight-medium font-18">Categories</span>
+    <span class="text-white font-weight-medium font-18">Tags</span>
     <LazyModalsCategoryAdd :category-type="type" />
   </v-row>
 

@@ -29,7 +29,7 @@ const selectedCategories = ref([])
 
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'category', title: 'CATEGORY', sortable: false, align: 'center'},
+  {key: 'category', title: 'TAGS', sortable: false, align: 'center'},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
   {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
   {key: 'price', title: 'PRICE($)', sortable: true, align: 'center'},

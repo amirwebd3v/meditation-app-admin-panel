@@ -121,7 +121,7 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label mb-2" label="Select a track to Upload"
+          <v-file-input class="file-input-label" label="Select a track to Upload"
                         @update:model-value="upload" :disabled="loading"
                         single-line
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
@@ -137,7 +137,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-3">
+        <v-col cols="6" class="pt-1">
           <div class="text-white mb-md-5">Free/Paid</div>
           <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                          :error-messages="errors['is_lock']">
@@ -156,8 +156,8 @@ function close() {
             />
           </v-radio-group>
         </v-col>
-        <v-col cols="6" class="pt-3 pb-0">
-          <div class="text-white mb-md-5 text-white">Popular</div>
+        <v-col cols="6" class="pt-0">
+          <div class="text-white mb-md-5">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
                          :error-messages="errors['is_popular']">
             <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
