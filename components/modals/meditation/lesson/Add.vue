@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { LessonStoreRequest} from "~/utils/requests";
+import type {Preview} from "~/utils/types";
 
 /*********************************************/
 const props = defineProps({
@@ -25,10 +26,11 @@ const props = defineProps({
 const isBtnText = ref()
 const loading = ref()
 const {errors} = storeToRefs(useValidationStore());
+const preview = ref<Preview | null>(null)
 const emit = defineEmits(['closeMenu'])
 /********************************************/
 const initialState = {
-  course_id: props.courseId,
+  course_uuid: props.courseId,
   title: null,
   source: null,
   duration: null,
@@ -41,6 +43,15 @@ const initialState = {
 const request = reactive<LessonStoreRequest>({...initialState})
 
 /**********************************************/
+//Todo: Set file type rules for file-input
+const upload = async (files: File[]) => {
+  preview.value = (await useMediaStore().uploads([files[0]]))[0]
+ if(preview.value?.mime_type === 'audio/mpeg'){
+    request.source = preview.value?.id
+  }
+}
+
+
 const saveLesson = async () => {
   loading.value = true
   try {
@@ -112,16 +123,16 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label mb-3"  label="Select track to Upload" variant="outlined" prepend-icon="" color="primary"
-                        hide-details="" :disabled="loading">
+          <v-file-input class="file-input-label mb-2" label="Select a track to Upload"
+                        @update:model-value="upload"
+                        single-line
+                        variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="45" height="45" class="justify-center align-center">
+                <v-card width="100" height="100" class="justify-center align-center">
                   <v-col align-self="auto">
-                    <v-img width="auto" height="25" cover
-                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                    </v-img>
-                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
+                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
+                    <v-card-text class="font-12 text-truncate mx-auto">{{ fileName }}</v-card-text>
                   </v-col>
                 </v-card>
               </template>

@@ -103,6 +103,11 @@ useListen('refreshMeditationsLessonsTable',load)
           </v-tooltip>
         </template>
 
+
+        <template #item.is_lock="{ item }">
+          {{ item.is_lock ? 'Paid' : 'Free' }}
+        </template>
+
         <!--        <template #item.category="{item}">-->
         <!--          <v-tooltip :text="item?.categories.map((category : Category) => category.name).join(', ')" max-width="270">-->
         <!--            <template v-slot:activator="{props}">-->
@@ -126,10 +131,6 @@ useListen('refreshMeditationsLessonsTable',load)
           <v-card v-if="!!item.thumbnail" class="my-1 pl-2" elevation="0" rounded color="light">
             <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
           </v-card>
-        </template>
-
-        <template #item.is_lock="{ item }">
-          {{ item.is_lock ? 'Paid' : 'Free' }}
         </template>
 
         <template #item.actions="{item}">

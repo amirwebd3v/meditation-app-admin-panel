@@ -382,7 +382,7 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a track</div>
-                <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
+                <v-file-input class="file-input-label mb-2" label="Select a track to Upload"
                               @update:model-value="upload"
                               single-line
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">

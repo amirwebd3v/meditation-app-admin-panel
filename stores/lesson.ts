@@ -24,8 +24,7 @@ export const useLessonStore = defineStore('lesson', {
         },
 
         async store(request: LessonStoreRequest): Promise<Lesson> {
-            const {course_id, ...body} = request
-            return await useApi().post(`/admin/v1/course/${course_id}/lesson`, {body})
+            return await useApi().post(`/admin/v1/lesson`, {body: request})
         },
 
         async update(request: LessonUpdateRequest) {

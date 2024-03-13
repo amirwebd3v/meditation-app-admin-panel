@@ -24,7 +24,7 @@ interface CourseUpdateRequest {
 
 
 interface LessonStoreRequest {
-    course_id: string
+    course_uuid: string
     categories?: number[]
     set: CourseSet
     title: string
