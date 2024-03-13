@@ -190,6 +190,7 @@ const goToLesson = (courseId: string) => {
               <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
                                              :btn-out-table="false" :btn-in-table="true"
                                              v-if="item.set === CourseSet.Course && menu"
+                                             @closeMenu="v => menu = v"
               />
               <LazyModalsMeditationCourseEdit
                   :id="item.uuid"
@@ -199,6 +200,7 @@ const goToLesson = (courseId: string) => {
                   :categories="item.categories.map((c : Category) => c.id)"
                   :price="item.price"
                   v-if="menu"
+                  @closeMenu="v => menu = v"
               />
               <LazyModalsMeditationCourseDelete v-if="menu" :lesson-count="item.lessons_count" :transaction-count="0"
                                                 :id="item.uuid" :title="item.title" :course-set="item.set"

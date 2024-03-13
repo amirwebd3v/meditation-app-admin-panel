@@ -21,11 +21,11 @@ const props = defineProps({
     required: true,
   }
 })
-
+/*********************************************/
 const loading = ref(false)
-
 const emit = defineEmits(['closeMenu'])
 
+/*********************************************/
 const deleteCourse = async () => {
   loading.value = true
   try {
