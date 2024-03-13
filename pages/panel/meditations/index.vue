@@ -28,13 +28,13 @@ const router = useRouter();
 const selectedCategories = ref([])
 
 const headers = [
-  {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'set', title: 'TYPE', align: 'start', sortable: true},
-  {key: 'category', title: 'TAGS', sortable: false, align: 'start'},
+  {key: 'title', title: 'TITLE', align: 'start', sortable: true,width:'125'},
+  {key: 'set', title: 'TYPE', sortable: true, align: 'center'},
+  {key: 'category', title: 'TAGS', sortable: false, align: 'center'},
   // {key: 'description', title: 'DESCRIPTION', sortable: false},
   {key: 'lessons_count', title: 'QUANTITY', sortable: true, align: 'center'},
-  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
-  {key: 'price', title: 'PRICE($)', sortable: true, align: 'start'},
+  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
+  {key: 'price', title: 'PRICE($)', sortable: true, align: 'center'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
 ] as VDataTableServer['headers']
 
@@ -125,7 +125,7 @@ const goToLesson = (courseId: string) => {
       <template #item.title="{item}">
         <v-tooltip :text="item.title">
           <template v-slot:activator="{ props }">
-            <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.title }}</div>
+            <div class="text-truncate" style="width: 200px;" v-bind="props">{{ item.title }}</div>
           </template>
         </v-tooltip>
       </template>
@@ -145,7 +145,7 @@ const goToLesson = (courseId: string) => {
 
 
       <template #item.set="{ item }">
-        <div style="max-width: 125px;">{{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}</div>
+        {{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}
       </template>
 
       <!--        <template #item.description="{item}">-->
@@ -157,13 +157,15 @@ const goToLesson = (courseId: string) => {
       <!--        </template>-->
 
       <template #item.lessons_count="{item}">
-        <div style="max-width: 90px;">{{ item.set === 'MULTIPLE' ? item.lessons_count : '' }}</div>
+        <div class="v-row justify-center">{{ item.set === 'MULTIPLE' ? item.lessons_count : '' }}</div>
       </template>
 
       <template #item.thumbnail="{ item }">
-        <v-card v-if="!!item.thumbnail" class="my-1 pl-2" elevation="0" rounded color="light">
-          <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
-        </v-card>
+        <div class="v-row justify-center">
+          <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
+            <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
+          </v-card>
+        </div>
       </template>
 
       <template #item.price="{item}">

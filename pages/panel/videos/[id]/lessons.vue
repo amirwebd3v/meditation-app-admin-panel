@@ -23,12 +23,13 @@ const searchText = ref('')
 const course: Course = (await useVideoStore().get(useRoute().params.id.toString()))
 
 const headers = [
-  {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'is_lock', title: 'FREE/PAID', sortable: true, align: 'start'},
+  {key: 'title', title: 'TITLE', align: 'start', sortable: true, width:'350'},
+  {key: 'is_lock', title: 'FREE/PAID', sortable: true, align: 'start',width:'200'},
   {key: 'description', title: 'DESCRIPTION', sortable: true},
-  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
+  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
 ] as VDataTableServer['headers']
+
 
 /***********************************************/
 const load = async (options = {}) => {
@@ -88,7 +89,7 @@ useListen('refreshVideosLessonsTable',load)
       <v-data-table-server
           class="rounded-lg bg-light-brown-1"
           :items-length="+meta.total"
-          :page="meta.current_page"
+          :page="+meta.current_page"
           :items="[...items.values()]"
           @update:options="load"
           :loading="loading"
@@ -100,7 +101,7 @@ useListen('refreshVideosLessonsTable',load)
         <template #item.title="{item}">
           <v-tooltip :text="item.title">
             <template v-slot:activator="{ props }">
-              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.title }}</div>
+              <div class="text-truncate" style="max-width: 250px;" v-bind="props">{{ item.title }}</div>
             </template>
           </v-tooltip>
         </template>
@@ -109,15 +110,17 @@ useListen('refreshVideosLessonsTable',load)
         <template #item.description="{item}">
           <v-tooltip :text="item.description" max-width="210">
             <template v-slot:activator="{ props }">
-              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.description }}</div>
+              <div class="text-truncate" style="max-width: 250px;" v-bind="props">{{ item.description }}</div>
             </template>
           </v-tooltip>
         </template>
 
         <template #item.thumbnail="{ item }">
-          <v-card v-if="!!item.thumbnail" class="my-1 pl-2" elevation="0" rounded color="light">
-            <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
-          </v-card>
+          <div class="v-row justify-center">
+            <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
+              <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
+            </v-card>
+          </div>
         </template>
 
         <template #item.is_lock="{ item }">
@@ -134,6 +137,7 @@ useListen('refreshVideosLessonsTable',load)
                 :is-lock="item.is_lock"
                 :description="item.description"
                 :is-popular="item.is_popular"
+                :key="item.uuid"
             />
 
             <LazyModalsVideoLessonDelete :id="item.uuid" :title="item.title"/>

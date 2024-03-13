@@ -21,10 +21,10 @@ const searchText = ref('')
 const course: Course = (await useMeditationStore().get(useRoute().params.id.toString()))
 
 const headers = [
-  {key: 'title', title: 'TITLE', align: 'start', sortable: true},
-  {key: 'is_lock', title: 'Free/Paid', sortable: true, align: 'start'},
+  {key: 'title', title: 'TITLE', align: 'start', sortable: true, width:'350'},
+  {key: 'is_lock', title: 'FREE/PAID', sortable: true, align: 'start',width:'200'},
   {key: 'description', title: 'DESCRIPTION', sortable: true},
-  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'start'},
+  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
 ] as VDataTableServer['headers']
 
@@ -98,7 +98,7 @@ useListen('refreshMeditationsLessonsTable',load)
         <template #item.title="{item}">
           <v-tooltip :text="item.title">
             <template v-slot:activator="{ props }">
-              <div class="text-truncate" style="max-width: 200px;" v-bind="props">{{ item.title }}</div>
+              <div class="text-truncate" style="max-width: 250px;" v-bind="props">{{ item.title }}</div>
             </template>
           </v-tooltip>
         </template>
@@ -122,15 +122,17 @@ useListen('refreshMeditationsLessonsTable',load)
         <template #item.description="{item}">
           <v-tooltip :text="item.description" max-width="210">
             <template v-slot:activator="{ props }">
-              <div class="text-truncate" style="max-width: 200px;" v-bind="props">{{ item.description }}</div>
+              <div class="text-truncate" style="max-width: 250px;" v-bind="props">{{ item.description }}</div>
             </template>
           </v-tooltip>
         </template>
 
         <template #item.thumbnail="{ item }">
-          <v-card v-if="!!item.thumbnail" class="my-1 pl-2" elevation="0" rounded color="light">
-            <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
-          </v-card>
+          <div class="v-row justify-center">
+            <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
+              <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
+            </v-card>
+          </div>
         </template>
 
         <template #item.actions="{item}">
