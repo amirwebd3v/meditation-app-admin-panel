@@ -140,8 +140,6 @@ useListen('refreshMeditationsLessonsTable',load)
                 :course-title="course.title"
                 :id="item.uuid"
                 :title="item.title"
-                :source="item.source"
-                :duration="item.duration"
                 :description="item.description"
                 :is-lock="item.is_lock"
                 :is-popular="item.is_popular"

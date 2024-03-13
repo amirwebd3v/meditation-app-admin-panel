@@ -63,7 +63,6 @@ const saveLesson = async () => {
     Object.assign(request, initialState);
   }  finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 

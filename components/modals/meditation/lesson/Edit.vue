@@ -10,6 +10,8 @@ const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
+const emit = defineEmits(['btnLoad'])
+
 /********************************************/
 const props = defineProps({
   courseTitle: {
@@ -28,14 +30,14 @@ const props = defineProps({
     type: String,
     required: true
   },
-  source: {
-    type: String,
-    required: true
-  },
-  duration: {
-    type: String,
-    required: true
-  },
+  // source: {
+  //   type: String,
+  //   required: true
+  // },
+  // duration: {
+  //   type: String,
+  //   required: true
+  // },
   isPopular: {
     type: Boolean,
     required: true
@@ -51,17 +53,18 @@ const initialState = {
   id: props.id,
   title: props.title,
   description: props.description,
-  source: props.source,
-  duration: props.duration,
   is_popular: props.isPopular,
   is_lock: props.isLock
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
 
 /**********************************************/
+//Todo: Set file type rules for file-input
 const upload = async (files: File[]) => {
   preview.value = (await useMediaStore().uploads([files[0]]))[0]
-  request.thumbnail = preview.value?.id
+  if(preview.value?.mime_type === 'audio/mpeg'){
+    request.source = preview.value?.id
+  }
 }
 
 
@@ -70,13 +73,11 @@ const updateLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().update(request)
-    useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('refreshMeditationsLessonsTable')
+    useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
-    Object.assign(request, initialState);
   } finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 
@@ -106,23 +107,30 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white pb-2">Title</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        :error-messages="errors['title']"
+                        :error-messages="errors['title']" :disabled="loading"
           />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
+          <v-textarea :disabled="loading"
+                      variant="outlined"
+                      density="compact"
+                      color="primary"
+                      v-model="request.description">
+          </v-textarea>
         </v-col>
         <v-col cols="12" class="py-0">
-          <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label mb-2" label="Select a picture to Upload" @update:model-value="upload"
+          <div class="text-white pb-2">Upload a track</div>
+          <v-file-input class="file-input-label mb-2" label="Select a track to Upload"
+                        @update:model-value="upload" :disabled="loading"
+                        single-line
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="100" height="100" class="justify-center align-center">
                   <v-col align-self="auto">
                     <v-img width="48" height="48" cover :src="preview?.url as string"/>
-                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
+                    <v-card-text class="font-12 text-truncate mx-auto">{{ fileName }}</v-card-text>
                   </v-col>
                 </v-card>
               </template>
@@ -150,7 +158,8 @@ function close() {
         </v-col>
         <v-col cols="6" class="pt-3 pb-0">
           <div class="text-white mb-md-5 text-white">Popular</div>
-          <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
+          <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
+                         :error-messages="errors['is_popular']">
             <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
             <v-radio density="compact" :value="true" label="Yes" color="primary"/>
           </v-radio-group>
