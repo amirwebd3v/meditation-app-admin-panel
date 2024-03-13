@@ -5,12 +5,12 @@ import type {Preview} from "~/utils/types";
 import {CourseSet} from "~/utils/enums";
 
 
-
 /********************************************/
 const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
+const emit = defineEmits(['closeMenu'])
 /********************************************/
 const props = defineProps({
   id: {
@@ -29,7 +29,7 @@ const props = defineProps({
     type: Array<number>,
     required: true
   },
-  courseSet:{
+  courseSet: {
     type: String,
     required: true
   },
@@ -50,6 +50,7 @@ const initialState = {
   is_lock: props.price > 0,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
+
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -86,24 +87,32 @@ function singleOrCourse(request) {
   }
 }
 
+function freeOrPaid(request) {
+  if (request.is_lock || props.courseSet === CourseSet.Course) {
+    return request.price;
+  } else {
+    request.price = 0;
+  }
+}
 
 //Todo: Set file type rules for file-input
 const upload = async (files: File[]) => {
   preview.value = (await useMediaStore().uploads([files[0]]))[0]
-  if(preview.value?.mime_type === 'image/jpeg'){
+  if (preview.value?.mime_type === 'image/jpeg') {
     request.thumbnail = preview.value?.id
-  } else if(preview.value?.mime_type === 'audio/mpeg'){
+  } else if (preview.value?.mime_type === 'audio/mpeg') {
     request.source = preview.value?.id
   }
 }
 
 
-
 const updateCourse = async () => {
   loading.value = true
   singleOrCourse(request);
+  freeOrPaid(request);
   try {
     await useMeditationStore().update(request)
+    emit('closeMenu', false)
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
@@ -196,23 +205,23 @@ function close() {
           </v-autocomplete>
         </v-col>
 
-        <v-col cols="12" class="py-0"  v-if="props.courseSet === CourseSet.Single">
+        <v-col cols="12" class="py-0" v-if="props.courseSet === CourseSet.Single">
           <div class="text-white pb-2">Upload a track</div>
-            <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
-                          @update:model-value="upload"
-                          single-line
-                          variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
-              <template v-slot:selection="{ fileNames }">
-                <template v-for="fileName in fileNames" :key="fileName">
-                  <v-card width="100" height="100" class="justify-center align-center">
-                    <v-col align-self="auto">
-                      <v-img width="48" height="48" cover :src="preview?.url as string"/>
-                      <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
-                    </v-col>
-                  </v-card>
-                </template>
+          <v-file-input class="file-input-label mb-2" label="Select a picture to Upload"
+                        @update:model-value="upload"
+                        single-line
+                        variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
+            <template v-slot:selection="{ fileNames }">
+              <template v-for="fileName in fileNames" :key="fileName">
+                <v-card width="100" height="100" class="justify-center align-center">
+                  <v-col align-self="auto">
+                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
+                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
+                  </v-col>
+                </v-card>
               </template>
-            </v-file-input>
+            </template>
+          </v-file-input>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
@@ -251,7 +260,8 @@ function close() {
             />
           </v-radio-group>
         </v-col>
-        <v-col cols="6" class="pt-2 pb-0" v-if="request.is_lock">
+        <v-col cols="6" class="pt-2 pb-0"
+               v-if="request.is_lock || props.courseSet === CourseSet.Course">
           <div class="text-white pb-2">Price($)</div>
           <v-text-field maxlength="6"
                         :disabled="loading"
