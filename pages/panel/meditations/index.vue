@@ -201,6 +201,7 @@ const goToLesson = (courseId: string) => {
                   :price="item.price"
                   v-if="menu"
                   @closeMenu="v => menu = v"
+                  :key="item.uuid"
               />
               <LazyModalsMeditationCourseDelete v-if="menu" :lesson-count="item.lessons_count" :transaction-count="0"
                                                 :id="item.uuid" :title="item.title" :course-set="item.set"

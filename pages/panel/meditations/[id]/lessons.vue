@@ -86,7 +86,7 @@ useListen('refreshMeditationsLessonsTable',load)
       <v-data-table-server
           class="rounded-lg bg-light-brown-1"
           :items-length="+meta.total"
-          :page="meta.current_page"
+          :page="+meta.current_page"
           :items="[...items.values()]"
           @update:options="load"
           :loading="loading"
@@ -98,7 +98,7 @@ useListen('refreshMeditationsLessonsTable',load)
         <template #item.title="{item}">
           <v-tooltip :text="item.title">
             <template v-slot:activator="{ props }">
-              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.title }}</div>
+              <div class="text-truncate" style="max-width: 200px;" v-bind="props">{{ item.title }}</div>
             </template>
           </v-tooltip>
         </template>
@@ -122,7 +122,7 @@ useListen('refreshMeditationsLessonsTable',load)
         <template #item.description="{item}">
           <v-tooltip :text="item.description" max-width="210">
             <template v-slot:activator="{ props }">
-              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.description }}</div>
+              <div class="text-truncate" style="max-width: 200px;" v-bind="props">{{ item.description }}</div>
             </template>
           </v-tooltip>
         </template>
@@ -143,8 +143,9 @@ useListen('refreshMeditationsLessonsTable',load)
                 :description="item.description"
                 :is-lock="item.is_lock"
                 :is-popular="item.is_popular"
+                :key="item.uuid"
             />
-            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title"/>
+            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title" />
           </div>
         </template>
       </v-data-table-server>

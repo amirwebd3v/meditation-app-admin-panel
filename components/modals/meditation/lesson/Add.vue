@@ -124,7 +124,7 @@ function close() {
           <div class="text-white pb-2">Upload a track</div>
           <v-file-input class="file-input-label" label="Select a track to Upload"
                         @update:model-value="upload"
-                        single-line
+                        single-line :disabled="loading"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">

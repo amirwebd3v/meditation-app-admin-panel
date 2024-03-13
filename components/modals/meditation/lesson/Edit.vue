@@ -10,7 +10,6 @@ const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
-const emit = defineEmits(['btnLoad'])
 
 /********************************************/
 const props = defineProps({

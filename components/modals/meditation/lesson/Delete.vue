@@ -27,7 +27,6 @@ const deleteLesson = async () => {
     useEvent('closeModal', false)
   } finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 
