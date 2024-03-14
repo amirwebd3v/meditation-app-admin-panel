@@ -140,7 +140,7 @@ useListen('refreshVideosLessonsTable',load)
                 :key="item.uuid"
             />
 
-            <LazyModalsVideoLessonDelete :id="item.uuid" :title="item.title"/>
+            <LazyModalsVideoLessonDelete :id="item.uuid" :title="item.title" :transaction-count="0"/>
           </div>
 
         </template>
