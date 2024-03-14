@@ -8,6 +8,7 @@ const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
+const emit = defineEmits(['closeMenu'])
 
 /********************************************/
 const props = defineProps({
@@ -69,24 +70,25 @@ const toggle = () => {
 }
 
 /**********************************************/
+//Todo: Set file type rules for file-input
 const upload = async (files: File[]) => {
   preview.value = (await useMediaStore().uploads([files[0]]))[0]
-  request.thumbnail = preview.value?.id
+  if (preview.value?.mime_type === 'image/jpeg') {
+    request.thumbnail = preview.value?.id
+  }
 }
-
 
 
 const updateCourse = async () => {
   loading.value = true
   try {
     await useVideoStore().update(request)
+    emit('closeMenu', false)
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('refreshVideosCourseTable')
     useEvent('closeModal', false)
-    Object.assign(request, initialState);
   } finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 
@@ -116,12 +118,13 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white pb-2">Title</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        :error-messages="errors['title']"
+                        :error-messages="errors['title']" :disabled="loading"
           />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Course description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
+          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"
+                      :disabled="loading"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Select Tag(s)</div>
@@ -185,8 +188,10 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label" label="Select a picture to Upload" @update:model-value="upload"
-                        variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
+          <v-file-input class="file-input-label" label="Select a picture to Upload"
+                        @update:model-value="upload"
+                        single-line :disabled="loading"
+                        variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="100" height="100" class="justify-center align-center">
@@ -240,4 +245,3 @@ function close() {
 
 </template>
 
-<style scoped lang="scss"></style>

@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseSet, CourseType} from "~/utils/enums";
+import type {Preview} from "~/utils/types";
 
 /*********************************************/
-const loading = ref()
+const loading = ref(false)
 const {errors} = storeToRefs(useValidationStore());
+const preview = ref<Preview | null>(null)
+
 /********************************************/
 const initialState = {
   title: null,
@@ -45,6 +48,15 @@ const toggle = () => {
 }
 
 /**********************************************/
+//Todo: Set file type rules for file-input
+const upload = async (files: File[]) => {
+  preview.value = (await useMediaStore().uploads([files[0]]))[0]
+  if(preview.value?.mime_type === 'image/jpeg'){
+    request.thumbnail = preview.value?.id
+  }
+}
+
+
 const saveCourse = async () => {
   loading.value = true
   try {
@@ -55,7 +67,6 @@ const saveCourse = async () => {
     Object.assign(request, initialState);
   } finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 
@@ -150,7 +161,6 @@ function close() {
               </v-list-item>
               <v-divider/>
             </template>
-
           </v-autocomplete>
         </v-col>
         <v-col cols="6" class="py-0">
@@ -168,15 +178,16 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label" label="Select a picture to Upload" variant="outlined" prepend-icon=""
-                        color="primary" hide-details="" :disabled="loading">
+          <v-file-input class="file-input-label" label="Select a picture to Upload"
+                        @update:model-value="upload"
+                        single-line :disabled="loading"
+                        variant="outlined" prepend-icon="" color="primary"
+                        :error-message="errors['thumbnail']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="45" height="45" class="justify-center align-center">
+                <v-card width="100" height="100" class="justify-center align-center">
                   <v-col align-self="auto">
-                    <v-img width="auto" height="25" cover
-                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                    </v-img>
+                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
                     <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                   </v-col>
                 </v-card>
