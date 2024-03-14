@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {LessonStoreRequest} from "~/utils/requests";
+import type {Preview} from "~/utils/types";
 
 /*********************************************/
 const props = defineProps({
@@ -25,6 +26,8 @@ const props = defineProps({
 const isBtnText = ref()
 const loading = ref()
 const {errors} = storeToRefs(useValidationStore());
+const preview = ref<Preview | null>(null)
+const emit = defineEmits(['closeMenu'])
 
 const validateSource = (value) => {
 
@@ -33,7 +36,7 @@ const validateSource = (value) => {
 };
 /********************************************/
 const initialState = {
-  course_id: props.courseId,
+  course_uuid: props.courseId,
   title: null,
   source: null,
   duration: null,
@@ -46,17 +49,25 @@ const initialState = {
 const request = reactive<LessonStoreRequest>({...initialState})
 
 /**********************************************/
+//Todo: Set file type rules for file-input
+const upload = async (files: File[]) => {
+  preview.value = (await useMediaStore().uploads([files[0]]))[0]
+  if(preview.value?.mime_type === 'image/jpeg'){
+    request.thumbnail = preview.value?.id
+  }
+}
+
 const saveLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().store(request)
+    emit('closeMenu',false)
     useEvent('refreshVideosLessonsTable')
     useEvent('successMessage', `${request.title} is successfully Added to ${props.courseTitle}.`)
     useEvent('closeModal', false)
     Object.assign(request, initialState);
   } finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 
@@ -121,18 +132,18 @@ function close() {
           <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
                       v-model="request.description"/>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label" label="Select a picture to Upload" variant="outlined"
-                        prepend-icon="" color="primary"
-                        hide-details="" :disabled="loading">
+          <v-file-input class="file-input-label" label="Select a picture to Upload"
+                        @update:model-value="upload"
+                        single-line :disabled="loading"
+                        variant="outlined" prepend-icon="" color="primary"
+                        :error-message="errors['thumbnail']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="45" height="45" class="justify-center align-center">
+                <v-card width="100" height="100" class="justify-center align-center">
                   <v-col align-self="auto">
-                    <v-img width="auto" height="25" cover
-                           src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg">
-                    </v-img>
+                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
                     <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
                   </v-col>
                 </v-card>
@@ -140,7 +151,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-3">
+        <v-col cols="6" class="pt-1 pb-0">
           <div class="text-white">Free/Locked</div>
           <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                          :error-messages="errors['is_lock']">
@@ -159,7 +170,7 @@ function close() {
             />
           </v-radio-group>
         </v-col>
-        <v-col cols="6" class="pt-3">
+        <v-col cols="6" class="pt-1 pb-0">
           <div class="text-white">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
                          :error-messages="errors['is_popular']">
