@@ -58,11 +58,13 @@ const request = reactive<LessonUpdateRequest>({...initialState})
 
 
 /**********************************************/
+//Todo: Set file type rules for file-input
 const upload = async (files: File[]) => {
   preview.value = (await useMediaStore().uploads([files[0]]))[0]
-  request.thumbnail = preview.value?.id
+  if(preview.value?.mime_type === 'image/jpeg'){
+    request.thumbnail = preview.value?.id
+  }
 }
-
 
 const updateLesson = async () => {
   loading.value = true
@@ -74,7 +76,6 @@ const updateLesson = async () => {
     Object.assign(request, initialState);
   } finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 
@@ -104,7 +105,7 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white pb-2">Title</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        :error-messages="errors['title']"
+                        :error-messages="errors['title']" :disabled="loading"
           />
         </v-col>
         <v-col cols="12" class="py-0">
@@ -116,12 +117,15 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"></v-textarea>
+          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description" :disabled="loading"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label mb-3" label="Select a picture to Upload" @update:model-value="upload"
-                        variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
+          <v-file-input class="file-input-label" label="Select a picture to Upload"
+                        @update:model-value="upload"
+                        single-line :disabled="loading"
+                        variant="outlined" prepend-icon="" color="primary"
+                        :error-message="errors['thumbnail']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="100" height="100" class="justify-center align-center">
@@ -134,16 +138,16 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-3 pb-0">
+        <v-col cols="6" class="pt-1 pb-0">
           <div class="text-white mb-md-5">Free/Locked</div>
-          <v-radio-group class="mt-5" inline v-model="request.is_lock" :error-messages="errors['is_lock']">
+          <v-radio-group class="mt-5" :disabled="loading" inline v-model="request.is_lock" :error-messages="errors['is_lock']">
             <v-radio density="compact" :value="false" label="Free" color="primary" class="pr-md-8"/>
             <v-radio density="compact" :value="true" label="Locked" color="primary"/>
           </v-radio-group>
         </v-col>
-        <v-col cols="6" class="pt-3 pb-0">
+        <v-col cols="6" class="pt-1 pb-0">
           <div class="text-white mb-md-5">Popular</div>
-          <v-radio-group class="mt-5" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
+          <v-radio-group class="mt-5" :disabled="loading" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
             <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
             <v-radio density="compact" :value="true" label="Yes" color="primary"/>
           </v-radio-group>
