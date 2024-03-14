@@ -7,7 +7,7 @@ import type {Preview} from "~/utils/types";
 const singleCourseModal = ref()
 const CourseModal = ref()
 const selectedCourse = ref<CourseSet>()
-const loading = ref()
+const loading = ref(false)
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<Preview | null>(null)
 /********************************************/

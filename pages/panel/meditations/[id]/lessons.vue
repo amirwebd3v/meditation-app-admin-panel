@@ -147,7 +147,8 @@ useListen('refreshMeditationsLessonsTable',load)
                 :is-popular="item.is_popular"
                 :key="item.uuid"
             />
-            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title" />
+            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title"
+                                              :transaction-count="0"/>
           </div>
         </template>
       </v-data-table-server>

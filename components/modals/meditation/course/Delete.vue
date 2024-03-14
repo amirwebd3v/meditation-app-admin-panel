@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
   courseSet: {
     type: String,
@@ -29,7 +29,7 @@ const emit = defineEmits(['closeMenu'])
 const deleteCourse = async () => {
   loading.value = true
   try {
-    await useMeditationStore().destroy(props.id)
+    await useMeditationStore().destroy(<string>props.id)
     emit('closeMenu',false)
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${props.title} is successfully Deleted from Meditations.`)

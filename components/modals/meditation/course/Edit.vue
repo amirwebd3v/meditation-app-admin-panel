@@ -315,4 +315,3 @@ function close() {
 
 </template>
 
-<style scoped lang="scss"></style>
