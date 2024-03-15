@@ -50,6 +50,7 @@ const initialState = {
   is_lock: props.price > 0,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
+const { hasChanges, resetHasChanges } = useInputHasChanges(request,initialState)
 
 
 const numberOrFloatRule = (value: string) => {
@@ -116,6 +117,7 @@ const updateCourse = async () => {
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
+    resetHasChanges()
   } finally {
     loading.value = false
   }
@@ -124,7 +126,7 @@ const updateCourse = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  Object.assign(request, initialState);
+  resetHasChanges()
   useValidationStore().clearErrors()
 }
 </script>
@@ -293,7 +295,7 @@ function close() {
           @click="close"
       />
       <v-btn
-          :disabled="loading"
+          :disabled="loading || !hasChanges"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{

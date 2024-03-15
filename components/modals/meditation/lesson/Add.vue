@@ -31,16 +31,17 @@ const emit = defineEmits(['closeMenu'])
 /********************************************/
 const initialState = {
   course_uuid: props.courseId,
-  title: null,
-  source: null,
-  duration: null,
-  description: null,
+  title: '',
+  source: '',
+  duration: '',
+  description: '',
   is_new: true,
   is_popular: false,
   is_lock: false,
 }
 
 const request = reactive<LessonStoreRequest>({...initialState})
+const { hasChanges, resetHasChanges } = useInputHasChanges(request,initialState)
 
 /**********************************************/
 //Todo: Set file type rules for file-input
@@ -60,7 +61,7 @@ const saveLesson = async () => {
     useEvent('refreshMeditationsLessonsTable')
     useEvent('successMessage', `${request.title} is successfully Added to ${props.courseTitle}.`)
     useEvent('closeModal', false)
-    Object.assign(request, initialState);
+    resetHasChanges()
   }  finally {
     loading.value = false
   }
@@ -69,7 +70,7 @@ const saveLesson = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  Object.assign(request, initialState);
+  resetHasChanges()
   useValidationStore().clearErrors()
 }
 
@@ -194,7 +195,7 @@ function close() {
           @click="close"
       />
       <v-btn
-          :disabled="loading"
+          :disabled="loading || !hasChanges"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{

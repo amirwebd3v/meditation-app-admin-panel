@@ -56,6 +56,7 @@ const initialState = {
   is_lock: props.isLock
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
+const { hasChanges, resetHasChanges } = useInputHasChanges(request, initialState)
 
 /**********************************************/
 //Todo: Set file type rules for file-input
@@ -75,6 +76,7 @@ const updateLesson = async () => {
     useEvent('refreshMeditationsLessonsTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
+    resetHasChanges()
   } finally {
     loading.value = false
   }
@@ -83,7 +85,7 @@ const updateLesson = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  Object.assign(request, initialState);
+  resetHasChanges()
   useValidationStore().clearErrors()
 }
 </script>
@@ -182,7 +184,7 @@ function close() {
           @click="close"
       />
       <v-btn
-          :disabled="loading"
+          :disabled="loading || !hasChanges"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{

@@ -21,6 +21,7 @@ const initialState = {
 }
 
 const request = reactive<CategoryStoreRequest>({...initialState})
+const { hasChanges, resetHasChanges } = useInputHasChanges(request,initialState)
 
 /*********************************************/
 const saveCategory = async () => {
@@ -30,7 +31,7 @@ const saveCategory = async () => {
     await useCategoryStore().fetch(request.type)
     useEvent('successMessage', `${request.name} is successfully Added to ${request.type.toLowerCase()}s.`)
     useEvent('closeModal', false)
-    Object.assign(request, initialState);
+    resetHasChanges()
   } finally {
     loading.value = false
     useValidationStore().clearErrors()
@@ -38,7 +39,7 @@ const saveCategory = async () => {
 }
 
 function close() {
-  Object.assign(request, initialState);
+  resetHasChanges()
   useValidationStore().clearErrors()
   useEvent('closeModal', false)
 }
@@ -76,8 +77,8 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Tag</div>
           <v-text-field maxlength="30"
-                        v-model="request.name"
                         clearable
+                        v-model="request.name"
                         :disabled="loading"
                         variant="outlined" color="primary" density="comfortable"
                         placeholder="Enter tag name" :error-messages="errors['name']"/>
@@ -101,7 +102,7 @@ function close() {
           @click="close"
       />
       <v-btn
-          :disabled="loading"
+          :disabled="loading || !hasChanges"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{

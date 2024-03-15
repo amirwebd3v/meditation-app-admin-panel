@@ -10,9 +10,9 @@ const preview = ref<Preview | null>(null)
 
 /********************************************/
 const initialState = {
-  title: null,
+  title: '',
   set: CourseSet.Course,
-  description: null,
+  description: '',
   categories: [],
   price: 0,
   type: CourseType.Video,
@@ -21,6 +21,7 @@ const initialState = {
 }
 
 const request = reactive<CourseStoreRequest>({...initialState})
+const { hasChanges, resetHasChanges } = useInputHasChanges(request,initialState)
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -64,7 +65,7 @@ const saveCourse = async () => {
     useEvent('refreshVideosCourseTable')
     useEvent('successMessage', `${request.title} is successfully Added as a video ${request.set.toLowerCase()}.`)
     useEvent('closeModal', false)
-    Object.assign(request, initialState);
+    resetHasChanges()
   } finally {
     loading.value = false
   }
@@ -73,7 +74,7 @@ const saveCourse = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  Object.assign(request, initialState);
+  resetHasChanges()
   useValidationStore().clearErrors()
 }
 
@@ -212,7 +213,7 @@ function close() {
           @click="close"
       />
       <v-btn
-          :disabled="loading"
+          :disabled="loading || !hasChanges"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{

@@ -43,6 +43,8 @@ const initialState = {
   price: props.price,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
+const { hasChanges, resetHasChanges } = useInputHasChanges(request, initialState)
+
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -87,6 +89,7 @@ const updateCourse = async () => {
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('refreshVideosCourseTable')
     useEvent('closeModal', false)
+    resetHasChanges()
   } finally {
     loading.value = false
   }
@@ -95,7 +98,7 @@ const updateCourse = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  Object.assign(request, initialState);
+  resetHasChanges()
   useValidationStore().clearErrors()
 }
 </script>
@@ -223,7 +226,7 @@ function close() {
           @click="close"
       />
       <v-btn
-          :disabled="loading"
+          :disabled="loading || !hasChanges"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{

@@ -15,9 +15,9 @@ const preview = ref<Preview | null>(null)
 
 const initialState = {
   type: CourseType.Meditation,
-  set: selectedCourse,
-  title: null,
-  description: null,
+  set: '',
+  title: '',
+  description: '',
   duration: 123,
   categories: [],
   price: 0,
@@ -26,6 +26,7 @@ const initialState = {
 }
 
 const request = reactive<CourseStoreRequest>({...initialState})
+const { hasChanges, resetHasChanges } = useInputHasChanges(request,initialState)
 
 
 const numberOrFloatRule = (value: string) => {
@@ -56,10 +57,13 @@ const toggle = () => {
 /**********************************************/
 function singleOrCourse(request) {
   let keysToExclude = ['is_lock', 'is_popular', 'source', 'duration']
-  if (request.set === CourseSet.Course) {
+  if (selectedCourse.value === CourseSet.Course) {
     for (let key of keysToExclude) {
       delete request[key];
     }
+    request.set = CourseSet.Course
+  } else {
+    request.set = CourseSet.Single
   }
 }
 
@@ -83,7 +87,7 @@ const saveCourse = async () => {
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Added as a ${request.set.toLowerCase()} Meditation.`)
     useEvent('closeModal', false)
-    Object.assign(request, initialState);
+    resetHasChanges()
   } finally {
     loading.value = false
   }
@@ -92,12 +96,12 @@ const saveCourse = async () => {
 
 function closeTypeModal() {
   useEvent('closeModal', false)
-  Object.assign(request, initialState);
+  resetHasChanges()
 }
 
 function closeCourseModal(val) {
   val.value = false
-  Object.assign(request, initialState);
+  resetHasChanges()
   useValidationStore().clearErrors()
 }
 
@@ -283,7 +287,7 @@ function closeCourseModal(val) {
                     @click="closeCourseModal(isActive)"
                 />
                 <v-btn
-                    :disabled="loading"
+                    :disabled="loading || !hasChanges"
                     :loading="loading"
                     :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                     :class="{
@@ -473,7 +477,7 @@ function closeCourseModal(val) {
                     @click="closeCourseModal(isActive)"
                 />
                 <v-btn
-                    :disabled="loading"
+                    :disabled="loading || !hasChanges"
                     :loading="loading"
                     :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                     :class="{
