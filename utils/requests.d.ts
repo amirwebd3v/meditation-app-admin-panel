@@ -9,6 +9,7 @@ interface CourseStoreRequest {
     title: string
     set: CourseSet
     thumbnail?: string
+    source?: string
     description?: string
     price: number
 }

@@ -10,7 +10,8 @@ const selectedCourse = ref<CourseSet>()
 const loading = ref(false)
 const {errors} = storeToRefs(useValidationStore());
 const preview = ref<MediaPreview>({ picture: null, track: null });
-const media = ref<File[]>([]);
+const trackMedia = ref<File[]>([]);
+const pictureMedia = ref<File[]>([]);
 /********************************************/
 //Todo: Fix duration value later
 
@@ -29,8 +30,9 @@ const initialState = {
 }
 
 
+
 const request = reactive<CourseStoreRequest>({...initialState})
-const {hasChanges, resetHasChanges} = useInputHasChanges(request, initialState)
+const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 
 
 const numberOrFloatRule = (value: string) => {
@@ -75,16 +77,23 @@ function singleOrCourse(request) {
 
 
 const upload = async (type) => {
-  const [file] = media.value;
+  const [file] = (type === 'track' ? trackMedia : pictureMedia).value;
   if (!file) return;
-  const mediaStore = useMediaStore();
-  preview.value[type] = await mediaStore.uploads([file]);
-  if(type === 'picture'){
-    request.thumbnail = <string>preview.value.picture?.id
-  } else if (type === 'track'){
-    initialState.source = <string>preview.value.track?.id
+
+  preview.value[type] = await useMediaStore().uploads([file]);
+
+  if (type === 'picture') {
+    request.thumbnail = preview.value.picture?.id;
   }
-}
+  if (type === 'track') {
+    request.source = preview.value.track?.id;
+  }
+};
+
+watchEffect(()=>{
+  console.log(request.thumbnail)
+})
+
 
 const saveCourse = async () => {
   loading.value = true
@@ -94,7 +103,7 @@ const saveCourse = async () => {
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Added as a ${request.set.toLowerCase()} Meditation.`)
     useEvent('closeModal', false)
-    resetHasChanges()
+    resetHasChanges(initialState,pictureMedia,trackMedia)
   } finally {
     loading.value = false
   }
@@ -103,12 +112,13 @@ const saveCourse = async () => {
 
 function closeTypeModal() {
   useEvent('closeModal', false)
-  resetHasChanges()
+  resetHasChanges(initialState)
+
 }
 
 function closeCourseModal(val) {
   val.value = false
-  resetHasChanges()
+  resetHasChanges(initialState,pictureMedia,trackMedia)
   useValidationStore().clearErrors()
 }
 
@@ -256,27 +266,24 @@ function closeCourseModal(val) {
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a picture</div>
                 <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
-                              v-model="media"
+                              v-model="pictureMedia"
                               @change="upload('picture')"
                               single-line :disabled="loading"
                               accept="image/*"
                               clearable
+                              @click:clear="!pictureMedia"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
-                      <v-card width="80" height="80" rounded="md">
-                        <v-card-text style="padding: 0;" class="text-truncate bg-primary-light text-white">
-                          <v-img cover height="60" :src="<string>preview.picture?.url"/>
+                      <v-card width="75" height="80" class="bg-primary-light">
+                        <v-card-text style="padding: 0;" class="text-truncate text-white">
+                          <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
+                          <v-divider  color="white" class="border-white border-opacity-25"/>
                           <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                         </v-card-text>
                       </v-card>
                     </template>
                   </template>
-
-                  <template #clear v-if="request.thumbnail">
-                      <v-icon icon="mdi-close-circle" @click="request.thumbnail = ''"/>
-                  </template>
-
                 </v-file-input>
               </v-col>
             </v-row>
@@ -401,17 +408,24 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a track</div>
-                <v-file-input class="file-input-label" label="Select a track to Upload"
-                              @update:model-value="upload"
+                <v-file-input class="file-input-label upload-input" label="Select a track to Upload"
+                              v-model="trackMedia"
+                              @change="upload('track')"
                               single-line :disabled="loading"
+                              accept="audio/mpeg"
+                              clearable
+                              @click:clear="!trackMedia"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
-                      <v-card width="100" height="100" class="justify-center align-center">
-                        <v-col align-self="auto">
-                          <v-img width="48" height="48" cover :src="preview?.url as string"/>
-                          <v-card-text class="font-12 text-truncate mx-auto">{{ fileName }}</v-card-text>
-                        </v-col>
+                      <v-card width="80" height="80" class="bg-primary-light">
+                        <v-card-text style="padding: 0;" class="text-truncate text-white">
+                          <div class="pl-4 py-1 align-center">
+                            <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
+                          </div>
+                          <v-divider  color="white" class="border-white border-opacity-25"/>
+                          <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
+                        </v-card-text>
                       </v-card>
                     </template>
                   </template>
@@ -419,18 +433,22 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a picture</div>
-                <v-file-input class="file-input-label" label="Select a picture to Upload"
-                              @update:model-value="upload"
+                <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+                              v-model="pictureMedia"
+                              @change="upload('picture')"
                               single-line :disabled="loading"
-                              variant="outlined" prepend-icon="" color="primary"
-                              :error-message="errors['thumbnail']">
+                              accept="image/*"
+                              clearable
+                              @click:clear="!pictureMedia"
+                              variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
-                      <v-card width="100" height="100" class="justify-center align-center">
-                        <v-col align-self="auto">
-                          <v-img width="48" height="48" cover :src="preview?.url as string"/>
-                          <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
-                        </v-col>
+                      <v-card width="75" height="80" class="bg-primary-light">
+                        <v-card-text style="padding: 0;" class="text-truncate text-white">
+                          <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
+                          <v-divider  color="white" class="border-white border-opacity-25"/>
+                          <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
+                        </v-card-text>
                       </v-card>
                     </template>
                   </template>

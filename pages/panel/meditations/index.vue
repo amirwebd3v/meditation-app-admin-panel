@@ -161,6 +161,7 @@ const goToLesson = (courseId: string) => {
       </template>
 
       <template #item.thumbnail="{ item }">
+
         <div class="v-row justify-center">
           <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
             <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>

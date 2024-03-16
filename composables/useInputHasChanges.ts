@@ -1,7 +1,10 @@
 import type {Ref} from "vue";
 
 export default function useInputHasChanges<T extends object>
-(objectToWatch: T, initialState ?: T): { hasChanges: Ref<boolean>; resetHasChanges: () => void; } {
+(objectToWatch: T): {
+    hasChanges: Ref<boolean>;
+    resetHasChanges: (initialState ?: T, pictureFile ?: Ref<File[]>, trackFile ?: Ref<File[]>) => void;
+} {
 
     const hasChanges = ref(false)
     let oldValObj = JSON.stringify(objectToWatch, (key, value) => {
@@ -28,11 +31,17 @@ export default function useInputHasChanges<T extends object>
     })
 
 
-    function resetHasChanges(): void {
+    function resetHasChanges(initialState?: T, pictureFile?: Ref<File[]>, trackFile?: Ref<File[]>): void {
         if (initialState) {
-            Object.assign(objectToWatch, initialState)
+            Object.assign(objectToWatch, initialState);
         }
-        hasChanges.value = false
+        if (pictureFile) {
+            pictureFile.value = [];
+        }
+        if (trackFile) {
+            trackFile.value = [];
+        }
+        hasChanges.value = false;
     }
 
     return {hasChanges, resetHasChanges}

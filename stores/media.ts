@@ -13,7 +13,7 @@ export const useMediaStore = defineStore('media', {
                 const {data: previews} = await useApi().post('/admin/v1/media', {
                     body: formData,
                 });
-                // Return the first preview object
+
                 return {...previews[0]};
             } catch (error) {
                 console.error('Error uploading files:', error);
