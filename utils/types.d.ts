@@ -32,6 +32,10 @@ interface Preview {
     created_at: number
 }
 
+type MediaPreview = {
+    picture: Preview | null;
+    track: Preview | null;
+};
 
 interface Media {
     collection_name: string;
@@ -97,6 +101,7 @@ export {
     Error,
     User,
     Preview,
+    MediaPreview,
     Lesson,
     Course,
     Media,

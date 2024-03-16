@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseSet, CourseType} from "~/utils/enums";
-import type {Preview} from "~/utils/types";
+import type {MediaPreview} from "~/utils/types";
 
 /*********************************************/
 const singleCourseModal = ref()
@@ -9,7 +9,8 @@ const CourseModal = ref()
 const selectedCourse = ref<CourseSet>()
 const loading = ref(false)
 const {errors} = storeToRefs(useValidationStore());
-const preview = ref<Preview | null>(null)
+const preview = ref<MediaPreview>({ picture: null, track: null });
+const media = ref<File[]>([]);
 /********************************************/
 //Todo: Fix duration value later
 
@@ -19,14 +20,17 @@ const initialState = {
   title: '',
   description: '',
   duration: 123,
+  thumbnail: '',
+  source: '',
   categories: [],
   price: 0,
   is_lock: false,
   is_popular: false
 }
 
+
 const request = reactive<CourseStoreRequest>({...initialState})
-const { hasChanges, resetHasChanges } = useInputHasChanges(request,initialState)
+const {hasChanges, resetHasChanges} = useInputHasChanges(request, initialState)
 
 
 const numberOrFloatRule = (value: string) => {
@@ -67,17 +71,20 @@ function singleOrCourse(request) {
   }
 }
 
-//Todo: Set file type rules for file-input
-const upload = async (files: File[]) => {
-  preview.value = (await useMediaStore().uploads([files[0]]))[0]
-  if(preview.value?.mime_type === 'image/jpeg'){
-    request.thumbnail = preview.value?.id
-  } else if(preview.value?.mime_type === 'audio/mpeg'){
-    request.source = preview.value?.id
+
+
+
+const upload = async (type) => {
+  const [file] = media.value;
+  if (!file) return;
+  const mediaStore = useMediaStore();
+  preview.value[type] = await mediaStore.uploads([file]);
+  if(type === 'picture'){
+    request.thumbnail = <string>preview.value.picture?.id
+  } else if (type === 'track'){
+    initialState.source = <string>preview.value.track?.id
   }
 }
-
-
 
 const saveCourse = async () => {
   loading.value = true
@@ -248,20 +255,28 @@ function closeCourseModal(val) {
               </v-col>
               <v-col cols="12" class="py-0">
                 <div class="text-white pb-2">Upload a picture</div>
-                <v-file-input class="file-input-label" label="Select a picture to Upload"
-                              @update:model-value="upload"
+                <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+                              v-model="media"
+                              @change="upload('picture')"
                               single-line :disabled="loading"
+                              accept="image/*"
+                              clearable
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
-                      <v-card width="100" height="100" class="justify-center align-center">
-                        <v-col align-self="auto">
-                          <v-img width="48" height="48" cover :src="preview?.url as string"/>
-                          <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
-                        </v-col>
+                      <v-card width="80" height="80" rounded="md">
+                        <v-card-text style="padding: 0;" class="text-truncate bg-primary-light text-white">
+                          <v-img cover height="60" :src="<string>preview.picture?.url"/>
+                          <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
+                        </v-card-text>
                       </v-card>
                     </template>
                   </template>
+
+                  <template #clear v-if="request.thumbnail">
+                      <v-icon icon="mdi-close-circle" @click="request.thumbnail = ''"/>
+                  </template>
+
                 </v-file-input>
               </v-col>
             </v-row>

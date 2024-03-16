@@ -19,6 +19,13 @@
   --v-input-control-height: 100px !important;
 }
 
+.upload-input {
+  .v-field__input {
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-left: 10px !important;
+  }
+}
 
 .file-input-label {
   .v-label.v-field-label {
