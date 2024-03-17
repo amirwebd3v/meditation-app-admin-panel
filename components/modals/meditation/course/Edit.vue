@@ -1,15 +1,13 @@
 <script setup lang="ts">
 
 import type {CourseUpdateRequest} from "~/utils/requests";
-import type {Preview} from "~/utils/types";
-import {CourseSet} from "~/utils/enums";
+
 
 
 /********************************************/
 const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
-const preview = ref<Preview | null>(null)
 const emit = defineEmits(['closeMenu'])
 /********************************************/
 const props = defineProps({
@@ -50,8 +48,8 @@ const initialState = {
   is_lock: props.price > 0,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
-const { hasChanges, resetHasChanges } = useInputHasChanges(request,initialState)
-
+const { hasChanges, resetHasChanges } = useInputHasChanges(request)
+const {pictureMedia,trackMedia,upload,preview} = useUpload(request)
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -96,15 +94,6 @@ function freeOrPaid(request) {
   }
 }
 
-//Todo: Set file type rules for file-input
-const upload = async (files: File[]) => {
-  preview.value = (await useMediaStore().uploads([files[0]]))[0]
-  if (preview.value?.mime_type === 'image/jpeg') {
-    request.thumbnail = preview.value?.id
-  } else if (preview.value?.mime_type === 'audio/mpeg') {
-    request.source = preview.value?.id
-  }
-}
 
 
 const updateCourse = async () => {
@@ -117,7 +106,7 @@ const updateCourse = async () => {
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
-    resetHasChanges()
+    resetHasChanges(initialState,pictureMedia,trackMedia)
   } finally {
     loading.value = false
   }
@@ -126,7 +115,7 @@ const updateCourse = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges()
+  resetHasChanges(initialState,pictureMedia,trackMedia)
   useValidationStore().clearErrors()
 }
 </script>
@@ -209,17 +198,24 @@ function close() {
 
         <v-col cols="12" class="py-0" v-if="props.courseSet === CourseSet.Single">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label" label="Select a track to Upload"
-                        @update:model-value="upload"
+          <v-file-input class="file-input-label upload-input" label="Select a track to Upload"
+                        v-model="trackMedia"
+                        @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"
-                        variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
+                        accept="audio/mpeg"
+                        clearable
+                        @click:clear="request.source='' & !trackMedia"
+                        variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="100" height="100" class="justify-center align-center">
-                  <v-col align-self="auto">
-                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
-                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
-                  </v-col>
+                <v-card width="80" height="80" class="bg-primary-light">
+                  <v-card-text style="padding: 0;" class="text-truncate text-white">
+                    <div class="pl-4 py-1 align-center">
+                      <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
+                    </div>
+                    <v-divider  color="white" class="border-white border-opacity-25"/>
+                    <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
+                  </v-card-text>
                 </v-card>
               </template>
             </template>
@@ -227,17 +223,22 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label" label="Select a picture to Upload"
-                        @update:model-value="upload"
+          <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+                        v-model="pictureMedia"
+                        @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
+                        accept="image/*"
+                        clearable
+                        @click:clear="request.thumbnail='' & !pictureMedia"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="100" height="100" class="justify-center align-center">
-                  <v-col align-self="auto">
-                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
-                    <v-card-text class="text-truncate">{{ fileName }}</v-card-text>
-                  </v-col>
+                <v-card width="75" height="80" class="bg-primary-light">
+                  <v-card-text style="padding: 0;" class="text-truncate text-white">
+                    <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
+                    <v-divider  color="white" class="border-white border-opacity-25"/>
+                    <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
+                  </v-card-text>
                 </v-card>
               </template>
             </template>

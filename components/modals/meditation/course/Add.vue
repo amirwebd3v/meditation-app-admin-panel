@@ -93,7 +93,6 @@ const saveCourse = async () => {
 function closeTypeModal() {
   useEvent('closeModal', false)
   resetHasChanges(initialState)
-
 }
 
 function closeCourseModal(val) {
@@ -251,7 +250,7 @@ function closeCourseModal(val) {
                               single-line :disabled="loading"
                               accept="image/*"
                               clearable
-                              @click:clear="request.thumbnail = ''"
+                              @click:clear="request.thumbnail='' & !pictureMedia"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
@@ -394,7 +393,7 @@ function closeCourseModal(val) {
                               single-line :disabled="loading"
                               accept="audio/mpeg"
                               clearable
-                              @click:clear="!trackMedia"
+                              @click:clear="request.source='' & !trackMedia"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">

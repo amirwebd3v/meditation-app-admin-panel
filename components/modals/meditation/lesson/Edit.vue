@@ -1,15 +1,12 @@
 <script setup lang="ts">
 
 import type { LessonUpdateRequest} from "~/utils/requests";
-import type {Preview} from "~/utils/types";
-
 
 
 /********************************************/
 const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
-const preview = ref<Preview | null>(null)
 
 /********************************************/
 const props = defineProps({
@@ -56,19 +53,9 @@ const initialState = {
   is_lock: props.isLock
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
-const { hasChanges, resetHasChanges } = useInputHasChanges(request, initialState)
-
+const { hasChanges, resetHasChanges } = useInputHasChanges(request)
+const {pictureMedia,trackMedia,upload,preview} = useUpload(request)
 /**********************************************/
-//Todo: Set file type rules for file-input
-const upload = async (files: File[]) => {
-  preview.value = (await useMediaStore().uploads([files[0]]))[0]
-  if(preview.value?.mime_type === 'audio/mpeg'){
-    request.source = preview.value?.id
-  }
-}
-
-
-
 const updateLesson = async () => {
   loading.value = true
   try {
@@ -76,7 +63,7 @@ const updateLesson = async () => {
     useEvent('refreshMeditationsLessonsTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
-    resetHasChanges()
+    resetHasChanges(initialState,pictureMedia,trackMedia)
   } finally {
     loading.value = false
   }
@@ -85,7 +72,7 @@ const updateLesson = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges()
+  resetHasChanges(initialState,pictureMedia,trackMedia)
   useValidationStore().clearErrors()
 }
 </script>
@@ -122,17 +109,24 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label" label="Select a track to Upload"
-                        @update:model-value="upload" :disabled="loading"
-                        single-line
+          <v-file-input class="file-input-label upload-input" label="Select a track to Upload"
+                        v-model="trackMedia"
+                        @change="upload(MediaType.TRACK)"
+                        single-line :disabled="loading"
+                        accept="audio/mpeg"
+                        clearable
+                        @click:clear="request.source='' & !trackMedia"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
-                <v-card width="100" height="100" class="justify-center align-center">
-                  <v-col align-self="auto">
-                    <v-img width="48" height="48" cover :src="preview?.url as string"/>
-                    <v-card-text class="font-12 text-truncate mx-auto">{{ fileName }}</v-card-text>
-                  </v-col>
+                <v-card width="80" height="80" class="bg-primary-light">
+                  <v-card-text style="padding: 0;" class="text-truncate text-white">
+                    <div class="pl-4 py-1 align-center">
+                      <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
+                    </div>
+                    <v-divider  color="white" class="border-white border-opacity-25"/>
+                    <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
+                  </v-card-text>
                 </v-card>
               </template>
             </template>

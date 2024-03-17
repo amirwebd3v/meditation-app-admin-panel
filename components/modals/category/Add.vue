@@ -21,7 +21,7 @@ const initialState = {
 }
 
 const request = reactive<CategoryStoreRequest>({...initialState})
-const { hasChanges, resetHasChanges } = useInputHasChanges(request,initialState)
+const { hasChanges, resetHasChanges } = useInputHasChanges(request)
 
 /*********************************************/
 const saveCategory = async () => {
@@ -31,7 +31,7 @@ const saveCategory = async () => {
     await useCategoryStore().fetch(request.type)
     useEvent('successMessage', `${request.name} is successfully Added to ${request.type.toLowerCase()}s.`)
     useEvent('closeModal', false)
-    resetHasChanges()
+    resetHasChanges(initialState)
   } finally {
     loading.value = false
     useValidationStore().clearErrors()
@@ -39,7 +39,7 @@ const saveCategory = async () => {
 }
 
 function close() {
-  resetHasChanges()
+  resetHasChanges(initialState)
   useValidationStore().clearErrors()
   useEvent('closeModal', false)
 }
