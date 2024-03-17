@@ -20,7 +20,7 @@ const props = defineProps({
 
 /*********************************************/
 const loading = ref(false)
-const emit = defineEmits(['closeMenu'])
+
 
 /*********************************************/
 
@@ -28,7 +28,7 @@ const deleteCourse = async () => {
   loading.value = true
   try {
     await useVideoStore().destroy(<string>props.id)
-    emit('closeMenu',false)
+    useEvent('closeMenu')
     useEvent('refreshVideosCourseTable')
     useEvent('successMessage', `${props.title} is successfully Deleted from Video Courses.`)
     useEvent('closeModal', false)

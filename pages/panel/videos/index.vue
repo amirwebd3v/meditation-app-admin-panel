@@ -6,7 +6,7 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";
-import {CourseType} from "~/utils/enums";
+import {CourseSet, CourseType} from "~/utils/enums";
 
 const {items, meta} = storeToRefs(useVideoStore())
 
@@ -21,7 +21,6 @@ onBeforeMount(() => {
 });
 
 /***********************************************/
-const menu = ref(false)
 const loading = ref(false)
 const searchText = ref('')
 const router = useRouter();
@@ -172,39 +171,27 @@ const goToLesson = (courseId: string) => {
 
       <template #item.actions="{item}">
         <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
-          <v-menu
-              :close-on-content-click="false"
-              location="start"
-          >
-            <template v-slot:activator="{ props }">
-              <v-icon
-                  class="text-primary mr-5"
-                  v-bind="props"
-                  size="large"
-                  icon="mdi mdi-dots-vertical"
-                  @click="menu = true"
+          <LazyDataTableMenu>
+            <template #items>
+              <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
+                                             :btn-out-table="false" :btn-in-table="true"
+                                             v-if="item.set === CourseSet.Course"
+                                             :key="item.uuid"
               />
-            </template>
-
-            <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded v-if="menu">
-              <LazyModalsVideoLessonAdd :course-id="item.uuid" :btn-out-table="false" :btn-in-table="true"
-                                        v-if="menu"
-                                        @closeMenu="v => menu = v"/>
-              <LazyModalsVideoCourseEdit
+              <LazyModalsMeditationCourseEdit
                   :id="item.uuid"
                   :title="item.title"
                   :description="item.description"
+                  :course-set="item.set"
                   :categories="item.categories.map((c : Category) => c.id)"
                   :price="item.price"
-                  v-if="menu"
-                  @closeMenu="v => menu = v"
-                  :key="item.uuid"
+                  :key="item.updated_at"
               />
-              <LazyModalsVideoCourseDelete :id="item.uuid" :title="item.title"
-                                           v-if="menu" :lesson-count="item.lessons_count" :transaction-count="0"
-                                           @closeMenu="v => menu = v"/>
-            </v-card>
-          </v-menu>
+              <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
+                                                :id="item.uuid" :title="item.title" :course-set="item.set"
+              />
+            </template>
+          </LazyDataTableMenu>
           <v-icon
               class="text-primary"
               icon="mdi-chevron-right"

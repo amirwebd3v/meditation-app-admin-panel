@@ -7,7 +7,7 @@ import type {CourseUpdateRequest} from "~/utils/requests";
 const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
-const emit = defineEmits(['closeMenu'])
+
 /********************************************/
 const props = defineProps({
   id: {
@@ -100,7 +100,7 @@ const updateCourse = async () => {
   freeOrPaid(request);
   try {
     await useMeditationStore().update(request)
-    emit('closeMenu', false)
+    useEvent('closeMenu',false)
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)

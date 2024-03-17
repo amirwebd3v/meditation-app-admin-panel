@@ -6,7 +6,7 @@ import {CourseType} from "~/utils/enums";
 const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
-const emit = defineEmits(['closeMenu'])
+
 
 /********************************************/
 const props = defineProps({
@@ -75,7 +75,7 @@ const updateCourse = async () => {
   loading.value = true
   try {
     await useVideoStore().update(request)
-    emit('closeMenu', false)
+    useEvent('closeMenu')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('refreshVideosCourseTable')
     useEvent('closeModal', false)

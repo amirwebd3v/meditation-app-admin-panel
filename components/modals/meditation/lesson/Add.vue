@@ -25,7 +25,7 @@ const props = defineProps({
 const isBtnText = ref()
 const loading = ref()
 const {errors} = storeToRefs(useValidationStore());
-const emit = defineEmits(['closeMenu'])
+
 /********************************************/
 const initialState = {
   course_uuid: props.courseId,
@@ -46,7 +46,7 @@ const saveLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().store(request)
-    emit('closeMenu',false)
+    useEvent('closeMenu')
     useEvent('refreshMeditationsLessonsTable')
     useEvent('successMessage', `${request.title} is successfully Added to ${props.courseTitle}.`)
     useEvent('closeModal', false)
