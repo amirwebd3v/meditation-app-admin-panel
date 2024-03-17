@@ -3,7 +3,7 @@ import type {Ref} from "vue";
 export default function useInputHasChanges<T extends object>
 (objectToWatch: T): {
     hasChanges: Ref<boolean>;
-    resetHasChanges: (initialState ?: T, pictureFile ?: Ref<File[]>, trackFile ?: Ref<File[]>) => void;
+    resetHasChanges: (initialState ?: T, pictureFile ?: Ref<File[]> | null, trackFile ?: Ref<File[]> | null) => void;
 } {
 
     const hasChanges = ref(false)
@@ -26,12 +26,11 @@ export default function useInputHasChanges<T extends object>
             return value;
         })
 
-
         hasChanges.value = oldValObj !== newValObj
     })
 
 
-    function resetHasChanges(initialState?: T, pictureFile?: Ref<File[]>, trackFile?: Ref<File[]>): void {
+    function resetHasChanges(initialState?: T, pictureFile?: Ref<File[]> | null, trackFile?: Ref<File[]> | null): void {
         if (initialState) {
             Object.assign(objectToWatch, initialState);
         }

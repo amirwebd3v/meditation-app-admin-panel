@@ -8,6 +8,11 @@ enum CourseSet {
     Course = 'MULTIPLE',
 }
 
+enum MediaType {
+    TRACK = 'track',
+    PICTURE = 'picture',
+}
+
 export {
-    CourseType, CourseSet
+    CourseType, CourseSet, MediaType
 }

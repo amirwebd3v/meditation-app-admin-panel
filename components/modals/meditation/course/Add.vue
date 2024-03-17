@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
-import {CourseSet, CourseType} from "~/utils/enums";
-import type {MediaPreview} from "~/utils/types";
+import {CourseSet, CourseType, MediaType} from "~/utils/enums";
 
 /*********************************************/
 const singleCourseModal = ref()
@@ -9,9 +8,7 @@ const CourseModal = ref()
 const selectedCourse = ref<CourseSet>()
 const loading = ref(false)
 const {errors} = storeToRefs(useValidationStore());
-const preview = ref<MediaPreview>({ picture: null, track: null });
-const trackMedia = ref<File[]>([]);
-const pictureMedia = ref<File[]>([]);
+
 /********************************************/
 //Todo: Fix duration value later
 
@@ -33,6 +30,7 @@ const initialState = {
 
 const request = reactive<CourseStoreRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {pictureMedia,trackMedia,upload,preview} = useUpload(request)
 
 
 const numberOrFloatRule = (value: string) => {
@@ -75,24 +73,6 @@ function singleOrCourse(request) {
 
 
 
-
-const upload = async (type) => {
-  const [file] = (type === 'track' ? trackMedia : pictureMedia).value;
-  if (!file) return;
-
-  preview.value[type] = await useMediaStore().uploads([file]);
-
-  if (type === 'picture') {
-    request.thumbnail = preview.value.picture?.id;
-  }
-  if (type === 'track') {
-    request.source = preview.value.track?.id;
-  }
-};
-
-watchEffect(()=>{
-  console.log(request.thumbnail)
-})
 
 
 const saveCourse = async () => {
@@ -267,11 +247,11 @@ function closeCourseModal(val) {
                 <div class="text-white pb-2">Upload a picture</div>
                 <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
                               v-model="pictureMedia"
-                              @change="upload('picture')"
+                              @change="upload(MediaType.PICTURE)"
                               single-line :disabled="loading"
                               accept="image/*"
                               clearable
-                              @click:clear="!pictureMedia"
+                              @click:clear="request.thumbnail = ''"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
@@ -410,7 +390,7 @@ function closeCourseModal(val) {
                 <div class="text-white pb-2">Upload a track</div>
                 <v-file-input class="file-input-label upload-input" label="Select a track to Upload"
                               v-model="trackMedia"
-                              @change="upload('track')"
+                              @change="upload(MediaType.TRACK)"
                               single-line :disabled="loading"
                               accept="audio/mpeg"
                               clearable
@@ -435,7 +415,7 @@ function closeCourseModal(val) {
                 <div class="text-white pb-2">Upload a picture</div>
                 <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
                               v-model="pictureMedia"
-                              @change="upload('picture')"
+                              @change="upload(MediaType.PICTURE)"
                               single-line :disabled="loading"
                               accept="image/*"
                               clearable
@@ -443,7 +423,7 @@ function closeCourseModal(val) {
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
-                      <v-card width="75" height="80" class="bg-primary-light">
+                      <v-card width="80" height="80" class="bg-primary-light">
                         <v-card-text style="padding: 0;" class="text-truncate text-white">
                           <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
                           <v-divider  color="white" class="border-white border-opacity-25"/>

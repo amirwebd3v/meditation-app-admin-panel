@@ -3,9 +3,9 @@ import {CourseSet} from "~/utils/enums";
 
 
 interface Error {
-    status: number|undefined,
-    message: string|undefined,
-    errors: Record<string, Array<string>>|undefined
+    status: number | undefined,
+    message: string | undefined,
+    errors: Record<string, Array<string>> | undefined
 }
 
 interface Course {
@@ -32,10 +32,10 @@ interface Preview {
     created_at: number
 }
 
-type MediaPreview = {
+interface MediaPreview {
     picture: Preview | null;
     track: Preview | null;
-};
+}
 
 interface Media {
     collection_name: string;
@@ -63,7 +63,7 @@ interface Lesson {
     title: string
     description: string
     duration: number
-    source: string|Media
+    source: string | Media
     is_new: boolean
     is_popular: boolean
     is_lock: boolean
