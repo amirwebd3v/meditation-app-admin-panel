@@ -6,7 +6,7 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";
-import {CourseSet, CourseType} from "~/utils/enums";
+import {CourseType} from "~/utils/enums";
 
 const {items, meta} = storeToRefs(useVideoStore())
 
@@ -173,8 +173,8 @@ const goToLesson = (courseId: string) => {
         <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
           <LazyDataTableMenu>
             <template #items>
-              <LazyModalsMeditationLessonAdd :course-id="item.uuid" :btn-out-table="false" :btn-in-table="true"/>
-              <LazyModalsMeditationCourseEdit
+              <LazyModalsVideoLessonAdd :course-id="item.uuid" :course-title="item.title" :btn-out-table="false" :btn-in-table="true"/>
+              <LazyModalsVideoCourseEdit
                   :id="item.uuid"
                   :title="item.title"
                   :description="item.description"
@@ -182,9 +182,8 @@ const goToLesson = (courseId: string) => {
                   :price="item.price"
                   :key="item.updated_at"
               />
-              <LazyModalsMeditationCourseDelete :id="item.uuid" :title="item.title"
-                                                :lesson-count="item.lessons_count" :transaction-count="0"
-              />
+              <LazyModalsVideoCourseDelete :id="item.uuid" :title="item.title"
+                                                :lesson-count="item.lessons_count" :transaction-count="0"/>
             </template>
           </LazyDataTableMenu>
           <v-icon

@@ -35,10 +35,10 @@ const validateSource = (value) => {
 /********************************************/
 const initialState = {
   course_uuid: props.courseId,
-  title: '',
-  source: '',
-  duration: '',
-  description: '',
+  title: null,
+  source: null,
+  duration: null,
+  description: null,
   is_new: true,
   is_popular: false,
   is_lock: false,

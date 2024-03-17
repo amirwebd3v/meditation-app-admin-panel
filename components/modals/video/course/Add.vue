@@ -9,9 +9,10 @@ const {errors} = storeToRefs(useValidationStore());
 
 /********************************************/
 const initialState = {
-  title: '',
+  title: null,
   set: CourseSet.Course,
-  description: '',
+  description: null,
+  thumbnail: null,
   categories: [],
   price: 0,
   type: CourseType.Video,

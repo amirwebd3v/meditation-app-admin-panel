@@ -19,11 +19,11 @@ const props = defineProps({
     required: true
   },
   description: {
-    type: String,
+    type: String || null,
     required: true
   },
   categories: {
-    type: Array<number>,
+    type: Array<number> || null,
     required: true
   },
   courseSet: {

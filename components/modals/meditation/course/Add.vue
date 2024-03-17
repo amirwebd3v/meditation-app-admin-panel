@@ -14,12 +14,12 @@ const {errors} = storeToRefs(useValidationStore());
 
 const initialState = {
   type: CourseType.Meditation,
-  set: '',
-  title: '',
-  description: '',
+  set: null,
+  title: null,
+  description: null,
   duration: 123,
-  thumbnail: '',
-  source: '',
+  thumbnail: null,
+  source: null,
   categories: [],
   price: 0,
   is_lock: false,
@@ -246,7 +246,7 @@ function closeCourseModal(val) {
                               single-line :disabled="loading"
                               accept="image/*"
                               clearable
-                              @click:clear="request.thumbnail='' & !pictureMedia"
+                              @click:clear="request.thumbnail=null & !pictureMedia"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
@@ -400,7 +400,7 @@ function closeCourseModal(val) {
                               single-line :disabled="loading"
                               accept="audio/mpeg"
                               clearable
-                              @click:clear="request.source='' & !trackMedia"
+                              @click:clear="request.source=null & !trackMedia"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">

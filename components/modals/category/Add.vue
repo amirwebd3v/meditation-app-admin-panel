@@ -16,7 +16,7 @@ const props = defineProps({
 
 /*********************************************/
 const initialState = {
-  name: '',
+  name: null,
   type: props.categoryType,
 }
 

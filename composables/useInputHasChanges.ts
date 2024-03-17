@@ -8,8 +8,8 @@ export default function useInputHasChanges<T extends object>
 
     const hasChanges = ref(false)
     let oldValObj = JSON.stringify(objectToWatch, (key, value) => {
-        if (value === null) {
-            return '';
+        if (value === "") {
+            return null;
         } else if (typeof value === 'number') {
             return value.toString();
         }
@@ -18,8 +18,8 @@ export default function useInputHasChanges<T extends object>
 
     watch(objectToWatch, (newVal) => {
         const newValObj = JSON.stringify(newVal, (key, value) => {
-            if (value === null) {
-                return '';
+            if (value === "") {
+                return null;
             } else if (typeof value === 'number') {
                 return value.toString();
             }
