@@ -45,19 +45,19 @@ const initialState = {
 }
 
 const request = reactive<LessonStoreRequest>({...initialState})
-const { hasChanges, resetHasChanges } = useInputHasChanges(request)
-const {pictureMedia,upload,preview} = useUpload(request)
+const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {pictureMedia, upload, preview} = useUpload(request)
 
 /**********************************************/
 const saveLesson = async () => {
   loading.value = true
   try {
     await useLessonStore().store(request)
-    emit('closeMenu',false)
+    emit('closeMenu', false)
     useEvent('refreshVideosLessonsTable')
     useEvent('successMessage', `${request.title} is successfully Added to ${props.courseTitle}.`)
     useEvent('closeModal', false)
-    resetHasChanges(initialState,pictureMedia)
+    resetHasChanges(initialState, pictureMedia)
   } finally {
     loading.value = false
   }
@@ -66,7 +66,7 @@ const saveLesson = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState,pictureMedia)
+  resetHasChanges(initialState, pictureMedia)
   useValidationStore().clearErrors()
 }
 
@@ -138,8 +138,19 @@ function close() {
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="75" height="80" class="bg-primary-light">
                   <v-card-text style="padding: 0;" class="text-truncate text-white">
-                    <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
-                    <v-divider  color="white" class="border-white border-opacity-25"/>
+                    <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                           :src="<string>preview.picture?.url">
+                      <template v-slot:placeholder>
+                        <div class="d-flex align-center justify-center fill-height">
+                          <v-progress-circular
+                              color="grey-lighten-4"
+                              indeterminate
+                              size="x-small"
+                          ></v-progress-circular>
+                        </div>
+                      </template>
+                    </v-img>
+                    <v-divider color="white" class="border-white border-opacity-25"/>
                     <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                   </v-card-text>
                 </v-card>

@@ -15,7 +15,17 @@ definePageMeta({
     <v-row align="start" class="ma-0">
       <v-col cols="12" sm="6" md="6">
         <v-card :to="{name:  'panel-videos'}" class="bg-primary-light" max-height="225" rounded="lg">
-          <v-img src="/img/video-card.jpg" cover max-height="175" />
+          <v-img lazy-src="/img/meditation-card.jpg" src="/img/video-card.jpg" cover max-height="175">
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                    color="grey-lighten-4"
+                    indeterminate
+                    size="x-small"
+                ></v-progress-circular>
+              </div>
+            </template>
+          </v-img>
 
           <v-card-text class="text-center  font-16 ">
             Video Lessons
@@ -24,7 +34,17 @@ definePageMeta({
       </v-col>
       <v-col cols="12" sm="6" md="6">
         <v-card :to="{name:  'panel-meditations'}" class="bg-primary-light" max-height="225" rounded="lg">
-          <v-img src="/img/meditation-card.jpg" cover max-height="175" />
+          <v-img lazy-src="/img/meditation-card.jpg" src="/img/meditation-card.jpg" cover max-height="175">
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                    color="grey-lighten-4"
+                    indeterminate
+                    size="x-small"
+                ></v-progress-circular>
+              </div>
+            </template>
+          </v-img>
 
           <v-card-text class="text-center  font-16 ">
             Meditations

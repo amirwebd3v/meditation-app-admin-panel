@@ -27,10 +27,9 @@ const initialState = {
 }
 
 
-
 const request = reactive<CourseStoreRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
-const {pictureMedia,trackMedia,upload,preview} = useUpload(request)
+const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
 
 
 const numberOrFloatRule = (value: string) => {
@@ -72,9 +71,6 @@ function singleOrCourse(request) {
 }
 
 
-
-
-
 const saveCourse = async () => {
   loading.value = true
   singleOrCourse(request);
@@ -83,7 +79,7 @@ const saveCourse = async () => {
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Added as a ${request.set.toLowerCase()} Meditation.`)
     useEvent('closeModal', false)
-    resetHasChanges(initialState,pictureMedia,trackMedia)
+    resetHasChanges(initialState, pictureMedia, trackMedia)
   } finally {
     loading.value = false
   }
@@ -97,7 +93,7 @@ function closeTypeModal() {
 
 function closeCourseModal(val) {
   val.value = false
-  resetHasChanges(initialState,pictureMedia,trackMedia)
+  resetHasChanges(initialState, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
 
@@ -256,8 +252,19 @@ function closeCourseModal(val) {
                     <template v-for="fileName in fileNames" :key="fileName">
                       <v-card width="75" height="80" class="bg-primary-light">
                         <v-card-text style="padding: 0;" class="text-truncate text-white">
-                          <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
-                          <v-divider  color="white" class="border-white border-opacity-25"/>
+                          <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                                 :src="<string>preview.picture?.url">
+                            <template v-slot:placeholder>
+                              <div class="d-flex align-center justify-center fill-height">
+                                <v-progress-circular
+                                    color="grey-lighten-4"
+                                    indeterminate
+                                    size="x-small"
+                                ></v-progress-circular>
+                              </div>
+                            </template>
+                          </v-img>
+                          <v-divider color="white" class="border-white border-opacity-25"/>
                           <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                         </v-card-text>
                       </v-card>
@@ -402,7 +409,7 @@ function closeCourseModal(val) {
                           <div class="pl-4 py-1 align-center">
                             <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
                           </div>
-                          <v-divider  color="white" class="border-white border-opacity-25"/>
+                          <v-divider color="white" class="border-white border-opacity-25"/>
                           <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                         </v-card-text>
                       </v-card>
@@ -424,8 +431,19 @@ function closeCourseModal(val) {
                     <template v-for="fileName in fileNames" :key="fileName">
                       <v-card width="80" height="80" class="bg-primary-light">
                         <v-card-text style="padding: 0;" class="text-truncate text-white">
-                          <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
-                          <v-divider  color="white" class="border-white border-opacity-25"/>
+                          <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                                 :src="<string>preview.picture?.url">
+                            <template v-slot:placeholder>
+                              <div class="d-flex align-center justify-center fill-height">
+                                <v-progress-circular
+                                    color="grey-lighten-4"
+                                    indeterminate
+                                    size="x-small"
+                                ></v-progress-circular>
+                              </div>
+                            </template>
+                          </v-img>
+                          <v-divider color="white" class="border-white border-opacity-25"/>
                           <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                         </v-card-text>
                       </v-card>

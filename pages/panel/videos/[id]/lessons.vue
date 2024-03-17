@@ -63,7 +63,7 @@ useListen('refreshVideosLessonsTable',load)
 
       <v-sheet class="d-flex mb-6  align-center">
 
-        <v-sheet class="">
+        <v-sheet >
           <h2 class="text-white pr-10 me-auto">{{ course.title }} video</h2>
         </v-sheet>
         <v-sheet class="mr-5 pt-5" width="475px">
@@ -116,9 +116,20 @@ useListen('refreshVideosLessonsTable',load)
         </template>
 
         <template #item.thumbnail="{ item }">
+
           <div class="v-row justify-center">
             <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
-              <v-img :src="item.thumbnail.urls.small" height="38" width="38" cover/>
+              <v-img  :src="item.thumbnail.urls?.small" lazy-src="/img/meditation-card.jpg" height="38" width="38" cover>
+                <template v-slot:placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular
+                        color="grey-lighten-4"
+                        indeterminate
+                        size="x-small"
+                    ></v-progress-circular>
+                  </div>
+                </template>
+              </v-img>
             </v-card>
           </div>
         </template>

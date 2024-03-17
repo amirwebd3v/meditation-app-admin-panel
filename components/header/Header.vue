@@ -30,7 +30,17 @@ const isActiveLink = computed(() => {
       <v-row justify="space-between" align="center">
         <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = <any>!drawer"/>
         <nuxt-link to="/panel" class="float-md-right logo">
-          <v-img width="42" height="40" src="/img/logo.svg"/>
+          <v-img  lazy-src="/img/meditation-card.jpg" width="42" height="40" src="/img/logo.svg">
+              <template v-slot:placeholder>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-progress-circular
+                      color="grey-lighten-4"
+                      indeterminate
+                      size="x-small"
+                  ></v-progress-circular>
+                </div>
+              </template>
+            </v-img>
         </nuxt-link>
 
         <div class="hidden-sm-and-down">

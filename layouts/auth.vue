@@ -1,13 +1,8 @@
 <script setup lang="ts">
-
 useHead({
-  meta: [
-      {content: 'OmniWell'},
-  ],
-  titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} Meditation ` : "OmniWell";
-  },
-});
+  title: 'OmniWellScan'
+})
+
 
 </script>
 

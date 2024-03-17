@@ -3,7 +3,6 @@
 import type {CourseUpdateRequest} from "~/utils/requests";
 
 
-
 /********************************************/
 const loading = ref()
 const route = useRoute()
@@ -48,8 +47,8 @@ const initialState = {
   is_lock: props.price > 0,
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
-const { hasChanges, resetHasChanges } = useInputHasChanges(request)
-const {pictureMedia,trackMedia,upload,preview} = useUpload(request)
+const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -95,7 +94,6 @@ function freeOrPaid(request) {
 }
 
 
-
 const updateCourse = async () => {
   loading.value = true
   singleOrCourse(request);
@@ -106,7 +104,7 @@ const updateCourse = async () => {
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
-    resetHasChanges(initialState,pictureMedia,trackMedia)
+    resetHasChanges(initialState, pictureMedia, trackMedia)
   } finally {
     loading.value = false
   }
@@ -115,7 +113,7 @@ const updateCourse = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState,pictureMedia,trackMedia)
+  resetHasChanges(initialState, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
 </script>
@@ -213,7 +211,7 @@ function close() {
                     <div class="pl-4 py-1 align-center">
                       <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
                     </div>
-                    <v-divider  color="white" class="border-white border-opacity-25"/>
+                    <v-divider color="white" class="border-white border-opacity-25"/>
                     <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                   </v-card-text>
                 </v-card>
@@ -235,8 +233,19 @@ function close() {
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="75" height="80" class="bg-primary-light">
                   <v-card-text style="padding: 0;" class="text-truncate text-white">
-                    <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
-                    <v-divider  color="white" class="border-white border-opacity-25"/>
+                    <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                           :src="<string>preview.picture?.url">
+                      <template v-slot:placeholder>
+                        <div class="d-flex align-center justify-center fill-height">
+                          <v-progress-circular
+                              color="grey-lighten-4"
+                              indeterminate
+                              size="x-small"
+                          ></v-progress-circular>
+                        </div>
+                      </template>
+                    </v-img>
+                    <v-divider color="white" class="border-white border-opacity-25"/>
                     <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                   </v-card-text>
                 </v-card>

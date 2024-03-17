@@ -55,8 +55,8 @@ const initialState = {
   is_lock: props.isLock
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
-const { hasChanges, resetHasChanges } = useInputHasChanges(request)
-const {pictureMedia,upload,preview} = useUpload(request)
+const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {pictureMedia, upload, preview} = useUpload(request)
 
 /**********************************************/
 
@@ -68,7 +68,7 @@ const updateLesson = async () => {
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('refreshVideosLessonsTable')
     useEvent('closeModal', false)
-    resetHasChanges(initialState,pictureMedia)
+    resetHasChanges(initialState, pictureMedia)
   } finally {
     loading.value = false
   }
@@ -77,7 +77,7 @@ const updateLesson = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState,pictureMedia)
+  resetHasChanges(initialState, pictureMedia)
   useValidationStore().clearErrors()
 }
 </script>
@@ -112,7 +112,8 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Description</div>
-          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description" :disabled="loading"/>
+          <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"
+                      :disabled="loading"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
@@ -128,8 +129,19 @@ function close() {
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="75" height="80" class="bg-primary-light">
                   <v-card-text style="padding: 0;" class="text-truncate text-white">
-                    <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
-                    <v-divider  color="white" class="border-white border-opacity-25"/>
+                    <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                           :src="<string>preview.picture?.url">
+                      <template v-slot:placeholder>
+                        <div class="d-flex align-center justify-center fill-height">
+                          <v-progress-circular
+                              color="grey-lighten-4"
+                              indeterminate
+                              size="x-small"
+                          ></v-progress-circular>
+                        </div>
+                      </template>
+                    </v-img>
+                    <v-divider color="white" class="border-white border-opacity-25"/>
                     <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                   </v-card-text>
                 </v-card>
@@ -139,14 +151,16 @@ function close() {
         </v-col>
         <v-col cols="6" class="pt-1 pb-0">
           <div class="text-white mb-md-5">Free/Locked</div>
-          <v-radio-group class="mt-5" :disabled="loading" inline v-model="request.is_lock" :error-messages="errors['is_lock']">
+          <v-radio-group class="mt-5" :disabled="loading" inline v-model="request.is_lock"
+                         :error-messages="errors['is_lock']">
             <v-radio density="compact" :value="false" label="Free" color="primary" class="pr-md-8"/>
             <v-radio density="compact" :value="true" label="Locked" color="primary"/>
           </v-radio-group>
         </v-col>
         <v-col cols="6" class="pt-1 pb-0">
           <div class="text-white mb-md-5">Popular</div>
-          <v-radio-group class="mt-5" :disabled="loading" inline v-model="request.is_popular" :error-messages="errors['is_popular']">
+          <v-radio-group class="mt-5" :disabled="loading" inline v-model="request.is_popular"
+                         :error-messages="errors['is_popular']">
             <v-radio density="compact" :value="false" label="No" color="primary" class="pr-md-8"/>
             <v-radio density="compact" :value="true" label="Yes" color="primary"/>
           </v-radio-group>

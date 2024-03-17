@@ -13,7 +13,7 @@
 
       <template v-slot:search="{props}">
         <v-sheet class="d-flex mb-6  align-center" v-if="searchableFields.length">
-          <v-sheet class="">
+          <v-sheet >
             <h2 class="text-white pr-10 me-auto">Meditations</h2>
           </v-sheet>
           <v-sheet class="mr-5 pt-5" width="475px">

@@ -52,7 +52,18 @@ async function login() {
     <v-row no-gutters align="center" justify="center" class="fill-height">
       <v-col cols="12" sm="6" md="4" lg="4">
         <div class="logo">
-          <v-img class="mx-auto mb-5  d-flex align-center justify-center" width="186" cover src="/img/logo.svg"/>
+          <v-img lazy-src="/img/meditation-card.jpg" class="mx-auto mb-5  d-flex align-center justify-center"
+                 width="186" cover src="/img/logo.svg">
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                    color="grey-lighten-4"
+                    indeterminate
+                    size="x-small"
+                ></v-progress-circular>
+              </div>
+            </template>
+          </v-img>
         </div>
         <p class="text-center mb-12 font-weight-bold text-white" style="font-size: 23px;">Welcome to admin panel</p>
         <v-form>

@@ -20,8 +20,8 @@ const initialState = {
 }
 
 const request = reactive<CourseStoreRequest>({...initialState})
-const { hasChanges, resetHasChanges } = useInputHasChanges(request)
-const {pictureMedia,upload,preview} = useUpload(request)
+const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {pictureMedia, upload, preview} = useUpload(request)
 
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
@@ -57,7 +57,7 @@ const saveCourse = async () => {
     useEvent('refreshVideosCourseTable')
     useEvent('successMessage', `${request.title} is successfully Added as a video ${request.set.toLowerCase()}.`)
     useEvent('closeModal', false)
-    resetHasChanges(initialState,pictureMedia)
+    resetHasChanges(initialState, pictureMedia)
   } finally {
     loading.value = false
   }
@@ -66,7 +66,7 @@ const saveCourse = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState,pictureMedia)
+  resetHasChanges(initialState, pictureMedia)
   useValidationStore().clearErrors()
 }
 
@@ -159,14 +159,14 @@ function close() {
         <v-col cols="6" class="py-0">
           <div class="text-white pb-2">Price ($)</div>
           <v-text-field maxlength="6"
-              :disabled="loading"
-              variant="outlined"
-              v-model="request.price"
-              color="primary"
-              density="comfortable"
-              :rules="[numberOrFloatRule]"
-              validate-on="blur"
-              :error-messages="errors['price']"
+                        :disabled="loading"
+                        variant="outlined"
+                        v-model="request.price"
+                        color="primary"
+                        density="comfortable"
+                        :rules="[numberOrFloatRule]"
+                        validate-on="blur"
+                        :error-messages="errors['price']"
           ></v-text-field>
         </v-col>
         <v-col cols="12" class="py-0">
@@ -183,8 +183,19 @@ function close() {
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="75" height="80" class="bg-primary-light">
                   <v-card-text style="padding: 0;" class="text-truncate text-white">
-                    <v-img cover height="56" class="" :src="<string>preview.picture?.url"/>
-                    <v-divider  color="white" class="border-white border-opacity-25"/>
+                    <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                           :src="<string>preview.picture?.url">
+                      <template v-slot:placeholder>
+                        <div class="d-flex align-center justify-center fill-height">
+                          <v-progress-circular
+                              color="grey-lighten-4"
+                              indeterminate
+                              size="x-small"
+                          ></v-progress-circular>
+                        </div>
+                      </template>
+                    </v-img>
+                    <v-divider color="white" class="border-white border-opacity-25"/>
                     <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                   </v-card-text>
                 </v-card>
