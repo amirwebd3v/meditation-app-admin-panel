@@ -173,22 +173,17 @@ const goToLesson = (courseId: string) => {
         <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
           <LazyDataTableMenu>
             <template #items>
-              <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
-                                             :btn-out-table="false" :btn-in-table="true"
-                                             v-if="item.set === CourseSet.Course"
-                                             :key="item.uuid"
-              />
+              <LazyModalsMeditationLessonAdd :course-id="item.uuid" :btn-out-table="false" :btn-in-table="true"/>
               <LazyModalsMeditationCourseEdit
                   :id="item.uuid"
                   :title="item.title"
                   :description="item.description"
-                  :course-set="item.set"
                   :categories="item.categories.map((c : Category) => c.id)"
                   :price="item.price"
                   :key="item.updated_at"
               />
-              <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
-                                                :id="item.uuid" :title="item.title" :course-set="item.set"
+              <LazyModalsMeditationCourseDelete :id="item.uuid" :title="item.title"
+                                                :lesson-count="item.lessons_count" :transaction-count="0"
               />
             </template>
           </LazyDataTableMenu>
