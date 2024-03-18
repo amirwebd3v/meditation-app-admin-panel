@@ -150,7 +150,7 @@ const goToLesson = (courseId: string) => {
 
           <div class="v-row justify-center">
             <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
-              <v-img  :src="item.thumbnail.urls.original" lazy-src="/img/meditation-card.jpg" height="38" width="38" cover>
+              <v-img  :src="item.thumbnail.urls.original" lazy-src="/img/video-card.jpg" height="38" width="38" cover>
                 <template v-slot:placeholder>
                   <div class="d-flex align-center justify-center fill-height">
                     <v-progress-circular

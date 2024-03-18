@@ -129,7 +129,7 @@ function close() {
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="75" height="80" class="bg-primary-light">
                   <v-card-text style="padding: 0;" class="text-truncate text-white">
-                    <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                    <v-img lazy-src="/img/video-card.jpg" cover height="56"
                            :src="<string>preview.picture?.url">
                       <template v-slot:placeholder>
                         <div class="d-flex align-center justify-center fill-height">
