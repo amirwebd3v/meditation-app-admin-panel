@@ -37,7 +37,7 @@ const initialState = {
   course_uuid: props.courseId,
   title: null,
   source: null,
-  duration: null,
+  thumbnail: null,
   description: null,
   is_new: true,
   is_popular: false,
