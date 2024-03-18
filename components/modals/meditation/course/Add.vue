@@ -10,8 +10,6 @@ const loading = ref(false)
 const {errors} = storeToRefs(useValidationStore());
 
 /********************************************/
-//Todo: Fix duration value later
-
 const initialState = {
   type: CourseType.Meditation,
   set: null,
@@ -246,7 +244,7 @@ function closeCourseModal(val) {
                               single-line :disabled="loading"
                               accept="image/*"
                               clearable
-                              @click:clear="request.thumbnail=null & !pictureMedia"
+                              @click:clear="request.thumbnail = pictureMedia ? null : ''"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
@@ -400,7 +398,7 @@ function closeCourseModal(val) {
                               single-line :disabled="loading"
                               accept="audio/mpeg"
                               clearable
-                              @click:clear="request.source=null & !trackMedia"
+                              @click:clear="request.source = trackMedia ? null : ''"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">
@@ -425,7 +423,7 @@ function closeCourseModal(val) {
                               single-line :disabled="loading"
                               accept="image/*"
                               clearable
-                              @click:clear="!pictureMedia"
+                              @click:clear="request.thumbnail = pictureMedia ? null : ''"
                               variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                   <template v-slot:selection="{ fileNames }">
                     <template v-for="fileName in fileNames" :key="fileName">

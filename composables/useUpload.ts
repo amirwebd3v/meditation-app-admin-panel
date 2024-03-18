@@ -1,4 +1,3 @@
-import type {Preview} from "~/utils/types";
 import {MediaType} from "~/utils/enums";
 import type {MediaPreview} from "~/utils/types";
 

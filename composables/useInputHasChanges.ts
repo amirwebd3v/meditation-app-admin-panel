@@ -1,5 +1,6 @@
 import type {Ref} from "vue";
 
+
 export default function useInputHasChanges<T extends object>
 (objectToWatch: T): {
     hasChanges: Ref<boolean>;
@@ -8,8 +9,8 @@ export default function useInputHasChanges<T extends object>
 
     const hasChanges = ref(false)
     let oldValObj = JSON.stringify(objectToWatch, (key, value) => {
-        if (value === "") {
-            return null;
+        if (value === null) {
+            return '';
         } else if (typeof value === 'number') {
             return value.toString();
         }
@@ -18,14 +19,16 @@ export default function useInputHasChanges<T extends object>
 
     watch(objectToWatch, (newVal) => {
         const newValObj = JSON.stringify(newVal, (key, value) => {
-            if (value === "") {
-                return null;
+            if (value === null) {
+                return '';
             } else if (typeof value === 'number') {
                 return value.toString();
             }
             return value;
         })
 
+        console.log('n',newValObj)
+        console.log('o',oldValObj)
         hasChanges.value = oldValObj !== newValObj
     })
 

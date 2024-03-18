@@ -187,7 +187,7 @@ function close() {
                         single-line :disabled="loading"
                         accept="image/*"
                         clearable
-                        @click:clear="request.thumbnail='' & !pictureMedia"
+                        @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">

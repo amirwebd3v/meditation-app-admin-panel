@@ -118,7 +118,7 @@ function close() {
                         single-line :disabled="loading"
                         accept="audio/mpeg"
                         clearable
-                        @click:clear="request.source='' & !trackMedia"
+                        @click:clear="request.source = trackMedia ? null : ''"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">

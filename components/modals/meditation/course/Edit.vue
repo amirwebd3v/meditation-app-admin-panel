@@ -50,6 +50,7 @@ const request = reactive<CourseUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
 
+
 const numberOrFloatRule = (value: string) => {
   const pattern = /^-?\d+\.?\d*$/
   return pattern.test(value)
@@ -202,7 +203,7 @@ function close() {
                         single-line :disabled="loading"
                         accept="audio/mpeg"
                         clearable
-                        @click:clear="request.source='' & !trackMedia"
+                        @click:clear="delete request['source'] && trackMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
@@ -227,7 +228,7 @@ function close() {
                         single-line :disabled="loading"
                         accept="image/*"
                         clearable
-                        @click:clear="request.thumbnail='' & !pictureMedia"
+                        @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
