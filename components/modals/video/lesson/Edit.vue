@@ -24,7 +24,7 @@ const props = defineProps({
     required: true
   },
   source: {
-    type: String || null,
+    type: String,
     required: true
   },
   description: {
