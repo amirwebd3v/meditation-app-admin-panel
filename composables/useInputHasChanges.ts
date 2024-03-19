@@ -26,9 +26,6 @@ export default function useInputHasChanges<T extends object>
             }
             return value;
         })
-
-        console.log('n',newValObj)
-        console.log('o',oldValObj)
         hasChanges.value = oldValObj !== newValObj
     })
 
