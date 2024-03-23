@@ -45,14 +45,12 @@ const handleCategorySelection = (selected) => {
             @update:model-value="handleCategorySelection"
         >
 
-          <v-chip size="large" :ripple="false" class="px-4 font-weight-light text-white" text="All"
-                  style="border-color: #96AE50 !important;" variant="outlined" >
-          </v-chip>
+          <v-chip size="large" :ripple="false" class="px-4 font-weight-light text-white" text="All" variant="outlined" />
+
           <v-chip
               :ripple="false"
               size="large"
               class="pr-4 font-weight-light text-white"
-              style="border-color: #96AE50 !important;"
               variant="outlined"
               v-for="category in [...categories.values()]"
               :key="category.slug"
