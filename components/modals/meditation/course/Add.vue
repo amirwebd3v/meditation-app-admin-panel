@@ -459,6 +459,7 @@ function closeCourseModal(val) {
                       label="Free"
                       color="primary"
                       class="pr-md-8"
+                      @change="request.price = 0"
                   />
                   <v-radio
                       density="compact"
