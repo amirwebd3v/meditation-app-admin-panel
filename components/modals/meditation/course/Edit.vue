@@ -271,6 +271,7 @@ function close() {
                 :value="true"
                 label="Paid"
                 color="primary"
+                @change="request.price = initialState.price"
             />
           </v-radio-group>
         </v-col>
