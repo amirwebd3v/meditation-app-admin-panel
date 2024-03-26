@@ -84,7 +84,7 @@ function close() {
 
 <template>
 
-  <LazyModalsMain>
+  <LazyModalsMain @on-click-outside="close">
 
     <template #dialogButton="props">
       <v-btn class="text-primary" variant="text" icon="mdi mdi-pencil-outline" v-bind="props" size="small"/>

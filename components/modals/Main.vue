@@ -9,6 +9,14 @@ useListen('closeModal', (value: Boolean) => {
 });
 
 
+
+const emit = defineEmits(['OnClickOutside'])
+watch(dialog, (newValue) => {
+  if (!newValue) {
+    emit('OnClickOutside');
+  }
+});
+
 </script>
 
 <template>
@@ -17,7 +25,6 @@ useListen('closeModal', (value: Boolean) => {
       v-model="dialog"
       max-width="600"
   >
-
     <template v-slot:activator="{ props }" v-if="$slots.dialogButton">
       <slot name="dialogButton" v-bind="props"/>
     </template>
