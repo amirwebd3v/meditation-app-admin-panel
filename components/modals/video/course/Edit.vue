@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type {CourseUpdateRequest} from "~/utils/requests";
-import {CourseType} from "~/utils/enums";
+import type {ValidationRules} from "~/utils/types";
 
 /********************************************/
 const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
-
+const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 
 /********************************************/
 const props = defineProps({
@@ -43,12 +43,6 @@ const initialState = {
 const request = reactive<CourseUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, upload, preview} = useUpload(request)
-
-
-const numberOrFloatRule = (value: string) => {
-  const pattern = /^-?\d+\.?\d*$/
-  return pattern.test(value)
-}
 
 /********************************************/
 const videoCategoriesArray = computed(() =>
@@ -111,13 +105,14 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white pb-2">Title</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
+                        :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
                         :error-messages="errors['title']" :disabled="loading"
           />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-subtitle-1 text-medium-emphasis pb-2 text-white">Course description</div>
           <v-textarea variant="outlined" density="compact" color="primary" v-model="request.description"
-                      :disabled="loading"/>
+                      :disabled="loading" :rules="[$validationRules.minLength]"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Select Tag(s)</div>
@@ -174,14 +169,15 @@ function close() {
                         v-model="request.price"
                         color="primary"
                         density="comfortable"
-                        :rules="[numberOrFloatRule]"
-                        validate-on="blur"
+                        :rules="[$validationRules.required,$validationRules.price]"
+
                         :error-messages="errors['price']"
           />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
           <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+                        :rules="[$validationRules.pictureFormat]"
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"

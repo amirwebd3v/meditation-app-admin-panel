@@ -3,9 +3,11 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Course} from "~/utils/types";
 import type {VDataTableServer} from "vuetify/components/VDataTable";
+import type {ValidationRules} from "~/utils/types";
+
 
 const {items, meta} = storeToRefs(useLessonStore())
-
+const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 /***********************************************/
 definePageMeta({
   middleware: 'sanctum:auth',
@@ -67,7 +69,7 @@ useListen('refreshMeditationsLessonsTable',load)
           <v-text-field maxlength="30"
                         @keyup.enter="load"
                         v-model="searchText"
-                        :rules="[v => (v && v.length <= 30) || 'Maximum 30 characters']"
+                        :rules="[$validationRules.maxLength]"
                         density="compact"
                         variant="outlined"
                         label="Search"

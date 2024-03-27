@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type {CourseStoreRequest} from "~/utils/requests";
 import {CourseSet, CourseType, MediaType} from "~/utils/enums";
-
+import type {ValidationRules} from "~/utils/types";
 /*********************************************/
 const singleCourseModal = ref(false)
 const courseModal = ref(false)
 const selectedModal = ref<CourseSet>()
 const loading = ref(false)
 const {errors} = storeToRefs(useValidationStore());
-
+const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 /********************************************/
 const initialState = {
   type: CourseType.Meditation,
@@ -28,12 +28,6 @@ const initialState = {
 const request = reactive<CourseStoreRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
-
-
-const numberOrFloatRule = (value: string) => {
-  const pattern = /^-?\d+\.?\d*$/
-  return pattern.test(value)
-}
 
 /********************************************/
 const meditationCategoriesArray = computed(() =>
@@ -191,13 +185,16 @@ watch(singleCourseModal, (newVal2) => {
               <div class="text-white py-2">Title</div>
               <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable"
                             v-model="request.title"
+                            :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
                             placeholder="Enter meditation title" :disabled="loading"
                             :error-messages="errors['title']"/>
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Description</div>
               <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
-                          v-model="request.description"/>
+                          v-model="request.description"
+                          :rules="[$validationRules.minLength]"
+              />
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Select Tag(s)</div>
@@ -252,17 +249,18 @@ watch(singleCourseModal, (newVal2) => {
               <v-text-field maxlength="6"
                             :disabled="loading"
                             variant="outlined"
+                            :rules="[$validationRules.required,$validationRules.price]"
                             v-model="request.price"
                             color="primary"
                             density="comfortable"
-                            :rules="[numberOrFloatRule]"
-                            validate-on="blur"
+
                             :error-messages="errors['price']"
               ></v-text-field>
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Upload a picture</div>
               <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+                            :rules="[$validationRules.pictureFormat]"
                             v-model="pictureMedia"
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
@@ -357,13 +355,14 @@ watch(singleCourseModal, (newVal2) => {
               <div class="text-white py-2">Title</div>
               <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable"
                             v-model="request.title"
+                            :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
                             placeholder="Enter meditation title" :disabled="loading"
                             :error-messages="errors['title']"/>
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Description</div>
               <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
-                          v-model="request.description"/>
+                          v-model="request.description" :rules="[$validationRules.minLength]"/>
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Select Tag(s)</div>
@@ -415,6 +414,7 @@ watch(singleCourseModal, (newVal2) => {
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Upload a track</div>
               <v-file-input class="file-input-label upload-input" label="Select a track to Upload"
+                            :rules="[$validationRules.trackFormat]"
                             v-model="trackMedia"
                             @change="upload(MediaType.TRACK)"
                             single-line :disabled="loading"
@@ -440,6 +440,7 @@ watch(singleCourseModal, (newVal2) => {
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Upload a picture</div>
               <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+                            :rules="[$validationRules.pictureFormat]"
                             v-model="pictureMedia"
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
@@ -499,8 +500,7 @@ watch(singleCourseModal, (newVal2) => {
                             v-model="request.price"
                             color="primary"
                             density="comfortable"
-                            :rules="[numberOrFloatRule]"
-                            validate-on="blur"
+                            :rules="[$validationRules.required,$validationRules.price]"
                             :error-messages="errors['price']"
               ></v-text-field>
             </v-col>

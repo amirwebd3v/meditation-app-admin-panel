@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
 import type { LessonUpdateRequest} from "~/utils/requests";
-
+import type {ValidationRules} from "~/utils/types";
 
 /********************************************/
 const loading = ref()
 const route = useRoute()
-const {errors} = storeToRefs(useValidationStore());
-
+const {errors} = storeToRefs(useValidationStore())
+const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 /********************************************/
 const props = defineProps({
   courseTitle: {
@@ -95,6 +95,7 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white pb-2">Title</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
+                        :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
                         :error-messages="errors['title']" :disabled="loading"
           />
         </v-col>
@@ -104,12 +105,14 @@ function close() {
                       variant="outlined"
                       density="compact"
                       color="primary"
+                      :rules="[$validationRules.minLength]"
                       v-model="request.description">
           </v-textarea>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a track</div>
           <v-file-input class="file-input-label upload-input" label="Select a track to Upload"
+                        :rules="[$validationRules.trackFormat]"
                         v-model="trackMedia"
                         @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"

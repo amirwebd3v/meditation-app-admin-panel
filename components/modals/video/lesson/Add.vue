@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {LessonStoreRequest} from "~/utils/requests";
-
+import type {ValidationRules} from "~/utils/types";
 /*********************************************/
 const props = defineProps({
   btnOutTable: {
@@ -24,14 +24,8 @@ const props = defineProps({
 /*********************************************/
 const isBtnText = ref()
 const loading = ref()
-const {errors} = storeToRefs(useValidationStore());
-
-
-const validateSource = (value) => {
-
-  const isValidURL = /^https?:\/\/.*/.test(value);
-  return isValidURL || 'Please enter a valid URL (starting with http:// or https://)';
-};
+const {errors} = storeToRefs(useValidationStore())
+const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 /********************************************/
 const initialState = {
   course_uuid: props.courseId,
@@ -110,23 +104,25 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Title</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
+                        :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
                         placeholder="Enter video title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Video Link</div>
           <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.source"
                         placeholder="https://" :disabled="loading" :error-messages="errors['source']"
-                        :rules="[validateSource]"
+                        :rules="[$validationRules.required,$validationRules.url]"
           />
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Description</div>
           <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
-                      v-model="request.description"/>
+                      v-model="request.description" :rules="[$validationRules.minLength]"/>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
           <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+                        :rules="[$validationRules.pictureFormat]"
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"

@@ -7,9 +7,11 @@ import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";
 import {CourseType,CourseSet} from "~/utils/enums";
+import type {ValidationRules} from "~/utils/types";
+
 
 const {items, meta} = storeToRefs(useMeditationStore())
-
+const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 /***********************************************/
 definePageMeta({
   middleware: 'sanctum:auth',
@@ -91,7 +93,7 @@ const goToLesson = (courseId: string) => {
         <v-text-field maxlength="30"
                       @keyup.enter="load"
                       v-model="searchText"
-                      :rules="[v => (v && v.length <= 30) || 'Maximum 30 characters']"
+                      :rules="[$validationRules.maxLength]"
                       density="compact"
                       variant="outlined"
                       label="Search"

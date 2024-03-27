@@ -97,6 +97,15 @@ interface Category {
     deleted_at: number
 }
 
+
+interface ValidationRule {
+    (value: any, param?: any): string | boolean;
+}
+
+interface ValidationRules {
+    [key: string]: ValidationRule
+}
+
 export {
     Error,
     User,
@@ -105,5 +114,6 @@ export {
     Lesson,
     Course,
     Media,
-    Category
+    Category,
+    ValidationRules
 }

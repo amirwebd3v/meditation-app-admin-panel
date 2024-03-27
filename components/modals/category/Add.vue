@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type {CategoryStoreRequest} from "~/utils/requests";
+import type {ValidationRules} from "~/utils/types";
 
 
 
 /*********************************************/
+const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 const {errors} = storeToRefs(useValidationStore());
 const loading = ref(false)
 /*********************************************/
@@ -32,9 +34,9 @@ const saveCategory = async () => {
     useEvent('successMessage', `${request.name} is successfully Added to ${request.type.toLowerCase()}s.`)
     useEvent('closeModal', false)
     resetHasChanges(initialState)
+    useValidationStore().clearErrors()
   } finally {
     loading.value = false
-    useValidationStore().clearErrors()
   }
 }
 
@@ -77,6 +79,7 @@ function close() {
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Tag</div>
           <v-text-field maxlength="30"
+                        :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
                         clearable
                         v-model="request.name"
                         :disabled="loading"

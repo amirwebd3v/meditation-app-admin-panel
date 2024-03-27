@@ -4,12 +4,13 @@ import Categories from "~/components/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/configuration/AddConfigurationItem.vue";
 import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
-import type {Category} from "~/utils/types";
+import type {Category,ValidationRules} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";
 import {CourseType} from "~/utils/enums";
 
-const {items, meta} = storeToRefs(useVideoStore())
 
+const {items, meta} = storeToRefs(useVideoStore())
+const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 /***********************************************/
 definePageMeta({
   middleware: 'sanctum:auth',
@@ -88,7 +89,7 @@ const goToLesson = (courseId: string) => {
         <v-text-field maxlength="30"
                       @keyup.enter="load"
                       v-model="searchText"
-                      :rules="[v => (v && v.length <= 30) || 'Maximum 30 characters']"
+                      :rules="[$validationRules.maxLength]"
                       density="compact"
                       variant="outlined"
                       label="Search"
