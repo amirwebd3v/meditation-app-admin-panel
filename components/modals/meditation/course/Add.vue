@@ -37,7 +37,7 @@ const numberOrFloatRule = (value: string) => {
 
 /********************************************/
 const meditationCategoriesArray = computed(() =>
-    Array.from(useCategoryStore().allCategories(CourseType.Meditation).values()))
+    Array.from(useCategoryStore().meditationCategories.values()))
 
 const selectAllCategories = computed(() => {
   return request.categories.length === meditationCategoriesArray.value.length
@@ -86,7 +86,7 @@ const saveCourse = async () => {
   try {
     await useMeditationStore().store(request)
     useEvent('refreshMeditationsCourseTable')
-    useEvent('successMessage', `${request.title} is successfully Added as a ${request.set.toLowerCase()} Meditation.`)
+    useEvent('successMessage', `${request.title} is successfully Added to Meditations.`)
     useEvent('closeModal', false)
     resetHasChanges(initialState, pictureMedia, trackMedia)
   } finally {

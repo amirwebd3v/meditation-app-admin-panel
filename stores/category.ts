@@ -46,21 +46,4 @@ export const useCategoryStore = defineStore('category', {
         },
     },
 
-    getters: {
-        allCategories: function (): (categoryType: CourseType) => Map<number, Category> {
-            return (categoryType) => {
-                let categories;
-                if (categoryType === CourseType.Meditation) {
-                    categories = this.meditationCategories;
-                } else if (categoryType === CourseType.Video) {
-                    categories = this.videoCategories;
-                }
-                const allCategories = new Map<number, Category>();
-                if (categories) {
-                    categories.forEach((value, key) => allCategories.set(key, value));
-                }
-                return allCategories;
-            };
-        },
-    },
 })

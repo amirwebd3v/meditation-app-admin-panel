@@ -31,7 +31,7 @@ const numberOrFloatRule = (value: string) => {
 
 /********************************************/
 const videoCategoriesArray = computed(() =>
-    Array.from(useCategoryStore().allCategories(CourseType.Video).values()))
+    Array.from(useCategoryStore().videoCategories.values()))
 
 const selectAllCategories = computed(() => {
   return request.categories.length === videoCategoriesArray.value.length
@@ -56,7 +56,7 @@ const saveCourse = async () => {
   try {
     await useVideoStore().store(request)
     useEvent('refreshVideosCourseTable')
-    useEvent('successMessage', `${request.title} is successfully Added as a video ${request.set.toLowerCase()}.`)
+    useEvent('successMessage', `${request.title} is successfully Added to Videos.`)
     useEvent('closeModal', false)
     resetHasChanges(initialState, pictureMedia)
   } finally {

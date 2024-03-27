@@ -58,7 +58,7 @@ const numberOrFloatRule = (value: string) => {
 
 /********************************************/
 const meditationCategoriesArray = computed(() =>
-    Array.from(useCategoryStore().allCategories(CourseType.Meditation).values()))
+    Array.from(useCategoryStore().meditationCategories.values()))
 
 const selectAllCategories = computed(() => {
   return request.categories.length === meditationCategoriesArray.value.length
