@@ -42,7 +42,7 @@ const load = async (options = {}) => {
     return
   }
   loading.value = true
-  let categoriesFilter = selectedCategories.value.filter(c => c !== 0).join(',')
+  let categoriesFilter = selectedCategories.value.filter(c => c !== '*').join(',')
   const search: FilterSearchItem[] = [
     ...searchText.value === '' ? [] : [
       {field: 'title', operator: 'ilike', value: searchText.value},
