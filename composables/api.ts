@@ -12,7 +12,7 @@ const onResponseError = async ({ request, response, options }) => {
     useValidationStore().setResponse(response)
     switch (response.status) {
         case 401:
-            navigateTo('/auth/login')
+            await useSanctumAuth().logout()
             break
         default:
             break
