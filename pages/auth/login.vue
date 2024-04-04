@@ -14,13 +14,14 @@ definePageMeta({
 
 const visible = ref(false);
 const loading = ref(false);
-
+const errors = ref([])
 
 const form = ref({
   email: null,
   password: null,
 })
 
+/*******************************************/
 
 watch(loading, (val) => {
   if (!val) return;
@@ -36,7 +37,7 @@ onBeforeMount(() => {
   }
 })
 
-const errors = ref([])
+/*******************************************/
 
 async function login() {
   loading.value = true;

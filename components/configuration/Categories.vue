@@ -68,7 +68,11 @@ const handleCategorySelection = (selected: string[]) => {
             :key="category.slug"
             :text="category.name"
             :value="category.slug"
-        />
+        >
+        <template v-slot:append>
+          <LazyModalsCategoryDelete :slug="category.slug" :name="category.name" :category-type="type"/>
+        </template>
+        </v-chip>
       </v-chip-group>
     </v-col>
   </v-row>
