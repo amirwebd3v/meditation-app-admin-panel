@@ -43,7 +43,7 @@ async function login() {
   loading.value = true;
   useSanctumAuth().login(form.value)
       .catch((error) => {
-        errors.value = error.response._data.errors
+       useEvent('errorMessage',error.response._data.message)
       })
       .finally(() => {
         loading.value = false;

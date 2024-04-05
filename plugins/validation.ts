@@ -20,19 +20,14 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     validationRules.email = (value: any): string | boolean => {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        const emailServices = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
 
         if (pattern.test(value)) {
-            const emailDomain = value.split('@')[1];
-            if (emailServices.includes(emailDomain)) {
-                return true;
-            } else {
-                return 'Invalid email service provider';
-            }
+            return true;
         } else {
             return 'Invalid email address';
         }
     }
+
 
     validationRules.minLength = (value: any): string | boolean => {
         if (value.length < 3) {
