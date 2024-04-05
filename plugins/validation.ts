@@ -44,34 +44,34 @@ export default defineNuxtPlugin((nuxtApp) => {
     };
 
 
-    validationRules.pictureFormat = (value: any): string | boolean => {
-        const allowedPictureFormats = ['jpg', 'png', 'jpeg'];
-        if (typeof value === 'string') {
-            const extension = value.split('.').pop()!.toLowerCase();
-            if (allowedPictureFormats.includes(extension)) {
-                return true;
-            } else {
-                return `Invalid picture format. Allowed formats are: ${allowedPictureFormats.join(', ')}`;
-            }
-        } else {
-            return 'Invalid input. Expected a file name.';
-        }
-    };
-
-
-    validationRules.trackFormat = (value: any): string | boolean => {
-        const allowedTrackFormats = ['mp3', 'wav'];
-        if (typeof value === 'string') {
-            const extension = value.split('.').pop()!.toLowerCase();
-            if (allowedTrackFormats.includes(extension)) {
-                return true;
-            } else {
-                return `Invalid track format. Allowed formats are: ${allowedTrackFormats.join(', ')}`;
-            }
-        } else {
-            return 'Invalid input. Expected a file name.';
-        }
-    };
+    // validationRules.pictureFormat = (value: any): string | boolean => {
+    //     const allowedPictureFormats = ['jpg', 'png', 'jpeg'];
+    //     if (typeof value === 'string') {
+    //         const extension = value.split('.').pop()!.toLowerCase();
+    //         if (allowedPictureFormats.includes(extension)) {
+    //             return true;
+    //         } else {
+    //             return `Invalid picture format. Allowed formats are: ${allowedPictureFormats.join(', ')}`;
+    //         }
+    //     } else {
+    //         return 'Invalid input. Expected a file name.';
+    //     }
+    // };
+    //
+    //
+    // validationRules.trackFormat = (value: any): string | boolean => {
+    //     const allowedTrackFormats = ['mp3', 'wav'];
+    //     if (typeof value === 'string') {
+    //         const extension = value.split('.').pop()!.toLowerCase();
+    //         if (allowedTrackFormats.includes(extension)) {
+    //             return true;
+    //         } else {
+    //             return `Invalid track format. Allowed formats are: ${allowedTrackFormats.join(', ')}`;
+    //         }
+    //     } else {
+    //         return 'Invalid input. Expected a file name.';
+    //     }
+    // };
 
 
     validationRules.url = (value: any): string | boolean => {
