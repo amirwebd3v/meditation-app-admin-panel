@@ -30,14 +30,14 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 
     validationRules.minLength = (value: any): string | boolean => {
-        if (value?.length < 3) {
+        if (!!value && value?.length < 3) {
             return `Value must be at least 3 characters long`;
         }
         return true;
     };
 
     validationRules.maxLength = (value : any,maxLimit : number = 30,): string | boolean => {
-        if (value?.length > maxLimit) {
+        if (!!value && value?.length > maxLimit) {
             return `Value must not exceed ${maxLimit} characters`;
         }
         return true;
