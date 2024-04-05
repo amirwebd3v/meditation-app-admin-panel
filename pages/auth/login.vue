@@ -74,7 +74,7 @@ async function login() {
           <v-text-field maxlength="45" v-model="form.email" density="compact" placeholder="Enter Email"
                         variant="outlined" :error-messages="errors['email']"
                         :rules="[$validationRules.required,$validationRules.email]"/>
-          <v-text-field maxlength="30" v-model="form.password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+          <v-text-field maxlength="31" v-model="form.password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                         :type="visible ? 'text' : 'password'" autocomplete="off"
                         density="compact" placeholder="Enter Password" variant="outlined"
                         @click:append-inner="visible = !visible" :rules="[$validationRules.required]"/>

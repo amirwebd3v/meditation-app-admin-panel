@@ -78,7 +78,7 @@ function close() {
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Tag</div>
-          <v-text-field maxlength="30"
+          <v-text-field maxlength="31"
                         :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
                         clearable
                         v-model="request.name"

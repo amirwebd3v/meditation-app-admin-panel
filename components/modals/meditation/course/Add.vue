@@ -183,9 +183,12 @@ watch(singleCourseModal, (newVal2) => {
           <v-row justify="space-between">
             <v-col cols="12" class="pb-0">
               <div class="text-white py-2">Title</div>
-              <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable"
+              <v-text-field maxlength="76" variant="outlined" color="primary" density="comfortable"
                             v-model="request.title"
-                            :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
+                            :rules="
+                        [$validationRules.required,
+                        $validationRules.minLength,
+                        $validationRules.maxLength(request.title,75)]"
                             placeholder="Enter meditation title" :disabled="loading"
                             :error-messages="errors['title']"/>
             </v-col>
@@ -353,7 +356,7 @@ watch(singleCourseModal, (newVal2) => {
           <v-row justify="space-between">
             <v-col cols="12" class="pb-0">
               <div class="text-white py-2">Title</div>
-              <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable"
+              <v-text-field maxlength="76" variant="outlined" color="primary" density="comfortable"
                             v-model="request.title"
                             :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
                             placeholder="Enter meditation title" :disabled="loading"

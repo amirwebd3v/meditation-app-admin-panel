@@ -97,8 +97,11 @@ function close() {
       <v-row justify="space-between">
         <v-col cols="12" class="pb-0">
           <div class="text-white py-2">Title</div>
-          <v-text-field maxlength="30" variant="outlined" color="primary" density="comfortable" v-model="request.title"
-                        :rules="[$validationRules.required,$validationRules.minLength,$validationRules.maxLength]"
+          <v-text-field maxlength="76" variant="outlined" color="primary" density="comfortable" v-model="request.title"
+                        :rules="
+                        [$validationRules.required,
+                        $validationRules.minLength,
+                        $validationRules.maxLength(request.title,75)]"
                         placeholder="Enter course title" :disabled="loading" :error-messages="errors['title']"/>
         </v-col>
         <v-col cols="12" class="py-0">

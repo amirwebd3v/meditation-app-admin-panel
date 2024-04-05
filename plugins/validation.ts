@@ -15,7 +15,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 
     validationRules.required = (value: any): string | boolean => {
-        return !!value || 'This field is required'
+        return !!value || value === 0 || 'This field is required'
     }
 
     validationRules.email = (value: any): string | boolean => {
@@ -30,18 +30,18 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 
     validationRules.minLength = (value: any): string | boolean => {
-        if (value.length < 3) {
+        if (value?.length < 3) {
             return `Value must be at least 3 characters long`;
         }
         return true;
     };
 
-    validationRules.maxLength = (value: any): string | boolean => {
-        if (value.length > 29) {
-            return `Value must not exceed 30 characters`;
+    validationRules.maxLength = (value : any,maxLimit : number = 30,): string | boolean => {
+        if (value?.length > maxLimit) {
+            return `Value must not exceed ${maxLimit} characters`;
         }
         return true;
-    };
+    }
 
 
     // validationRules.pictureFormat = (value: any): string | boolean => {
@@ -88,18 +88,18 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
     };
 
-    validationRules.price = (value: any): string | boolean => {
-        const pricePattern = /^(?!0+\.\d+$)(?!0+$)(\d{1,3}(\.\d{1,3})?|\.\d{1,3})$/;
+    validationRules.price = (value) => {
+        const pricePattern = /^(?!0+\.\d+$)(\d{1,3}(\.\d{1,3})?|\.\d{1,3})$/;
         const noLettersPattern = /^[0-9.]+$/;
 
-        if (typeof value === 'string') {
+        if (typeof value === 'string' || value === 0) {
             if (noLettersPattern.test(value) && pricePattern.test(value)) {
                 return true;
             } else {
                 return 'Please enter a valid price.';
             }
         } else {
-            return 'Invalid input. Expected a string.';
+            return 'Invalid input. Expected a number.';
         }
     };
 
