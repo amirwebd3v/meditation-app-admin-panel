@@ -1,6 +1,6 @@
 import {MediaType} from "~/utils/enums";
 import type {MediaPreview} from "~/utils/types";
-import type {Ref} from "vue";
+
 
 
 export default function useUpload(request: any) {
