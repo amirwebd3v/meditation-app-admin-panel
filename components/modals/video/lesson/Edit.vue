@@ -51,7 +51,9 @@ const initialState = {
 const request = reactive<LessonUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, upload, preview} = useUpload(request)
-
+useListen('uploading', (value: boolean) => {
+  loading.value = value
+})
 /**********************************************/
 
 

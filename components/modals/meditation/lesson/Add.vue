@@ -43,6 +43,9 @@ const initialState = {
 const request = reactive<LessonStoreRequest>({...initialState})
 const { hasChanges, resetHasChanges } = useInputHasChanges(request)
 const {trackMedia,upload,preview} = useUpload(request)
+useListen('uploading', (value: boolean) => {
+  loading.value = value
+})
 /**********************************************/
 const saveLesson = async () => {
   loading.value = true

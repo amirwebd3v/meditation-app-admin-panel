@@ -43,7 +43,9 @@ const initialState = {
 const request = reactive<CourseUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, upload, preview} = useUpload(request)
-
+useListen('uploading', (value: boolean) => {
+  loading.value = value
+})
 /********************************************/
 const videoCategoriesArray = computed(() =>
     Array.from(useCategoryStore().videoCategories.values()))

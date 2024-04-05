@@ -28,7 +28,9 @@ const initialState = {
 const request = reactive<CourseStoreRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
-
+useListen('uploading', (value: boolean) => {
+  loading.value = value
+})
 /********************************************/
 const meditationCategoriesArray = computed(() =>
     Array.from(useCategoryStore().meditationCategories.values()))
