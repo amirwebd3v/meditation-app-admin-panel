@@ -89,11 +89,12 @@ export default defineNuxtPlugin((nuxtApp) => {
     };
 
     validationRules.price = (value) => {
-        const pricePattern = /^(?!0+\.\d+$)(\d{1,3}(\.\d{1,3})?|\.\d{1,3})$/;
-        const noLettersPattern = /^[0-9.]+$/;
 
-        if (typeof value === 'string' || value === 0) {
-            if (noLettersPattern.test(value) && pricePattern.test(value)) {
+        const pricePattern = /^(?=.{1,6})(?:0\d*|\d*(?:\.\d+)?)$/;
+        const noLettersPattern = /[a-zA-Z]/;
+
+        if (typeof value === 'string' ||  value === 0) {
+            if (!noLettersPattern.test(value) && pricePattern.test(value.toString())) {
                 return true;
             } else {
                 return 'Please enter a valid price.';
