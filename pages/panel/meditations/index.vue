@@ -158,7 +158,7 @@ const goToLesson = (courseId: string) => {
       <!--        </template>-->
 
       <template #item.lessons_count="{item}">
-        <div class="v-row justify-center">{{ item.set === 'MULTIPLE' ? item.lessons_count : '' }}</div>
+        <div class="v-row justify-center">{{ item.set === 'MULTIPLE' ? item.lessons_count : 1 }}</div>
       </template>
 
       <template #item.thumbnail="{ item }">
