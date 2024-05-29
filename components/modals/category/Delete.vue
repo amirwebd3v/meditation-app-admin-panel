@@ -49,7 +49,7 @@ function close() {
     </template>
 
     <template #header>
-      <span class="pl-3">Delete Category</span>
+      <span class="pl-3">Delete Tag</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="close"/>
     </template>
 
