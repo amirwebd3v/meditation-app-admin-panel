@@ -259,7 +259,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-1 pb-1" v-if="props.courseSet === CourseSet.Single">
+        <v-col cols="6" class="pt-4 pb-1" v-if="props.courseSet === CourseSet.Single">
           <div class="text-white mb-md-5">Free/Paid</div>
           <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                          :error-messages="errors['is_lock']">

@@ -36,7 +36,6 @@ const initialState = {
   duration: null,
   description: null,
   is_new: true,
-  is_popular: false,
   is_lock: false,
 }
 
@@ -146,7 +145,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-1 pb-0">
+        <v-col cols="6" class="pt-4 pb-0">
           <div class="text-white mb-md-5">Free/Paid</div>
           <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                          :error-messages="errors['is_lock']">
@@ -165,25 +164,7 @@ function close() {
             />
           </v-radio-group>
         </v-col>
-        <v-col cols="6" class="pt-1 pb-0">
-          <div class="text-white mb-md-5">Popular</div>
-          <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
-                         :error-messages="errors['is_popular']">
-            <v-radio
-                density="compact"
-                :value="false"
-                label="No"
-                color="primary"
-                class="pr-md-8"
-            />
-            <v-radio
-                density="compact"
-                :value="true"
-                label="Yes"
-                color="primary"
-            />
-          </v-radio-group>
-        </v-col>
+
 
       </v-row>
     </template>

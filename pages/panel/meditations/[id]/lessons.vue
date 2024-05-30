@@ -157,7 +157,6 @@ useListen('refreshMeditationsLessonsTable',load)
                 :title="item.title"
                 :description="item.description"
                 :is-lock="item.is_lock"
-                :is-popular="item.is_popular"
                 :key="item.uuid"
             />
             <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title"
