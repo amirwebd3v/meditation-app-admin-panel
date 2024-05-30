@@ -26,7 +26,7 @@ const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true, width:'350'},
   {key: 'is_lock', title: 'FREE/PAID', sortable: true, align: 'start',width:'200'},
   {key: 'description', title: 'DESCRIPTION', sortable: true},
-  {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
+  // {key: 'thumbnail', title: 'PICTURE', sortable: false, align: 'center'},
   {key: 'actions', title: '', sortable: false, align: 'end'},
 ] as VDataTableServer['headers']
 
@@ -129,24 +129,24 @@ useListen('refreshMeditationsLessonsTable',load)
           </v-tooltip>
         </template>
 
-        <template #item.thumbnail="{ item }">
+<!--        <template #item.thumbnail="{ item }">-->
 
-          <div class="v-row justify-center">
-            <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
-              <v-img  :src="item.thumbnail.urls.original" lazy-src="/img/meditation-card.jpg" height="38" width="38" cover>
-                <template v-slot:placeholder>
-                  <div class="d-flex align-center justify-center fill-height">
-                    <v-progress-circular
-                        color="grey-lighten-4"
-                        indeterminate
-                        size="x-small"
-                    ></v-progress-circular>
-                  </div>
-                </template>
-              </v-img>
-            </v-card>
-          </div>
-        </template>
+<!--          <div class="v-row justify-center">-->
+<!--            <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">-->
+<!--              <v-img  :src="item.thumbnail.urls.original" lazy-src="/img/meditation-card.jpg" height="38" width="38" cover>-->
+<!--                <template v-slot:placeholder>-->
+<!--                  <div class="d-flex align-center justify-center fill-height">-->
+<!--                    <v-progress-circular-->
+<!--                        color="grey-lighten-4"-->
+<!--                        indeterminate-->
+<!--                        size="x-small"-->
+<!--                    ></v-progress-circular>-->
+<!--                  </div>-->
+<!--                </template>-->
+<!--              </v-img>-->
+<!--            </v-card>-->
+<!--          </div>-->
+<!--        </template>-->
 
         <template #item.actions="{item}">
 
