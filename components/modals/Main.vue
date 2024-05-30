@@ -42,8 +42,8 @@ watch(dialog, (newValue) => {
             <slot name="columns" />
           </v-card-text>
 
-          <v-card-actions class="float-right mr-1" v-if="$slots.actionButtons">
-            <div class="d-sm-flex">
+          <v-card-actions class="float-right mr-1 " v-if="$slots.actionButtons">
+            <div class="d-sm-flex pt-4">
               <slot name="actionButtons"/>
             </div>
           </v-card-actions>
