@@ -7,7 +7,7 @@ import type {ValidationRules} from "~/utils/types";
 const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
-const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
+const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
 /********************************************/
 const props = defineProps({
   id: {
@@ -97,7 +97,7 @@ const updateCourse = async () => {
   freeOrPaid(request);
   try {
     await useMeditationStore().update(request)
-    useEvent('closeMenu',false)
+    useEvent('closeMenu', false)
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
@@ -204,6 +204,7 @@ function close() {
                         @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"
                         accept="audio/mpeg"
+                        messages="file-format = 'mp3', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['source'] && trackMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
@@ -229,7 +230,8 @@ function close() {
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
-                        accept="image/*"
+                        accept="image/jpg,jpeg,png"
+                        messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">

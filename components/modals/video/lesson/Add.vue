@@ -131,10 +131,12 @@ function close() {
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
-                        accept="image/*"
+                        accept="image/jpg,jpeg,png"
+                        messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         clearable
                         @click:clear="request.thumbnail = pictureMedia ? null : ''"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
+
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="75" height="80" class="bg-primary-light">
@@ -159,7 +161,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-1 pb-0">
+        <v-col cols="6" class="pt-4 pb-0">
           <div class="text-white">Free/Locked</div>
           <v-radio-group class="mt-5" inline v-model="request.is_lock" :disabled="loading"
                          :error-messages="errors['is_lock']">
@@ -178,7 +180,7 @@ function close() {
             />
           </v-radio-group>
         </v-col>
-        <v-col cols="6" class="pt-1 pb-0">
+        <v-col cols="6" class="pt-4 pb-0">
           <div class="text-white">Popular</div>
           <v-radio-group class="mt-5" inline v-model="request.is_popular" :disabled="loading"
                          :error-messages="errors['is_popular']">

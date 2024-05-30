@@ -8,7 +8,7 @@ const courseModal = ref(false)
 const selectedModal = ref<CourseSet>()
 const loading = ref(false)
 const {errors} = storeToRefs(useValidationStore());
-const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
+const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
 /********************************************/
 const initialState = {
   type: CourseType.Meditation,
@@ -108,13 +108,13 @@ function closeCourseModal() {
 
 
 watch(courseModal, (newVal1) => {
-  if (!newVal1 ) {
+  if (!newVal1) {
     closeCourseModal()
   }
 });
 
 watch(singleCourseModal, (newVal2) => {
-  if (!newVal2 ) {
+  if (!newVal2) {
     closeCourseModal()
   }
 });
@@ -269,7 +269,8 @@ watch(singleCourseModal, (newVal2) => {
                             v-model="pictureMedia"
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
-                            accept="image/*"
+                            accept="image/jpg,jpeg,png"
+                            messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                             clearable
                             @click:clear="request.thumbnail = pictureMedia ? null : ''"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
@@ -424,6 +425,7 @@ watch(singleCourseModal, (newVal2) => {
                             @change="upload(MediaType.TRACK)"
                             single-line :disabled="loading"
                             accept="audio/mpeg"
+                            messages="file-format = 'mp3', Maximum-size = 100mb"
                             clearable
                             @click:clear="request.source = trackMedia ? null : ''"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
@@ -449,7 +451,8 @@ watch(singleCourseModal, (newVal2) => {
                             v-model="pictureMedia"
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
-                            accept="image/*"
+                            accept="image/jpg,jpeg,png"
+                            messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                             clearable
                             @click:clear="request.thumbnail = pictureMedia ? null : ''"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">

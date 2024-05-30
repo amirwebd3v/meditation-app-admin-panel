@@ -6,7 +6,7 @@ import type {ValidationRules} from "~/utils/types";
 /*********************************************/
 const loading = ref(false)
 const {errors} = storeToRefs(useValidationStore())
-const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
+const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
 /********************************************/
 const initialState = {
   title: null,
@@ -178,7 +178,9 @@ function close() {
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
-                        accept="image/*"
+                        accept="image/jpg,jpeg,png"
+                        messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
+                        show-size
                         clearable
                         @click:clear="request.thumbnail = pictureMedia ? null : ''"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">

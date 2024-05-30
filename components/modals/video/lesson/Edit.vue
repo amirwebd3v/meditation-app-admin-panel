@@ -122,7 +122,8 @@ function close() {
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
-                        accept="image/*"
+                        accept="image/jpg,jpeg,png"
+                        messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
@@ -150,7 +151,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="6" class="pt-1 pb-0">
+        <v-col cols="6" class="pt-4 pb-0">
           <div class="text-white mb-md-5">Free/Locked</div>
           <v-radio-group class="mt-5" :disabled="loading" inline v-model="request.is_lock"
                          :error-messages="errors['is_lock']">
@@ -158,7 +159,7 @@ function close() {
             <v-radio density="compact" :value="true" label="Locked" color="primary"/>
           </v-radio-group>
         </v-col>
-        <v-col cols="6" class="pt-1 pb-0">
+        <v-col cols="6" class="pt-4 pb-0">
           <div class="text-white mb-md-5">Popular</div>
           <v-radio-group class="mt-5" :disabled="loading" inline v-model="request.is_popular"
                          :error-messages="errors['is_popular']">

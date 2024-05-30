@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
-import type { LessonUpdateRequest} from "~/utils/requests";
+import type {LessonUpdateRequest} from "~/utils/requests";
 import type {ValidationRules} from "~/utils/types";
 
 /********************************************/
 const loading = ref()
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore())
-const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
+const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
 /********************************************/
 const props = defineProps({
   courseTitle: {
@@ -53,8 +53,8 @@ const initialState = {
   is_lock: props.isLock
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
-const { hasChanges, resetHasChanges } = useInputHasChanges(request)
-const {pictureMedia,trackMedia,upload,preview} = useUpload(request)
+const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
 })
@@ -66,7 +66,7 @@ const updateLesson = async () => {
     useEvent('refreshMeditationsLessonsTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
-    resetHasChanges(initialState,pictureMedia,trackMedia)
+    resetHasChanges(initialState, pictureMedia, trackMedia)
   } finally {
     loading.value = false
   }
@@ -75,7 +75,7 @@ const updateLesson = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState,pictureMedia,trackMedia)
+  resetHasChanges(initialState, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
 </script>
@@ -123,6 +123,7 @@ function close() {
                         @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"
                         accept="audio/mpeg"
+                        messages="file-format = 'mp3', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['source'] && trackMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
@@ -133,7 +134,7 @@ function close() {
                     <div class="pl-4 py-1 align-center">
                       <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
                     </div>
-                    <v-divider  color="white" class="border-white border-opacity-25"/>
+                    <v-divider color="white" class="border-white border-opacity-25"/>
                     <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                   </v-card-text>
                 </v-card>
