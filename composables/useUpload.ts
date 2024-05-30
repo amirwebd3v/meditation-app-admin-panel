@@ -29,7 +29,7 @@ export default function useUpload(request: any) {
                 request.source = preview.value.track?.id;
             }
         } catch (error) {
-            useEvent('errorMessage',error)
+
         } finally {
             useEvent('uploading',false)
         }

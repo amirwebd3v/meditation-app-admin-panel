@@ -42,12 +42,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             },
         },
         defaults: {
-            VTextField: {
-                rules: [
-                    (v: string) => (v && v.length >= 3) || 'Minimum 3 characters',
-                    (v: string) => (v && v.length <= 30) || 'Maximum 30 characters',
-                ],
-            }
+
         }
     })
     nuxtApp.vueApp.use(vuetify);
