@@ -122,7 +122,7 @@ function close() {
                         @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"
                         accept="audio/mpeg"
-                        messages="file-format = 'mp3', Maximum-size = 100mb"
+                        messages="File-format = 'mp3', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['source'] && trackMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">

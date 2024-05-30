@@ -187,7 +187,7 @@ function close() {
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
                         accept="image/jpg,jpeg,png"
-                        messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
+                        messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">

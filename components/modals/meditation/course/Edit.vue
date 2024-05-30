@@ -204,7 +204,7 @@ function close() {
                         @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"
                         accept="audio/mpeg"
-                        messages="file-format = 'mp3', Maximum-size = 100mb"
+                        messages="File-format = 'mp3', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['source'] && trackMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
@@ -223,7 +223,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="12" class="py-0">
+        <v-col cols="12" class="pt-0 pb-0">
           <div class="text-white pb-2">Upload a picture</div>
           <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
                         :rules="[$validationRules.pictureFormat]"
@@ -231,7 +231,7 @@ function close() {
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
                         accept="image/jpg,jpeg,png"
-                        messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
+                        messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
@@ -280,9 +280,9 @@ function close() {
             />
           </v-radio-group>
         </v-col>
-        <v-col cols="6" class="py-0"
+        <v-col cols="6" class="pt-3 pb-0"
                v-if="request.is_lock || props.courseSet === CourseSet.Course">
-          <div class="text-white pb-2">Price($)</div>
+          <div class="text-white pb-2">Price ($)</div>
           <v-text-field maxlength="6"
                         :disabled="loading"
                         variant="outlined"

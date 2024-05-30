@@ -63,7 +63,7 @@ function selectedCourse(set) {
 
 
 function singleOrCourse(request) {
-  let keysToExclude = ['is_lock', 'is_popular', 'source', 'duration']
+  let keysToExclude = ['is_lock', 'source', 'duration']
   if (selectedModal.value === CourseSet.Course) {
     for (let key of keysToExclude) {
       delete request[key];
@@ -269,7 +269,7 @@ watch(singleCourseModal, (newVal2) => {
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
                             accept="image/jpg,jpeg,png"
-                            messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
+                            messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                             clearable
                             @click:clear="request.thumbnail = pictureMedia ? null : ''"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
@@ -304,7 +304,7 @@ watch(singleCourseModal, (newVal2) => {
 
       <template v-slot:actions>
         <v-container class="pt-0">
-          <v-card-actions class="float-right mr-1 pt-0">
+          <v-card-actions class="float-right mr-1 pt-4">
             <div class="d-sm-flex">
               <v-btn
                   :disabled="loading"
@@ -367,7 +367,7 @@ watch(singleCourseModal, (newVal2) => {
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Description</div>
               <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
-                          v-model="request.description" :rules="[$validationRules.minLength]"/>
+                          v-model="request.description" :rules="[$validationRules.minLength]" disabled/>
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Select Tag(s)</div>
@@ -424,7 +424,7 @@ watch(singleCourseModal, (newVal2) => {
                             @change="upload(MediaType.TRACK)"
                             single-line :disabled="loading"
                             accept="audio/mpeg"
-                            messages="file-format = 'mp3', Maximum-size = 100mb"
+                            messages="File-format = 'mp3', Maximum-size = 100mb"
                             clearable
                             @click:clear="request.source = trackMedia ? null : ''"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
@@ -443,7 +443,7 @@ watch(singleCourseModal, (newVal2) => {
                 </template>
               </v-file-input>
             </v-col>
-            <v-col cols="12" class="py-0">
+            <v-col cols="12" class="pt-4 pb-0">
               <div class="text-white pb-2">Upload a picture</div>
               <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
                             :rules="[$validationRules.pictureFormat]"
@@ -451,7 +451,7 @@ watch(singleCourseModal, (newVal2) => {
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
                             accept="image/jpg,jpeg,png"
-                            messages="file-format = 'jpg,jpeg,png', Maximum-size = 100mb"
+                            messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                             clearable
                             @click:clear="request.thumbnail = pictureMedia ? null : ''"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
@@ -499,7 +499,7 @@ watch(singleCourseModal, (newVal2) => {
                 />
               </v-radio-group>
             </v-col>
-            <v-col cols="6" class="py-0" v-if="request.is_lock">
+            <v-col cols="6" class="pt-3 pb-0" v-if="request.is_lock">
               <div class="text-white pb-2">Price ($)</div>
               <v-text-field maxlength="6"
                             :disabled="loading"
