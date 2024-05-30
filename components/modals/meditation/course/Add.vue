@@ -366,8 +366,8 @@ watch(singleCourseModal, (newVal2) => {
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Description</div>
-              <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
-                          v-model="request.description" :rules="[$validationRules.minLength]" disabled/>
+              <v-textarea :disabled="loading || !request.is_lock" variant="outlined" density="compact" color="primary"
+                          v-model="request.description" :rules="[$validationRules.minLength]"/>
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Select Tag(s)</div>
@@ -489,7 +489,7 @@ watch(singleCourseModal, (newVal2) => {
                     label="Free"
                     color="primary"
                     class="pr-md-8"
-                    @change="request.price = 0"
+                    @change="request.price = 0; request.description = null"
                 />
                 <v-radio
                     density="compact"

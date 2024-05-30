@@ -145,7 +145,7 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Description</div>
-          <v-textarea :disabled="loading" variant="outlined" density="compact" color="primary"
+          <v-textarea :disabled="loading || !request.is_lock" variant="outlined" density="compact" color="primary"
                       v-model="request.description" :rules="[$validationRules.minLength]"/>
         </v-col>
         <v-col cols="12" class="py-0">
@@ -223,7 +223,7 @@ function close() {
             </template>
           </v-file-input>
         </v-col>
-        <v-col cols="12" class="pt-0 pb-0">
+        <v-col cols="12" :class="`${props.courseSet === CourseSet.Single ? 'pt-4' : 'pt-0'} pb-0`">
           <div class="text-white pb-2">Upload a picture</div>
           <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
                         :rules="[$validationRules.pictureFormat]"
@@ -269,7 +269,7 @@ function close() {
                 label="Free"
                 color="primary"
                 class="pr-md-8"
-                @change="request.price = 0"
+                @change="request.price = 0; request.description = null"
             />
             <v-radio
                 density="compact"
