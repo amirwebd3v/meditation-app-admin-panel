@@ -36,7 +36,8 @@ const props = defineProps({
   // },
   isPopular: {
     type: Boolean,
-    required: true
+    required: true,
+    default: false
   },
   isLock: {
     type: Boolean,
@@ -49,7 +50,8 @@ const initialState = {
   id: props.id,
   title: props.title,
   description: props.description,
-  is_lock: props.isLock
+  is_lock: props.isLock,
+  is_popular: props.isPopular
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)

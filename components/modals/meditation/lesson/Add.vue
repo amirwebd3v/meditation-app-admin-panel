@@ -37,6 +37,7 @@ const initialState = {
   description: null,
   is_new: true,
   is_lock: false,
+  is_popular: false
 }
 
 const request = reactive<LessonStoreRequest>({...initialState})
