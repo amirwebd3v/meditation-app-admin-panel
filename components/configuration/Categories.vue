@@ -45,7 +45,7 @@ const handleCategorySelection = (selected: string[]) => {
           multiple
           selected-class="text-white bg-primary border-none"
           variant="flat"
-
+          mandatory
           :show-arrows="false"
           :model-value="selectedCategories"
           @update:model-value="handleCategorySelection"
