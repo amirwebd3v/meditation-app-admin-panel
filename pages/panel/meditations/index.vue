@@ -6,12 +6,12 @@ import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";
-import {CourseType,CourseSet} from "~/utils/enums";
+import {CourseType, CourseSet} from "~/utils/enums";
 import type {ValidationRules} from "~/utils/types";
 
 
 const {items, meta} = storeToRefs(useMeditationStore())
-const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
+const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
 /***********************************************/
 definePageMeta({
   middleware: 'sanctum:auth',
@@ -29,7 +29,7 @@ const router = useRouter();
 const selectedCategories = ref(['*'])
 
 const headers = [
-  {key: 'title', title: 'TITLE', align: 'start', sortable: true,width:'125'},
+  {key: 'title', title: 'TITLE', align: 'start', sortable: true, width: '125'},
   {key: 'set', title: 'TYPE', sortable: true, align: 'center'},
   {key: 'category', title: 'TAGS', sortable: false, align: 'center'},
   // {key: 'description', title: 'DESCRIPTION', sortable: false},
@@ -71,13 +71,14 @@ const categoriesTooltip = (categories) => {
 
 const categoriesSelectionSort = (categories) => {
 
-  if(!selectedCategories.value.includes('*') && !selectedCategories.value.includes('')) {
+  if (!selectedCategories.value.includes('*') && !selectedCategories.value.includes('')) {
     const firstPartOfSelectedCategories = selectedCategories.value.map(value => value.split('-')[0]);
     const toolTips = [categoriesTooltip(categories)][0].split(',')
     return toolTips.filter(tag => firstPartOfSelectedCategories.includes(tag))[0]
-  }
-  else if(!!categories && categories.length > 0 && JSON.stringify(selectedCategories.value) === JSON.stringify(['*']) || selectedCategories.value !== [""])
-  {
+  } else if (!!categories && categories.length > 0
+      && selectedCategories.value === ['*']
+      || selectedCategories.value !== [""]
+  ) {
     return categories[0].name
   } else {
     return ''
@@ -102,14 +103,13 @@ const goToLesson = (courseId: string) => {
 }
 
 
-
 </script>
 
 <template>
   <v-container>
     <!--      First section-->
     <v-sheet class="d-flex mb-6  align-center">
-      <v-sheet >
+      <v-sheet>
         <h2 class="text-white pr-10 me-auto">Meditations</h2>
       </v-sheet>
       <v-sheet class="mr-5 pt-5" width="475px">
@@ -160,7 +160,7 @@ const goToLesson = (courseId: string) => {
                    max-width="270">
           <template v-slot:activator="{props}">
             <div class="text-truncate" style="max-width: 125px;" v-bind="props">
-              {{categoriesSelectionSort(item.categories) }}
+              {{ categoriesSelectionSort(item.categories) }}
 
             </div>
           </template>
@@ -188,7 +188,7 @@ const goToLesson = (courseId: string) => {
 
         <div class="v-row justify-center">
           <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
-            <v-img  :src="item.thumbnail.urls.original" lazy-src="/img/meditation-card.jpg" height="38" width="38" cover>
+            <v-img :src="item.thumbnail.urls.original" lazy-src="/img/meditation-card.jpg" height="38" width="38" cover>
               <template v-slot:placeholder>
                 <div class="d-flex align-center justify-center fill-height">
                   <v-progress-circular
