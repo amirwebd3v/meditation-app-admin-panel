@@ -74,7 +74,7 @@ const toggle = () => {
 
 /**********************************************/
 function singleOrCourse(request) {
-  let keysToExclude = ['is_lock', 'source', 'duration']
+  let keysToExclude = ['is_lock', 'source', 'duration','is_popular']
   if (request.set === CourseSet.Course) {
     for (let key of keysToExclude) {
       delete request[key];

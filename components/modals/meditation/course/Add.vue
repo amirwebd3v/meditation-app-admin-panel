@@ -21,6 +21,7 @@ const initialState = {
   categories: [],
   price: 0,
   is_lock: false,
+  is_popular: false,
 }
 
 
