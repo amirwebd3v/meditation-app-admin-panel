@@ -26,7 +26,7 @@ onBeforeMount(() => {
 const loading = ref(false)
 const searchText = ref('')
 const router = useRouter();
-const selectedCategories = ref([])
+const selectedCategories = ref(['*'])
 
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true,width:'125'},
@@ -62,6 +62,28 @@ const load = async (options = {}) => {
   loading.value = false
 }
 
+const categoriesTooltip = (categories) => {
+  return categories && categories.length > 0
+      ? categories.map(category => category.name).join(',')
+      : '';
+}
+
+
+const categoriesSelectionSort = (categories) => {
+
+  if(!selectedCategories.value.includes('*') && !selectedCategories.value.includes('')) {
+    const firstPartOfSelectedCategories = selectedCategories.value.map(value => value.split('-')[0]);
+    const toolTips = [categoriesTooltip(categories)][0].split(',')
+    return toolTips.filter(tag => firstPartOfSelectedCategories.includes(tag))[0]
+  }
+  else if(!!categories && categories.length > 0 && JSON.stringify(selectedCategories.value) === JSON.stringify(['*']) || selectedCategories.value !== [""])
+  {
+    return categories[0].name
+  } else {
+    return ''
+  }
+}
+
 const handleSelectedCategories = (categories) => {
   selectedCategories.value = categories
   load()
@@ -78,6 +100,7 @@ const goToLesson = (courseId: string) => {
     })
   }
 }
+
 
 
 </script>
@@ -133,12 +156,12 @@ const goToLesson = (courseId: string) => {
 
 
       <template #item.category="{item}">
-        <v-tooltip :text="item?.categories
-                   && item.categories.length > 0 ? item.categories.map(category => category.name).join(', ') : ''"
+        <v-tooltip :text="categoriesTooltip(item.categories)"
                    max-width="270">
           <template v-slot:activator="{props}">
             <div class="text-truncate" style="max-width: 125px;" v-bind="props">
-              {{ item?.categories && item.categories.length > 0 ? item.categories[0].name : '' }}
+              {{categoriesSelectionSort(item.categories) }}
+
             </div>
           </template>
         </v-tooltip>
