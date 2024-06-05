@@ -161,7 +161,6 @@ const goToLesson = (courseId: string) => {
           <template v-slot:activator="{props}">
             <div class="text-truncate" style="max-width: 125px;" v-bind="props">
               {{ categoriesSelectionSort(item.categories) }}
-
             </div>
           </template>
         </v-tooltip>
@@ -223,6 +222,7 @@ const goToLesson = (courseId: string) => {
                   :course-set="item.set"
                   :categories="item.categories.map((c : Category) => c.id)"
                   :price="item.price"
+                  :thumbnail="item.thumbnail"
                   :key="item.updated_at"
               />
               <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
