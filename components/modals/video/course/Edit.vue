@@ -30,6 +30,11 @@ const props = defineProps({
     type: Number,
     required: true
   },
+  thumbnail: {
+    type: Array,
+    required: true,
+    default: ''
+  },
 })
 
 /********************************************/
@@ -181,16 +186,37 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+          <v-file-input class="file-input-label upload-input"
+                        :label="!props.thumbnail ? 'Select a picture to Upload' : ''"
                         :rules="[$validationRules.pictureFormat]"
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
-                        accept="image/jpg,jpeg,png"
+                        accept="image/jpeg,.png"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
+            <template #prepend-inner v-if="!preview.picture">
+              <v-card width="80" height="80" class="bg-primary-light">
+                <v-card-text style="padding: 0;" class="text-truncate text-white">
+                  <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                         :src="<string>props.thumbnail?.urls?.original">
+                    <template v-slot:placeholder>
+                      <div class="d-flex align-center justify-center fill-height">
+                        <v-progress-circular
+                            color="grey-lighten-4"
+                            indeterminate
+                            size="x-small"
+                        ></v-progress-circular>
+                      </div>
+                    </template>
+                  </v-img>
+                  <v-divider color="white" class="border-white border-opacity-25"/>
+                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.thumbnail?.name }}</span>
+                </v-card-text>
+              </v-card>
+            </template>
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="75" height="80" class="bg-primary-light">

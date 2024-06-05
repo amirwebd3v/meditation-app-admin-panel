@@ -269,7 +269,7 @@ watch(singleCourseModal, (newVal2) => {
                             v-model="pictureMedia"
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
-                            accept="image/jpg,jpeg,png"
+                            accept="image/jpeg,.png"
                             messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                             clearable
                             @click:clear="request.thumbnail = pictureMedia ? null : ''"
@@ -451,7 +451,7 @@ watch(singleCourseModal, (newVal2) => {
                             v-model="pictureMedia"
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
-                            accept="image/jpg,jpeg,png"
+                            accept="image/jpeg,.png"
                             messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                             clearable
                             @click:clear="request.thumbnail = pictureMedia ? null : ''"

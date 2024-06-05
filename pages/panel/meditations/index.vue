@@ -103,6 +103,7 @@ const goToLesson = (courseId: string) => {
 }
 
 
+
 </script>
 
 <template>

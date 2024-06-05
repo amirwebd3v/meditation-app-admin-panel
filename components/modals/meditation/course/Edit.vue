@@ -5,6 +5,7 @@ import type {ValidationRules} from "~/utils/types";
 
 /********************************************/
 const loading = ref()
+const source = ref([])
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
 const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
@@ -33,6 +34,11 @@ const props = defineProps({
   price: {
     type: Number,
     required: true
+  },
+  thumbnail: {
+    type: Array,
+    required: true,
+    default: ''
   },
 })
 
@@ -74,7 +80,7 @@ const toggle = () => {
 
 /**********************************************/
 function singleOrCourse(request) {
-  let keysToExclude = ['is_lock', 'source', 'duration','is_popular']
+  let keysToExclude = ['is_lock', 'source', 'duration', 'is_popular']
   if (request.set === CourseSet.Course) {
     for (let key of keysToExclude) {
       delete request[key];
@@ -113,6 +119,16 @@ function close() {
   resetHasChanges(initialState, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
+
+
+if (props.courseSet === CourseSet.Single) {
+  useLessonStore().show(<string>props.id).then((result) => {
+    source.value[0] = result.data['source'].urls.original.toString()
+    source.value[1] = result.data['source'].file_name.toString();
+  })
+}
+
+
 </script>
 
 <template>
@@ -198,7 +214,7 @@ function close() {
 
         <v-col cols="12" class="py-0" v-if="props.courseSet === CourseSet.Single">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label upload-input" label="Select a track to Upload"
+          <v-file-input class="file-input-label upload-input" :label="!source ? 'Select a track to Upload' : '' "
                         :rules="[$validationRules.trackFormat]"
                         v-model="trackMedia"
                         @change="upload(MediaType.TRACK)"
@@ -208,6 +224,19 @@ function close() {
                         clearable
                         @click:clear="delete request['source'] && trackMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
+            <template #prepend-inner v-if="props.courseSet === CourseSet.Single">
+              <v-card width="80" height="80" class="bg-primary-light">
+                <v-card-text style="padding: 0;" class="text-truncate text-white">
+                  <div class="pl-4 py-1 align-center">
+                    <a :href="source[0]">
+                      <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
+                    </a>
+                  </div>
+                  <v-divider color="white" class="border-white border-opacity-25"/>
+                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ source[1] }}</span>
+                </v-card-text>
+              </v-card>
+            </template>
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="80" height="80" class="bg-primary-light">
@@ -225,16 +254,37 @@ function close() {
         </v-col>
         <v-col cols="12" :class="`${props.courseSet === CourseSet.Single ? 'pt-4' : 'pt-0'} pb-0`">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+          <v-file-input class="file-input-label upload-input"
+                        :label="!props.thumbnail ? 'Select a picture to Upload' : ''"
                         :rules="[$validationRules.pictureFormat]"
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
-                        accept="image/jpg,jpeg,png"
+                        accept="image/jpeg,.png"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         clearable
                         @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
+            <template #prepend-inner v-if="!preview.picture">
+              <v-card width="80" height="80" class="bg-primary-light">
+                <v-card-text style="padding: 0;" class="text-truncate text-white">
+                  <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                         :src="<string>props.thumbnail?.urls?.original">
+                    <template v-slot:placeholder>
+                      <div class="d-flex align-center justify-center fill-height">
+                        <v-progress-circular
+                            color="grey-lighten-4"
+                            indeterminate
+                            size="x-small"
+                        ></v-progress-circular>
+                      </div>
+                    </template>
+                  </v-img>
+                  <v-divider color="white" class="border-white border-opacity-25"/>
+                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.thumbnail?.name }}</span>
+                </v-card-text>
+              </v-card>
+            </template>
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="75" height="80" class="bg-primary-light">
@@ -255,6 +305,24 @@ function close() {
                     <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
                   </v-card-text>
                 </v-card>
+                <!--                <v-card width="75" height="80" class="bg-primary-light">-->
+                <!--                  <v-card-text style="padding: 0;" class="text-truncate text-white">-->
+                <!--                    <v-img lazy-src="/img/meditation-card.jpg" cover height="56"-->
+                <!--                           :src="<string>props.thumbnail?.urls?.original">-->
+                <!--                      <template v-slot:placeholder>-->
+                <!--                        <div class="d-flex align-center justify-center fill-height">-->
+                <!--                          <v-progress-circular-->
+                <!--                              color="grey-lighten-4"-->
+                <!--                              indeterminate-->
+                <!--                              size="x-small"-->
+                <!--                          ></v-progress-circular>-->
+                <!--                        </div>-->
+                <!--                      </template>-->
+                <!--                    </v-img>-->
+                <!--                    <v-divider color="white" class="border-white border-opacity-25"/>-->
+                <!--                    <span class="px-1 font-weight-thin" style="font-size: 9px;" >{{ props.thumbnail?.name }}</span>-->
+                <!--                  </v-card-text>-->
+                <!--                </v-card>-->
               </template>
             </template>
           </v-file-input>

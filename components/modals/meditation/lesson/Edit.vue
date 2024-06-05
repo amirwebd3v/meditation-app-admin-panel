@@ -26,10 +26,11 @@ const props = defineProps({
     type: String || null,
     required: true
   },
-  // source: {
-  //   type: String,
-  //   required: true
-  // },
+  source: {
+    type: String,
+    required: true,
+    default: ''
+  },
   // duration: {
   //   type: String,
   //   required: true
@@ -51,7 +52,8 @@ const initialState = {
   title: props.title,
   description: props.description,
   is_lock: props.isLock,
-  is_popular: props.isPopular
+  is_popular: props.isPopular,
+  source: props.source
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
@@ -79,6 +81,8 @@ function close() {
   resetHasChanges(initialState, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
+
+
 </script>
 
 <template>
@@ -118,7 +122,7 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label upload-input" label="Select a track to Upload"
+          <v-file-input class="file-input-label upload-input" :label="!props.source ? 'Select a track to Upload' : '' "
                         :rules="[$validationRules.trackFormat]"
                         v-model="trackMedia"
                         @change="upload(MediaType.TRACK)"
@@ -128,6 +132,19 @@ function close() {
                         clearable
                         @click:clear="delete request['source'] && trackMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
+            <template #prepend-inner v-if="!preview.track" >
+              <v-card width="80" height="80" class="bg-primary-light">
+                <v-card-text style="padding: 0;" class="text-truncate text-white">
+                  <div class="pl-4 py-1 align-center">
+                    <a :href="props.source?.urls.original">
+                      <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
+                    </a>
+                  </div>
+                  <v-divider color="white" class="border-white border-opacity-25"/>
+                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.source.file_name }}</span>
+                </v-card-text>
+              </v-card>
+            </template>
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="80" height="80" class="bg-primary-light">

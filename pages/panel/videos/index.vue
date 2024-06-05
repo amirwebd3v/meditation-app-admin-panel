@@ -204,6 +204,7 @@ const goToLesson = (courseId: string) => {
                   :description="item.description"
                   :categories="item.categories.map((c : Category) => c.id)"
                   :price="item.price"
+                  :thumbnail="item.thumbnail"
                   :key="item.updated_at"
               />
               <LazyModalsVideoCourseDelete :id="item.uuid" :title="item.title"

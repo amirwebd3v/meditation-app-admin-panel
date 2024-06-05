@@ -3,6 +3,7 @@ import useApi from '~/composables/api'
 import type {Course, Lesson} from "~/utils/types";
 import type {PaginatorMeta, QueryParams} from "l5-client";
 import type {LessonStoreRequest, LessonUpdateRequest} from "~/utils/requests";
+import {v} from "~/.output/public/_nuxt/entry.EgzYus8n";
 
 export const useLessonStore = defineStore('lesson', {
     state: () => ({
@@ -21,6 +22,14 @@ export const useLessonStore = defineStore('lesson', {
             } catch (error) {
                 console.error('Error fetching lessons:', error);
             }
+        },
+
+        async show(courseId: Course['uuid']): Promise<Lesson> {
+            const { data } = await useApi().get<Lesson>(
+                `/admin/v1/course/${courseId}/lesson`);
+            this.items = new Map(data.map((entity) => [entity.uuid, entity]));
+            const lessonId = Array.from(this.items.keys()).toString()
+            return await useApi().get(`/admin/v1/lesson/${lessonId}`)
         },
 
         async store(request: LessonStoreRequest): Promise<Lesson> {
