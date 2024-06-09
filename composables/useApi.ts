@@ -55,10 +55,20 @@ export default function useApi() {
                                     sortBy = []
                                 }, search: FilterSearchItem[] = []): QueryParams => {
         let sort: FilterSortItem = {}
+        const sortState = useState('sortState', () => ({}))
 
         if (sortBy.length > 0) {
-            sortBy.forEach(({key, order}) => sort[key] = order)
+            sortBy.forEach(({key, order}) => {
+                sort[key] = order
+                sortState.value[key] = order
+            })
+        } else {
+            // console.log('1')
+            sort = sortState.value
         }
+
+        // console.log('sort',sort)
+        // console.log('sortState',sortState.value)
 
         return {
             pagination: {page: page || 1, perPage: itemsPerPage || 10}, sort, search

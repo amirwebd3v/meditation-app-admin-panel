@@ -157,7 +157,7 @@ const goToLesson = (courseId: string) => {
                    max-width="270">
           <template v-slot:activator="{props}">
             <div class="text-truncate" style="max-width: 125px;" v-bind="props">
-              {{ categoriesSelectionSort(item.categories) }}
+              {{ !!item.categories ? categoriesSelectionSort(item.categories) : '' }}
             </div>
           </template>
         </v-tooltip>
