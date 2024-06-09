@@ -2,7 +2,6 @@
 
 import Categories from "~/components/configuration/Categories.vue";
 import AddConfigurationItem from "~/components/configuration/AddConfigurationItem.vue";
-import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Category,ValidationRules} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";

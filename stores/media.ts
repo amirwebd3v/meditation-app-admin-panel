@@ -1,5 +1,4 @@
 import {defineStore} from 'pinia';
-import useApi from '~/composables/api';
 import type {Preview} from '~/utils/types';
 
 export const useMediaStore = defineStore('media', {

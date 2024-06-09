@@ -1,5 +1,4 @@
-import {defineStore} from 'pinia'
-import useApi from '~/composables/api'
+import {defineStore} from 'pinia';
 import type {Category} from "~/utils/types";
 import {CourseType} from "~/utils/enums";
 import type {CategoryStoreRequest} from "~/utils/requests";

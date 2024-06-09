@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import useApi from '~/composables/api'
 import type {FilterSearchItem} from "l5-client";
 import type {Course} from "~/utils/types";
 import type {VDataTableServer} from "vuetify/components/VDataTable";

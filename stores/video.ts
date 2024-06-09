@@ -1,5 +1,4 @@
-import {defineStore} from 'pinia'
-import useApi from '~/composables/api'
+import {defineStore} from 'pinia';
 import type {Course} from "~/utils/types";
 import type {PaginatorMeta, QueryParams} from "l5-client";
 import type {CourseStoreRequest, CourseUpdateRequest} from "~/utils/requests";
