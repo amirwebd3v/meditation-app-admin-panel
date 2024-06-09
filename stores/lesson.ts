@@ -24,12 +24,8 @@ export const useLessonStore = defineStore('lesson', {
             }
         },
 
-        async show(courseId: Course['uuid']): Promise<Lesson> {
-            const { data } = await useApi().get<Lesson>(
-                `/admin/v1/course/${courseId}/lesson`);
-            this.items = new Map(data.map((entity) => [entity.uuid, entity]));
-            const lessonId = Array.from(this.items.keys()).toString()
-            return await useApi().get(`/admin/v1/lesson/${lessonId}`)
+        async get(id: string): Promise<Lesson> {
+            return (await useApi().get(`/admin/v1/course/${id}/lesson`,)).data
         },
 
         async store(request: LessonStoreRequest): Promise<Lesson> {

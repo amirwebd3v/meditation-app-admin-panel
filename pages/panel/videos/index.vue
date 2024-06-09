@@ -53,7 +53,7 @@ const load = async (options = {}) => {
       {field: 'categories.slug', operator: 'in', value: categoriesFilter}
     ] : []
   ]
-  const params = useApi().prepareQueryParams(options, search)
+  const params = useApi().prepareQueryParams(options , search)
   params.relations = ['categories']
   await useVideoStore().paginate(params)
   loading.value = false
@@ -76,7 +76,7 @@ const categoriesSelectionSort = (categories) => {
       && selectedCategories.value === ['*']
       || selectedCategories.value !== [""]
   ) {
-    return categories[0].name
+    return categories[0]?.name
   } else {
     return ''
   }

@@ -184,7 +184,7 @@ function close() {
           @click="close"
       />
       <v-btn
-          :disabled="loading || !hasChanges"
+          :disabled="loading || !(hasChanges && preview.track !== null)"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{

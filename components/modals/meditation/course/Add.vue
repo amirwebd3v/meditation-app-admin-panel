@@ -119,6 +119,14 @@ watch(singleCourseModal, (newVal2) => {
   }
 });
 
+// watchEffect(()=>{
+//    const res = !(hasChanges && preview.value.track !== null)
+//   console.log('hasChanges',hasChanges.value)
+//   console.log('preview',preview.value.track !== null)
+//   console.log('res',res)
+//
+//
+// })
 </script>
 
 <template>
@@ -321,7 +329,7 @@ watch(singleCourseModal, (newVal2) => {
                   @click="closeCourseModal"
               />
               <v-btn
-                  :disabled="loading || !hasChanges"
+                  :disabled="loading || !(hasChanges &&  preview.picture !== null)"
                   :loading="loading"
                   :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                   :class="{
@@ -536,7 +544,7 @@ watch(singleCourseModal, (newVal2) => {
                   @click="closeCourseModal"
               />
               <v-btn
-                  :disabled="loading || !hasChanges"
+                  :disabled="loading || !(hasChanges && (preview.track !== null && preview.picture !== null))"
                   :loading="loading"
                   :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                   :class="{

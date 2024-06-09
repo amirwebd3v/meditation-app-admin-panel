@@ -122,10 +122,14 @@ function close() {
 
 
 if (props.courseSet === CourseSet.Single) {
-  useLessonStore().show(<string>props.id).then((result) => {
-    source.value[0] = result.data['source'].urls.original.toString()
-    source.value[1] = result.data['source'].file_name.toString();
+  console.log(props.id)
+
+  useLessonStore().get(<string>props.id).then((result) => {
+    source.value[0] = result[0].source.urls.original.toString()
+    source.value[1] = result[0].source.file_name.toString();
   })
+
+
 }
 
 
