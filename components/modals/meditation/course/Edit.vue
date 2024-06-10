@@ -38,7 +38,7 @@ const props = defineProps({
   thumbnail: {
     type: Array,
     required: true,
-    default: ''
+    default: null
   },
 })
 
@@ -47,7 +47,7 @@ const initialState = {
   id: props.id,
   title: props.title,
   description: props.description,
-  duration: 123,
+  duration: null,
   categories: props.categories,
   price: props.price,
   is_lock: props.price > 0,
@@ -121,13 +121,31 @@ function close() {
 }
 
 
-if (props.courseSet === CourseSet.Single) {
-  useLessonStore().get(<string>props.id).then((result) => {
-    source.value[0] = result[0].source.urls.original.toString()
-    source.value[1] = result[0].source.file_name.toString();
-  })
-}
 
+  if (props.courseSet === CourseSet.Single  && preview.value.track === null) {
+    useLessonStore().get(<string>props.id).then((result) => {
+      source.value[0] = result[0].source.urls.original.toString()
+      source.value[1] = result[0].source.file_name.toString();
+    })
+  }
+
+
+
+watchEffect(()=>{
+  const res =  ((!hasChanges && !source.value) && !(preview.value.track === null && preview.value.picture === null))
+  console.log('hasChanges',hasChanges.value)
+  console.log('preview-track',preview.value.track !== null)
+  console.log('preview-picture',preview.value.picture !== null)
+  console.log('source',source.value !== [])
+
+  console.log('res',res)
+
+
+
+
+
+
+})
 
 </script>
 
@@ -222,9 +240,9 @@ if (props.courseSet === CourseSet.Single) {
                         accept="audio/mpeg"
                         messages="File-format = 'mp3', Maximum-size = 100mb"
                         clearable
-                        @click:clear="delete request['source'] && trackMedia ? null : []"
+                        @click:clear="delete request['source'] && trackMedia ? null : [] ; preview.track = null"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
-            <template #prepend-inner v-if="props.courseSet === CourseSet.Single">
+            <template #prepend-inner v-if="preview.track === null">
               <v-card width="80" height="80" class="bg-primary-light">
                 <v-card-text style="padding: 0;" class="text-truncate text-white">
                   <div class="pl-4 py-1 align-center">
@@ -381,7 +399,7 @@ if (props.courseSet === CourseSet.Single) {
           @click="close"
       />
       <v-btn
-          :disabled="loading || !hasChanges"
+          :disabled="loading || ((!hasChanges && !source) && !(preview.track === null && preview.picture === null))"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{

@@ -129,7 +129,7 @@ function close() {
                         accept="audio/mpeg"
                         messages="File-format = 'mp3', Maximum-size = 100mb"
                         clearable
-                        @click:clear="request.source = trackMedia ? null : ''"
+                        @click:clear="(request.source = trackMedia ? null : '');(preview.track = null)"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">

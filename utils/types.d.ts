@@ -27,6 +27,7 @@ interface Course {
 interface Preview {
     id: string
     url: string
+    duration ?: number
     mime_type: string
     size: string
     created_at: number

@@ -53,7 +53,8 @@ const initialState = {
   description: props.description,
   is_lock: props.isLock,
   is_popular: props.isPopular,
-  source: props.source
+  source: props.source,
+  duration: null
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
@@ -130,7 +131,7 @@ function close() {
                         accept="audio/mpeg"
                         messages="File-format = 'mp3', Maximum-size = 100mb"
                         clearable
-                        @click:clear="delete request['source'] && trackMedia ? null : []"
+                        @click:clear="(request.source = trackMedia ? null : '');(preview.track = null)"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template #prepend-inner v-if="!preview.track" >
               <v-card width="80" height="80" class="bg-primary-light">

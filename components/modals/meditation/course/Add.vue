@@ -15,7 +15,7 @@ const initialState = {
   set: null,
   title: null,
   description: null,
-  duration: 123,
+  duration: null,
   thumbnail: null,
   source: null,
   categories: [],
@@ -119,14 +119,23 @@ watch(singleCourseModal, (newVal2) => {
   }
 });
 
-// watchEffect(()=>{
-//    const res = !(hasChanges && preview.value.track !== null)
-//   console.log('hasChanges',hasChanges.value)
-//   console.log('preview',preview.value.track !== null)
-//   console.log('res',res)
+
+
+
+
+
+watchEffect(()=>{
+   // const res = !(hasChanges && preview.value.track !== null)
+  // console.log('hasChanges',hasChanges.value)
+  // console.log('preview',preview.value.track !== null)
+  // console.log('res',res)
 //
 //
-// })
+
+
+
+
+})
 </script>
 
 <template>
@@ -435,7 +444,7 @@ watch(singleCourseModal, (newVal2) => {
                             accept="audio/mpeg"
                             messages="File-format = 'mp3', Maximum-size = 100mb"
                             clearable
-                            @click:clear="request.source = trackMedia ? null : ''"
+                            @click:clear="(request.source = trackMedia ? null : '');(preview.track = null)"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
                 <template v-slot:selection="{ fileNames }">
                   <template v-for="fileName in fileNames" :key="fileName">
@@ -544,7 +553,7 @@ watch(singleCourseModal, (newVal2) => {
                   @click="closeCourseModal"
               />
               <v-btn
-                  :disabled="loading || !(hasChanges && (preview.track !== null && preview.picture !== null))"
+                  :disabled="loading || !(hasChanges && (request.source !== null && request.thumbnail !== null))"
                   :loading="loading"
                   :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                   :class="{
