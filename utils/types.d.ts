@@ -12,13 +12,16 @@ interface Course {
     created_at: number
     description: string
     categories: Category[]
+    categories_count: number
     lessons_count: number
+    is_purchased: boolean
     price: number
     set: CourseSet
     thumbnail: Media | null
     title: string
     type: string
     updated_at: number
+    deleted_at: number
     uuid: string
     _entity: string
 }
@@ -107,6 +110,14 @@ interface ValidationRules {
     [key: string]: ValidationRule
 }
 
+
+interface Analytic {
+    _entity: string
+    total: number
+    count: number
+    course: Course
+}
+
 export {
     Error,
     User,
@@ -116,5 +127,6 @@ export {
     Course,
     Media,
     Category,
-    ValidationRules
+    ValidationRules,
+    Analytic
 }

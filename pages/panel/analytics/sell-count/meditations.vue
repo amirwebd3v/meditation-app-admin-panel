@@ -6,9 +6,10 @@ import type {ValidationRules} from "~/utils/types";
 import {VDataTableServer} from "vuetify/components/VDataTable";
 import {CourseType} from "~/utils/enums";
 import AddConfigurationItem from "~/components/configuration/AddConfigurationItem.vue";
+import {useAnalyticStore} from "~/stores/analytic";
 
 
-const {items, meta} = storeToRefs(useVideoStore())
+const {meditationAnalytics, meditationMeta,meditationTotalSum} = storeToRefs(useAnalyticStore())
 const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
 /***********************************************/
 definePageMeta({
@@ -16,7 +17,6 @@ definePageMeta({
 })
 
 onBeforeMount(() => {
-  useCategoryStore().fetch(CourseType.Meditation);
   load()
 });
 
@@ -42,15 +42,15 @@ const load = async (options = {}) => {
     return
   }
   loading.value = true
-  const search: FilterSearchItem[] = [
-    ...searchText.value === '' ? [] : [
-      {field: 'title', operator: 'ilike', value: searchText.value},
-      {field: 'price', operator: 'like', value: searchText.value}
-    ],
-  ]
-  const params = useApi().prepareQueryParams(options, search)
+  // const search: FilterSearchItem[] = [
+  //   ...searchText.value === '' ? [] : [
+  //     {field: 'title', operator: 'ilike', value: searchText.value},
+  //     {field: 'price', operator: 'like', value: searchText.value}
+  //   ],
+  // ]
+  const params = useApi().prepareQueryParams(options)
   params.relations = ['categories']
-  await useMeditationStore().paginate(params)
+  await useAnalyticStore().fetch(CourseType.Meditation)
   loading.value = false
 }
 
@@ -62,7 +62,6 @@ const categoriesTooltip = (categories) => {
 
 
 useListen('refreshAnalyticsCourseTable', load)
-
 
 </script>
 
@@ -96,9 +95,9 @@ useListen('refreshAnalyticsCourseTable', load)
 
     <v-data-table-server
         class="mt-8 rounded-lg bg-light-brown-1"
-        :items-length="+meta.total"
-        :page="meta.current_page"
-        :items="[...items.values()]"
+        :items-length="+meditationMeta.total"
+        :page="meditationMeta.current_page"
+        :items="[...meditationAnalytics.values()]"
         @update:options="load"
         :loading="loading"
         :headers="headers"
@@ -107,24 +106,24 @@ useListen('refreshAnalyticsCourseTable', load)
         show-current-page
     >
       <template #item.title="{item}">
-        <v-tooltip :text="item.title">
+        <v-tooltip :text="item.course.title">
           <template v-slot:activator="{ props }">
-            <div style="width: 200px;" class="text-truncate" v-bind="props">{{ item.title }}</div>
+            <div style="width: 200px;" class="text-truncate" v-bind="props">{{ item.course.title }}</div>
           </template>
         </v-tooltip>
       </template>
 
       <template #item.set="{ item }">
-        {{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}
+        {{ item.course.set === 'MULTIPLE' ? 'Course' : 'Single' }}
       </template>
 
 
       <template #item.category="{item}">
-        <v-tooltip :text="categoriesTooltip(item.categories)"
+        <v-tooltip :text="categoriesTooltip(item.course.categories)"
                    max-width="270">
           <template v-slot:activator="{props}">
             <div class="text-truncate" style="max-width: 125px;" v-bind="props">
-              {{ !!item?.categories.name[0] }}
+              {{ item?.course?.categories[0]?.name}}
             </div>
           </template>
         </v-tooltip>
@@ -132,21 +131,21 @@ useListen('refreshAnalyticsCourseTable', load)
 
 
       <template #item.meditations_count="{item}">
-        <div class="text-center">{{ item.meditations_count }}</div>
+        <div class="text-center">{{ item.course.lessons_count }}</div>
       </template>
 
 
       <template #item.downloads_count="{item}">
-        <div class="text-center">{{ item.downloads_count }}</div>
+        <div class="text-center">{{ item.count }}</div>
       </template>
 
 
       <template #item.price="{item}">
-        <div class="text-center">{{ item.price || 'Free' }}</div>
+        <div class="text-center">{{ item.course.price || 'Free' }}</div>
       </template>
 
       <template #item.total_price="{item}">
-        <div class="text-center">{{ item.total_price }}</div>
+        <div class="text-center">{{ item.total }}</div>
       </template>
     </v-data-table-server>
 
@@ -156,7 +155,7 @@ useListen('refreshAnalyticsCourseTable', load)
         <v-text-field variant="outlined"
                       color="primary"
                       readonly
-                      density="compact">68.00</v-text-field>
+                      density="compact">{{ meditationTotalSum }}</v-text-field>
       </v-row>
     </div>
   </v-container>
