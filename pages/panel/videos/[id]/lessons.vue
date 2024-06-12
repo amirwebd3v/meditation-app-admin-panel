@@ -52,7 +52,6 @@ useListen('refreshVideosLessonsTable',load)
 
 <template>
   <div class="mt-5">
-    <v-container>
       <!--     Start First section-->
       <v-sheet class=" mb-7">
         <div class="d-flex align-center cursor-pointer w-0" @click="useRouter().back()">
@@ -158,7 +157,6 @@ useListen('refreshVideosLessonsTable',load)
         </template>
       </v-data-table-server>
       <!--    End Second section-->
-    </v-container>
   </div>
 </template>
 

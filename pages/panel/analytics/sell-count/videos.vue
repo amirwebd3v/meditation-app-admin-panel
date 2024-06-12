@@ -66,7 +66,7 @@ useListen('refreshAnalyticsCourseTable', load)
 </script>
 
 <template>
-  <v-container>
+
     <!--      First section-->
     <v-sheet class="d-flex mb-6 align-center">
       <v-sheet color="red">
@@ -158,7 +158,7 @@ useListen('refreshAnalyticsCourseTable', load)
                       density="compact">{{ videosTotalSum }}</v-text-field>
       </v-row>
     </div>
-  </v-container>
+
 </template>
 
 
