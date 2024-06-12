@@ -25,12 +25,14 @@ export const useAnalyticStore = defineStore('analytic', {
                     case CourseType.Meditation:
                         this.meditationAnalytics = new Map(analyticsMap);
                         this.meditationMeta = meta;
-                        this.meditationTotalSum = data.reduce((sum, entity) => sum + entity.total, 0);
+                        this.meditationTotalSum = parseFloat(data.reduce((sum, entity) =>
+                            sum + entity.total, 0).toFixed(2));
                         break;
                     case CourseType.Video:
                         this.videosAnalytics = new Map(analyticsMap);
                         this.videosMeta = meta;
-                        this.videosTotalSum = data.reduce((sum, entity) => sum + entity.total, 0);
+                        this.videosTotalSum = parseFloat(data.reduce((sum, entity) =>
+                            sum + entity.total, 0).toFixed(2));
                         break;
                     default:
                         break;
