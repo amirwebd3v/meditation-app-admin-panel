@@ -27,13 +27,13 @@ const router = useRouter();
 
 
 const headers = [
-  {key: 'title', title: 'TITLE', align: 'start', sortable: true, width: '125'},
-  {key: 'set', title: 'TYPE', sortable: true, align: 'center'},
+  {key: 'title', title: 'TITLE', align: 'start', sortable: false, width: '125'},
+  {key: 'set', title: 'TYPE', sortable: false, align: 'center'},
   {key: 'category', title: 'TAGS', sortable: false, align: 'center'},
-  {key: 'videos_count', title: 'MEDITATION QUANTITY', sortable: true, align: 'center'},
-  {key: 'downloads_count', title: 'DOWNLOADS QUANTITY', sortable: true, align: 'center'},
-  {key: 'price', title: 'PRICE($)', sortable: true, align: 'center'},
-  {key: 'total_price', title: 'TOTAL($)', sortable: true, align: 'center'},
+  {key: 'videos_count', title: 'MEDITATION QUANTITY', sortable: false, align: 'center'},
+  {key: 'count', title: 'DOWNLOADS QUANTITY', sortable: true, align: 'center'},
+  {key: 'price', title: 'PRICE($)', sortable: false, align: 'center'},
+  {key: 'total', title: 'TOTAL($)', sortable: true, align: 'center'},
 ] as VDataTableServer['headers']
 
 /***********************************************/
@@ -135,7 +135,7 @@ useListen('refreshAnalyticsCourseTable', load)
       </template>
 
 
-      <template #item.downloads_count="{item}">
+      <template #item.count="{item}">
         <div class="text-center">{{ item.count }}</div>
       </template>
 
@@ -144,7 +144,7 @@ useListen('refreshAnalyticsCourseTable', load)
         <div class="text-center">{{ item.course.price || 'Free' }}</div>
       </template>
 
-      <template #item.total_price="{item}">
+      <template #item.total="{item}">
         <div class="text-center">{{ item.total }}</div>
       </template>
     </v-data-table-server>
