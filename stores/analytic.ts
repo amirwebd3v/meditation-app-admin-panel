@@ -13,18 +13,14 @@ export const useAnalyticStore = defineStore('analytic', {
         videosTotalSum: 0,
     }),
     actions: {
-        async fetch(courseType: CourseType) {
+        async fetch(courseType: CourseType,queryParam: QueryParams) {
+
             try {
                 const {
                     data,
                     meta
-                } = await useApi().paginate<Analytic>(`/admin/v1/analytics/sell-count/course-${courseType}`, {
-                    sort: { total: 'desc' },
-                    pagination: { page: 1, perPage: 10 }
-                });
-
+                } = await useApi().paginate<Analytic>(`/admin/v1/analytics/sell-count/course-${courseType.toLowerCase()}`,queryParam);
                 const analyticsMap: Map<string, Analytic> = new Map(data.map(entity => [entity.course.uuid, entity]));
-
                 switch (courseType) {
                     case CourseType.Meditation:
                         this.meditationAnalytics = new Map(analyticsMap);

@@ -9,7 +9,7 @@ import AddConfigurationItem from "~/components/configuration/AddConfigurationIte
 import {useAnalyticStore} from "~/stores/analytic";
 
 
-const {meditationAnalytics, meditationMeta,meditationTotalSum} = storeToRefs(useAnalyticStore())
+const {meditationAnalytics, meditationMeta, meditationTotalSum} = storeToRefs(useAnalyticStore())
 const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
 /***********************************************/
 definePageMeta({
@@ -27,13 +27,13 @@ const router = useRouter();
 
 
 const headers = [
-  {key: 'title', title: 'TITLE', align: 'start', sortable: true, width: '125'},
-  {key: 'set', title: 'TYPE', sortable: true, align: 'center'},
+  {key: 'title', title: 'TITLE', align: 'start', sortable: false, width: '125'},
+  {key: 'set', title: 'TYPE', sortable: false, align: 'center'},
   {key: 'category', title: 'TAGS', sortable: false, align: 'center'},
-  {key: 'meditations_count', title: 'MEDITATION QUANTITY', sortable: true, align: 'center'},
-  {key: 'downloads_count', title: 'DOWNLOADS QUANTITY', sortable: true, align: 'center'},
-  {key: 'price', title: 'PRICE($)', sortable: true, align: 'center'},
-  {key: 'total_price', title: 'TOTAL($)', sortable: true, align: 'center'},
+  {key: 'meditations_count', title: 'MEDITATION QUANTITY', sortable: false, align: 'center'},
+  {key: 'count', title: 'DOWNLOADS QUANTITY', sortable: true, align: 'center'},
+  {key: 'price', title: 'PRICE($)', sortable: false, align: 'center'},
+  {key: 'total', title: 'TOTAL($)', sortable: true, align: 'center'},
 ] as VDataTableServer['headers']
 
 /***********************************************/
@@ -50,7 +50,7 @@ const load = async (options = {}) => {
   // ]
   const params = useApi().prepareQueryParams(options)
   params.relations = ['categories']
-  await useAnalyticStore().fetch(CourseType.Meditation)
+  await useAnalyticStore().fetch(CourseType.Meditation, params)
   loading.value = false
 }
 
@@ -123,7 +123,7 @@ useListen('refreshAnalyticsCourseTable', load)
                    max-width="270">
           <template v-slot:activator="{props}">
             <div class="text-truncate" style="max-width: 125px;" v-bind="props">
-              {{ item?.course?.categories[0]?.name}}
+              {{ item?.course?.categories[0]?.name }}
             </div>
           </template>
         </v-tooltip>
@@ -135,7 +135,7 @@ useListen('refreshAnalyticsCourseTable', load)
       </template>
 
 
-      <template #item.downloads_count="{item}">
+      <template #item.count="{item}">
         <div class="text-center">{{ item.count }}</div>
       </template>
 
@@ -144,7 +144,7 @@ useListen('refreshAnalyticsCourseTable', load)
         <div class="text-center">{{ item.course.price || 'Free' }}</div>
       </template>
 
-      <template #item.total_price="{item}">
+      <template #item.total="{item}">
         <div class="text-center">{{ item.total }}</div>
       </template>
     </v-data-table-server>
@@ -155,7 +155,8 @@ useListen('refreshAnalyticsCourseTable', load)
         <v-text-field variant="outlined"
                       color="primary"
                       readonly
-                      density="compact">{{ meditationTotalSum }}</v-text-field>
+                      density="compact">{{ meditationTotalSum }}
+        </v-text-field>
       </v-row>
     </div>
   </v-container>

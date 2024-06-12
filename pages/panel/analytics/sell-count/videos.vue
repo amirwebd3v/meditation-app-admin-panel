@@ -50,7 +50,7 @@ const load = async (options = {}) => {
   // ]
   const params = useApi().prepareQueryParams(options)
   params.relations = ['categories']
-  await useAnalyticStore().fetch(CourseType.Video)
+  await useAnalyticStore().fetch(CourseType.Video,params)
   loading.value = false
 }
 
