@@ -30,7 +30,7 @@ const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: false, width: '125'},
   {key: 'set', title: 'TYPE', sortable: false, align: 'center'},
   {key: 'category', title: 'TAGS', sortable: false, align: 'center'},
-  {key: 'videos_count', title: 'MEDITATION QUANTITY', sortable: false, align: 'center'},
+  {key: 'videos_count', title: 'VIDEOS QUANTITY', sortable: false, align: 'center'},
   {key: 'count', title: 'DOWNLOADS QUANTITY', sortable: true, align: 'center'},
   {key: 'price', title: 'PRICE($)', sortable: false, align: 'center'},
   {key: 'total', title: 'TOTAL($)', sortable: true, align: 'center'},
