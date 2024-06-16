@@ -6,7 +6,7 @@ definePageMeta({
 
 
 <template>
-  <v-container class="fill-height d-flex flex-column align-center" fluid>
+
 
     <v-row class="ma-0 pb-5 " align="end">
       <p class="text-center text-white font-20 font-weight-medium">Select what you are going to configure</p>
@@ -55,7 +55,7 @@ definePageMeta({
 
     </v-row>
 
-  </v-container>
+
 </template>
 
 <style scoped lang="scss">

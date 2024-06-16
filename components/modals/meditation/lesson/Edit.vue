@@ -27,9 +27,12 @@ const props = defineProps({
     required: true
   },
   source: {
-    type: String,
+    type: Object,
     required: true,
-    default: ''
+    default: {
+      url: '',
+      fileName: ''
+    }
   },
   // duration: {
   //   type: String,
@@ -70,7 +73,7 @@ const updateLesson = async () => {
     useEvent('refreshMeditationsLessonsTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
-    resetHasChanges(initialState, pictureMedia, trackMedia)
+    resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   } finally {
     loading.value = false
   }
@@ -79,7 +82,7 @@ const updateLesson = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState, pictureMedia, trackMedia)
+  resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
 
@@ -123,26 +126,33 @@ function close() {
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label upload-input" :label="!props.source ? 'Select a track to Upload' : '' "
+          <v-file-input class="file-input-label upload-input"
+                        :label="!props.source ? 'Select a track to Upload' : '' "
                         :rules="[$validationRules.trackFormat]"
                         v-model="trackMedia"
                         @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"
                         accept="audio/mpeg"
                         messages="File-format = 'mp3', Maximum-size = 100mb"
-                        clearable
-                        @click:clear="(request.source = trackMedia ? null : '');(preview.track = null)"
+                        :clearable="false"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
-            <template #prepend-inner v-if="!preview.track" >
+            <template #prepend-inner v-if="[...trackMedia].length === 0">
               <v-card width="80" height="80" class="bg-primary-light">
                 <v-card-text style="padding: 0;" class="text-truncate text-white">
-                  <div class="pl-4 py-1 align-center">
-                    <a :href="props.source?.urls.original">
+                  <div v-if="!preview.track" class="pl-4 py-1 align-center">
+                    <a :href="props.source?.url">
+                      <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
+                    </a>
+                  </div>
+
+                  <div v-else class="pl-4 py-1 align-center">
+                    <a :href="preview.track.url">
                       <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
                     </a>
                   </div>
                   <v-divider color="white" class="border-white border-opacity-25"/>
-                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.source.file_name }}</span>
+                  <span v-if="!preview.track" class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.source?.fileName }}</span>
+                  <span v-else class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{ preview.track?.size }}</span>
                 </v-card-text>
               </v-card>
             </template>

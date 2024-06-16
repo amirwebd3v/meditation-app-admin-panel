@@ -70,7 +70,7 @@ const updateLesson = async () => {
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('refreshVideosLessonsTable')
     useEvent('closeModal', false)
-    resetHasChanges(initialState, pictureMedia)
+    resetHasChanges(initialState, preview, pictureMedia)
   } finally {
     loading.value = false
   }
@@ -79,7 +79,7 @@ const updateLesson = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState, pictureMedia)
+  resetHasChanges(initialState, preview, pictureMedia)
   useValidationStore().clearErrors()
 }
 </script>
@@ -131,10 +131,9 @@ function close() {
                         single-line :disabled="loading"
                         accept="image/jpeg,.png"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
-                        clearable
-                        @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
+                        :clearable="false"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
-            <template #prepend-inner v-if="!preview.picture">
+            <template #prepend-inner v-if="[...pictureMedia].length === 0">
               <v-card width="80" height="80" class="bg-primary-light">
                 <v-card-text style="padding: 0;" class="text-truncate text-white">
                   <v-img lazy-src="/img/meditation-card.jpg" cover height="56"

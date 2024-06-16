@@ -17,12 +17,12 @@ const initialState = {
   price: 0,
   type: CourseType.Video,
   is_lock: false,
-  is_popular: false
+  is_popular: false,
 }
 
 const request = reactive<CourseStoreRequest>({...initialState})
-const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, upload, preview} = useUpload(request)
+const { hasChanges, resetHasChanges } = useInputHasChanges(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
 })
@@ -55,7 +55,7 @@ const saveCourse = async () => {
     useEvent('refreshVideosCourseTable')
     useEvent('successMessage', `${request.title} is successfully Added to Videos.`)
     useEvent('closeModal', false)
-    resetHasChanges(initialState, pictureMedia)
+    resetHasChanges(initialState, preview, pictureMedia)
   } finally {
     loading.value = false
   }
@@ -64,9 +64,12 @@ const saveCourse = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState, pictureMedia)
+  resetHasChanges(initialState,  preview,pictureMedia)
   useValidationStore().clearErrors()
 }
+
+
+
 
 </script>
 
@@ -167,13 +170,13 @@ function close() {
                         color="primary"
                         density="comfortable"
                         :rules="[$validationRules.required,$validationRules.price]"
-
                         :error-messages="errors['price']"
           ></v-text-field>
         </v-col>
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
-          <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+          <v-file-input class="file-input-label upload-input"
+                        :label="!([...pictureMedia].length === 0 && preview.picture !== null) ? 'Select a picture to Upload':''"
                         :rules="[$validationRules.pictureFormat]"
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
@@ -181,9 +184,28 @@ function close() {
                         accept="image/jpeg,.png"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         show-size
-                        clearable
-                        @click:clear="request.thumbnail = pictureMedia ? null : ''"
+                        :clearable="false"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
+            <template #prepend-inner v-if="[...pictureMedia].length === 0 && preview.picture !== null">
+              <v-card width="80" height="80" class="bg-primary-light">
+                <v-card-text style="padding: 0;" class="text-truncate text-white">
+                  <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                         :src="<string>preview.picture?.url">
+                    <template v-slot:placeholder>
+                      <div class="d-flex align-center justify-center fill-height">
+                        <v-progress-circular
+                            color="grey-lighten-4"
+                            indeterminate
+                            size="x-small"
+                        ></v-progress-circular>
+                      </div>
+                    </template>
+                  </v-img>
+                  <v-divider color="white" class="border-white border-opacity-25"/>
+                  <span class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{ preview.picture?.size }}</span>
+                </v-card-text>
+              </v-card>
+            </template>
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="75" height="80" class="bg-primary-light">
@@ -225,7 +247,7 @@ function close() {
           @click="close"
       />
       <v-btn
-          :disabled="loading || !(hasChanges && preview.picture !== null)"
+          :disabled="loading || !hasChanges"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{

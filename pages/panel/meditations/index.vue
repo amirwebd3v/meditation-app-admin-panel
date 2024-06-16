@@ -103,143 +103,147 @@ const goToLesson = (courseId: string) => {
 
 
 
+
+
+
+
+
 </script>
 
 <template>
 
-    <!--      First section-->
-    <v-sheet class="d-flex mb-6  align-center">
-      <v-sheet>
-        <h2 class="text-white pr-10 me-auto">Meditations</h2>
-      </v-sheet>
-      <v-sheet class="mr-5 pt-5" width="475px">
-        <v-text-field maxlength="31"
-                      @keyup.enter="load"
-                      v-model="searchText"
-                      :rules="[$validationRules.maxLength]"
-                      density="compact"
-                      variant="outlined"
-                      label="Search"
-                      single-line
-        >
-          <template #prepend-inner>
-            <v-icon icon="mdi-magnify" style="opacity: 1!important;"/>
-          </template>
-        </v-text-field>
-      </v-sheet>
+  <!--      First section-->
+  <v-sheet class="d-flex mb-6  align-center">
+    <v-sheet>
+      <h2 class="text-white pr-10 me-auto">Meditations</h2>
     </v-sheet>
+    <v-sheet class="mr-5 pt-5" width="475px">
+      <v-text-field maxlength="31"
+                    @keyup.enter="load"
+                    v-model="searchText"
+                    :rules="[$validationRules.maxLength]"
+                    density="compact"
+                    variant="outlined"
+                    label="Search"
+                    single-line
+      >
+        <template #prepend-inner>
+          <v-icon icon="mdi-magnify" style="opacity: 1!important;"/>
+        </template>
+      </v-text-field>
+    </v-sheet>
+  </v-sheet>
 
-    <Categories :categories="useCategoryStore().meditationCategories" :type="CourseType.Meditation"
-                @update:selectedCategories="handleSelectedCategories"/>
-    <AddConfigurationItem Item="All Meditations"/>
-
-
-    <v-data-table-server
-        class="mt-8 rounded-lg bg-light-brown-1"
-        :items-length="+meta.total"
-        :page="+meta.current_page"
-        :items="[...items.values()]"
-        @update:options="load"
-        :loading="loading"
-        :headers="headers"
-        sort-desc-icon="mdi-arrow-up-thin"
-        sort-asc-icon="mdi-arrow-down-thin"
-        show-current-page
-    >
-      <template #item.title="{item}">
-        <v-tooltip :text="item.title">
-          <template v-slot:activator="{ props }">
-            <div class="text-truncate" style="width: 200px;" v-bind="props">{{ item.title }}</div>
-          </template>
-        </v-tooltip>
-      </template>
+  <Categories :categories="useCategoryStore().meditationCategories" :type="CourseType.Meditation"
+              @update:selectedCategories="handleSelectedCategories"/>
+  <AddConfigurationItem Item="All Meditations"/>
 
 
-      <template #item.category="{item}">
-        <v-tooltip :text="categoriesTooltip(item.categories)"
-                   max-width="270">
-          <template v-slot:activator="{props}">
-            <div class="text-truncate" style="max-width: 125px;" v-bind="props">
-              {{ !!item.categories ? categoriesSelectionSort(item.categories) : '' }}
-            </div>
-          </template>
-        </v-tooltip>
-      </template>
+  <v-data-table-server
+      class="mt-8 rounded-lg bg-light-brown-1"
+      :items-length="+meta.total"
+      :page="+meta.current_page"
+      :items="[...items.values()]"
+      @update:options="load"
+      :loading="loading"
+      :headers="headers"
+      sort-desc-icon="mdi-arrow-up-thin"
+      sort-asc-icon="mdi-arrow-down-thin"
+      show-current-page
+  >
+    <template #item.title="{item}">
+      <v-tooltip :text="item.title">
+        <template v-slot:activator="{ props }">
+          <div class="text-truncate" style="width: 200px;" v-bind="props">{{ item.title }}</div>
+        </template>
+      </v-tooltip>
+    </template>
 
 
-      <template #item.set="{ item }">
-        {{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}
-      </template>
+    <template #item.category="{item}">
+      <v-tooltip :text="categoriesTooltip(item.categories)"
+                 max-width="270">
+        <template v-slot:activator="{props}">
+          <div class="text-truncate" style="max-width: 125px;" v-bind="props">
+            {{ !!item.categories ? categoriesSelectionSort(item.categories) : '' }}
+          </div>
+        </template>
+      </v-tooltip>
+    </template>
 
-      <!--        <template #item.description="{item}">-->
-      <!--          <v-tooltip :text="item.description" max-width="270">-->
-      <!--            <template v-slot:activator="{ props }">-->
-      <!--              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.description }}</div>-->
-      <!--            </template>-->
-      <!--          </v-tooltip>-->
-      <!--        </template>-->
 
-      <template #item.lessons_count="{item}">
-        <div class="v-row justify-center">{{ item.set === 'MULTIPLE' ? item.lessons_count : 1 }}</div>
-      </template>
+    <template #item.set="{ item }">
+      {{ item.set === 'MULTIPLE' ? 'Course' : 'Single' }}
+    </template>
 
-      <template #item.thumbnail="{ item }">
+    <!--        <template #item.description="{item}">-->
+    <!--          <v-tooltip :text="item.description" max-width="270">-->
+    <!--            <template v-slot:activator="{ props }">-->
+    <!--              <div class="text-truncate" style="max-width: 125px;" v-bind="props">{{ item.description }}</div>-->
+    <!--            </template>-->
+    <!--          </v-tooltip>-->
+    <!--        </template>-->
 
-        <div class="v-row justify-center">
-          <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
-            <v-img :src="item.thumbnail.urls.original" lazy-src="/img/meditation-card.jpg" height="38" width="38" cover>
-              <template v-slot:placeholder>
-                <div class="d-flex align-center justify-center fill-height">
-                  <v-progress-circular
-                      color="grey-lighten-4"
-                      indeterminate
-                      size="x-small"
-                  ></v-progress-circular>
-                </div>
-              </template>
-            </v-img>
-          </v-card>
-        </div>
-      </template>
+    <template #item.lessons_count="{item}">
+      <div class="v-row justify-center">{{ item.set === 'MULTIPLE' ? item.lessons_count : 1 }}</div>
+    </template>
 
-      <template #item.price="{item}">
-        {{ item.price || 'Free' }}
-      </template>
+    <template #item.thumbnail="{ item }">
 
-      <template #item.actions="{item}">
-        <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
-          <LazyDataTableMenu>
-            <template #items>
-              <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
-                                             :btn-out-table="false" :btn-in-table="true"
-                                             v-if="item.set === CourseSet.Course"
-                                             :key="item.uuid"
-              />
-              <LazyModalsMeditationCourseEdit
-                  :id="item.uuid"
-                  :title="item.title"
-                  :description="item.description"
-                  :course-set="item.set"
-                  :categories="item.categories.map((c : Category) => c.id)"
-                  :price="item.price"
-                  :thumbnail="item.thumbnail"
-                  :key="item.updated_at"
-              />
-              <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
-                                                :id="item.uuid" :title="item.title" :course-set="item.set"
-              />
+      <div class="v-row justify-center">
+        <v-card v-if="!!item.thumbnail" class="my-1" elevation="0" rounded color="light">
+          <v-img :src="item.thumbnail.urls.original" lazy-src="/img/meditation-card.jpg" height="38" width="38" cover>
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                    color="grey-lighten-4"
+                    indeterminate
+                    size="x-small"
+                ></v-progress-circular>
+              </div>
             </template>
-          </LazyDataTableMenu>
-          <v-icon
-              v-if="item.set === CourseSet.Course"
-              class="text-primary"
-              icon="mdi-chevron-right"
-              size="x-large"
-              @click="goToLesson(item.uuid)"
-          />
-        </div>
-      </template>
-    </v-data-table-server>
+          </v-img>
+        </v-card>
+      </div>
+    </template>
+
+    <template #item.price="{item}">
+      {{ item.price || 'Free' }}
+    </template>
+
+    <template #item.actions="{item}">
+      <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
+        <LazyDataTableMenu>
+          <template #items :key="item.uuid">
+            <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
+                                           :btn-out-table="false" :btn-in-table="true"
+                                           v-if="item.set === CourseSet.Course"
+            />
+            <LazyModalsMeditationCourseEdit
+                :id="item.uuid"
+                :title="item.title"
+                :description="item.description"
+                :course-set="item.set"
+                :categories="item.categories.map((c : Category) => c.id)"
+                :price="item.price"
+                :thumbnail="{url : item.thumbnail.urls.original , fileName : item.thumbnail.file_name}"
+
+            />
+            <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
+                                              :id="item.uuid" :title="item.title" :course-set="item.set"
+            />
+          </template>
+        </LazyDataTableMenu>
+        <v-icon
+            v-if="item.set === CourseSet.Course"
+            class="text-primary"
+            icon="mdi-chevron-right"
+            size="x-large"
+            @click="goToLesson(item.uuid)"
+        />
+      </div>
+    </template>
+  </v-data-table-server>
 
 </template>
 

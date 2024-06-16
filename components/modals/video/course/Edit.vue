@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type {CourseUpdateRequest} from "~/utils/requests";
-import type {ValidationRules} from "~/utils/types";
+import type {Category, ValidationRules} from "~/utils/types";
+
+
 
 /********************************************/
 const loading = ref()
@@ -23,7 +25,7 @@ const props = defineProps({
     required: true
   },
   categories: {
-    type: Array<number> || null,
+    type: Array || null,
     required: true
   },
   price: {
@@ -31,9 +33,12 @@ const props = defineProps({
     required: true
   },
   thumbnail: {
-    type: Array,
+    type: Object,
     required: true,
-    default: ''
+    default : {
+      url: '',
+      fileName: ''
+    }
   },
 })
 
@@ -44,10 +49,11 @@ const initialState = {
   description: props.description,
   categories: props.categories,
   price: props.price,
+  thumbnail: null
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
-const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, upload, preview} = useUpload(request)
+const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
 })
@@ -80,7 +86,7 @@ const updateCourse = async () => {
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('refreshVideosCourseTable')
     useEvent('closeModal', false)
-    resetHasChanges(initialState, pictureMedia)
+    resetHasChanges(initialState,  preview,pictureMedia)
   } finally {
     loading.value = false
   }
@@ -89,9 +95,11 @@ const updateCourse = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState, pictureMedia)
+  resetHasChanges(initialState,  preview,pictureMedia)
   useValidationStore().clearErrors()
 }
+
+
 </script>
 
 <template>
@@ -180,7 +188,6 @@ function close() {
                         color="primary"
                         density="comfortable"
                         :rules="[$validationRules.required,$validationRules.price]"
-
                         :error-messages="errors['price']"
           />
         </v-col>
@@ -193,15 +200,15 @@ function close() {
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"
                         accept="image/jpeg,.png"
+                        :clearable="false"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
-                        clearable
-                        @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
-            <template #prepend-inner v-if="!preview.picture">
+            <template #prepend-inner v-if="[...pictureMedia].length === 0">
               <v-card width="80" height="80" class="bg-primary-light">
                 <v-card-text style="padding: 0;" class="text-truncate text-white">
-                  <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
-                         :src="<string>props.thumbnail?.urls?.original">
+
+                  <v-img v-if="!preview.picture" lazy-src="/img/meditation-card.jpg" cover height="56"
+                         :src="<string>props.thumbnail?.url">
                     <template v-slot:placeholder>
                       <div class="d-flex align-center justify-center fill-height">
                         <v-progress-circular
@@ -212,8 +219,22 @@ function close() {
                       </div>
                     </template>
                   </v-img>
+                  <v-img v-else lazy-src="/img/meditation-card.jpg" cover height="56"
+                         :src="<string>preview.picture?.url" >
+                  <template v-slot:placeholder>
+                    <div class="d-flex align-center justify-center fill-height">
+                      <v-progress-circular
+                          color="grey-lighten-4"
+                          indeterminate
+                          size="x-small"
+                      ></v-progress-circular>
+                    </div>
+                  </template>
+                  </v-img>
+
                   <v-divider color="white" class="border-white border-opacity-25"/>
-                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.thumbnail?.name }}</span>
+                  <span v-if="!preview.picture" class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.thumbnail?.fileName }}</span>
+                  <span v-else class="px-1 font-weight-thin" style="font-size: 9px;">{{ preview.picture?.size }}</span>
                 </v-card-text>
               </v-card>
             </template>

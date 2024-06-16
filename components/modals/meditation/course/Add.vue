@@ -26,8 +26,9 @@ const initialState = {
 
 
 const request = reactive<CourseStoreRequest>({...initialState})
-const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
+const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+
 useListen('uploading', (value: boolean) => {
   loading.value = value
 })
@@ -84,7 +85,7 @@ const saveCourse = async () => {
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Added to Meditations.`)
     useEvent('closeModal', false)
-    resetHasChanges(initialState, pictureMedia, trackMedia)
+    resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   } finally {
     loading.value = false
   }
@@ -102,7 +103,7 @@ function closeCourseModal() {
   } else if (singleCourseModal.value) {
     singleCourseModal.value = false
   }
-  resetHasChanges(initialState, pictureMedia, trackMedia)
+  resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
 
@@ -120,22 +121,6 @@ watch(singleCourseModal, (newVal2) => {
 });
 
 
-
-
-
-
-watchEffect(()=>{
-   // const res = !(hasChanges && preview.value.track !== null)
-  // console.log('hasChanges',hasChanges.value)
-  // console.log('preview',preview.value.track !== null)
-  // console.log('res',res)
-//
-//
-
-
-
-
-})
 </script>
 
 <template>
@@ -281,16 +266,38 @@ watchEffect(()=>{
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Upload a picture</div>
-              <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+              <v-file-input class="file-input-label upload-input"
+                            :label="!([...pictureMedia].length === 0 && preview.picture !== null) ? 'Select a picture to Upload':''"
                             :rules="[$validationRules.pictureFormat]"
                             v-model="pictureMedia"
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
                             accept="image/jpeg,.png"
                             messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
-                            clearable
-                            @click:clear="request.thumbnail = pictureMedia ? null : ''"
+                            :clearable="false"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
+                <template #prepend-inner v-if="[...pictureMedia].length === 0 && preview.picture !== null">
+                  <v-card width="80" height="80" class="bg-primary-light">
+                    <v-card-text style="padding: 0;" class="text-truncate text-white">
+                      <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                             :src="<string>preview.picture?.url">
+                        <template v-slot:placeholder>
+                          <div class="d-flex align-center justify-center fill-height">
+                            <v-progress-circular
+                                color="grey-lighten-4"
+                                indeterminate
+                                size="x-small"
+                            ></v-progress-circular>
+                          </div>
+                        </template>
+                      </v-img>
+                      <v-divider color="white" class="border-white border-opacity-25"/>
+                      <span class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{
+                          preview.picture?.size
+                        }}</span>
+                    </v-card-text>
+                  </v-card>
+                </template>
                 <template v-slot:selection="{ fileNames }">
                   <template v-for="fileName in fileNames" :key="fileName">
                     <v-card width="75" height="80" class="bg-primary-light">
@@ -338,7 +345,7 @@ watchEffect(()=>{
                   @click="closeCourseModal"
               />
               <v-btn
-                  :disabled="loading || !(hasChanges &&  preview.picture !== null)"
+                  :disabled="loading || !hasChanges"
                   :loading="loading"
                   :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                   :class="{
@@ -436,16 +443,37 @@ watchEffect(()=>{
             </v-col>
             <v-col cols="12" class="py-0">
               <div class="text-white pb-2">Upload a track</div>
-              <v-file-input class="file-input-label upload-input" label="Select a track to Upload"
+              <v-file-input class="file-input-label upload-input"
+                            :label="!([...trackMedia].length === 0 && preview.track !== null) ? 'Select a track to Upload':''"
                             :rules="[$validationRules.trackFormat]"
                             v-model="trackMedia"
                             @change="upload(MediaType.TRACK)"
                             single-line :disabled="loading"
                             accept="audio/mpeg"
                             messages="File-format = 'mp3', Maximum-size = 100mb"
-                            clearable
-                            @click:clear="(request.source = trackMedia ? null : '');(preview.track = null)"
+                            :clearable="false"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
+                <template #prepend-inner v-if="[...trackMedia].length === 0 && preview.track !== null">
+                  <v-card width="80" height="80" class="bg-primary-light">
+                    <v-card-text style="padding: 0;" class="text-truncate text-white">
+                      <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                             :src="<string>preview.track?.url">
+                        <template v-slot:placeholder>
+                          <div class="d-flex align-center justify-center fill-height">
+                            <v-progress-circular
+                                color="grey-lighten-4"
+                                indeterminate
+                                size="x-small"
+                            ></v-progress-circular>
+                          </div>
+                        </template>
+                      </v-img>
+                      <v-divider color="white" class="border-white border-opacity-25"/>
+                      <span class="px-1 font-weight-thin"
+                            style="font-size: 9px;">Size : {{ preview.track?.size }}</span>
+                    </v-card-text>
+                  </v-card>
+                </template>
                 <template v-slot:selection="{ fileNames }">
                   <template v-for="fileName in fileNames" :key="fileName">
                     <v-card width="80" height="80" class="bg-primary-light">
@@ -463,16 +491,38 @@ watchEffect(()=>{
             </v-col>
             <v-col cols="12" class="pt-4 pb-0">
               <div class="text-white pb-2">Upload a picture</div>
-              <v-file-input class="file-input-label upload-input" label="Select a picture to Upload"
+              <v-file-input class="file-input-label upload-input"
+                            :label="!([...pictureMedia].length === 0 && preview.picture !== null) ? 'Select a picture to Upload':''"
                             :rules="[$validationRules.pictureFormat]"
                             v-model="pictureMedia"
                             @change="upload(MediaType.PICTURE)"
                             single-line :disabled="loading"
                             accept="image/jpeg,.png"
                             messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
-                            clearable
-                            @click:clear="request.thumbnail = pictureMedia ? null : ''"
+                            :clearable="false"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
+                <template #prepend-inner v-if="[...pictureMedia].length === 0 && preview.picture !== null">
+                  <v-card width="80" height="80" class="bg-primary-light">
+                    <v-card-text style="padding: 0;" class="text-truncate text-white">
+                      <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                             :src="<string>preview.picture?.url">
+                        <template v-slot:placeholder>
+                          <div class="d-flex align-center justify-center fill-height">
+                            <v-progress-circular
+                                color="grey-lighten-4"
+                                indeterminate
+                                size="x-small"
+                            ></v-progress-circular>
+                          </div>
+                        </template>
+                      </v-img>
+                      <v-divider color="white" class="border-white border-opacity-25"/>
+                      <span class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{
+                          preview.picture?.size
+                        }}</span>
+                    </v-card-text>
+                  </v-card>
+                </template>
                 <template v-slot:selection="{ fileNames }">
                   <template v-for="fileName in fileNames" :key="fileName">
                     <v-card width="80" height="80" class="bg-primary-light">
@@ -553,7 +603,7 @@ watchEffect(()=>{
                   @click="closeCourseModal"
               />
               <v-btn
-                  :disabled="loading || !(hasChanges && (request.source !== null && request.thumbnail !== null))"
+                  :disabled="loading || !hasChanges"
                   :loading="loading"
                   :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
                   :class="{

@@ -84,8 +84,8 @@
         <omni-menu>
           <v-card class="bg-light-brown-1 px-2 py-1 v-row" rounded>
             <jalal-menu-modal :active-button="{color: 'light-brown-1', variant: 'icon', icon: 'mdi-plus'}" :title="item.title">
-              <template v-slot:content>
-                <v-card-text v-text="item.description"/>
+                <template v-slot:content>
+                <v-card-text v-text="getId(item.uuid)"/>
               </template>
               <template v-slot:action="{ isActive }">
                 <v-spacer/>
@@ -146,6 +146,11 @@ const headers = [
   {key: 'actions', title: '', align: 'start', sortable: false},
 ]
 
+const getId = (id) => {
+  console.log(id)
+  return 'title'
+
+}
 </script>
 
 

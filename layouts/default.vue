@@ -7,15 +7,13 @@ useHead({
 })
 
 
-
-
 </script>
 
 <template>
   <v-app>
     <Header/>
     <v-main>
-      <v-container fluid>
+      <v-container fluid :class="`${useRoute().path === '/panel' ? 'fill-height d-flex flex-column align-center' : ''}`">
       <slot/>
       </v-container>
     </v-main>

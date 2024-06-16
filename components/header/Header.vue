@@ -26,7 +26,7 @@ const isActiveLink = computed(() => {
 
 <template>
   <v-app-bar class="bg-light text-white " elevation="0" v-if="showHeader">
-    <v-container>
+    <v-container fluid>
       <v-row justify="space-between" align="center">
         <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = <any>!drawer"/>
         <nuxt-link to="/panel" class="float-md-right logo">
@@ -56,6 +56,12 @@ const isActiveLink = computed(() => {
                    'text-primary text-decoration-underline' : 'text-white text-decoration-none']">
                 Meditations
               </nuxt-link>
+<!--              <nuxt-link :to="{name:  'panel-analytics-sell-count-meditations'}" variant="text" :class="-->
+<!--                  [isActiveLink('/panel/analytics/sell-count/meditations') ?-->
+<!--                   'text-primary text-decoration-underline' : 'text-white text-decoration-none']">-->
+<!--                Analytics-->
+<!--              </nuxt-link>-->
+
             </div>
             <v-avatar class="avatar-border" :image="currentUser.avatar?.urls.medium" size="32"/>
             <p class="font-16 font-weight-light mx-2" v-text="currentUser.name"/>
@@ -75,6 +81,8 @@ const isActiveLink = computed(() => {
     <v-divider thickness="1"/>
 
     <v-list density="compact" nav v-if="showNavItem" bg-color="light">
+<!--      <v-list-item :to="{name : 'panel-analytics-sell-count-meditations'}" prepend-icon="mdi-home-analytics"-->
+<!--                   color="primary" title="Analytics"/>-->
       <v-list-item :to="{name : 'panel-videos'}" prepend-icon="mdi-video-box"
                    color="primary" title="Video courses"/>
       <v-list-item :to="{name : 'panel-meditations'}" prepend-icon="mdi-meditation"

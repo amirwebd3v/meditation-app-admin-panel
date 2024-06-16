@@ -2,10 +2,13 @@
 
 import type {CourseUpdateRequest} from "~/utils/requests";
 import type {ValidationRules} from "~/utils/types";
+import type {MediaType} from "~/utils/enums";
+import {CourseSet} from "~/utils/enums";
+
 
 /********************************************/
+const trackFileName = ref()
 const loading = ref()
-const source = ref([])
 const route = useRoute()
 const {errors} = storeToRefs(useValidationStore());
 const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
@@ -36,28 +39,46 @@ const props = defineProps({
     required: true
   },
   thumbnail: {
-    type: Array,
+    type: Object,
     required: true,
-    default: null
+    default: {
+      url: '',
+      fileName: ''
+    }
   },
 })
 
+
+/********************************************/
+onMounted(async () => {
+  const {url, duration, fileName} = await getSingleMeditationTrackData()
+  initialState.duration = duration
+  initialState.source = url
+  trackFileName.value = fileName
+
+})
 /********************************************/
 const initialState = {
   id: props.id,
   title: props.title,
   description: props.description,
-  duration: null,
   categories: props.categories,
   price: props.price,
   is_lock: props.price > 0,
+  thumbnail: null,
+  source: null,
+  duration: null,
 }
+
+
 const request = reactive<CourseUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
 })
+
+
 /********************************************/
 const meditationCategoriesArray = computed(() =>
     Array.from(useCategoryStore().meditationCategories.values()))
@@ -107,7 +128,7 @@ const updateCourse = async () => {
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
     useEvent('closeModal', false)
-    resetHasChanges(initialState, pictureMedia, trackMedia)
+    resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   } finally {
     loading.value = false
   }
@@ -116,37 +137,25 @@ const updateCourse = async () => {
 
 function close() {
   useEvent('closeModal', false)
-  resetHasChanges(initialState, pictureMedia, trackMedia)
+  resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
 
+const getSingleMeditationTrackData = async () => {
+  let url, duration, fileName;
 
+  const result = await useLessonStore().get(<string>props.id);
+  url = result[0].source.urls.original.toString();
+  fileName = result[0].source.file_name.toString();
+  duration = result[0].duration;
 
-  if (props.courseSet === CourseSet.Single  && preview.value.track === null) {
-    useLessonStore().get(<string>props.id).then((result) => {
-      source.value[0] = result[0].source.urls.original.toString()
-      source.value[1] = result[0].source.file_name.toString();
-    })
-  }
-
+  return {url, duration, fileName}
+}
 
 
 watchEffect(()=>{
-  const res =  ((!hasChanges && !source.value) && !(preview.value.track === null && preview.value.picture === null))
-  console.log('hasChanges',hasChanges.value)
-  console.log('preview-track',preview.value.track !== null)
-  console.log('preview-picture',preview.value.picture !== null)
-  console.log('source',source.value !== [])
-
-  console.log('res',res)
-
-
-
-
-
-
+  console.log(preview.value.track)
 })
-
 </script>
 
 <template>
@@ -208,7 +217,7 @@ watchEffect(()=>{
                   v-if="index === 2 && request.categories"
                   class="text-grey text-caption align-self-center"
               >
-              (+{{ request?.categories.length - 2 }} others)
+              (+{{ request['categories'].length - 2 }} others)
               </span>
             </template>
             <template v-slot:prepend-item>
@@ -232,26 +241,32 @@ watchEffect(()=>{
 
         <v-col cols="12" class="py-0" v-if="props.courseSet === CourseSet.Single">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label upload-input" :label="!source ? 'Select a track to Upload' : '' "
+          <v-file-input class="file-input-label upload-input" :label="!initialState.source ? 'Select a track to Upload' : '' "
                         :rules="[$validationRules.trackFormat]"
                         v-model="trackMedia"
                         @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"
                         accept="audio/mpeg"
                         messages="File-format = 'mp3', Maximum-size = 100mb"
-                        clearable
-                        @click:clear="delete request['source'] && trackMedia ? null : [] ; preview.track = null"
+                        :clearable="false"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
-            <template #prepend-inner v-if="preview.track === null">
+            <template #prepend-inner v-if="[...trackMedia].length === 0">
               <v-card width="80" height="80" class="bg-primary-light">
                 <v-card-text style="padding: 0;" class="text-truncate text-white">
-                  <div class="pl-4 py-1 align-center">
-                    <a :href="source[0]">
+                  <div v-if="!preview.track" class="pl-4 py-1 align-center">
+                    <a :href="initialState.source">
+                      <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
+                    </a>
+                  </div>
+
+                  <div v-else class="pl-4 py-1 align-center">
+                    <a :href="preview.track.url">
                       <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
                     </a>
                   </div>
                   <v-divider color="white" class="border-white border-opacity-25"/>
-                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ source[1] }}</span>
+                  <span v-if="!preview.track" class="px-1 font-weight-thin" style="font-size: 9px;">{{ trackFileName }}</span>
+                  <span v-else class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{ preview.track?.size }}</span>
                 </v-card-text>
               </v-card>
             </template>
@@ -280,14 +295,14 @@ watchEffect(()=>{
                         single-line :disabled="loading"
                         accept="image/jpeg,.png"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
-                        clearable
-                        @click:clear="delete request['thumbnail'] && pictureMedia ? null : []"
+                        :clearable="false"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
-            <template #prepend-inner v-if="!preview.picture">
+            <template #prepend-inner v-if="[...pictureMedia].length === 0">
               <v-card width="80" height="80" class="bg-primary-light">
                 <v-card-text style="padding: 0;" class="text-truncate text-white">
-                  <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
-                         :src="<string>props.thumbnail?.urls?.original">
+
+                  <v-img v-if="!preview.picture" lazy-src="/img/meditation-card.jpg" cover height="56"
+                         :src="<string>props.thumbnail?.url">
                     <template v-slot:placeholder>
                       <div class="d-flex align-center justify-center fill-height">
                         <v-progress-circular
@@ -298,8 +313,23 @@ watchEffect(()=>{
                       </div>
                     </template>
                   </v-img>
+                  <v-img v-else lazy-src="/img/meditation-card.jpg" cover height="56"
+                         :src="<string>preview.picture?.url">
+                    <template v-slot:placeholder>
+                      <div class="d-flex align-center justify-center fill-height">
+                        <v-progress-circular
+                            color="grey-lighten-4"
+                            indeterminate
+                            size="x-small"
+                        ></v-progress-circular>
+                      </div>
+                    </template>
+                  </v-img>
+
                   <v-divider color="white" class="border-white border-opacity-25"/>
-                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.thumbnail?.name }}</span>
+                  <span v-if="!preview.picture" class="px-1 font-weight-thin"
+                        style="font-size: 9px;">{{ props.thumbnail?.fileName }}</span>
+                  <span v-else class="px-1 font-weight-thin" style="font-size: 9px;">{{ preview.picture?.size }}</span>
                 </v-card-text>
               </v-card>
             </template>
@@ -399,7 +429,7 @@ watchEffect(()=>{
           @click="close"
       />
       <v-btn
-          :disabled="loading || ((!hasChanges && !source) && !(preview.track === null && preview.picture === null))"
+          :disabled="loading || !hasChanges"
           :loading="loading"
           :density="$vuetify.display.smAndDown ? 'comfortable' : 'default'"
           :class="{
