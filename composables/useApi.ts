@@ -65,15 +65,12 @@ export default function useApi() {
         } else {
 
             sort = sortState
-            console.log(sortState)
+            // console.log(sortState)
         }
 
-        console.log('sort',sort)
-        console.log('sortState',sortState)
+        // console.log('sort',sort)
+        // console.log('sortState',sortState)
 
-        // if (sortBy.length > 0) {
-        //     sortBy.forEach(({key, order}) => sort[key] = order)
-        // }
 
         return {
             pagination: {page: page || 1, perPage: itemsPerPage || 10}, sort, search
