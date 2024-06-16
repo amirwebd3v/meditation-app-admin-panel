@@ -56,7 +56,7 @@ const initialState = {
   description: props.description,
   is_lock: props.isLock,
   is_popular: props.isPopular,
-  source: props.source,
+  source: null,
   duration: null
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
@@ -135,6 +135,7 @@ function close() {
                         accept="audio/mpeg"
                         messages="File-format = 'mp3', Maximum-size = 100mb"
                         :clearable="false"
+                        :error="errors['source']"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template #prepend-inner v-if="[...trackMedia].length === 0">
               <v-card width="80" height="80" class="bg-primary-light">

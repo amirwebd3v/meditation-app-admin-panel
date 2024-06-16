@@ -226,7 +226,7 @@ const goToLesson = (courseId: string) => {
                 :course-set="item.set"
                 :categories="item.categories.map((c : Category) => c.id)"
                 :price="item.price"
-                :thumbnail="{url : item.thumbnail.urls.original , fileName : item.thumbnail.file_name}"
+                :thumbnail="{url : item.thumbnail?.urls?.original , fileName : item.thumbnail?.file_name}"
 
             />
             <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"

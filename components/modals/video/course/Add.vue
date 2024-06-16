@@ -183,8 +183,8 @@ function close() {
                         single-line :disabled="loading"
                         accept="image/jpeg,.png"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
-                        show-size
                         :clearable="false"
+                        :error="errors['thumbnail']"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
             <template #prepend-inner v-if="[...pictureMedia].length === 0 && preview.picture !== null">
               <v-card width="80" height="80" class="bg-primary-light">

@@ -2,6 +2,7 @@
 import type {LessonUpdateRequest} from "~/utils/requests";
 import type {ValidationRules} from "~/utils/types";
 
+
 /********************************************/
 const loading = ref()
 const route = useRoute()
@@ -38,9 +39,12 @@ const props = defineProps({
     required: true
   },
   thumbnail: {
-    type: Array,
+    type: Object,
     required: true,
-    default: ''
+    default: {
+      url : '',
+      fileName: ''
+    }
   },
 })
 
@@ -52,7 +56,7 @@ const initialState = {
   description: props.description,
   is_popular: props.isPopular,
   is_lock: props.isLock,
-  thumbnail: props.thumbnail
+  thumbnail: null
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
@@ -132,12 +136,13 @@ function close() {
                         accept="image/jpeg,.png"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         :clearable="false"
+                        :error="errors['thumbnail']"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
             <template #prepend-inner v-if="[...pictureMedia].length === 0">
               <v-card width="80" height="80" class="bg-primary-light">
                 <v-card-text style="padding: 0;" class="text-truncate text-white">
                   <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
-                         :src="<string>props.thumbnail?.urls?.original">
+                         :src="<string>props.thumbnail?.url">
                     <template v-slot:placeholder>
                       <div class="d-flex align-center justify-center fill-height">
                         <v-progress-circular
@@ -149,7 +154,7 @@ function close() {
                     </template>
                   </v-img>
                   <v-divider color="white" class="border-white border-opacity-25"/>
-                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.thumbnail?.name }}</span>
+                  <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ props.thumbnail?.fileName }}</span>
                 </v-card-text>
               </v-card>
             </template>

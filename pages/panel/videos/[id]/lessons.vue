@@ -147,7 +147,7 @@ useListen('refreshVideosLessonsTable',load)
                 :is-lock="item.is_lock"
                 :description="item.description"
                 :is-popular="item.is_popular"
-                :thumbnail="item.thumbnail"
+                :thumbnail="{url : item.thumbnail?.urls?.original , fileName : item.thumbnail?.file_name}"
                 :key="item.uuid"
             />
 

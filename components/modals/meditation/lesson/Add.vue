@@ -129,30 +129,31 @@ function close() {
                         single-line :disabled="loading"
                         accept="audio/mpeg"
                         messages="File-format = 'mp3', Maximum-size = 100mb"
-                       :clearable="false"
+                        :clearable="false"
+                        :error="errors['source']"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template #prepend-inner v-if="[...trackMedia].length === 0 && preview.track !== null">
-                  <v-card width="80" height="80" class="bg-primary-light">
-                    <v-card-text style="padding: 0;" class="text-truncate text-white">
-                      <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
-                             :src="<string>preview.track?.url">
-                        <template v-slot:placeholder>
-                          <div class="d-flex align-center justify-center fill-height">
-                            <v-progress-circular
-                                color="grey-lighten-4"
-                                indeterminate
-                                size="x-small"
-                            ></v-progress-circular>
-                          </div>
-                        </template>
-                      </v-img>
-                      <v-divider color="white" class="border-white border-opacity-25"/>
-                      <span class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{
-                          preview.track?.size
-                        }}</span>
-                    </v-card-text>
-                  </v-card>
-                </template>
+              <v-card width="80" height="80" class="bg-primary-light">
+                <v-card-text style="padding: 0;" class="text-truncate text-white">
+                  <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
+                         :src="<string>preview.track?.url">
+                    <template v-slot:placeholder>
+                      <div class="d-flex align-center justify-center fill-height">
+                        <v-progress-circular
+                            color="grey-lighten-4"
+                            indeterminate
+                            size="x-small"
+                        ></v-progress-circular>
+                      </div>
+                    </template>
+                  </v-img>
+                  <v-divider color="white" class="border-white border-opacity-25"/>
+                  <span class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{
+                      preview.track?.size
+                    }}</span>
+                </v-card-text>
+              </v-card>
+            </template>
             <template v-slot:selection="{ fileNames }">
               <template v-for="fileName in fileNames" :key="fileName">
                 <v-card width="80" height="80" class="bg-primary-light">

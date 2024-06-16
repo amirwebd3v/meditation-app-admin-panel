@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {CourseUpdateRequest} from "~/utils/requests";
-import type {Category, ValidationRules} from "~/utils/types";
+import type {ValidationRules} from "~/utils/types";
 
 
 
@@ -201,6 +201,7 @@ function close() {
                         single-line :disabled="loading"
                         accept="image/jpeg,.png"
                         :clearable="false"
+                        :error="errors['thumbnail']"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
             <template #prepend-inner v-if="[...pictureMedia].length === 0">

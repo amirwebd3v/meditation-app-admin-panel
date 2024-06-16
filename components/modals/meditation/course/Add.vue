@@ -275,6 +275,7 @@ watch(singleCourseModal, (newVal2) => {
                             accept="image/jpeg,.png"
                             messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                             :clearable="false"
+                            :error="errors['thumbnail']"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                 <template #prepend-inner v-if="[...pictureMedia].length === 0 && preview.picture !== null">
                   <v-card width="80" height="80" class="bg-primary-light">
@@ -452,6 +453,7 @@ watch(singleCourseModal, (newVal2) => {
                             accept="audio/mpeg"
                             messages="File-format = 'mp3', Maximum-size = 100mb"
                             :clearable="false"
+                            :error="errors['source']"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
                 <template #prepend-inner v-if="[...trackMedia].length === 0 && preview.track !== null">
                   <v-card width="80" height="80" class="bg-primary-light">
@@ -500,6 +502,7 @@ watch(singleCourseModal, (newVal2) => {
                             accept="image/jpeg,.png"
                             messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                             :clearable="false"
+                            :error="errors['thumbnail']"
                             variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
                 <template #prepend-inner v-if="[...pictureMedia].length === 0 && preview.picture !== null">
                   <v-card width="80" height="80" class="bg-primary-light">

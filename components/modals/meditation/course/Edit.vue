@@ -145,17 +145,14 @@ const getSingleMeditationTrackData = async () => {
   let url, duration, fileName;
 
   const result = await useLessonStore().get(<string>props.id);
-  url = result[0].source.urls.original.toString();
-  fileName = result[0].source.file_name.toString();
-  duration = result[0].duration;
+  url = result[0]?.source?.urls?.original.toString();
+  fileName = result[0]?.source?.file_name.toString();
+  duration = result[0]?.duration;
 
   return {url, duration, fileName}
 }
 
 
-watchEffect(()=>{
-  console.log(preview.value.track)
-})
 </script>
 
 <template>
@@ -249,6 +246,7 @@ watchEffect(()=>{
                         accept="audio/mpeg"
                         messages="File-format = 'mp3', Maximum-size = 100mb"
                         :clearable="false"
+                        :error="errors['source']"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['source']">
             <template #prepend-inner v-if="[...trackMedia].length === 0">
               <v-card width="80" height="80" class="bg-primary-light">
@@ -296,6 +294,7 @@ watchEffect(()=>{
                         accept="image/jpeg,.png"
                         messages="File-format = 'jpg,jpeg,png', Maximum-size = 100mb"
                         :clearable="false"
+                        :error="errors['thumbnail']"
                         variant="outlined" prepend-icon="" color="primary" :error-message="errors['thumbnail']">
             <template #prepend-inner v-if="[...pictureMedia].length === 0">
               <v-card width="80" height="80" class="bg-primary-light">

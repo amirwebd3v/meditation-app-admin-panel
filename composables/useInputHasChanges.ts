@@ -53,7 +53,7 @@ export default function useInputHasChanges<T extends object>
 
                 // If text fields changed, and either thumbnail or source changed, and old text field was empty
                 if (textFieldsChanged && (thumbnailChanged || (sourceChanged && durationChanged)) && oldTextFieldsHasEmpty) {
-                    console.log('Text fields and thumbnail/source changed, and at least one old text field was empty');
+                    // console.log('Text fields and thumbnail/source changed, and at least one old text field was empty');
                     textFieldsIs.value = true;
                     if(thumbnailChanged){
                         thumbnailIs.value = true;
@@ -71,7 +71,7 @@ export default function useInputHasChanges<T extends object>
 
                 // If text fields changed, but neither thumbnail nor source changed, and old text field was empty
                 if (textFieldsChanged && !(thumbnailChanged || (sourceChanged && durationChanged)) && oldTextFieldsHasEmpty) {
-                    console.log('Text fields changed, but neither thumbnail nor source changed, and at least one old text field was empty');
+                    // console.log('Text fields changed, but neither thumbnail nor source changed, and at least one old text field was empty');
                     textFieldsIs.value = true;
                     if(thumbnailChanged){
                         thumbnailIs.value = false;
@@ -89,7 +89,7 @@ export default function useInputHasChanges<T extends object>
 
                 // If text fields didn't change, but either thumbnail or source changed, and old text field was empty
                 if (!textFieldsChanged && (thumbnailChanged || (sourceChanged && durationChanged)) && oldTextFieldsHasEmpty) {
-                    console.log('Text fields didn\'t change, but either thumbnail or source changed, and at least one old text field was empty');
+                    // console.log('Text fields didn\'t change, but either thumbnail or source changed, and at least one old text field was empty');
                     textFieldsIs.value = false;
                     if(thumbnailChanged){
                         thumbnailIs.value = true;
@@ -107,11 +107,11 @@ export default function useInputHasChanges<T extends object>
 
                 // If old text fields were not empty
                 if (!oldTextFieldsHasEmpty) {
-                    console.log('No old text fields were empty');
+                    // console.log('No old text fields were empty');
                     return oldValObj !== newValObj;
                 }
 
-                console.log('No changes detected');
+                // console.log('No changes detected');
                 textFieldsIs.value = false;
                 thumbnailIs.value = false;
                 trackIs.value.source = false;
