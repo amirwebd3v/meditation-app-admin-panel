@@ -1,7 +1,13 @@
 import {MediaType} from "~/utils/enums";
 import type {MediaPreview} from "~/utils/types";
 
-export default function useUpload(request: any) {
+interface RequestWithMediaProperties {
+    thumbnail?: string;
+    source?: string;
+    duration?: number;
+}
+
+export default function useUpload<T extends RequestWithMediaProperties>(request: T) {
     const preview = ref<MediaPreview>({picture: null, track: null});
     const trackMedia = ref<File[]>([]);
     const pictureMedia = ref<File[]>([]);
