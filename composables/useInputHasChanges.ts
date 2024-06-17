@@ -47,8 +47,9 @@ export default function useInputHasChanges<T extends object>
                 const thumbnailChanged = newThumbnail !== oldThumbnail;
                 const sourceChanged = newSource !== oldSource;
                 const durationChanged = newDuration !== oldDuration;
+                console.log(sourceChanged && !newSource.endsWith('.mp3'))
 
-                if(!newSource.endsWith('.mp3')){
+                if(sourceChanged && !newSource.endsWith('.mp3')){
                     const youtubeRegex = /^(https?:\/\/)?(www\.|youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]+)(\?.*)?$/;
                     return youtubeRegex.test(newSource)
                 }
