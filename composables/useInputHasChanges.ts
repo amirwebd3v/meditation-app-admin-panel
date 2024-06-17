@@ -48,7 +48,10 @@ export default function useInputHasChanges<T extends object>
                 const sourceChanged = newSource !== oldSource;
                 const durationChanged = newDuration !== oldDuration;
 
-
+                if(!newSource.endsWith('.mp3')){
+                    const youtubeRegex = /^(https?:\/\/)?(www\.|youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]+)(\?.*)?$/;
+                    return youtubeRegex.test(newSource)
+                }
 
 
                 // If text fields changed, and either thumbnail or source changed, and old text field was empty
@@ -109,6 +112,11 @@ export default function useInputHasChanges<T extends object>
                 if (!oldTextFieldsHasEmpty) {
                     // console.log('No old text fields were empty');
                     return oldValObj !== newValObj;
+                }
+
+
+                if(sourceChanged){
+
                 }
 
                 // console.log('No changes detected');
