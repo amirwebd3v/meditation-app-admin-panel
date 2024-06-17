@@ -22,8 +22,8 @@ const isVideoCoursePage = computed(() => {
   <v-row justify="space-between" align="center" class="mt-4 px-3">
     <span class="text-white font-weight-medium font-18 ">{{ Item }}</span>
 
-    <LazyModalsMeditationCourseType v-if="isMeditationCoursePage"/>
-    <LazyModalsVideoCourseAdd  v-if="isVideoCoursePage"/>
+    <ModalsMeditationCourseType v-if="isMeditationCoursePage"/>
+    <ModalsVideoCourseAdd  v-if="isVideoCoursePage"/>
 
   </v-row>
 </template>

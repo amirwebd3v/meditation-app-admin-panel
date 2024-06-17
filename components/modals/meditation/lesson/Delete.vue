@@ -44,7 +44,7 @@ function close() {
 <template>
 
 
-  <LazyModalsMain>
+  <ModalsMain>
 
     <template #dialogButton="props">
       <v-btn
@@ -119,6 +119,6 @@ function close() {
       </v-btn>
     </template>
 
-  </LazyModalsMain>
+  </ModalsMain>
 
 </template>

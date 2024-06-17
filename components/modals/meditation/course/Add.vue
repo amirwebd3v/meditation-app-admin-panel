@@ -125,7 +125,7 @@ watch(singleCourseModal, (newVal2) => {
 
 <template>
 
-  <LazyModalsMain>
+  <ModalsMain>
     <template #dialogButton="props">
       <v-row class="mt-15 mb-0 pb-0" justify="space-evenly">
         <v-btn text="Single"
@@ -169,7 +169,7 @@ watch(singleCourseModal, (newVal2) => {
       <span class="pl-3">Add Meditation</span>
       <v-icon class="pr-5 cursor-pointer" size="small" icon="mdi mdi-close" @click="closeTypeModal"/>
     </template>
-  </LazyModalsMain>
+  </ModalsMain>
 
 
   <v-dialog v-model="courseModal" max-width="600">

@@ -52,6 +52,7 @@ const props = defineProps({
 /********************************************/
 onMounted(async () => {
   const {url, duration, fileName} = await getSingleMeditationTrackData()
+
   initialState.duration = duration
   initialState.source = url
   trackFileName.value = fileName
@@ -145,6 +146,7 @@ const getSingleMeditationTrackData = async () => {
   let url, duration, fileName;
 
   const result = await useLessonStore().get(<string>props.id);
+
   url = result[0]?.source?.urls?.original.toString();
   fileName = result[0]?.source?.file_name.toString();
   duration = result[0]?.duration;
@@ -157,7 +159,7 @@ const getSingleMeditationTrackData = async () => {
 
 <template>
 
-  <LazyModalsMain @on-click-outside="close">
+  <ModalsMain @on-click-outside="close">
 
     <template #dialogButton="props">
       <v-btn class="text-primary" variant="text" icon="mdi mdi-pencil-outline" v-bind="props" size="small"/>
@@ -445,7 +447,7 @@ const getSingleMeditationTrackData = async () => {
       </v-btn>
     </template>
 
-  </LazyModalsMain>
+  </ModalsMain>
 
 
 </template>

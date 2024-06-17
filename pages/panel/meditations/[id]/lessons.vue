@@ -76,7 +76,7 @@ useListen('refreshMeditationsLessonsTable',load)
           ></v-text-field>
         </v-sheet>
         <v-sheet class=" ml-auto">
-          <LazyModalsMeditationLessonAdd :course-title="course.title" :course-id="course.uuid"/>
+          <ModalsMeditationLessonAdd :course-title="course.title" :course-id="course.uuid"/>
         </v-sheet>
       </v-sheet>
       <!--     End First section-->
@@ -149,7 +149,7 @@ useListen('refreshMeditationsLessonsTable',load)
         <template #item.actions="{item}">
 
           <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
-            <LazyModalsMeditationLessonEdit
+            <ModalsMeditationLessonEdit
                 :course-title="course.title"
                 :id="item.uuid"
                 :title="item.title"
@@ -158,7 +158,7 @@ useListen('refreshMeditationsLessonsTable',load)
                 :source="{url: item.source?.urls?.original,fileName : item.source?.file_name}"
                 :key="item.uuid"
             />
-            <LazyModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title"
+            <ModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title"
                                               :transaction-count="0"/>
           </div>
         </template>

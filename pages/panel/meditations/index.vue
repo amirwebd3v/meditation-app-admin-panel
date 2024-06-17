@@ -213,13 +213,13 @@ const goToLesson = (courseId: string) => {
 
     <template #item.actions="{item}">
       <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
-        <LazyDataTableMenu>
+        <DataTableMenu>
           <template #items :key="item.uuid">
-            <LazyModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
+            <ModalsMeditationLessonAdd :course-id="item.uuid" :course-title="item.title"
                                            :btn-out-table="false" :btn-in-table="true"
                                            v-if="item.set === CourseSet.Course"
             />
-            <LazyModalsMeditationCourseEdit
+            <ModalsMeditationCourseEdit
                 :id="item.uuid"
                 :title="item.title"
                 :description="item.description"
@@ -229,11 +229,11 @@ const goToLesson = (courseId: string) => {
                 :thumbnail="{url : item.thumbnail?.urls?.original , fileName : item.thumbnail?.file_name}"
 
             />
-            <LazyModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
+            <ModalsMeditationCourseDelete :lesson-count="item.lessons_count" :transaction-count="0"
                                               :id="item.uuid" :title="item.title" :course-set="item.set"
             />
           </template>
-        </LazyDataTableMenu>
+        </DataTableMenu>
         <v-icon
             v-if="item.set === CourseSet.Course"
             class="text-primary"

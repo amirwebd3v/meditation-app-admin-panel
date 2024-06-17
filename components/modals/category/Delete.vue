@@ -42,7 +42,7 @@ function close() {
 <template>
 
 
-  <LazyModalsMain>
+  <ModalsMain>
 
     <template #dialogButton="props">
       <v-icon class="mdi mdi-close pl-5 cursor-pointer" size="x-small" v-bind="props"/>
@@ -109,6 +109,6 @@ function close() {
       </v-btn>
     </template>
 
-  </LazyModalsMain>
+  </ModalsMain>
 
 </template>

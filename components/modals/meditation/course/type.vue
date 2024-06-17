@@ -8,7 +8,7 @@ function close() {
 </script>
 
 <template>
-  <LazyModalsMain>
+  <ModalsMain>
 
     <template #dialogButton="props">
       <v-btn
@@ -36,9 +36,9 @@ function close() {
 
 
     <template #columns>
-      <LazyModalsMeditationCourseAdd/>
+      <ModalsMeditationCourseAdd/>
     </template>
-  </LazyModalsMain>
+  </ModalsMain>
 </template>
 
 <style scoped lang="scss">

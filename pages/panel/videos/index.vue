@@ -194,10 +194,10 @@ const goToLesson = (courseId: string) => {
 
       <template #item.actions="{item}">
         <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
-          <LazyDataTableMenu>
+          <DataTableMenu>
             <template #items>
-              <LazyModalsVideoLessonAdd :course-id="item.uuid" :course-title="item.title" :btn-out-table="false" :btn-in-table="true"/>
-              <LazyModalsVideoCourseEdit
+              <ModalsVideoLessonAdd :course-id="item.uuid" :course-title="item.title" :btn-out-table="false" :btn-in-table="true"/>
+              <ModalsVideoCourseEdit
                   :id="item.uuid"
                   :title="item.title"
                   :description="item.description"
@@ -206,10 +206,10 @@ const goToLesson = (courseId: string) => {
                   :thumbnail="{url : item.thumbnail?.urls?.original , fileName : item.thumbnail?.file_name}"
                   :key="item.updated_at"
               />
-              <LazyModalsVideoCourseDelete :id="item.uuid" :title="item.title"
+              <ModalsVideoCourseDelete :id="item.uuid" :title="item.title"
                                                 :lesson-count="item.lessons_count" :transaction-count="0"/>
             </template>
-          </LazyDataTableMenu>
+          </DataTableMenu>
           <v-icon
               class="text-primary"
               icon="mdi-chevron-right"

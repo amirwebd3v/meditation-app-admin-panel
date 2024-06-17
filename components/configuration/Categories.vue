@@ -34,7 +34,7 @@ const handleCategorySelection = (selected: string[]) => {
   <!--      Second section-->
   <v-row justify="space-between" align="center" class="px-3">
     <span class="text-white font-weight-medium font-18">Tags</span>
-    <LazyModalsCategoryAdd :category-type="type"/>
+    <ModalsCategoryAdd :category-type="type"/>
   </v-row>
 
   <!--      Third section-->
@@ -70,7 +70,7 @@ const handleCategorySelection = (selected: string[]) => {
             :value="category.slug"
         >
         <template v-slot:append>
-          <LazyModalsCategoryDelete :slug="category.slug" :name="category.name" :category-type="type"/>
+          <ModalsCategoryDelete :slug="category.slug" :name="category.name" :category-type="type"/>
         </template>
         </v-chip>
       </v-chip-group>

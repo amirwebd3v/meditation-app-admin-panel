@@ -50,7 +50,7 @@ function close() {
 
 
 <template>
-  <LazyModalsMain @on-click-outside="close">
+  <ModalsMain @on-click-outside="close">
     <template #dialogButton="props">
       <v-btn
           color="primary"
@@ -122,5 +122,5 @@ function close() {
       </v-btn>
     </template>
 
-  </LazyModalsMain>
+  </ModalsMain>
 </template>

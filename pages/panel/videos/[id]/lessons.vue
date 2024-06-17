@@ -78,7 +78,7 @@ useListen('refreshVideosLessonsTable',load)
           ></v-text-field>
         </v-sheet>
         <v-sheet class="ml-auto">
-          <LazyModalsVideoLessonAdd :course-title="course.title" :course-id="course.uuid"/>
+          <ModalsVideoLessonAdd :course-title="course.title" :course-id="course.uuid"/>
         </v-sheet>
       </v-sheet>
       <!--     End First section-->
@@ -140,7 +140,7 @@ useListen('refreshVideosLessonsTable',load)
         <template #item.actions="{item}">
 
           <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
-            <LazyModalsVideoLessonEdit
+            <ModalsVideoLessonEdit
                 :id="item.uuid"
                 :title="item.title"
                 :source="item.source"
@@ -151,7 +151,7 @@ useListen('refreshVideosLessonsTable',load)
                 :key="item.uuid"
             />
 
-            <LazyModalsVideoLessonDelete :id="item.uuid" :title="item.title" :transaction-count="0"/>
+            <ModalsVideoLessonDelete :id="item.uuid" :title="item.title" :transaction-count="0"/>
           </div>
 
         </template>

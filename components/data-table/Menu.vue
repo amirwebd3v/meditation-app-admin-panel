@@ -12,6 +12,7 @@ useListen('closeMenu', (value: Boolean) => {
 </script>
 
 <template>
+
   <v-menu
       :close-on-content-click="false"
       location="start" v-model="currentOpenMenu"
