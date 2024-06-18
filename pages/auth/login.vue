@@ -6,11 +6,9 @@ const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 /*******************************************/
 definePageMeta({
   middleware: 'sanctum:guest',
-})
-
-definePageMeta({
   layout: 'auth'
 })
+
 
 const visible = ref(false);
 const loading = ref(false);
