@@ -50,7 +50,7 @@ const props = defineProps({
 
 
 /********************************************/
-onMounted(async () => {
+onBeforeMount(async () => {
   const {url, duration, fileName} = await getSingleMeditationTrackData()
 
   initialState.duration = duration
