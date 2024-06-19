@@ -66,9 +66,9 @@ const initialState = {
 onBeforeMount(async () => {
   const {url, duration, fileName} = await getSingleMeditationTrackData()
 
-  await initialState.duration = duration
-  await initialState.source = url
-  await trackFileName.value = fileName
+  initialState.duration = duration
+  initialState.source = url
+  trackFileName.value = fileName
 
 })
 
@@ -145,7 +145,7 @@ const getSingleMeditationTrackData = async () => {
   let url, duration, fileName;
 
 
-  const result = props.courseSet === CourseSet.Single ? await useLessonStore().get(<string>props.id) : {};
+  const result = props.courseSet === CourseSet.Single ? await useLessonStore().get(<string>props.id) : [];
 
   url = result[0]?.source?.urls?.original.toString();
   fileName = result[0]?.source?.file_name.toString();
