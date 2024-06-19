@@ -69,9 +69,9 @@ export default function useInputHasChanges<T extends object>
             textFieldsIs.value = textFieldsChanged;
             const youtubeUrlRegex = /^(https?:\/\/)?(www\.|youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]+)(\?.*)?$/;
 
-            console.log('=================================');
-            console.log('textFieldsChanged:', textFieldsChanged);
-            console.log('isFormForEditing:', isFormForEditing);
+            // console.log('=================================');
+            // console.log('textFieldsChanged:', textFieldsChanged);
+            // console.log('isFormForEditing:', isFormForEditing);
             // console.log('newThumbnail && oldSource === newSource:', (newThumbnail && oldSource === newSource));
 
 
@@ -85,17 +85,17 @@ export default function useInputHasChanges<T extends object>
                     thumbnailOrSourceChanged = newSource && isValidSource || newDuration;
                     trackIs.value.source = !!newSource && isValidSource;
                     trackIs.value.duration = !!newDuration;
-                    console.log('Case 1: Form for adding data with only source field');
-                    console.log('newSource:', newSource);
-                    console.log('newDuration:', newDuration);
+                    // console.log('Case 1: Form for adding data with only source field');
+                    // console.log('newSource:', newSource);
+                    // console.log('newDuration:', newDuration);
                 }
 
                 // Case 2: Form for adding data with only thumbnail field
                 else if (!hasSourceField && hasThumbnailField) {
                     thumbnailOrSourceChanged = newThumbnail;
                     thumbnailIs.value = !!newThumbnail;
-                    console.log('Case 2: Form for adding data with only thumbnail field');
-                    console.log('newThumbnail:', newThumbnail);
+                    // console.log('Case 2: Form for adding data with only thumbnail field');
+                    // console.log('newThumbnail:', newThumbnail);
                 }
 
                 // Case 3: Form for adding data with both source and thumbnail fields
@@ -106,17 +106,17 @@ export default function useInputHasChanges<T extends object>
                     trackIs.value.source = !!newSource && isValidSource;
                     trackIs.value.duration = !!newDuration;
 
-                    console.log('Case 3: Form for adding data with both source and thumbnail fields');
-                    console.log('newThumbnail:', !!newThumbnail);
-                    console.log('newSource:', !!newSource);
-                    console.log('newDuration:', !!newDuration);
+                    // console.log('Case 3: Form for adding data with both source and thumbnail fields');
+                    // console.log('newThumbnail:', !!newThumbnail);
+                    // console.log('newSource:', !!newSource);
+                    // console.log('newDuration:', !!newDuration);
                 }
 
                 hasChanges.value = textFieldsChanged && thumbnailOrSourceChanged;
             } else if (isFormForEditing) {
                 if (hasSourceField && newSource && !newSource?.endsWith('.mp3')) {
                     const isValidSource = youtubeUrlRegex.test(newSource);
-                    console.log(isValidSource)
+                    // console.log(isValidSource)
                     hasChanges.value = isValidSource && (oldValObj !== newValObj)
                 } else {
                     hasChanges.value = (oldValObj !== newValObj);
@@ -124,15 +124,15 @@ export default function useInputHasChanges<T extends object>
                 }
 
             }
-            console.log('thumbnailOrSourceChanged', thumbnailOrSourceChanged);
+            // console.log('thumbnailOrSourceChanged', thumbnailOrSourceChanged);
             // return textFieldsChanged || thumbnailOrSourceChanged;
 
 
             // Determine the value of hasChanges based on textFields and thumbnail/source changes
-
-            console.log('hasChanges.value:', hasChanges.value);
-            console.log('Source', newSource, oldSource);
-            console.log('compare', (oldValObj !== newValObj));
+            //
+            // console.log('hasChanges.value:', hasChanges.value);
+            // console.log('Source', newSource, oldSource);
+            // console.log('compare', (oldValObj !== newValObj));
 
         },
 

@@ -49,15 +49,7 @@ const props = defineProps({
 })
 
 
-/********************************************/
-onBeforeMount(async () => {
-  const {url, duration, fileName} = await getSingleMeditationTrackData()
 
-  initialState.duration = duration
-  initialState.source = url
-  trackFileName.value = fileName
-
-})
 /********************************************/
 const initialState = {
   id: props.id,
@@ -70,7 +62,15 @@ const initialState = {
   source: null,
   duration: null,
 }
+/********************************************/
+onBeforeMount(async () => {
+  const {url, duration, fileName} = await getSingleMeditationTrackData()
 
+  await initialState.duration = duration
+  await initialState.source = url
+  await trackFileName.value = fileName
+
+})
 
 const request = reactive<CourseUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
@@ -110,6 +110,8 @@ function singleOrCourse(request) {
   }
 }
 
+
+
 function freeOrPaid(request) {
   if (request.is_lock || props.courseSet === CourseSet.Course) {
     return request.price;
@@ -117,6 +119,8 @@ function freeOrPaid(request) {
     request.price = 0;
   }
 }
+
+
 
 
 const updateCourse = async () => {
@@ -136,16 +140,12 @@ const updateCourse = async () => {
 }
 
 
-function close() {
-  useEvent('closeModal', false)
-  resetHasChanges(initialState, preview, pictureMedia, trackMedia)
-  useValidationStore().clearErrors()
-}
 
 const getSingleMeditationTrackData = async () => {
   let url, duration, fileName;
 
-  const result = await useLessonStore().get(<string>props.id);
+
+  const result = props.courseSet === CourseSet.Single ? await useLessonStore().get(<string>props.id) : {};
 
   url = result[0]?.source?.urls?.original.toString();
   fileName = result[0]?.source?.file_name.toString();
@@ -153,6 +153,16 @@ const getSingleMeditationTrackData = async () => {
 
   return {url, duration, fileName}
 }
+
+
+
+function close() {
+  useEvent('closeModal', false)
+  resetHasChanges(initialState, preview, pictureMedia, trackMedia)
+  useValidationStore().clearErrors()
+}
+
+
 
 
 </script>
