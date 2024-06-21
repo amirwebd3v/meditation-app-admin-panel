@@ -81,34 +81,38 @@ export default defineNuxtPlugin((nuxtApp) => {
     };
 
 
-    // validationRules.pictureFormat = (value: any): string | boolean => {
-    //     const allowedPictureFormats = ['jpg', 'png', 'jpeg'];
-    //     if (typeof value === 'string') {
-    //         const extension = value.split('.').pop()!.toLowerCase();
-    //         if (allowedPictureFormats.includes(extension)) {
-    //             return true;
-    //         } else {
-    //             return `Invalid picture format. Allowed formats are: ${allowedPictureFormats.join(', ')}`;
-    //         }
-    //     } else {
-    //         return 'Invalid input. Expected a file name.';
-    //     }
-    // };
-    //
-    //
-    // validationRules.trackFormat = (value: any): string | boolean => {
-    //     const allowedTrackFormats = ['mp3', 'wav'];
-    //     if (typeof value === 'string') {
-    //         const extension = value.split('.').pop()!.toLowerCase();
-    //         if (allowedTrackFormats.includes(extension)) {
-    //             return true;
-    //         } else {
-    //             return `Invalid track format. Allowed formats are: ${allowedTrackFormats.join(', ')}`;
-    //         }
-    //     } else {
-    //         return 'Invalid input. Expected a file name.';
-    //     }
-    // };
+    validationRules.pictureFormat = (value: any): string | boolean => {
+        const allowedPictureFormats = ['jpg', 'png', 'jpeg'];
+        if (!value[0]?.name) {
+            return 'This field is required';
+        } else if (typeof value[0]?.name === 'string') {
+            const extension = value[0]?.name.split('.').pop();
+            if (allowedPictureFormats.includes(extension)) {
+                return true;
+            } else {
+                return `Invalid picture format. Allowed formats are: ${allowedPictureFormats.join(', ')}`;
+            }
+        } else {
+            return 'Invalid input. Expected a proper image format.';
+        }
+    };
+
+
+    validationRules.trackFormat = (value: any): string | boolean => {
+        const allowedTrackFormats = ['mp3'];
+        if (!value[0]?.name) {
+            return 'This field is required';
+        } else if (typeof value[0]?.name === 'string') {
+            const extension = value[0]?.name.split('.').pop();
+            if (allowedTrackFormats.includes(extension)) {
+                return true;
+            } else {
+                return `Invalid track format. Allowed formats are: ${allowedTrackFormats.join(', ')}`;
+            }
+        } else {
+            return 'Invalid input. Expected a file name.';
+        }
+    };
 
 
 
