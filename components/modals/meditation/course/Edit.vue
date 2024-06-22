@@ -170,9 +170,7 @@ function close() {
 }
 
 
-watchEffect(()=>{
-  console.log(trackMedia.value,preview.value.track,trackFileName.value,initialState.duration)
-})
+
 
 
 const { data: meditationTrack, error } = await useAsyncData(
