@@ -63,14 +63,14 @@ const initialState = {
   duration: null,
 }
 /********************************************/
-onBeforeMount(async () => {
-  const {url, duration, fileName} = await getSingleMeditationTrackData()
-
-  initialState.duration = duration
-  initialState.source = url
-  trackFileName.value = fileName
-
-})
+// onBeforeMount(async () => {
+//   const {url, duration, fileName} = await getSingleMeditationTrackData()
+//
+//   initialState.duration = duration
+//   initialState.source = url
+//   trackFileName.value = fileName
+//
+// })
 
 const request = reactive<CourseUpdateRequest>({...initialState})
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
@@ -141,18 +141,25 @@ const updateCourse = async () => {
 
 
 
-const getSingleMeditationTrackData = async () => {
-  let url, duration, fileName;
-
-
-  const result = props.courseSet === CourseSet.Single ? await useLessonStore().get(<string>props.id) : [];
-
-  url = result[0]?.source?.urls?.original.toString();
-  fileName = result[0]?.source?.file_name.toString();
-  duration = result[0]?.duration;
-
-  return {url, duration, fileName}
-}
+// const getSingleMeditationTrackData = async () => {
+//   let url, duration, fileName;
+//
+//
+//   const result = props.courseSet === CourseSet.Single ? await useLessonStore().get(<string>props.id) : [];
+  // const { data: result } = await useAsyncData(
+  //     async () => {
+  //       if (props.courseSet === CourseSet.Single) {
+  //         console.log('res', props.id )
+  //         return await useLessonStore().get(<string>props.id)
+  //       }
+  //     }
+  // )
+//   url = result[0]?.source?.urls?.original.toString();
+//   fileName = result[0]?.source?.file_name.toString();
+//   duration = result[0]?.duration;
+//
+//   return {url, duration, fileName}
+// }
 
 
 
@@ -163,6 +170,48 @@ function close() {
 }
 
 
+watchEffect(()=>{
+  console.log(trackMedia.value,preview.value.track,trackFileName.value,initialState.duration)
+})
+
+
+const { data: meditationTrack, error } = await useAsyncData(
+    'meditationTrack',
+    async () => {
+      try {
+        const result = await useLessonStore().get(<string>props.id)
+
+        if (!result || !result[0]) {
+           new Error('No meditation track available')
+        }
+
+        const url = result[0]?.source?.urls?.original?.toString()
+        const fileName = result[0]?.source?.file_name?.toString()
+        const duration = result[0]?.duration
+
+        // Update the refs
+        initialState.duration = duration
+        initialState.source = url
+        trackFileName.value = fileName
+
+        return { url, duration, fileName }
+      } catch (err) {
+        console.error('Failed to fetch meditation data:', err)
+        // Set default values
+        initialState.duration = null
+        initialState.source = null
+        trackFileName.value = 'No track available'
+
+        // Re-throw the error so Nuxt can handle it
+        throw err
+      }
+    },
+    {
+      server: true,
+      lazy: false,
+      deep: true
+    }
+)
 
 
 </script>
@@ -250,8 +299,7 @@ function close() {
 
         <v-col cols="12" class="py-0" v-if="props.courseSet === CourseSet.Single">
           <div class="text-white pb-2">Upload a track</div>
-          <v-file-input class="file-input-label upload-input" :label="!initialState.source ? 'Select a track to Upload' : '' "
-                        :rules="[$validationRules.trackFormat]"
+          <v-file-input class="file-input-label upload-input"
                         v-model="trackMedia"
                         @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"
@@ -298,8 +346,6 @@ function close() {
         <v-col cols="12" :class="`${props.courseSet === CourseSet.Single ? 'pt-4' : 'pt-0'} pb-0`">
           <div class="text-white pb-2">Upload a picture</div>
           <v-file-input class="file-input-label upload-input"
-                        :label="!props.thumbnail ? 'Select a picture to Upload' : ''"
-                        :rules="[$validationRules.pictureFormat]"
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"

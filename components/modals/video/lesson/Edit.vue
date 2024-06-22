@@ -128,8 +128,6 @@ function close() {
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a picture</div>
           <v-file-input class="file-input-label upload-input"
-                        :label="!props.thumbnail ? 'Select a picture to Upload' : ''"
-                        :rules="[$validationRules.pictureFormat]"
                         v-model="pictureMedia"
                         @change="upload(MediaType.PICTURE)"
                         single-line :disabled="loading"

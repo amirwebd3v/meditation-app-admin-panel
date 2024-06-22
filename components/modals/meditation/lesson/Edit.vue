@@ -127,8 +127,6 @@ function close() {
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Upload a track</div>
           <v-file-input class="file-input-label upload-input"
-                        :label="!props.source ? 'Select a track to Upload' : '' "
-                        :rules="[$validationRules.trackFormat]"
                         v-model="trackMedia"
                         @change="upload(MediaType.TRACK)"
                         single-line :disabled="loading"

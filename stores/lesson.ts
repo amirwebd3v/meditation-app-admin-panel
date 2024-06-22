@@ -24,7 +24,7 @@ export const useLessonStore = defineStore('lesson', {
         },
 
         async get(id: string): Promise<Lesson> {
-            return (await useApi().get(`/admin/v1/course/${id}/lesson`,)).data
+            return (await useApi().get(`/admin/v1/course/${id}/lesson`)).data
         },
 
         async store(request: LessonStoreRequest): Promise<Lesson> {
