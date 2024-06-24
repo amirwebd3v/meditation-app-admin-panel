@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import type {CourseUpdateRequest} from "~/utils/requests";
-import type {ValidationRules} from "~/utils/types";
+import type { ValidationRules} from "~/utils/types";
 import type {MediaType} from "~/utils/enums";
 import {CourseSet} from "~/utils/enums";
 
@@ -23,7 +23,7 @@ const props = defineProps({
     required: true
   },
   description: {
-    type: String || null,
+    type: String,
     required: true
   },
   categories: {
@@ -64,7 +64,8 @@ const initialState = {
 }
 /********************************************/
 onBeforeMount(async () => {
-  const {url, duration, fileName} = await getSingleMeditationTrackData()
+  const {url, duration, fileName} = await getSingleMeditationTrackData(<CourseSet>props.courseSet)
+
 
   initialState.duration = duration
   initialState.source = url
@@ -128,7 +129,10 @@ const updateCourse = async () => {
   singleOrCourse(request);
   freeOrPaid(request);
   try {
+    console.log(request?.source)
     await useMeditationStore().update(request)
+    console.log(request?.source)
+
     useEvent('closeMenu', false)
     useEvent('refreshMeditationsCourseTable')
     useEvent('successMessage', `${request.title} is successfully Updated.`)
@@ -141,24 +145,20 @@ const updateCourse = async () => {
 
 
 
-const getSingleMeditationTrackData = async () => {
-  let url, duration, fileName;
+const getSingleMeditationTrackData = async (courseSet: CourseSet) => {
+  if (courseSet !== CourseSet.Single) {
+    return null
+  }
 
+  const { data: result } = await useAsyncData(() => useLessonStore().get(<string>props.id))
 
-  // const result = props.courseSet === CourseSet.Single ? await useLessonStore().get(<string>props.id) : [];
-  const { data: result } = await useAsyncData(
-      async () => {
-        if (props.courseSet === CourseSet.Single) {
-          // console.log('res', props.id )
-          return await useLessonStore().get(<string>props.id)
-        }
-      }
-  )
-  url = result[0]?.source?.urls?.original.toString();
-  fileName = result[0]?.source?.file_name.toString();
-  duration = result[0]?.duration;
+  const lesson = await result.value?.[0]
 
-  return {url, duration, fileName}
+  return {
+    url: lesson?.source?.urls?.original?.toString(),
+    fileName: lesson?.source?.file_name?.toString(),
+    duration: lesson?.duration
+  }
 }
 
 
@@ -170,46 +170,6 @@ function close() {
 }
 
 
-
-
-
-// const { data: meditationTrack, error } = await useAsyncData(
-//     'meditationTrack',
-//     async () => {
-//       try {
-//         const result = await useLessonStore().get(<string>props.id)
-//
-//         if (!result || !result[0]) {
-//            new Error('No meditation track available')
-//         }
-//
-//         const url = result[0]?.source?.urls?.original?.toString()
-//         const fileName = result[0]?.source?.file_name?.toString()
-//         const duration = result[0]?.duration
-//
-//         // Update the refs
-//         initialState.duration = duration
-//         initialState.source = url
-//         trackFileName.value = fileName
-//
-//         return { url, duration, fileName }
-//       } catch (err) {
-//         console.error('Failed to fetch meditation data:', err)
-//         // Set default values
-//         initialState.duration = null
-//         initialState.source = null
-//         trackFileName.value = 'No track available'
-//
-//         // Re-throw the error so Nuxt can handle it
-//         throw err
-//       }
-//     },
-//     {
-//       server: true,
-//       lazy: false,
-//       deep: true
-//     }
-// )
 
 
 </script>
