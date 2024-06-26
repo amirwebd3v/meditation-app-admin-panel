@@ -115,7 +115,7 @@ function close() {
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Video Link</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.source"
-                        placeholder="https://youtu.be/example" :disabled="loading" :error-messages="errors['source']"
+                        placeholder="https://www.youtube.com/example" :disabled="loading" :error-messages="errors['source']"
                         :rules="[$validationRules.required,$validationRules.url]"
           />
         </v-col>
