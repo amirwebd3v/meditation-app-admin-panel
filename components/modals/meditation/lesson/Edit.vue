@@ -41,7 +41,6 @@ const props = defineProps({
   isPopular: {
     type: Boolean,
     required: true,
-    default: false
   },
   isLock: {
     type: Boolean,
@@ -60,7 +59,7 @@ const initialState = {
   duration: null
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
-const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {hasChanges, changedFields,resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
@@ -68,11 +67,13 @@ useListen('uploading', (value: boolean) => {
 /**********************************************/
 const updateLesson = async () => {
   loading.value = true
+  changedFields(initialState, request)
   try {
     await useLessonStore().update(request)
     useEvent('refreshMeditationsLessonsTable')
-    useEvent('successMessage', `${request.title} is successfully Updated.`)
+    useEvent('successMessage', `${initialState.title} is successfully Updated.`)
     useEvent('closeModal', false)
+    Object.assign(initialState, toRaw(request))
     resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   } finally {
     loading.value = false
@@ -85,7 +86,6 @@ function close() {
   resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
-
 
 </script>
 

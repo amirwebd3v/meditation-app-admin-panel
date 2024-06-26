@@ -53,7 +53,7 @@ const initialState = {
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
 const {pictureMedia, upload, preview} = useUpload(request)
-const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {hasChanges, changedFields,resetHasChanges} = useInputHasChanges(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
 })
@@ -80,10 +80,11 @@ const toggle = () => {
 /**********************************************/
 const updateCourse = async () => {
   loading.value = true
+  changedFields(initialState, request)
   try {
     await useVideoStore().update(request)
     useEvent('closeMenu')
-    useEvent('successMessage', `${request.title} is successfully Updated.`)
+    useEvent('successMessage', `${initialState.title} is successfully Updated.`)
     useEvent('refreshVideosCourseTable')
     useEvent('closeModal', false)
     resetHasChanges(initialState,  preview,pictureMedia)

@@ -6,6 +6,7 @@ import type {ValidationRules} from "~/utils/types";
 
 
 const {items, meta} = storeToRefs(useLessonStore())
+const course: Course = (await useMeditationStore().get(useRoute().params.id.toString()))
 const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
 /***********************************************/
 definePageMeta({
@@ -19,7 +20,6 @@ onBeforeMount(async () => {
 /***********************************************/
 const loading = ref(false)
 const searchText = ref('')
-const course: Course = (await useMeditationStore().get(useRoute().params.id.toString()))
 
 const headers = [
   {key: 'title', title: 'TITLE', align: 'start', sortable: true, width:'350'},
@@ -148,7 +148,7 @@ useListen('refreshMeditationsLessonsTable',load)
 
         <template #item.actions="{item}">
 
-          <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center">
+          <div style="width: 80px;" class="float-right mx-0 px-0 v-row align-center" :key="item.uuid">
             <ModalsMeditationLessonEdit
                 :course-title="course.title"
                 :id="item.uuid"
@@ -156,7 +156,6 @@ useListen('refreshMeditationsLessonsTable',load)
                 :description="item.description"
                 :is-lock="item.is_lock"
                 :source="{url: item.source?.urls?.original,fileName : item.source?.file_name}"
-                :key="item.uuid"
             />
             <ModalsMeditationLessonDelete :id="item.uuid" :title="item.title" :course-title="course.title"
                                               :transaction-count="0"/>

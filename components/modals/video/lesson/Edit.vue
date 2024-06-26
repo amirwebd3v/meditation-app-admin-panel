@@ -59,7 +59,7 @@ const initialState = {
   thumbnail: null
 }
 const request = reactive<LessonUpdateRequest>({...initialState})
-const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {hasChanges, changedFields,resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, upload, preview} = useUpload(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
@@ -69,11 +69,13 @@ useListen('uploading', (value: boolean) => {
 
 const updateLesson = async () => {
   loading.value = true
+  changedFields(initialState, request)
   try {
     await useLessonStore().update(request)
-    useEvent('successMessage', `${request.title} is successfully Updated.`)
+    useEvent('successMessage', `${initialState.title} is successfully Updated.`)
     useEvent('refreshVideosLessonsTable')
     useEvent('closeModal', false)
+    Object.assign(initialState, toRaw(request))
     resetHasChanges(initialState, preview, pictureMedia)
   } finally {
     loading.value = false
@@ -116,7 +118,7 @@ function close() {
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Video Link</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.source"
-                        placeholder="https://" :disabled="loading" :error-messages="errors['source']"
+                        placeholder="https://www.youtube.com/example" :disabled="loading" :error-messages="errors['source']"
                         :rules="[$validationRules.required,$validationRules.url]"
           />
         </v-col>

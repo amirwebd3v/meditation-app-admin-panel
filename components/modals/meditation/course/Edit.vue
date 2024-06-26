@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import type {CourseUpdateRequest} from "~/utils/requests";
-import type { ValidationRules} from "~/utils/types";
+import type {ValidationRules} from "~/utils/types";
 import type {MediaType} from "~/utils/enums";
 import {CourseSet} from "~/utils/enums";
 
@@ -49,7 +49,6 @@ const props = defineProps({
 })
 
 
-
 /********************************************/
 const initialState = {
   id: props.id,
@@ -64,17 +63,11 @@ const initialState = {
 }
 /********************************************/
 onBeforeMount(async () => {
-  const {url, duration, fileName} = await getSingleMeditationTrackData(<CourseSet>props.courseSet)
-
-
-  initialState.duration = duration
-  initialState.source = url
-  trackFileName.value = fileName
-
+   await getSingleMeditationTrackData(<CourseSet>props.courseSet)
 })
 
 const request = reactive<CourseUpdateRequest>({...initialState})
-const {hasChanges, resetHasChanges} = useInputHasChanges(request)
+const {hasChanges, changedFields,resetHasChanges} = useInputHasChanges(request)
 const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
@@ -102,6 +95,23 @@ const toggle = () => {
 }
 
 /**********************************************/
+const getSingleMeditationTrackData = async (courseSet: CourseSet) => {
+  if (courseSet !== CourseSet.Single) {
+    return null
+  }
+
+  const {data: result} = await useAsyncData(() => useLessonStore().get(<string>props.id))
+
+  const lesson = await result.value?.[0]
+
+
+  initialState.duration = lesson?.source?.urls?.original?.toString()
+  trackFileName.value = lesson?.source?.file_name?.toString()
+  initialState.duration = lesson?.duration
+
+}
+
+
 function singleOrCourse(request) {
   let keysToExclude = ['is_lock', 'source', 'duration', 'is_popular']
   if (request.set === CourseSet.Course) {
@@ -110,7 +120,6 @@ function singleOrCourse(request) {
     }
   }
 }
-
 
 
 function freeOrPaid(request) {
@@ -128,14 +137,12 @@ const updateCourse = async () => {
   loading.value = true
   singleOrCourse(request);
   freeOrPaid(request);
+  changedFields(initialState, request)
   try {
-    console.log(request?.source)
     await useMeditationStore().update(request)
-    console.log(request?.source)
-
     useEvent('closeMenu', false)
     useEvent('refreshMeditationsCourseTable')
-    useEvent('successMessage', `${request.title} is successfully Updated.`)
+    useEvent('successMessage', `${initialState.title} is successfully Updated.`)
     useEvent('closeModal', false)
     resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   } finally {
@@ -144,32 +151,11 @@ const updateCourse = async () => {
 }
 
 
-
-const getSingleMeditationTrackData = async (courseSet: CourseSet) => {
-  if (courseSet !== CourseSet.Single) {
-    return null
-  }
-
-  const { data: result } = await useAsyncData(() => useLessonStore().get(<string>props.id))
-
-  const lesson = await result.value?.[0]
-
-  return {
-    url: lesson?.source?.urls?.original?.toString(),
-    fileName: lesson?.source?.file_name?.toString(),
-    duration: lesson?.duration
-  }
-}
-
-
-
 function close() {
   useEvent('closeModal', false)
   resetHasChanges(initialState, preview, pictureMedia, trackMedia)
   useValidationStore().clearErrors()
 }
-
-
 
 
 </script>
@@ -281,8 +267,12 @@ function close() {
                     </a>
                   </div>
                   <v-divider color="white" class="border-white border-opacity-25"/>
-                  <span v-if="!preview.track" class="px-1 font-weight-thin" style="font-size: 9px;">{{ trackFileName }}</span>
-                  <span v-else class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{ preview.track?.size }}</span>
+                  <span v-if="!preview.track" class="px-1 font-weight-thin" style="font-size: 9px;">{{
+                      trackFileName
+                    }}</span>
+                  <span v-else class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{
+                      preview.track?.size
+                    }}</span>
                 </v-card-text>
               </v-card>
             </template>

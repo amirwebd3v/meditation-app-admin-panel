@@ -5,7 +5,8 @@ import type {MediaPreview} from "~/utils/types";
 export default function useInputHasChanges<T extends object>
 (objectToWatch: T): {
     hasChanges: Ref<boolean>;
-    resetHasChanges: (initialState ?: T, preview?: Ref<MediaPreview> | null, pictureFile ?: Ref<File[]> | null, trackFile ?: Ref<File[]> | null) => void;
+    resetHasChanges: (initialState ?: Partial<T>, preview?: Ref<MediaPreview> | null, pictureFile ?: Ref<File[]> | null, trackFile ?: Ref<File[]> | null) => void;
+    changedFields: (initialState: T, request: T) => Partial<T>;
 } {
 
     // console.log('objectToWatch', objectToWatch)
@@ -67,7 +68,7 @@ export default function useInputHasChanges<T extends object>
 
             const textFieldsChanged = JSON.stringify(filteredNew) !== JSON.stringify(filteredOld);
             textFieldsIs.value = textFieldsChanged;
-            const youtubeUrlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|playlist\?|watch\?v=|watch\?.+(?:&|&#38;);v=))([a-zA-Z0-9\-_]{11})?(?:(?:\?|&|&#38;)index=((?:\d){1,3}))?(?:(?:\?|&|&#38;)?list=([a-zA-Z\-_0-9]{34}))?(?:\S+)?/;
+            const youtubeUrlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|playlist\?|watch\?v=|watch\?.+(?:&|&#38;);v=))([a-zA-Z0-9\-_]{11})?(?:(?:\?|&|&#38;)index=(\d{1,3}))?(?:(?:\?|&|&#38;)?list=([a-zA-Z\-_0-9]{34}))?(?:\S+)?/;
             // console.log('=================================');
             // console.log('newSource',newSource);
             // console.log('textFieldsChanged:', textFieldsChanged);
@@ -140,19 +141,18 @@ export default function useInputHasChanges<T extends object>
     );
 
 
-    function resetHasChanges(initialState?: T,
+    function resetHasChanges(initialState?: Partial<T>,
                              preview?: Ref<MediaPreview> | null,
                              pictureFile?: Ref<File[]> | null,
                              trackFile?: Ref<File[]> | null):
         void {
         if (initialState) {
-            Object.assign(objectToWatch, initialState);
-
-            textFieldsIs.value = false;
-            thumbnailIs.value = false;
-            trackIs.value.source = false;
-            trackIs.value.duration = false;
-            hasChanges.value = false;
+            Object.assign(objectToWatch,initialState);
+            // textFieldsIs.value = false;
+            // thumbnailIs.value = false;
+            // trackIs.value.source = false;
+            // trackIs.value.duration = false;
+            // hasChanges.value = false;
         }
         if (preview) {
             preview.value.picture = null;
@@ -175,7 +175,20 @@ export default function useInputHasChanges<T extends object>
 
     }
 
-    return {hasChanges, resetHasChanges}
+
+    function changedFields(initialState: T, objectToWatch: T): Partial<T> {
+        (Object.keys(objectToWatch) as Array<keyof T>).forEach(key => {
+            if (JSON.stringify(objectToWatch[key]) === JSON.stringify(initialState[key]) || objectToWatch[key] === null) {
+                if (key !== "id" && ((key !== "is_popular" && key !== "is_lock") && key !== "title")) {
+                    delete objectToWatch[key];
+                }
+            }
+        });
+        return objectToWatch;
+    }
+
+    return {hasChanges, changedFields, resetHasChanges}
+    // return {hasChanges, resetHasChanges}
 }
 
 
