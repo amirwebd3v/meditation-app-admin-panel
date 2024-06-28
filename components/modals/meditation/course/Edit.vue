@@ -68,7 +68,7 @@ onBeforeMount(async () => {
 
 const request = reactive<CourseUpdateRequest>({...initialState})
 const {hasChanges, changedFields,resetHasChanges} = useInputHasChanges(request)
-const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
+const {pictureMedia, trackMedia, upload, preview, uploadProgress} = useUpload(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
 })
@@ -262,9 +262,20 @@ function close() {
                   </div>
 
                   <div v-else class="pl-4 py-1 align-center">
-                    <a :href="preview.track.url">
-                      <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
-                    </a>
+                    <v-progress-circular
+                        color="grey-lighten-4"
+                        :model-value="uploadProgress"
+                        :rotate="360"
+                        :size="50"
+                        :width="2"
+                    >
+                      <template v-slot:default>
+                        <a :href="preview.track.url">
+                          <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"
+                                  v-if="uploadProgress === 100"/>
+                        </a>
+                      </template>
+                    </v-progress-circular>
                   </div>
                   <v-divider color="white" class="border-white border-opacity-25"/>
                   <span v-if="!preview.track" class="px-1 font-weight-thin" style="font-size: 9px;">{{
@@ -277,11 +288,23 @@ function close() {
               </v-card>
             </template>
             <template v-slot:selection="{ fileNames }">
-              <template v-for="fileName in fileNames" :key="fileName">
+              <template v-for="fileName in fileNames" :key="fileName" v-if="uploadProgress !== 0">
                 <v-card width="80" height="80" class="bg-primary-light">
                   <v-card-text style="padding: 0;" class="text-truncate text-white">
                     <div class="pl-4 py-1 align-center">
-                      <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
+                      <v-progress-circular
+                          color="grey-lighten-4"
+                          :model-value="uploadProgress"
+                          :rotate="360"
+                          :size="50"
+                          :width="2"
+                      >
+                        <template v-slot:default>
+                          <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"
+                                  v-if="uploadProgress === 100"/>
+                          {{ uploadProgress !== 100 ? uploadProgress + '%' : '' }}
+                        </template>
+                      </v-progress-circular>
                     </div>
                     <v-divider color="white" class="border-white border-opacity-25"/>
                     <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>
