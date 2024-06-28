@@ -3,7 +3,7 @@ import type {Error} from "~/utils/types";
 
 export const useValidationStore = defineStore('validation', {
     state: (): Error => ({
-        status: undefined,
+        status:  undefined,
         message: undefined,
         errors: {}
     }),
