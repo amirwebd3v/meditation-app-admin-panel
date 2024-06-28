@@ -26,7 +26,7 @@ const initialState = {
 
 
 const request = reactive<CourseStoreRequest>({...initialState})
-const {pictureMedia, trackMedia, upload, preview} = useUpload(request)
+const {pictureMedia, trackMedia, upload, preview,uploadProgress} = useUpload(request)
 const {hasChanges, resetHasChanges} = useInputHasChanges(request)
 
 useListen('uploading', (value: boolean) => {
@@ -458,30 +458,41 @@ watch(singleCourseModal, (newVal2) => {
                 <template #prepend-inner v-if="[...trackMedia].length === 0 && preview.track !== null">
                   <v-card width="80" height="80" class="bg-primary-light">
                     <v-card-text style="padding: 0;" class="text-truncate text-white">
-                      <v-img lazy-src="/img/meditation-card.jpg" cover height="56"
-                             :src="<string>preview.track?.url">
-                        <template v-slot:placeholder>
-                          <div class="d-flex align-center justify-center fill-height">
-                            <v-progress-circular
-                                color="grey-lighten-4"
-                                indeterminate
-                                size="x-small"
-                            ></v-progress-circular>
-                          </div>
-                        </template>
-                      </v-img>
+                      <div class="pl-4 py-1 align-center">
+                        <v-progress-circular
+                            color="grey-lighten-4"
+                            :model-value="uploadProgress"
+                            :rotate="360"
+                            :size="50"
+                            :width="2"
+                        >
+                          <template v-slot:default>
+                            <v-icon icon="mdi-play-circle" size="xxx-large" color="primary" v-if="uploadProgress === 100"/>
+                          </template>
+                        </v-progress-circular>
+                      </div>
                       <v-divider color="white" class="border-white border-opacity-25"/>
-                      <span class="px-1 font-weight-thin"
-                            style="font-size: 9px;">Size : {{ preview.track?.size }}</span>
+                      <span class="px-1 font-weight-thin" style="font-size: 9px;">Size : {{preview.track?.size }}</span>
                     </v-card-text>
                   </v-card>
                 </template>
-                <template v-slot:selection="{ fileNames }">
-                  <template v-for="fileName in fileNames" :key="fileName">
-                    <v-card width="80" height="80" class="bg-primary-light">
+                <template v-slot:selection="{ fileNames }" >
+                  <template v-for="fileName in fileNames" :key="fileName" v-if="uploadProgress !== 0">
+                    <v-card width="80" height="80" class="bg-primary-light" >
                       <v-card-text style="padding: 0;" class="text-truncate text-white">
                         <div class="pl-4 py-1 align-center">
-                          <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"/>
+                          <v-progress-circular
+                              color="grey-lighten-4"
+                              :model-value="uploadProgress"
+                              :rotate="360"
+                              :size="50"
+                              :width="2"
+                          >
+                            <template v-slot:default>
+                              <v-icon icon="mdi-play-circle" size="xxx-large" color="primary" v-if="uploadProgress === 100"/>
+                              {{ uploadProgress !== 100 ? uploadProgress + '%' : '' }}
+                            </template>
+                          </v-progress-circular>
                         </div>
                         <v-divider color="white" class="border-white border-opacity-25"/>
                         <span class="px-1 font-weight-thin" style="font-size: 9px;">{{ fileName }}</span>

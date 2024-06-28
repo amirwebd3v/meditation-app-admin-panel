@@ -147,7 +147,6 @@ function close() {
                     >
                       <template v-slot:default>
                         <v-icon icon="mdi-play-circle" size="xxx-large" color="primary" v-if="uploadProgress === 100"/>
-                        {{ uploadProgress !== 100 ? uploadProgress + '%' : '' }}
                       </template>
                     </v-progress-circular>
                   </div>
