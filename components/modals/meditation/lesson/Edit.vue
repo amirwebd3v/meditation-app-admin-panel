@@ -41,6 +41,7 @@ const props = defineProps({
   isPopular: {
     type: Boolean,
     required: true,
+    default: false
   },
   isLock: {
     type: Boolean,
