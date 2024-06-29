@@ -1,10 +1,10 @@
 import {L5Client, type Paginator} from 'l5-client';
 import type {FilterSearchItem, FilterSortItem, QueryParams} from 'l5-client'
 import {FetchOptions, FetchResponse, ResponseType} from "ofetch";
-import type {AppConfig} from "@nuxt/schema";
 
 
-const appConfig : AppConfig = useAppConfig()
+
+const appConfig  = useRuntimeConfig().public ;
 const client = new L5Client(appConfig.api.baseUrl, {headers: appConfig.api.headers})
 
 
