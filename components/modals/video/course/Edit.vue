@@ -52,7 +52,7 @@ const initialState = {
   thumbnail: null
 }
 const request = reactive<CourseUpdateRequest>({...initialState})
-const {pictureMedia, upload, preview} = useUpload(request)
+const {pictureMedia, upload, preview, uploadProgress} = useUpload(request)
 const {hasChanges, changedFields,resetHasChanges} = useInputHasChanges(request)
 useListen('uploading', (value: boolean) => {
   loading.value = value
@@ -248,9 +248,13 @@ function close() {
                         <div class="d-flex align-center justify-center fill-height">
                           <v-progress-circular
                               color="grey-lighten-4"
-                              indeterminate
-                              size="x-small"
-                          ></v-progress-circular>
+                              :model-value="uploadProgress"
+                              :rotate="360"
+                              :size="40"
+                              :width="2"
+                          >
+                            <span class="font-12">{{uploadProgress+'%'}}</span>
+                          </v-progress-circular>
                         </div>
                       </template>
                     </v-img>

@@ -286,9 +286,13 @@ watch(singleCourseModal, (newVal2) => {
                           <div class="d-flex align-center justify-center fill-height">
                             <v-progress-circular
                                 color="grey-lighten-4"
-                                indeterminate
-                                size="x-small"
-                            ></v-progress-circular>
+                                :model-value="uploadProgress"
+                                :rotate="360"
+                                :size="40"
+                                :width="2"
+                            >
+                              <span class="font-12">{{uploadProgress+'%'}}</span>
+                            </v-progress-circular>
                           </div>
                         </template>
                       </v-img>
@@ -309,9 +313,13 @@ watch(singleCourseModal, (newVal2) => {
                             <div class="d-flex align-center justify-center fill-height">
                               <v-progress-circular
                                   color="grey-lighten-4"
-                                  indeterminate
-                                  size="x-small"
-                              ></v-progress-circular>
+                                  :model-value="uploadProgress"
+                                  :rotate="360"
+                                  :size="40"
+                                  :width="2"
+                              >
+                                <span class="font-12">{{uploadProgress+'%'}}</span>
+                              </v-progress-circular>
                             </div>
                           </template>
                         </v-img>
@@ -547,9 +555,13 @@ watch(singleCourseModal, (newVal2) => {
                             <div class="d-flex align-center justify-center fill-height">
                               <v-progress-circular
                                   color="grey-lighten-4"
-                                  indeterminate
-                                  size="x-small"
-                              ></v-progress-circular>
+                                  :model-value="uploadProgress"
+                                  :rotate="360"
+                                  :size="40"
+                                  :width="2"
+                              >
+                                <span class="font-12">{{uploadProgress+'%'}}</span>
+                              </v-progress-circular>
                             </div>
                           </template>
                         </v-img>
