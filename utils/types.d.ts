@@ -1,5 +1,6 @@
 import type {CourseType} from "~/utils/enums";
 import {CourseSet} from "~/utils/enums";
+import type {Ref} from "vue";
 
 
 interface Error {
@@ -58,6 +59,10 @@ interface Media {
     }
     uuid: string
     _entity: string
+}
+
+interface UploadResult {
+    preview: Preview;
 }
 
 interface Lesson {
@@ -123,6 +128,7 @@ export {
     User,
     Preview,
     MediaPreview,
+    UploadResult,
     Lesson,
     Course,
     Media,
