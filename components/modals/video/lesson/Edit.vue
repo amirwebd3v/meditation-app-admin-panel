@@ -166,15 +166,7 @@ function close() {
                            :src="<string>preview.picture?.url">
                       <template v-slot:placeholder>
                         <div class="d-flex align-center justify-center fill-height">
-                          <v-progress-circular
-                              color="grey-lighten-4"
-                              :model-value="uploadProgress"
-                              :rotate="360"
-                              :size="40"
-                              :width="2"
-                          >
-                            <span class="font-12">{{uploadProgress+'%'}}</span>
-                          </v-progress-circular>
+                            <span class="font-12 pt-1">{{uploadProgress+'%'}}</span>
                         </div>
                       </template>
                     </v-img>
