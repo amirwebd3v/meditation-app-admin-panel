@@ -82,7 +82,7 @@ export default function useInputHasChanges<T extends object>
             if (!isFormForEditing) {
                 // Case 1: Form for adding data with only source field
                 if (hasSourceField && !hasThumbnailField) {
-                    const isValidSource = !newSource?.endsWith('.mp3') && (!newSource || youtubeUrlRegex.test(newSource));
+                    const isValidSource = !(/\.mp3$/i.test(newSource)) && (!newSource || youtubeUrlRegex.test(newSource));
                     thumbnailOrSourceChanged = newSource && isValidSource || newDuration;
                     trackIs.value.source = !!newSource && isValidSource;
                     trackIs.value.duration = !!newDuration;
@@ -101,21 +101,36 @@ export default function useInputHasChanges<T extends object>
 
                 // Case 3: Form for adding data with both source and thumbnail fields
                 else if (hasSourceField && hasThumbnailField) {
-                    const isValidSource = !newSource?.endsWith('.mp3') && (!newSource || youtubeUrlRegex.test(newSource));
-                    thumbnailOrSourceChanged = newThumbnail || (newSource && isValidSource && newDuration);
                     thumbnailIs.value = !!newThumbnail;
-                    trackIs.value.source = !!newSource && isValidSource;
+
+                    const isValidSource = ref(false)
+                    if ((/\.mp3$/i.test(newSource)) || ((!newSource && (newObj?.set === CourseSet.Course && newObj?.type === CourseType.Meditation)) && thumbnailIs.value)){
+                        isValidSource.value = true;
+                    }
+                    if (newSource && !(/\.mp3$/i.test(newSource)) && youtubeUrlRegex.test(newSource) ) {
+                        isValidSource.value = true;
+                    }
+
+
+                    trackIs.value.source = isValidSource.value;
                     trackIs.value.duration = !!newDuration;
+                    thumbnailOrSourceChanged = (thumbnailIs.value && trackIs.value.source && trackIs.value.duration) ||
+                        (thumbnailIs.value && trackIs.value.source)
+
 
                     // console.log('Case 3: Form for adding data with both source and thumbnail fields');
                     // console.log('newThumbnail:', !!newThumbnail);
-                    // console.log('newSource:', !!newSource);
+                    // console.log('newSource:', newSource);
+                    // console.log('isValidSource:', isValidSource.value);
                     // console.log('newDuration:', !!newDuration);
                 }
 
+
                 hasChanges.value = textFieldsChanged && thumbnailOrSourceChanged;
+
+
             } else if (isFormForEditing) {
-                if (hasSourceField && newSource && !newSource?.endsWith('.mp3')) {
+                if (hasSourceField && newSource && !(/\.mp3$/i.test(newSource))) {
                     const isValidSource = youtubeUrlRegex.test(newSource);
                     // console.log(isValidSource)
                     hasChanges.value = isValidSource && (oldValObj !== newValObj)
@@ -147,7 +162,7 @@ export default function useInputHasChanges<T extends object>
                              trackFile?: Ref<File[]> | null):
         void {
         if (initialState) {
-            Object.assign(objectToWatch,initialState);
+            Object.assign(objectToWatch, initialState);
             // textFieldsIs.value = false;
             // thumbnailIs.value = false;
             // trackIs.value.source = false;

@@ -25,7 +25,7 @@ const props = defineProps({
 const isBtnText = ref()
 const loading = ref()
 const {errors} = storeToRefs(useValidationStore())
-const { $validationRules }: { $validationRules: ValidationRules } = useNuxtApp()
+const {$validationRules}: { $validationRules: ValidationRules } = useNuxtApp()
 /********************************************/
 const initialState = {
   course_uuid: props.courseId,
@@ -115,7 +115,8 @@ function close() {
         <v-col cols="12" class="py-0">
           <div class="text-white pb-2">Video Link</div>
           <v-text-field variant="outlined" color="primary" density="comfortable" v-model="request.source"
-                        placeholder="https://www.youtube.com/example" :disabled="loading" :error-messages="errors['source']"
+                        placeholder="https://www.youtube.com/example" :disabled="loading"
+                        :error-messages="errors['source']"
                         :rules="[$validationRules.required,$validationRules.url]"
           />
         </v-col>
@@ -165,7 +166,7 @@ function close() {
                            :src="<string>preview.picture?.url">
                       <template v-slot:placeholder>
                         <div class="d-flex align-center justify-center fill-height">
-                            <span class="font-12 pt-1">{{uploadProgress+'%'}}</span>
+                          <span class="font-12 pt-1">{{ uploadProgress + '%' }}</span>
                         </div>
                       </template>
                     </v-img>

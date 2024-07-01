@@ -61,6 +61,7 @@ function selectedCourse(set) {
     selectedModal.value = CourseSet.Course
     courseModal.value = true
   }
+  request.set = set
 }
 
 

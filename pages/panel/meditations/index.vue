@@ -78,7 +78,7 @@ const categoriesSelectionSort = (categories) => {
       && selectedCategories.value === ['*']
       || selectedCategories.value !== [""]
   ) {
-    return categories[0].name
+    return categories[0]?.name
   } else {
     return ''
   }
