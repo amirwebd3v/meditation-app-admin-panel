@@ -146,17 +146,17 @@ function close() {
                   </div>
 
                   <div v-else class="pl-4 py-1 align-center">
-                      <v-progress-circular
-                          color="grey-lighten-4"
-                          :model-value="uploadProgress"
-                          :rotate="360"
-                          :size="50"
-                          :width="2"
-                      >
+                    <v-progress-circular
+                        color="grey-lighten-4"
+                        style="padding-top: 2px;"
+                        :model-value="uploadProgress"
+                        :rotate="360"
+                        :size="48"
+                        :width="2"
+                    >
                         <template v-slot:default>
                           <a :href="preview.track.url">
-                            <v-icon icon="mdi-play-circle" size="xxx-large" color="primary"
-                                    v-if="uploadProgress === 100"/>
+                            <v-icon icon="mdi-play-circle" style="padding-right: 1px;padding-top: 1px" size="xxx-large" color="primary" v-if="uploadProgress === 100"/>
                           </a>
                         </template>
                       </v-progress-circular>
@@ -177,9 +177,10 @@ function close() {
                     <div class="pl-4 py-1 align-center">
                       <v-progress-circular
                           color="grey-lighten-4"
+                          style="padding-top: 3px;"
                           :model-value="uploadProgress"
                           :rotate="360"
-                          :size="50"
+                          :size="48"
                           :width="2"
                       >
                         <template v-slot:default>
